@@ -1,0 +1,4 @@
+# ignoriert pyc-Dateien
+*.pyc
+# ignoriert temporäre Dateien
+*~
