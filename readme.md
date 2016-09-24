@@ -1,0 +1,1 @@
+This is a program that helps you organize your geocaches on your GPS device.
