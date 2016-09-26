@@ -18,3 +18,7 @@ Aufruf von "geohelper.py" aus der Konsole
 *...to be continued...*
 
 
+#Known bugs
+Beim Löschen von zwei gefundenen Caches aus "geocache_visits.txt" werden beide Caches gelöscht, aber einer noch angezeigt.
+
+
