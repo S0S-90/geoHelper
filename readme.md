@@ -7,11 +7,11 @@ This is a program that helps you organize your geocaches on your GPS device. Cur
 
 * Die Codierung der Konsole, von der aus das Programm gestartet wird, sollte auf Codepage 1252 eingestellt sein. In Windows Eingabeaufforderung erreicht man das durch Eingabe von "chcp 1252".
 * Der Pfad zum Gerät muss "F:\Garmin" lauten. Die Fieldnotes-Datei "geocache_visits.txt" sowie die Logdatei "geocache_logs.xml" sollten direkt dort liegen, die gpx-Dateien in einem Unterordner mit Namen "GPX".
-[Codierung und Pfad können ggf. im Quelltext von "user_io.py" geändert werden.]
+*[Codierung und Pfad können ggf. im Quelltext von "user_io.py" geändert werden.]
 
 
 #Start: 
-Aufruf von "geohelper.py"
+Aufruf von "geohelper.py" aus der Konsole
 
 
 #Funktionen:
