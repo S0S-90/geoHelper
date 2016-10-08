@@ -18,7 +18,8 @@ This is a program that helps you organize your geocaches on your GPS device. Cur
 
 
 #Funktionen
-* Anzeigen aller Caches auf dem GPS-Gerät mit den wichtigsten Informationen (GC-Code, Koordinaten, Cachetyp, D- und T-Wertung, Größe, Verfügbarkeit, Downloaddatum, Name) und Ordnen der Caches nach Eigenschaften (GC-Code und Name)
+* Anzeigen aller Caches auf dem GPS-Gerät mit den wichtigsten Informationen (GC-Code, Koordinaten, Cachetyp, D- und T-Wertung, Größe, Verfügbarkeit, Downloaddatum, Name) 
+* Sortieren der Caches nach einer bestimmten Eigenschafte (GC-Code oder Name)
 * Anzeigen der vollständigen Beschreibung eines Caches
 * Durchsuchen der Caches (Name und Beschreibung)
 * Löschen eines oder mehrerer Caches
