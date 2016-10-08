@@ -2,25 +2,25 @@ This is a program that helps you organize your geocaches on your GPS device. Cur
 
 
 #Voraussetzungen
-* Python 2.7 (vermutlich auch andere Python 2 Versionen möglich)
+* Python 2.7 (vermutlich auch andere Python 2 Versionen mÃ¶glich)
 * Module: glob, os, time, xml.etree.ElementTree (alle in Standardbibliothek vorhanden)
 
 * Die Codierung der Konsole, von der aus das Programm gestartet wird, sollte auf Codepage 1252 eingestellt sein. In Windows Eingabeaufforderung erreicht man das durch Eingabe von "chcp 1252".
-* Der Pfad zum Gerät muss "F:\Garmin" lauten. Die Fieldnotes-Datei "geocache_visits.txt" sowie die Logdatei "geocache_logs.xml" sollten direkt dort liegen, die gpx-Dateien in einem Unterordner mit Namen "GPX".
-* Die gpx-Dateien müssen in dem Format vorliegen, das vom Firefox-Addon "Geocaching.com GPX Downloader" (https://addons.mozilla.org/de/firefox/addon/geocachingcom-gpx-downloader/) verwendet wird.
-*[Codierung und Pfad können ggf. im Quelltext von "user_io.py" geändert werden.]
+* Der Pfad zum GerÃ¤t muss "F:\Garmin" lauten. Die Fieldnotes-Datei "geocache_visits.txt" sowie die Logdatei "geocache_logs.xml" sollten direkt dort liegen, die gpx-Dateien in einem Unterordner mit Namen "GPX".
+* Die gpx-Dateien mÃ¼ssen in dem Format vorliegen, das vom Firefox-Addon "Geocaching.com GPX Downloader" (https://addons.mozilla.org/de/firefox/addon/geocachingcom-gpx-downloader/) verwendet wird.
+*[Codierung und Pfad kÃ¶nnen ggf. im Quelltext von "user_io.py" geÃ¤ndert werden.]
 
 
-#Start: 
+#Start
 Aufruf von "geohelper.py" aus der Konsole
 
 
 #Funktionen
-* Anzeigen aller Caches auf dem GPS-Gerät mit den wichtigsten Informationen (GC-Code, Koordinaten, Cachetyp, D- und T-Wertung, Größe, Verfügbarkeit, Downloaddatum, Name) und Ordnen der Caches nach Eigenschaften (GC-Code und Name)
-* Anzeigen der vollständigen Beschreibung eines Caches
+* Anzeigen aller Caches auf dem GPS-GerÃ¤t mit den wichtigsten Informationen (GC-Code, Koordinaten, Cachetyp, D- und T-Wertung, GrÃ¶ÃŸe, VerfÃ¼gbarkeit, Downloaddatum, Name) und Ordnen der Caches nach Eigenschaften (GC-Code und Name)
+* Anzeigen der vollstÃ¤ndigen Beschreibung eines Caches
 * Durchsuchen der Caches (Name und Beschreibung)
-* Löschen eines oder mehrerer Caches
-* Auslesen der als gefunden markierten Caches und Löschen
+* LÃ¶schen eines oder mehrerer Caches
+* Auslesen der als gefunden markierten Caches und LÃ¶schen
 
 
 
