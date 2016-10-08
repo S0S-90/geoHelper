@@ -12,7 +12,9 @@ This is a program that helps you organize your geocaches on your GPS device. Cur
 
 
 #Start
-Aufruf von "geohelper.py" aus der Konsole
+* Download aller .py Dateien in einen Ordner
+* Öffnen der Konsole in diesem Ordner
+* Eingabe von "geohelper.py" in der Konsole 
 
 
 #Funktionen
