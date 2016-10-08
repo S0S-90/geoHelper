@@ -5,11 +5,40 @@ import geocache  # Geocache-Klasse
 import user_io   # Benutzeroberflaeche
 
 class GPS_content(object):
-
-    def __init__(self):
-        """list nach Oeffnen des Programms die Geocaches ein und leitet zu weiteren Tasks des Hauptmenues weiter"""
+    """
+    Ein Objekt dieser Klasse enthält alle relevanten Informationen vom GPS-Geraet (oder einem anderen Speicherort).
+    
+    
+    Attribute:
+    ----------
+    PATH: string
+        Pfadangabe zum GPS-Geraet oder einem anderen Speicherort, der ausgelesen werden soll
         
-        self.PATH = user_io.PATH     # Uebernahme der Pfadangabe aus der user_io
+    geocaches: list
+        Liste von allen Geocaches
+        
+    found_exists: bool
+        Information, ob auf dem Geraet Caches als gefunden markiert wurden
+    
+    found_caches: list
+        Liste von gefundenen Geocaches (falls found_exists)
+        
+    warning: bool
+        aktiv, wenn sich neben den gefundenen Caches auch noch andere in der Logdatei befinden (z.B. als nicht gefunden, needs maintainance)
+    
+    
+    Methoden:
+    ---------
+    __init__(path): Erstellung eines GPS-Content-Objekts aus der Pfadangabe zum Geraet
+    
+    show_main_menu(): startet das Hauptmenue, von dem aus alle anderen Funktinonen aufgerufen werden
+    """
+
+    
+    def __init__(self, path):
+        """list nach Oeffnen des Programms die Geocaches und die Logdatei ein"""
+        
+        self.PATH = path     # Uebernahme der Pfadangabe aus der user_io
         self.found_exists = False    # Information, ob gefundene Caches auf dem Geraet gespeichert sind
         
         self.geocaches = []               # alle Caches aus GC*.gpx-Dateien in PATH\GPX auslesen und in Liste geocaches speichern
@@ -27,6 +56,7 @@ class GPS_content(object):
                 self.warning = False
     
     def show_main_menu(self):    
+        """startet das Hauptmenue"""
         while True:                                         # Hauptmenue
             task = user_io.hauptmenue(self.found_exists)
             if task == "alle_anzeigen":
@@ -157,6 +187,6 @@ class GPS_content(object):
             self.geocaches = [c for c in self.geocaches if c not in removelist]
           
 if __name__ == "__main__":
-    new = GPS_content()
+    new = GPS_content(user_io.PATH)
     new.show_main_menu()
   

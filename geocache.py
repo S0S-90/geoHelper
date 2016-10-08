@@ -7,32 +7,73 @@ import ownfunctions  # eigene Datei mit Funktionen
 class Geocache(object):
 
     """
-    Klasse Geocache
+    Ein Objekt dieser Klasse enthält alle relevanten Informationen aus der entsprechenden GPX-Datei.
     
-    Methoden:
-    __init__(dateiname_path): Erstellung eines Geocache-Objekt aus dem vollstaendigen Dateinamen der zugehoerigen GPX-Datei
-    
-    kurzinfo(): einzeilige Information ueber den Cache (Typ: unicode)
-    langinfo(): ausfuehrliche Information ueber den Cache (Typ: unicode)
     
     Attribute:
-    dateiname_path: vollstaendiger Dateiname (mit Pfadangabe)
-    gccode: GC-Code (Typ: string)
-    name: Name des Geocaches (Typ: string)
-    difficulty: Schwierigkeitsgrad (Typ: float)
-    terrain: Gelaendewertung (Typ: float)
-    size: Groesse des Caches (Typ: string)
-    type: Art des Caches (Typ: string)
-    beschreibung: Cachebeschreibung (Typ: string)
-    hint: Hinweis (Typ: string)
-    owner: Besitzer des Caches (Typ: string)
-    url: Link zur Cacheseite auf geocaching.com (Typ: string)
-    koordinaten: Koordinaten als Dezimalgrad (Typ: list [Breitengrad, Längengrad])
-    koordinatenanzeige: Koordinaten als Grad und Minuten (Typ: string)
-    attribute: Attribute des Caches (Typ: list)
-    logs: letzte Logs vor dem Download (Typ: list of lists, jede enthält [Datum, Logtyp, Finder])
-    available: Verfuegbarkeit zum Zeitpunkt des Downloads (Typ: bool)
-    downloaddate: Datum des Downloads der gpx-Datei (Typ: string)
+    -----------
+    dateiname_path: string
+        vollstaendiger Dateiname (mit Pfadangabe) 
+        
+    gccode: string
+        CG-Code
+        
+    name: string
+        Name des Geocaches 
+    
+    difficulty: float
+        Schwierigkeitsgrad
+        
+    terrain: float
+        Gelaendewertung
+        
+    size: string
+        Groesse des Caches
+        
+    type: string
+        Art des Caches
+    
+    beschreibung: string
+        Cachebeschreibung
+        
+    hint: string
+        Hinweis
+        
+    owner: string
+        Besitzer des Caches
+        
+    url: string
+        Link zur Cacheseite auf geocaching.com 
+        
+    koordinaten: list 
+        Koordinaten als Dezimalgrad, erstes Element der Liste: Breitengrad, zweites Element: Laengengrad
+        
+    koordinatenanzeige: string
+        Koordinaten als Grad und Minuten
+        
+    attribute: list
+        Attribute des Caches 
+        
+    logs: list
+        letzte Logs vor dem Download
+        jedes Element der Liste: Liste vom Typ [Datum, Logtyp, Finder]
+        
+    available: bool
+        Verfuegbarkeit zum Zeitpunkt des Downloads 
+        
+    downloaddate: string
+        Datum des Downloads der gpx-Datei 
+    
+    
+    Methoden:
+    ---------
+    __init__(dateiname_path): Erstellung eines Geocache-Objekt aus dem vollstaendigen Dateinamen der zugehoerigen GPX-Datei
+    
+    kurzinfo(): unicode
+        einzeilige Information ueber den Cache 
+        
+    langinfo(): 
+        ausfuehrliche Information ueber den Cache 
     """
 
     def __init__(self, dateiname_path):
