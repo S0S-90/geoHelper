@@ -4,7 +4,7 @@ import glob
 import geocache  # Geocache-Klasse
 import user_io   # Benutzeroberflaeche
 
-class Programinstanz(object):
+class GPS_content(object):
 
     def __init__(self):
         """list nach Oeffnen des Programms die Geocaches ein und leitet zu weiteren Tasks des Hauptmenues weiter"""
@@ -25,7 +25,8 @@ class Programinstanz(object):
                 self.warning = True
             else:
                 self.warning = False
-                
+    
+    def show_main_menu(self):    
         while True:                                         # Hauptmenue
             task = user_io.hauptmenue(self.found_exists)
             if task == "alle_anzeigen":
@@ -148,8 +149,14 @@ class Programinstanz(object):
         if user_io.loeschbestaetigung():
             for c in cacheliste:
                 os.remove(c.dateiname_path)
-                self.geocaches = [c for c in self.geocaches if c not in cacheliste]
+            removelist = []
+            for c1 in self.geocaches:
+                for c2 in cacheliste:
+                    if c1.gccode == c2.gccode:
+                        removelist.append(c1)
+            self.geocaches = [c for c in self.geocaches if c not in removelist]
           
 if __name__ == "__main__":
-    newProgram = Programinstanz()
+    new = GPS_content()
+    new.show_main_menu()
   
