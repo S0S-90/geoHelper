@@ -20,6 +20,7 @@
 #Funktionen
 * Anzeigen aller Caches auf dem GPS-Gerät mit den wichtigsten Informationen (GC-Code, Koordinaten, Cachetyp, D- und T-Wertung, Größe, Verfügbarkeit, Download-Datum, Name) 
 * Sortieren der Caches nach einer bestimmten Eigenschaft (GC-Code, Name, Cachetyp, D- und T-Wertung, Groesse, Download-Datum, Verfügbarkeit)
+* Berechnung der Entfernung der Caches zu einer bestimmten Position und Sortieren der Caches nach dieser Entfernung
 * Anzeigen der vollständigen Beschreibung eines Caches
 * Durchsuchen der Caches (Name und Beschreibung)
 * Löschen eines oder mehrerer Caches

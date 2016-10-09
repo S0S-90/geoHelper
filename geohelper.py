@@ -1,8 +1,9 @@
 ﻿import os
 import glob
 
-import geocache  # Geocache-Klasse
-import user_io   # Benutzeroberflaeche
+import geocache     # Geocache-Klasse
+import user_io      # Benutzeroberflaeche
+import ownfunctions # eigene Datei mit Funktionen
 
 class GPS_content(object):
     """
@@ -97,17 +98,36 @@ class GPS_content(object):
     def sortieren_und_anzeigen(self):
         """sortiert alle Caches auf dem Geraet nach gewuenschtem Kriterium und zeigt sie an"""
         [kriterium, rev] = user_io.sortieren()
-        if kriterium == "name":    # Kriterien, bei denen die Groß- und Kleinschreibung vernachlaessigt werden soll
+        if kriterium == "distance":   # Entfernungsberechnung
+            user_io.general_output(u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX)")
+            koords_str = user_io.general_input(">> ")
+            koords = ownfunctions.koordinaten_minuten_to_dezimalgrad(koords_str)
+            for g in self.geocaches:
+                g.distance = ownfunctions.calculate_distance(g.koordinaten, koords)
+            self.geocaches = sorted(self.geocaches, key = lambda geocache: getattr(geocache, kriterium), reverse = rev)
+            user_io.general_output(self.alle_anzeigen_dist())
+        elif kriterium == "name":    # Kriterien, bei denen die Groß- und Kleinschreibung vernachlaessigt werden soll
             self.geocaches = sorted(self.geocaches, key = lambda geocache: getattr(geocache, kriterium).lower(), reverse = rev)
+            user_io.general_output(self.alle_anzeigen())
         else:                    # Kriterien, bei denen Groß- und Kleinschreibung keine Rolle spielt
             self.geocaches = sorted(self.geocaches, key = lambda geocache: getattr(geocache, kriterium), reverse = rev)
-        user_io.general_output(self.alle_anzeigen())
+            user_io.general_output(self.alle_anzeigen())
         
     def alle_anzeigen(self):
         """gibt einen String zurueck, in dem die Kurzinfos aller Caches auf dem Geraet jeweils in einer Zeile stehen"""
         text = ""
         for c in self.geocaches:
             text = text + c.kurzinfo() + "\n"
+        if len(self.geocaches) == 0:
+            return "Keine Caches auf dem Geraet."
+        return text
+        
+    def alle_anzeigen_dist(self):
+        """gibt einen String zurueck, in dem die Kurzinfos aller Caches auf dem Geraet + die aktuellen Entfernungsangaben jeweils in einer Zeile stehen"""
+        text = ""
+        for c in self.geocaches:
+            newline = u"{:8}m | {}\n".format(int(c.distance), c.kurzinfo())
+            text = text + newline
         if len(self.geocaches) == 0:
             return "Keine Caches auf dem Geraet."
         return text

@@ -113,9 +113,9 @@ class Geocache(object):
         
         self.url = geocache_tree.find(".//{http://www.topografix.com/GPX/1/0}url").text         # url auslesen
         
-        wpt = geocache_tree.find(".//{http://www.topografix.com/GPX/1/0}wpt")                    # Koordinaten auslesen
-        self.koordinaten = [wpt.get("lat"), wpt.get("lon")]     # Liste als Dezimalgrad
-        self.koordinatenanzeige = ownfunctions.koordinaten_dezimalgrad_to_minuten(self.koordinaten) # String wie auf geocaching.com        
+        wpt = geocache_tree.find(".//{http://www.topografix.com/GPX/1/0}wpt")                       # Koordinaten auslesen
+        self.koordinaten = [float(wpt.get("lat")), float(wpt.get("lon"))]                           # Liste als Dezimalgrad
+        self.koordinatenanzeige = ownfunctions.koordinaten_dezimalgrad_to_minuten(self.koordinaten) # String wie auf geocaching.com         
         
         attribute = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}text").text     # Attribute auslesen
         self.attribute = attribute.split(",")
@@ -130,6 +130,8 @@ class Geocache(object):
         self.downloaddate_anzeige = "".join([downloaddate[2]+" ", downloaddate[1]+" ", downloaddate[-1]])
         month = ownfunctions.get_month(downloaddate[1])
         self.downloaddate = datetime.date(int(downloaddate[-1]), month, int(downloaddate[2]))
+        
+        self.distance = 0     # initialise for later use
         
     def _logs_auslesen(self, geocache_tree):
         """liest die Logs aus der XML-Datei aus, ausgelagerter Teil von __init__"""
@@ -177,6 +179,7 @@ class Geocache(object):
         return beschreibung_kurz + "\n\n" + beschreibung_lang
         
     def _get_size(self, size):
+        """ordnet die Groessenbezeichnungen einem Zahlenwert zu (zum Sortieren)"""
         if size == "other":
             return 0
         elif size == "micro":
@@ -187,7 +190,7 @@ class Geocache(object):
             return 4
         elif size == "large":
             return 5
-
+            
     def kurzinfo(self):                                  
         """ gibt eine einzeilige Kurzinfo zurueck"""
         return u"{} | {} | {} | D {} | T {} | {} | {} | {} | {}".format(self.gccode.ljust(7), self.koordinatenanzeige, self.type.ljust(17), self.difficulty, self.terrain, self.size_anzeige.ljust(7), self.available.ljust(5), self.downloaddate_anzeige, self.name)
