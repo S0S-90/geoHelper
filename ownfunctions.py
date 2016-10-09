@@ -28,3 +28,29 @@ def koordinaten_dezimalgrad_to_minuten(koordinatenliste):
         ostgrad = -ostgrad
         ostminuten = -ostminuten
     return u"{} {:02}°{:6.3f}, {} {:03}°{:6.3f}".format(nordsign, nordgrad, nordminuten, ostsign, ostgrad, ostminuten)
+    
+def get_month(string):
+    if string == "Jan":
+        return 1
+    elif string == "Feb":
+        return 2
+    elif string == "Mar":
+        return 3
+    elif string == "Apr":
+        return 4
+    elif string == "May":
+        return 5
+    elif string == "Jun":
+        return 6
+    elif string == "Jul":
+        return 7
+    elif string == "Aug":
+        return 8
+    elif string == "Sep":
+        return 9
+    elif string == "Oct":
+        return 10
+    elif string == "Nov":
+        return 11
+    elif string == "Dez":
+        return 2

@@ -36,7 +36,7 @@ class GPS_content(object):
 
     
     def __init__(self, path):
-        """list nach Oeffnen des Programms die Geocaches und die Logdatei ein"""
+        """liest nach Oeffnen des Programms die Geocaches und die Logdatei ein"""
         
         self.PATH = path     # Uebernahme der Pfadangabe aus der user_io
         self.found_exists = False    # Information, ob gefundene Caches auf dem Geraet gespeichert sind
@@ -97,7 +97,10 @@ class GPS_content(object):
     def sortieren_und_anzeigen(self):
         """sortiert alle Caches auf dem Geraet nach gewuenschtem Kriterium und zeigt sie an"""
         [kriterium, rev] = user_io.sortieren()
-        self.geocaches = sorted(self.geocaches, key = lambda geocache: getattr(geocache, kriterium).lower(), reverse = rev)
+        if kriterium == "name":    # Kriterien, bei denen die Groß- und Kleinschreibung vernachlaessigt werden soll
+            self.geocaches = sorted(self.geocaches, key = lambda geocache: getattr(geocache, kriterium).lower(), reverse = rev)
+        else:                    # Kriterien, bei denen Groß- und Kleinschreibung keine Rolle spielt
+            self.geocaches = sorted(self.geocaches, key = lambda geocache: getattr(geocache, kriterium), reverse = rev)
         user_io.general_output(self.alle_anzeigen())
         
     def alle_anzeigen(self):

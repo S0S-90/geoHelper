@@ -1,9 +1,9 @@
-This is a program that helps you organize your geocaches on your GPS device. Currently it's only available in a German language version.
+﻿This is a program that helps you organize your geocaches on your GPS device. Currently it's only available in a German language version.
 
 
 #Voraussetzungen
 * Python 2.7 (vermutlich auch andere Python 2 Versionen möglich)
-* Module: glob, os, time, xml.etree.ElementTree (alle in Standardbibliothek vorhanden)
+* Module: glob, os, time, datetime, xml.etree.ElementTree (alle in Standardbibliothek vorhanden)
 
 * Die Codierung der Konsole, von der aus das Programm gestartet wird, sollte auf Codepage 1252 eingestellt sein. In Windows Eingabeaufforderung erreicht man das durch Eingabe von "chcp 1252".
 * Der Pfad zum Gerät muss "F:\Garmin" lauten. Die Fieldnotes-Datei "geocache_visits.txt" sowie die Logdatei "geocache_logs.xml" sollten direkt dort liegen, die gpx-Dateien in einem Unterordner mit Namen "GPX".
@@ -19,7 +19,7 @@ This is a program that helps you organize your geocaches on your GPS device. Cur
 
 #Funktionen
 * Anzeigen aller Caches auf dem GPS-Gerät mit den wichtigsten Informationen (GC-Code, Koordinaten, Cachetyp, D- und T-Wertung, Größe, Verfügbarkeit, Downloaddatum, Name) 
-* Sortieren der Caches nach einer bestimmten Eigenschafte (GC-Code oder Name)
+* Sortieren der Caches nach einer bestimmten Eigenschafte (GC-Code, Name, Download-Datum)
 * Anzeigen der vollständigen Beschreibung eines Caches
 * Durchsuchen der Caches (Name und Beschreibung)
 * Löschen eines oder mehrerer Caches

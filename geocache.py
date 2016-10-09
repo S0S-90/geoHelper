@@ -1,5 +1,6 @@
 ﻿import os
 import time
+import datetime
 import xml.etree.ElementTree as ElementTree
 
 import ownfunctions  # eigene Datei mit Funktionen
@@ -61,8 +62,11 @@ class Geocache(object):
     available: bool
         Verfuegbarkeit zum Zeitpunkt des Downloads 
         
-    downloaddate: string
-        Datum des Downloads der gpx-Datei 
+    downloaddate: datetime.date
+        Datum des Downloads der gpx-Datei
+        
+    downloaddate_anzeige: string
+        Datum des Downloads der gpx-Datei wie in der Anzeige
     
     
     Methoden:
@@ -118,7 +122,9 @@ class Geocache(object):
         
         downloaddate = time.ctime(os.path.getmtime(dateiname_path))       # Downloaddatum aus Aenderungsdatum der gpx-Datei auslesen
         downloaddate = downloaddate.split(" ")
-        self.downloaddate = "".join([downloaddate[2]+" ", downloaddate[1]+" ", downloaddate[-1]])
+        self.downloaddate_anzeige = "".join([downloaddate[2]+" ", downloaddate[1]+" ", downloaddate[-1]])
+        month = ownfunctions.get_month(downloaddate[1])
+        self.downloaddate = datetime.date(int(downloaddate[-1]), month, int(downloaddate[2]))
         
     def _logs_auslesen(self, geocache_tree):
         """liest die Logs aus der XML-Datei aus, ausgelagerter Teil von __init__"""
@@ -167,7 +173,7 @@ class Geocache(object):
 
     def kurzinfo(self):                                  
         """ gibt eine einzeilige Kurzinfo zurueck"""
-        return u"{} | {} | {} | D {} | T {} | {} | {} | {} | {}".format(self.gccode.ljust(7), self.koordinatenanzeige, self.type.ljust(17), self.difficulty, self.terrain, self.size.ljust(7), self.available.ljust(5), self.downloaddate, self.name)
+        return u"{} | {} | {} | D {} | T {} | {} | {} | {} | {}".format(self.gccode.ljust(7), self.koordinatenanzeige, self.type.ljust(17), self.difficulty, self.terrain, self.size.ljust(7), self.available.ljust(5), self.downloaddate_anzeige, self.name)
 
     def langinfo(self): 
         """gibt eine ausfuehrliche Info zurueck""" 

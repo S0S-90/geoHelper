@@ -1,4 +1,5 @@
-﻿PATH = r"F:\Garmin"    # Pfad zu dem Geraet
+﻿#PATH = r"F:\Garmin"    # Pfad zu dem Geraet
+PATH = r"C:\Users\Susanne\Dateien\Verschiedenes\Geocaching"
 CODIERUNG = "cp1252"   # Codierung der Kosole (cp1252 empfohlen)
 
 def general_output(string):
@@ -47,10 +48,11 @@ def sortieren():
     gibt eine Liste zurueck, in der das erste Element das Kriterium und 
     das zweite je nachdem, ob die Reihenfolge umgekehrt werden soll, True oder False ist"""
     
-    kriterien = ["gccode", "name"]
+    kriterien = ["gccode", "name", "downloaddate"]
     print "\nWonach sollen die Geocaches sortiert werden?"
     print "1: GC-Code"
     print "2: Name"
+    print "3: Download-Datum"
     eingabe_kriterium = raw_input(">> ")
     try:
         kriterium = kriterien[int(eingabe_kriterium)-1]
