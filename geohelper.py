@@ -99,8 +99,7 @@ class GPS_content(object):
         """sortiert alle Caches auf dem Geraet nach gewuenschtem Kriterium und zeigt sie an"""
         [kriterium, rev] = user_io.sortieren()
         if kriterium == "distance":   # Entfernungsberechnung
-            user_io.general_output(u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX)")
-            koords_str = user_io.general_input(">> ")
+            koords_str = user_io.koordinaten_eingabe()
             koords = ownfunctions.koordinaten_minuten_to_dezimalgrad(koords_str)
             for g in self.geocaches:
                 g.distance = ownfunctions.calculate_distance(g.koordinaten, koords)

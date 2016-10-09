@@ -1,5 +1,5 @@
-﻿#PATH = r"F:\Garmin"    # Pfad zu dem Geraet
-PATH = r"C:\Users\Susanne\Dateien\Verschiedenes\Geocaching"
+﻿PATH = r"F:\Garmin"    # Pfad zu dem Geraet
+#PATH = r"C:\Users\Susanne\Dateien\Verschiedenes\Geocaching"
 CODIERUNG = "cp1252"   # Codierung der Kosole (cp1252 empfohlen)
 
 def general_output(string):
@@ -144,6 +144,11 @@ def einen_anzeigen():
     eingabe = raw_input(">> ")
     if eingabe == "1":
         return "loeschen"
+        
+def koordinaten_eingabe():
+    print u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX)"
+    koords = raw_input(">> ")
+    return koords
      
 
 
