@@ -48,11 +48,16 @@ def sortieren():
     gibt eine Liste zurueck, in der das erste Element das Kriterium und 
     das zweite je nachdem, ob die Reihenfolge umgekehrt werden soll, True oder False ist"""
     
-    kriterien = ["gccode", "name", "downloaddate"]
+    kriterien = ["gccode", "name", "type", "difficulty", "terrain", "size", "downloaddate", "available"]
     print "\nWonach sollen die Geocaches sortiert werden?"
     print "1: GC-Code"
     print "2: Name"
-    print "3: Download-Datum"
+    print "3: Cache-Typ"
+    print "4: D-Wertung"
+    print "5: T-Wertung"
+    print "6: Groesse"
+    print "7: Download-Datum"
+    print "8: Verfuegbarkeit"
     eingabe_kriterium = raw_input(">> ")
     try:
         kriterium = kriterien[int(eingabe_kriterium)-1]

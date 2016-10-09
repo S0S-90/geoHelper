@@ -28,7 +28,10 @@ class Geocache(object):
     terrain: float
         Gelaendewertung
         
-    size: string
+    size: int
+        Groesse des Caches (other = 0, dann mit der Groesse aufsteigend)
+        
+    size_anzeige: string
         Groesse des Caches
         
     type: string
@@ -95,8 +98,10 @@ class Geocache(object):
         terrain = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}terrain").text  # Terrainwertung auslesen
         self.terrain = float(terrain)
         
-        self.size = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}container").text # Groesse auslesen
-        self.type = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}type").text      # Typ auslesen
+        self.size_anzeige = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}container").text # Groesse auslesen
+        self.size = self._get_size(self.size_anzeige)
+        
+        self.type = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}type").text              # Typ auslesen
 
         self.beschreibung = self._beschreibung_auslesen(geocache_tree)                               # Beschreibung auslesen
 
@@ -170,10 +175,22 @@ class Geocache(object):
         else:
             beschreibung_lang = ""
         return beschreibung_kurz + "\n\n" + beschreibung_lang
+        
+    def _get_size(self, size):
+        if size == "other":
+            return 0
+        elif size == "micro":
+            return 2
+        elif size == "small":
+            return 3
+        elif size == "regular":
+            return 4
+        elif size == "large":
+            return 5
 
     def kurzinfo(self):                                  
         """ gibt eine einzeilige Kurzinfo zurueck"""
-        return u"{} | {} | {} | D {} | T {} | {} | {} | {} | {}".format(self.gccode.ljust(7), self.koordinatenanzeige, self.type.ljust(17), self.difficulty, self.terrain, self.size.ljust(7), self.available.ljust(5), self.downloaddate_anzeige, self.name)
+        return u"{} | {} | {} | D {} | T {} | {} | {} | {} | {}".format(self.gccode.ljust(7), self.koordinatenanzeige, self.type.ljust(17), self.difficulty, self.terrain, self.size_anzeige.ljust(7), self.available.ljust(5), self.downloaddate_anzeige, self.name)
 
     def langinfo(self): 
         """gibt eine ausfuehrliche Info zurueck""" 
