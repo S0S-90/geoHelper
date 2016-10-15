@@ -1,5 +1,5 @@
-﻿#PATH = r"F:\Garmin"    # Pfad zu dem Geraet
-PATH = r"C:\Users\Susanne\Dateien\Verschiedenes\Geocaching"
+﻿PATH = r"F:\Garmin"    # Pfad zu dem Geraet
+#PATH = r"C:\Users\Susanne\Dateien\Verschiedenes\Geocaching"
 CODIERUNG = "cp1252"   # Codierung der Kosole (cp1252 empfohlen)
 
 def general_output(string):
