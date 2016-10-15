@@ -1,5 +1,6 @@
 ﻿import os
 import glob
+import webbrowser
 
 import geocache     # Geocache-Klasse
 import user_io      # Benutzeroberflaeche
@@ -31,8 +32,7 @@ class GPS_content(object):
     Methoden:
     ---------
     __init__(path): Erstellung eines GPS-Content-Objekts aus der Pfadangabe zum Geraet
-    
-    show_main_menu(): startet das Hauptmenue, von dem aus alle anderen Funktinonen aufgerufen werden
+
     """
 
     
@@ -55,21 +55,6 @@ class GPS_content(object):
                 self.warning = True
             else:
                 self.warning = False
-    
-    def show_main_menu(self):    
-        """startet das Hauptmenue"""
-        while True:                                         # Hauptmenue
-            task = user_io.hauptmenue(self.found_exists)
-            if task == "alle_anzeigen":
-                self.sortieren_und_anzeigen()
-            elif task == "einen_anzeigen":
-                self.einen_anzeigen()
-            elif task == "suchen":
-                self.suchen()
-            elif task == "gefundene_anzeigen":
-                self.gefundene_anzeigen()
-            elif task == "exit":
-                break
 
     def get_logged_and_found_caches(self, visits_file):
         """liest aus visits_file die geloggten und gefundenen Caches aus"""
@@ -99,12 +84,22 @@ class GPS_content(object):
         """sortiert alle Caches auf dem Geraet nach gewuenschtem Kriterium und zeigt sie an"""
         [kriterium, rev] = user_io.sortieren()
         if kriterium == "distance":   # Entfernungsberechnung
+            koords = None
             koords_str = user_io.koordinaten_eingabe()
-            koords = ownfunctions.koordinaten_minuten_to_dezimalgrad(koords_str)
-            for g in self.geocaches:
-                g.distance = ownfunctions.calculate_distance(g.koordinaten, koords)
-            self.geocaches = sorted(self.geocaches, key = lambda geocache: getattr(geocache, kriterium), reverse = rev)
-            user_io.general_output(self.alle_anzeigen_dist())
+            try:     # Koordinaten im geocaching.com-Format
+                koords = ownfunctions.koordinaten_minuten_to_dezimalgrad(koords_str)
+            except ValueError:
+                try:     # Koordinaten aus google-maps url
+                    koords = ownfunctions.koordinaten_url_to_dezimalgrad(koords_str)  
+                except: 
+                    user_io.general_output("ERROR: ungueltige Eingabe!")
+            
+            if koords:             # falls Koordinatenauslesen erfolgreich war
+                for g in self.geocaches:
+                    g.distance = ownfunctions.calculate_distance(g.koordinaten, koords)
+                self.geocaches = sorted(self.geocaches, key = lambda geocache: getattr(geocache, kriterium), reverse = rev)
+                user_io.general_output(self.alle_anzeigen_dist())
+            
         elif kriterium == "name":    # Kriterien, bei denen die Groß- und Kleinschreibung vernachlaessigt werden soll
             self.geocaches = sorted(self.geocaches, key = lambda geocache: getattr(geocache, kriterium).lower(), reverse = rev)
             user_io.general_output(self.alle_anzeigen())
@@ -125,7 +120,7 @@ class GPS_content(object):
         """gibt einen String zurueck, in dem die Kurzinfos aller Caches auf dem Geraet + die aktuellen Entfernungsangaben jeweils in einer Zeile stehen"""
         text = ""
         for c in self.geocaches:
-            newline = u"{:8}m | {}\n".format(int(c.distance), c.kurzinfo())
+            newline = u"{:7}km | {}\n".format(round(c.distance,1), c.kurzinfo())
             text = text + newline
         if len(self.geocaches) == 0:
             return "Keine Caches auf dem Geraet."
@@ -145,9 +140,14 @@ class GPS_content(object):
         else:
             user_io.general_output(cache.langinfo())
         
-            task = user_io.einen_anzeigen()
-            if task == "loeschen":
-                self.loeschen([cache])
+            while True:
+                task = user_io.einen_anzeigen()
+                if task == "loeschen":
+                    self.loeschen([cache])
+                elif task == "gc.com":
+                    webbrowser.open_new_tab(cache.url)
+                else:
+                    break
         
     def gc_auswahl_anzeigen(self, cacheliste):
         """gibt einen String zurueck, in dem Kurzinfos aller Caches aus Cacheliste in jeweils einer Zeile stehen"""
@@ -207,8 +207,25 @@ class GPS_content(object):
                     if c1.gccode == c2.gccode:
                         removelist.append(c1)
             self.geocaches = [c for c in self.geocaches if c not in removelist]
+            
+def show_main_menu(gps):    
+    """startet das Hauptmenue"""
+    while True:                                         # Hauptmenue
+        task = user_io.hauptmenue(gps.found_exists)
+        if task == "alle_anzeigen":
+            gps.sortieren_und_anzeigen()
+        elif task == "einen_anzeigen":
+            gps.einen_anzeigen()
+        elif task == "suchen":
+            gps.suchen()
+        elif task == "gefundene_anzeigen":
+            gps.gefundene_anzeigen()
+        elif task == "google-maps":
+            webbrowser.open_new_tab("https://www.google.de/maps")
+        elif task == "exit":
+                break
           
 if __name__ == "__main__":
     new = GPS_content(user_io.PATH)
-    new.show_main_menu()
+    show_main_menu(new)
   

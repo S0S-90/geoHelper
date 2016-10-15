@@ -1,5 +1,5 @@
-﻿PATH = r"F:\Garmin"    # Pfad zu dem Geraet
-#PATH = r"C:\Users\Susanne\Dateien\Verschiedenes\Geocaching"
+﻿#PATH = r"F:\Garmin"    # Pfad zu dem Geraet
+PATH = r"C:\Users\Susanne\Dateien\Verschiedenes\Geocaching"
 CODIERUNG = "cp1252"   # Codierung der Kosole (cp1252 empfohlen)
 
 def general_output(string):
@@ -23,9 +23,11 @@ def hauptmenue(found_exists):
     print "3: Geocaches durchsuchen"
     if found_exists:
         print "4: Alle gefundenen Caches anzeigen"
-        print "5: Programm verlassen"
+        print "5: https://www.google.de/maps aufrufen"
+        print "6: Programm verlassen"
     else:
-        print "4: Programm verlassen"
+        print "4: https://www.google.de/maps aufrufen"
+        print "5: Programm verlassen"
     eingabe = raw_input(">> ")
     
     if eingabe == "1":
@@ -37,8 +39,12 @@ def hauptmenue(found_exists):
     elif eingabe == "4" and found_exists:
         return "gefundene_anzeigen"
     elif eingabe == "4" and not found_exists:
-        return "exit"
+        return "google-maps"
     elif eingabe == "5" and found_exists:
+        return "google-maps"
+    elif eingabe == "5" and not found_exists:
+        return "exit"
+    elif eingabe == "6" and found_exists:
         return "exit"
     else:
         print "Ungueltige Eingabe!"  
@@ -140,13 +146,16 @@ def einen_anzeigen():
     
     print "\nWas moechstest du als naechstes tun?"
     print "1: diesen Cache loeschen"
-    print "2: zurueck"
+    print "2: diesen Cache auf geocaching.com oeffnen"
+    print "3: zurueck"
     eingabe = raw_input(">> ")
     if eingabe == "1":
         return "loeschen"
+    elif eingabe == "2":
+        return "gc.com"
         
 def koordinaten_eingabe():
-    print u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX)"
+    print u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX oder URL von google maps)"
     koords = raw_input(">> ")
     return koords
      
