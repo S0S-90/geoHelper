@@ -26,7 +26,7 @@ wobei das Einlesen der Position entweder über Eingabe der Koordinaten im auf ge
 * Anzeigen der vollständigen Beschreibung eines Caches sowie Möglichkeit, direkt zur aktuellen Version der Beschreibung im Browser zu wechseln
 * Durchsuchen der Caches (Name und Beschreibung)
 * Löschen eines oder mehrerer Caches
-* Auslesen der als gefunden markierten Caches und Löschen dieser Caches mitsamt der Log-Information
+* Auslesen der als gefunden markierten Caches und Löschen dieser Caches mitsamt der Log-Information, nachdem diese auf der Fieldnote-Seite von geocaching.com geloggt wurden
 
 
 
