@@ -1,5 +1,5 @@
-﻿PATH = r"F:\Garmin"    # Pfad zu dem Geraet
-#PATH = r"C:\Users\Susanne\Dateien\Verschiedenes\Geocaching"  # Testpfad
+﻿#PATH = r"F:\Garmin"    # Pfad zu dem Geraet
+PATH = r"C:\Users\Susanne\Dateien\Verschiedenes\Geocaching"  # Testpfad
 
 CODIERUNG = "cp1252"   # Codierung der Kosole (cp1252 empfohlen)
 
@@ -19,39 +19,42 @@ def hauptmenue(found_exists):
     """"gibt das Hauptmenue aus und je nach Benutzereingabe die Aufgabe zurueck, die als naechstes ausgefuehrt werden soll"""
     
     print "\nWas moechtest du als naechstes tun?"
-    print "1: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen"
-    print "2: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)"
-    print "3: Geocaches durchsuchen"
+    print "1: Geocaches aktualisieren"
+    print "2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen"
+    print "3: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)"
+    print "4: Geocaches durchsuchen"
     if found_exists:
-        print "4: Alle gefundenen Caches anzeigen"
+        print "5: Alle gefundenen Caches anzeigen"
+        print "6: https://www.geocaching.com/map aufrufen"
+        print "7: https://www.google.de/maps aufrufen"
+        print "8: Programm verlassen"
+    else:
         print "5: https://www.geocaching.com/map aufrufen"
         print "6: https://www.google.de/maps aufrufen"
         print "7: Programm verlassen"
-    else:
-        print "4: https://www.geocaching.com/map aufrufen"
-        print "5: https://www.google.de/maps aufrufen"
-        print "6: Programm verlassen"
     eingabe = raw_input(">> ")
     
     if eingabe == "1":
-        return "alle_anzeigen"
+        return "aktualisieren"
     elif eingabe == "2":
-        return "einen_anzeigen"
+        return "alle_anzeigen"
     elif eingabe == "3":
+        return "einen_anzeigen"
+    elif eingabe == "4":
         return "suchen"
-    elif eingabe == "4" and found_exists:
-        return "gefundene_anzeigen"
-    elif eingabe == "4" and not found_exists:
-        return "gc-maps"
-    elif eingabe == "5" and not found_exists:
-        return "google-maps"
     elif eingabe == "5" and found_exists:
-        return "gc-maps"
+        return "gefundene_anzeigen"
     elif eingabe == "6" and found_exists:
-        return "google-maps"
-    elif eingabe == "6" and not found_exists:
-        return "exit"
+        return "gc-maps"
     elif eingabe == "7" and found_exists:
+        return "google-maps"
+    elif eingabe == "8" and found_exists:
+        return "exit"
+    elif eingabe == "5" and not found_exists:
+        return "gc-maps"
+    elif eingabe == "6" and not found_exists:
+        return "google-maps"
+    elif eingabe == "7" and not found_exists:
         return "exit"
     else:
         print "Ungueltige Eingabe!"  

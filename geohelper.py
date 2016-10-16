@@ -1,4 +1,5 @@
-﻿import os
+﻿import sys
+import os
 import glob
 import webbrowser
 
@@ -212,7 +213,10 @@ def show_main_menu(gps):
     """startet das Hauptmenue"""
     while True:                                         # Hauptmenue
         task = user_io.hauptmenue(gps.found_exists)
-        if task == "alle_anzeigen":
+        if task == "aktualisieren":
+            new = GPS_content(user_io.PATH)
+            show_main_menu(new)
+        elif task == "alle_anzeigen":
             gps.sortieren_und_anzeigen()
         elif task == "einen_anzeigen":
             gps.einen_anzeigen()
@@ -225,7 +229,7 @@ def show_main_menu(gps):
         elif task == "gc-maps":
             webbrowser.open_new_tab("https://www.geocaching.com/map")
         elif task == "exit":
-                break
+            sys.exit()
           
 if __name__ == "__main__":
     new = GPS_content(user_io.PATH)
