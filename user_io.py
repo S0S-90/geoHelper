@@ -1,4 +1,6 @@
 ﻿PATH = r"F:\Garmin"    # Pfad zu dem Geraet
+#PATH = r"C:\Users\Susanne\Dateien\Verschiedenes\Geocaching"  # Testpfad
+
 CODIERUNG = "cp1252"   # Codierung der Kosole (cp1252 empfohlen)
 
 def general_output(string):
@@ -22,11 +24,13 @@ def hauptmenue(found_exists):
     print "3: Geocaches durchsuchen"
     if found_exists:
         print "4: Alle gefundenen Caches anzeigen"
+        print "5: https://www.geocaching.com/map aufrufen"
+        print "6: https://www.google.de/maps aufrufen"
+        print "7: Programm verlassen"
+    else:
+        print "4: https://www.geocaching.com/map aufrufen"
         print "5: https://www.google.de/maps aufrufen"
         print "6: Programm verlassen"
-    else:
-        print "4: https://www.google.de/maps aufrufen"
-        print "5: Programm verlassen"
     eingabe = raw_input(">> ")
     
     if eingabe == "1":
@@ -38,12 +42,16 @@ def hauptmenue(found_exists):
     elif eingabe == "4" and found_exists:
         return "gefundene_anzeigen"
     elif eingabe == "4" and not found_exists:
+        return "gc-maps"
+    elif eingabe == "5" and not found_exists:
         return "google-maps"
     elif eingabe == "5" and found_exists:
-        return "google-maps"
-    elif eingabe == "5" and not found_exists:
-        return "exit"
+        return "gc-maps"
     elif eingabe == "6" and found_exists:
+        return "google-maps"
+    elif eingabe == "6" and not found_exists:
+        return "exit"
+    elif eingabe == "7" and found_exists:
         return "exit"
     else:
         print "Ungueltige Eingabe!"  
@@ -154,7 +162,7 @@ def einen_anzeigen():
         return "gc.com"
         
 def koordinaten_eingabe():
-    print u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX oder URL (google maps oder geocaching.com/maps)"
+    print u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX oder URL (google maps oder geocaching.com/map)"
     koords = raw_input(">> ")
     return koords
      

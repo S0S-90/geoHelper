@@ -89,7 +89,7 @@ class GPS_content(object):
             try:     # Koordinaten im geocaching.com-Format
                 koords = ownfunctions.koordinaten_minuten_to_dezimalgrad(koords_str)
             except ValueError:
-                try:     # Koordinaten aus google-maps oder geocaching.com/maps url
+                try:     # Koordinaten aus google-maps oder geocaching.com/map url
                     koords = ownfunctions.koordinaten_url_to_dezimalgrad(koords_str)  
                 except: 
                     user_io.general_output("ERROR: ungueltige Eingabe!")
@@ -222,6 +222,8 @@ def show_main_menu(gps):
             gps.gefundene_anzeigen()
         elif task == "google-maps":
             webbrowser.open_new_tab("https://www.google.de/maps")
+        elif task == "gc-maps":
+            webbrowser.open_new_tab("https://www.geocaching.com/map")
         elif task == "exit":
                 break
           
