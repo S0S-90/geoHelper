@@ -1,5 +1,4 @@
 ﻿PATH = r"F:\Garmin"    # Pfad zu dem Geraet
-#PATH = r"C:\Users\Susanne\Dateien\Verschiedenes\Geocaching"
 CODIERUNG = "cp1252"   # Codierung der Kosole (cp1252 empfohlen)
 
 def general_output(string):
@@ -155,7 +154,7 @@ def einen_anzeigen():
         return "gc.com"
         
 def koordinaten_eingabe():
-    print u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX oder URL von google maps)"
+    print u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX oder URL (google maps oder geocaching.com/maps)"
     koords = raw_input(">> ")
     return koords
      

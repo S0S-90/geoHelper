@@ -89,7 +89,7 @@ class GPS_content(object):
             try:     # Koordinaten im geocaching.com-Format
                 koords = ownfunctions.koordinaten_minuten_to_dezimalgrad(koords_str)
             except ValueError:
-                try:     # Koordinaten aus google-maps url
+                try:     # Koordinaten aus google-maps oder geocaching.com/maps url
                     koords = ownfunctions.koordinaten_url_to_dezimalgrad(koords_str)  
                 except: 
                     user_io.general_output("ERROR: ungueltige Eingabe!")

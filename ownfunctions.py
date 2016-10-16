@@ -46,25 +46,33 @@ def koordinaten_minuten_to_dezimalgrad(koordinatenstring):
     if koordinatenstring[13] == "W":
         ost = -ost
     return [nord, ost]
-    
-#https://www.google.de/maps/place/W%C3%BCrzburg/@49.7781628,9.8729888,12z/data=!3m1!4b1!4m5!3m4!1s0x47a2902012da4dd9:0x41db728f06209a0!8m2!3d49.7913044!4d9.9533548
-#https://www.google.de/maps/place/Buenos+Aires,+Autonomen+Stadt+Buenos+Aires,+Argentinien/@-34.6155729,-58.5033604,12z/data=!3m1!4b1!4m5!3m4!1s0x95bcca3b4ef90cbd:0xa0b3812e88e88e87!8m2!3d-34.6036844!4d-58.3815591
-    
+ 
+ 
 def koordinaten_url_to_dezimalgrad(url):
-    """"liest die Koordinaten aus einer Google-Maps url aus und gibt sie im Dezimalgrad-Format zurueck"""
-    start_nord = 0
-    start_ost = 0
-    for i,z in enumerate(url):
-        if z == "@":
-            start_nord = i+1
-        elif z == "," and start_nord > 0 and start_ost == 0:
-            end_nord = i
-            start_ost = i+1
-        elif z == "," and start_ost > 0:
-            end_ost = i
-            break
-    nord = float(url[start_nord:end_nord])
-    ost = float(url[start_ost:end_ost])
+    """"liest die Koordinaten aus einer Google-Maps oder geocaching.com/maps url aus und gibt sie im Dezimalgrad-Format zurueck"""
+    if url[-5:-2] == "&z=":    # geocaching.com/maps
+        end = -5
+        for i in range(-5,-100,-1):
+            if url[i] == "=":
+                start = i+1
+                break
+        koords_list = url[start:end].split(",")
+        nord = float(koords_list[0])
+        ost = float(koords_list[1])
+    else:                     # Google Maps
+        start_nord = 0
+        start_ost = 0
+        for i,z in enumerate(url):
+            if z == "@":
+                start_nord = i+1
+            elif z == "," and start_nord > 0 and start_ost == 0:
+                end_nord = i
+                start_ost = i+1
+            elif z == "," and start_ost > 0:
+                end_ost = i
+                break
+        nord = float(url[start_nord:end_nord])
+        ost = float(url[start_ost:end_ost])
     return [nord, ost]
     
 def calculate_distance(point1, point2):
