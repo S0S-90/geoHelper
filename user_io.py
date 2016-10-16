@@ -1,5 +1,5 @@
-﻿#PATH = r"F:\Garmin"    # Pfad zu dem Geraet
-PATH = r"C:\Users\Susanne\Dateien\Verschiedenes\Geocaching"  # Testpfad
+﻿PATH = r"F:\Garmin"    # Pfad zu dem Geraet
+#PATH = r"C:\Users\Susanne\Dateien\Verschiedenes\Geocaching"  # Testpfad
 
 CODIERUNG = "cp1252"   # Codierung der Kosole (cp1252 empfohlen)
 
@@ -168,7 +168,14 @@ def koordinaten_eingabe():
     print u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX oder URL (google maps oder geocaching.com/map)"
     koords = raw_input(">> ")
     return koords
-     
+
+def open_fieldnotes():
+    print "Achtung! Du solltest die Caches vor dem Loeschen auf geocaching.com loggen."
+    eingabe = raw_input("Moechtest du deine Fieldnotes auf geocaching.com hochladen? (y/n) ")
+    if eingabe == "y":
+        return True
+    else:
+        return False
 
 
         

@@ -47,7 +47,6 @@ def koordinaten_minuten_to_dezimalgrad(koordinatenstring):
         ost = -ost
     return [nord, ost]
  
- 
 def koordinaten_url_to_dezimalgrad(url):
     """"liest die Koordinaten aus einer Google-Maps oder geocaching.com/map url aus und gibt sie im Dezimalgrad-Format zurueck"""
     if url[-5:-2] == "&z=":    # geocaching.com/map

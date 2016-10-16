@@ -145,6 +145,7 @@ class GPS_content(object):
                 task = user_io.einen_anzeigen()
                 if task == "loeschen":
                     self.loeschen([cache])
+                    break
                 elif task == "gc.com":
                     webbrowser.open_new_tab(cache.url)
                 else:
@@ -189,17 +190,21 @@ class GPS_content(object):
         user_io.general_output(self.gc_auswahl_anzeigen(self.found_caches))
         task = user_io.aktionen_auswahl_gefunden()
         if task == "loeschen":
-            user_io.general_output("Achtung! Du solltest die Caches vor dem Loeschen auf geocaching.com loggen.")
+            open_fieldnotes = user_io.open_fieldnotes()
+            if open_fieldnotes:
+                webbrowser.open_new_tab("https://www.geocaching.com/my/uploadfieldnotes.aspx")
             if self.warning:
                 user_io.general_output("Warnung! Bei Fortfahren werden auch Log-Informationen ueber Caches geloescht, die nicht gefunden wurden.")
-            self.loeschen(self.found_caches)
-            self.found_exists = False
-            os.remove(os.path.join(self.PATH,"geocache_visits.txt"))
-            os.remove(os.path.join(self.PATH,"geocache_logs.xml"))
+            loeschen = self.loeschen(self.found_caches)
+            if loeschen:
+                self.found_exists = False
+                os.remove(os.path.join(self.PATH,"geocache_visits.txt"))
+                os.remove(os.path.join(self.PATH,"geocache_logs.xml"))
            
     def loeschen(self, cacheliste):
         """loescht alle Caches aus cacheliste vom Geraet"""
-        if user_io.loeschbestaetigung():
+        loeschen = user_io.loeschbestaetigung()
+        if loeschen:
             for c in cacheliste:
                 os.remove(c.dateiname_path)
             removelist = []
@@ -208,6 +213,8 @@ class GPS_content(object):
                     if c1.gccode == c2.gccode:
                         removelist.append(c1)
             self.geocaches = [c for c in self.geocaches if c not in removelist]
+        return loeschen
+        
             
 def show_main_menu(gps):    
     """startet das Hauptmenue"""
