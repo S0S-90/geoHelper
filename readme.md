@@ -22,7 +22,7 @@
 * Sortieren der Caches nach einer bestimmten Eigenschaft (GC-Code, Name, Cachetyp, D- und T-Wertung, Groesse, Download-Datum, Verfügbarkeit)
 * Berechnung der Entfernung der Caches zu einer bestimmten Position und Sortieren der Caches nach dieser Entfernung, 
 wobei das Einlesen der Position entweder über Eingabe der Koordinaten im auf geocaching.com üblichen Format (Grad und Minuten) oder aus einer Url (Google-Maps oder geocaching.com/map) erfolgt
-* Öffnen von https://www.google.de/maps bzw. https://www.geocaching.com/map, um ein direktes Kopieren der Url für die Abstandsberechnung zu ermöglichen 
+* Öffnen von https://www.google.de/maps bzw. https://www.geocaching.com/map, um z.B. ein direktes Kopieren der Url für die Abstandsberechnung zu ermöglichen 
 * Anzeigen der vollständigen Beschreibung eines Caches sowie Möglichkeit, direkt zur aktuellen Version der Beschreibung im Browser zu wechseln
 * Durchsuchen der Caches (Name und Beschreibung)
 * Löschen eines oder mehrerer Caches
