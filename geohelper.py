@@ -148,6 +148,10 @@ class GPS_content(object):
                     break
                 elif task == "gc.com":
                     webbrowser.open_new_tab(cache.url)
+                elif task == "gc-map":
+                    print "not implemented yet"
+                elif task == "googlemaps":
+                    print "not implemented yet"
                 else:
                     break
         

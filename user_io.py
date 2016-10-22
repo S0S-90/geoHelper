@@ -1,5 +1,5 @@
-﻿PATH = r"F:\Garmin"    # Pfad zu dem Geraet
-#PATH = r"C:\Users\Susanne\Dateien\Verschiedenes\Geocaching"  # Testpfad
+﻿#PATH = r"F:\Garmin"    # Pfad zu dem Geraet
+PATH = r"C:\Users\Susanne\Dateien\Verschiedenes\Geocaching"  # Testpfad
 
 CODIERUNG = "cp1252"   # Codierung der Kosole (cp1252 empfohlen)
 
@@ -157,12 +157,18 @@ def einen_anzeigen():
     print "\nWas moechstest du als naechstes tun?"
     print "1: diesen Cache loeschen"
     print "2: diesen Cache auf geocaching.com oeffnen"
-    print "3: zurueck"
+    print "3: Position des Caches auf der Karte https://www.geocaching.com/map anzeigen"
+    print "4: Position des Caches auf der Karte https://www.google.de/maps anzeigen"
+    print "5: zurueck"
     eingabe = raw_input(">> ")
     if eingabe == "1":
         return "loeschen"
     elif eingabe == "2":
         return "gc.com"
+    elif eingabe == "3":
+        return "gc-map"
+    elif eingabe == "4":
+        return "googlemaps"
         
 def koordinaten_eingabe():
     print u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX oder URL (google maps oder geocaching.com/map)"
