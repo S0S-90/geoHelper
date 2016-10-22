@@ -1,5 +1,5 @@
-﻿#PATH = r"F:\Garmin"    # Pfad zu dem Geraet
-PATH = r"C:\Users\Susanne\Dateien\Verschiedenes\Geocaching"  # Testpfad
+﻿PATH = r"F:\Garmin"    # Pfad zu dem Geraet
+#PATH = r"C:\Users\Susanne\Dateien\Verschiedenes\Geocaching"  # Testpfad
 
 CODIERUNG = "cp1252"   # Codierung der Kosole (cp1252 empfohlen)
 
