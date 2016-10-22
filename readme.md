@@ -5,16 +5,16 @@
 * Python 2.7 (vermutlich auch andere Python 2 Versionen möglich)
 * Module: sys, glob, os, time, datetime, xml.etree.ElementTree, webbrowser (alle in Standardbibliothek vorhanden)
 
-* Die Codierung der Konsole, von der aus das Programm gestartet wird, sollte auf Codepage 1252 eingestellt sein. In Windows Eingabeaufforderung erreicht man das durch Eingabe von "chcp 1252".
 * Der Pfad zum Gerät muss "F:\Garmin" lauten. Die Fieldnotes-Datei "geocache_visits.txt" sowie die Logdatei "geocache_logs.xml" sollten direkt dort liegen, die gpx-Dateien in einem Unterordner mit Namen "GPX".
 * Die gpx-Dateien müssen in dem Format vorliegen, das vom Firefox-Addon "Geocaching.com GPX Downloader" (https://addons.mozilla.org/de/firefox/addon/geocachingcom-gpx-downloader/) verwendet wird.
-* [Codierung und Pfad können ggf. im Quelltext von "user_io.py" geändert werden.]
+* [Der Pfad zum Gerät kann ggf. im Quelltext von "user_io.py" geändert werden.]
 
 
 #Start
-* Download aller .py Dateien in einen Ordner
-* Öffnen der Konsole in diesem Ordner
-* Eingabe von "geohelper.py" in der Konsole 
+* Download aller .py Dateien und "winstarter.bat" in einen Ordner
+* Doppelklick auf "winstarter.bat"
+* [Alternativ kann das Programm "geohelper.py" auch direkt (aus der Konsole) geöffnet werden. Dazu muss jedoch vorher die Codierung der Konsole auf Codepage 1252 eingestellt werden.
+So sollte das Programm auch auf Nicht-Windows-Rechnern laufen, was allerdings nicht getestet wurde.]
 
 
 #Funktionen
