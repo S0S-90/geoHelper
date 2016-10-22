@@ -149,7 +149,8 @@ class GPS_content(object):
                 elif task == "gc.com":
                     webbrowser.open_new_tab(cache.url)
                 elif task == "gc-map":
-                    print "not implemented yet"
+                    url = "https://www.geocaching.com/map/#?ll={},{}&z=16".format(cache.koordinaten[0], cache.koordinaten[1])
+                    webbrowser.open_new_tab(url)
                 elif task == "googlemaps":
                     print "not implemented yet"
                 else:
