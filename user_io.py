@@ -1,6 +1,4 @@
-﻿PATH = r"F:\Garmin"    # Pfad zu dem Geraet
-#PATH = r"C:\Users\Susanne\Dateien\Verschiedenes\Geocaching"  # Testpfad
-
+﻿PATH = r"F:\Garmin"    # Pfad zu dem Geraet (Standardwert)
 CODIERUNG = "cp1252"   # Codierung der Kosole (cp1252 empfohlen)
 
 def general_output(string):
@@ -182,6 +180,15 @@ def open_fieldnotes():
         return True
     else:
         return False
+        
+def ask_for_path():
+    print "\nGib den Pfad zum GPS-Geraet ein (NICHT zum Unterordner 'GPX')."
+    print "Falls Standardpfad '{}' uebernommen werden soll: keine Eingabe".format(PATH)
+    eingabe = raw_input(">> ")
+    if eingabe == "":
+        return PATH
+    else:
+        return eingabe
 
 
         
