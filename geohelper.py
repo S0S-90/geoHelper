@@ -239,8 +239,9 @@ def show_main_menu(gps):
             sys.exit()
           
 if __name__ == "__main__":
-    if os.path.exists(user_io.PATH):
-        new = GPS_content(user_io.PATH)
+    path = user_io.ask_for_path()
+    if os.path.exists(path):
+        new = GPS_content(path)
         show_main_menu(new)
     else:
-        user_io.general_output("\nERROR: GPS-Geraet nicht unter der Pfadangabe {} zu finden.".format(user_io.PATH))
+        user_io.general_output("\nERROR: GPS-Geraet nicht unter der Pfadangabe '{}' zu finden.".format(path))
