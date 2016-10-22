@@ -152,7 +152,9 @@ class GPS_content(object):
                     url = "https://www.geocaching.com/map/#?ll={},{}&z=16".format(cache.koordinaten[0], cache.koordinaten[1])
                     webbrowser.open_new_tab(url)
                 elif task == "googlemaps":
-                    print "not implemented yet"
+                    koords_sec = ownfunctions.koordinaten_minuten_to_sekunden(cache.koordinatenanzeige)
+                    url = u"https://www.google.de/maps/place/{}".format(koords_sec)
+                    webbrowser.open_new_tab(url)
                 else:
                     break
         

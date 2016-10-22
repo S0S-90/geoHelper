@@ -23,6 +23,7 @@ So sollte das Programm auch auf Nicht-Windows-Rechnern laufen, was allerdings ni
 wobei das Einlesen der Position entweder über Eingabe der Koordinaten im auf geocaching.com üblichen Format (Grad und Minuten) oder aus einer Url (Google-Maps oder geocaching.com/map) erfolgt
 * Öffnen von https://www.google.de/maps bzw. https://www.geocaching.com/map, um z.B. ein direktes Kopieren der Url für die Abstandsberechnung zu ermöglichen 
 * Anzeigen der vollständigen Beschreibung eines Caches sowie Möglichkeit, direkt zur aktuellen Version der Beschreibung im Browser zu wechseln
+* Amzeigen der Position eines Caches auf https://www.google.de/maps oder https://www.geocaching.com/map
 * Durchsuchen der Caches (Name und Beschreibung)
 * Löschen eines oder mehrerer Caches
 * Auslesen der als gefunden markierten Caches und Löschen dieser Caches mitsamt der Log-Information, nachdem diese auf der Fieldnote-Seite von geocaching.com geloggt wurden

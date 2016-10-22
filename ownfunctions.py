@@ -46,6 +46,20 @@ def koordinaten_minuten_to_dezimalgrad(koordinatenstring):
     if koordinatenstring[13] == "W":
         ost = -ost
     return [nord, ost]
+    
+def koordinaten_minuten_to_sekunden(koordinatenstring):
+    """rechnet Koordinaten in Grad und Minuten (z.B. auf geocaching.com) in Grad, Minuten und Sekunden um (z.B. fuer Eingabe in Google-Maps)"""
+    nordsign = koordinatenstring[0]
+    ostsign = koordinatenstring[13]
+    nordgrad = int(koordinatenstring[2:4])
+    ostgrad = int(koordinatenstring[15:18])
+    nordminuten_dez = float(koordinatenstring[5:11])
+    ostminuten_dez = float(koordinatenstring[19:25])
+    nordminuten = int(nordminuten_dez)
+    ostminuten = int(ostminuten_dez)
+    nordsekunden = round((nordminuten_dez - nordminuten)*60,1)
+    ostsekunden = round((ostminuten_dez - ostminuten)*60,1)
+    return u"{}°{}'{}".format(nordgrad, nordminuten, nordsekunden) + u'"{}+{}°{}'.format(nordsign, ostgrad, ostminuten) + u"'{}".format(ostsekunden)+ u'"{}'.format(ostsign)
  
 def koordinaten_url_to_dezimalgrad(url):
     """"liest die Koordinaten aus einer Google-Maps oder geocaching.com/map url aus und gibt sie im Dezimalgrad-Format zurueck"""
