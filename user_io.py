@@ -97,10 +97,18 @@ def sortieren():
 def suchen():
     """fragt nach dem Kriterium, wonach gesucht werden soll, und gibt dieses zurueck"""
     
-    kriterien = ["name", "beschreibung"]
+    kriterien = ["name", "beschreibung", "type", "difficulty", "terrain", "size", "downloaddate", "available", "distance", "attribute"]
     print "\nWonach willst du suchen?"
     print "1: Name"
     print "2: Beschreibung"
+    print "3: Cache-Typ"
+    print "4: D-Wertung"
+    print "5: T-Wertung"
+    print "6: Groesse"
+    print "7: Download-Datum"
+    print "8: Verfuegbarkeit"
+    print "9: Abstand von einer bestimmten Position (Koordinaten erforderlich)"
+    print "10: Attribut"
     eingabe = raw_input(">> ")
     try:
         return kriterien[int(eingabe)-1]

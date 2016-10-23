@@ -175,7 +175,26 @@ class GPS_content(object):
             for c in self.geocaches:
                 if suchbegriff in getattr(c, kriterium):
                     suchergebnisse.append(c)
-        if len(suchergebnisse) == 0:
+        elif kriterium == "difficulty" or kriterium == "terrain":
+            eingabe_str = user_io.general_input("Minimaler und maximaler Wert (mit Komma getrennt): ") 
+            eingabe = eingabe_str.split(",")
+            if len(eingabe) != 2:
+                user_io.general_output("ERROR: ungueltige Eingabe") 
+            else:
+                try:
+                    min = float(eingabe[0])
+                    max = float(eingabe[1])
+                except ValueError:
+                    user_io.general_output("ERROR: ungueltige Eingabe")
+                else:
+                    if min <= max and min >= 1 and min <=5 and max >=1 and max <=5:
+                        for c in self.geocaches:
+                            if getattr(c, kriterium) >= min and getattr(c, kriterium) <= max:
+                                suchergebnisse.append(c)
+                    else:
+                        user_io.general_output("ERROR: ungueltige Eingabe")
+                    
+        if len(suchergebnisse) == 0:                         # Aktionen mit den Suchergebnissen
             user_io.general_output("keine Geocaches gefunden")
         else:
             user_io.general_output(self.gc_auswahl_anzeigen(suchergebnisse))
