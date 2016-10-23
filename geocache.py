@@ -180,16 +180,8 @@ class Geocache(object):
         
     def _get_size(self, size):
         """ordnet die Groessenbezeichnungen einem Zahlenwert zu (zum Sortieren)"""
-        if size == "other":
-            return 0
-        elif size == "micro":
-            return 2
-        elif size == "small":
-            return 3
-        elif size == "regular":
-            return 4
-        elif size == "large":
-            return 5
+        liste = ["other", "micro", "small", "regular", "large"]
+        return liste.index(size)
             
     def kurzinfo(self):                                  
         """ gibt eine einzeilige Kurzinfo zurueck"""
