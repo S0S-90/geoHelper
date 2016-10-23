@@ -62,7 +62,7 @@ class Geocache(object):
         letzte Logs vor dem Download
         jedes Element der Liste: Liste vom Typ [Datum, Logtyp, Finder]
         
-    available: bool
+    available: string 
         Verfuegbarkeit zum Zeitpunkt des Downloads 
         
     downloaddate: datetime.date

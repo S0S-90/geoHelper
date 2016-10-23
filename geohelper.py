@@ -239,6 +239,16 @@ class GPS_content(object):
                         for c in self.geocaches:
                             if c.downloaddate >= fr_date and c.downloaddate <= sp_date:
                                 suchergebnisse.append(c) 
+        elif kriterium == "available":
+            eingabe_str = user_io.general_input("Moechtest du die Caches sehen, die verfuegbar sind, oder die, die nicht verfuegbar sind? (y/n) ")
+            if eingabe_str == "n":
+                for c in self.geocaches:
+                    if c.available == "False":
+                        suchergebnisse.append(c)
+            else:      # falls ungueltige Eingabe: verfuegbare Caches anzeigen
+                for c in self.geocaches:
+                    if c.available == "True":
+                        suchergebnisse.append(c)
                     
         if len(suchergebnisse) == 0:                         # Aktionen mit den Suchergebnissen
             user_io.general_output("keine Geocaches gefunden")

@@ -101,14 +101,14 @@ def suchen():
     print "\nWonach willst du suchen?"
     print "1: Name"
     print "2: Beschreibung"
-    print "3: Cache-Typ"
+    print "3: Cache-Typ (not implemented yet)"
     print "4: D-Wertung"
     print "5: T-Wertung"
     print "6: Groesse"
     print "7: Download-Datum"
     print "8: Verfuegbarkeit"
-    print "9: Abstand von einer bestimmten Position (Koordinaten erforderlich)"
-    print "10: Attribut"
+    print "9: Abstand von einer bestimmten Position (Koordinaten erforderlich) - not implemented yet"
+    print "10: Attribut (not implemented yet)"
     eingabe = raw_input(">> ")
     try:
         return kriterien[int(eingabe)-1]
