@@ -170,12 +170,12 @@ class GPS_content(object):
         
         suchergebnisse = []
         kriterium = user_io.suchen()
-        if kriterium == "name" or kriterium == "beschreibung":
+        if kriterium == "name" or kriterium == "beschreibung":    # Suche nach Name bzw. Beschreibung
             suchbegriff = user_io.input_decode("Suche nach... ")
             for c in self.geocaches:
                 if suchbegriff in getattr(c, kriterium):
                     suchergebnisse.append(c)
-        elif kriterium == "difficulty" or kriterium == "terrain":
+        elif kriterium == "difficulty" or kriterium == "terrain":  # Suche nach D- bzw. T-Wertung
             eingabe_str = user_io.general_input("Minimaler und maximaler Wert (mit Komma voneinander getrennt): ") 
             eingabe = eingabe_str.split(",")
             if len(eingabe) != 2:
@@ -187,13 +187,13 @@ class GPS_content(object):
                 except ValueError:
                     user_io.general_output("ERROR: ungueltige Eingabe")
                 else:
-                    if min <= max and min >= 1 and min <=5 and max >=1 and max <=5:
+                    if min <= max and min >= 1 and min <=5 and max >=1 and max <=5: # jeweils Werte zwischen 1 und 5 
                         for c in self.geocaches:
                             if getattr(c, kriterium) >= min and getattr(c, kriterium) <= max:
                                 suchergebnisse.append(c)
                     else:
                         user_io.general_output("ERROR: ungueltige Eingabe")
-        elif kriterium == "size":
+        elif kriterium == "size":                                           # Suche nach Cachegroesse
             liste = ["other", "micro", "small", "regular", "large"]
             eingabe_str = user_io.general_input("Minimale und maximale Groesse (mit Komma voneinander getrennt). Moegliche Groessen: other, micro, small, regular, large\n>>")
             eingabe = eingabe_str.split(",")
@@ -216,7 +216,7 @@ class GPS_content(object):
                         for c in self.geocaches:
                             if c.size >= min and c.size <= max:
                                 suchergebnisse.append(c)
-        elif kriterium == "downloaddate":
+        elif kriterium == "downloaddate":                               # Suche nach Downloaddatum
             eingabe_str = user_io.general_input("Fruehestes und spaetestes Datum (mit Komma voneinander getrennt). Format: DD.MM.YYYY\n>>")
             eingabe = eingabe_str.split(",")
             if len(eingabe) != 2:
@@ -239,7 +239,7 @@ class GPS_content(object):
                         for c in self.geocaches:
                             if c.downloaddate >= fr_date and c.downloaddate <= sp_date:
                                 suchergebnisse.append(c) 
-        elif kriterium == "available":
+        elif kriterium == "available":                # Suche nach Verfuegbarkeit
             eingabe_str = user_io.general_input("Moechtest du die Caches sehen, die verfuegbar sind, oder die, die nicht verfuegbar sind? (y/n) ")
             if eingabe_str == "n":
                 for c in self.geocaches:
