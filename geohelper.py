@@ -216,6 +216,29 @@ class GPS_content(object):
                         for c in self.geocaches:
                             if c.size >= min and c.size <= max:
                                 suchergebnisse.append(c)
+        elif kriterium == "downloaddate":
+            eingabe_str = user_io.general_input("Fruehestes und spaetestes Datum (mit Komma voneinander getrennt). Format: DD.MM.YYYY\n>>")
+            eingabe = eingabe_str.split(",")
+            if len(eingabe) != 2:
+                user_io.general_output("ERROR: ungueltige Eingabe")
+            else:
+                fr = eingabe[0]
+                if eingabe[1][0] == " ":
+                    sp = eingabe[1][1:]
+                else:
+                    sp = eingabe[1]
+                try:
+                    fr_date = ownfunctions.string_to_date(fr)
+                    sp_date = ownfunctions.string_to_date(sp)
+                except ValueError:
+                    user_io.general_output("ERROR: ungueltige Eingabe")
+                else:
+                    if fr_date > sp_date:
+                        user_io.general_output("ERROR: ungueltige Eingabe")
+                    else:
+                        for c in self.geocaches:
+                            if c.downloaddate >= fr_date and c.downloaddate <= sp_date:
+                                suchergebnisse.append(c) 
                     
         if len(suchergebnisse) == 0:                         # Aktionen mit den Suchergebnissen
             user_io.general_output("keine Geocaches gefunden")

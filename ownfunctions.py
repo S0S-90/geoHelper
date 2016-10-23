@@ -1,4 +1,5 @@
 ﻿import math
+import datetime
 
 def zeichen_ersetzen(string):
     """"ersetzt Zeichen, die Probleme bei der Darstellung machen"""    
@@ -126,3 +127,10 @@ def get_month(string):
         return 11
     elif string == "Dez":
         return 2
+        
+def string_to_date(string):
+    """wandelt einen String im Format 'DD.MM.YYYY' in ein datetime.date-Objekt um"""
+    day = int(string[0:2])
+    month = int(string[3:5])
+    year = int(string[6:10])
+    return datetime.date(year, month, day)
