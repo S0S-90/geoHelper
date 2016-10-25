@@ -60,7 +60,7 @@ def koordinaten_minuten_to_sekunden(koordinatenstring):
     ostminuten = int(ostminuten_dez)
     nordsekunden = round((nordminuten_dez - nordminuten)*60,1)
     ostsekunden = round((ostminuten_dez - ostminuten)*60,1)
-    return u"{}°{}'{}".format(nordgrad, nordminuten, nordsekunden) + u'"{}+{}°{}'.format(nordsign, ostgrad, ostminuten) + u"'{}".format(ostsekunden)+ u'"{}'.format(ostsign)
+    return u"{}°{}'{}\"{}+{}°{}'{}\"{}".format(nordgrad, nordminuten, nordsekunden, nordsign, ostgrad, ostminuten, ostsekunden, ostsign)
  
 def koordinaten_url_to_dezimalgrad(url):
     """"liest die Koordinaten aus einer Google-Maps oder geocaching.com/map url aus und gibt sie im Dezimalgrad-Format zurueck"""
