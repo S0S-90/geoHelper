@@ -7,6 +7,8 @@ import geocache     # Geocache-Klasse
 import user_io      # Benutzeroberflaeche
 import ownfunctions # eigene Datei mit Funktionen
 
+PATH = user_io.ask_for_path()   # Pfad zum GPS-Geraet
+
 class GPS_content(object):
     """
     Ein Objekt dieser Klasse enthält alle relevanten Informationen vom GPS-Geraet (oder einem anderen Speicherort).
@@ -166,7 +168,7 @@ class GPS_content(object):
         return text
         
     def suchen(self):
-        """durchsucht die Caches nach dem gewuenschten Kriterium und leitet ggf. zu weiteren Aufgaben weiter"""
+        """durchsucht die Caches nach dem gewuenschten Kriterium und gibt Liste mit den Suchergebnissen zurueck"""
         
         suchergebnisse = []
         kriterium = user_io.suchen()
@@ -243,14 +245,17 @@ class GPS_content(object):
             eingabe_str = user_io.general_input("Moechtest du die Caches sehen, die verfuegbar sind, oder die, die nicht verfuegbar sind? (y/n) ")
             if eingabe_str == "n":
                 for c in self.geocaches:
-                    if c.available == "False":
+                    if c.available == False:
                         suchergebnisse.append(c)
             else:      # falls ungueltige Eingabe: verfuegbare Caches anzeigen
                 for c in self.geocaches:
-                    if c.available == "True":
+                    if c.available == True:
                         suchergebnisse.append(c)
-                    
-        if len(suchergebnisse) == 0:                         # Aktionen mit den Suchergebnissen
+        return suchergebnisse
+    
+    def aktionen_auswahl_suchen(self, suchergebnisse):   
+        """fuehrt Aktionen mit den Suchergebnissen aus"""
+        if len(suchergebnisse) == 0:                        
             user_io.general_output("keine Geocaches gefunden")
         else:
             user_io.general_output(self.gc_auswahl_anzeigen(suchergebnisse))
@@ -303,14 +308,15 @@ def show_main_menu(gps):
     while True:                                         # Hauptmenue
         task = user_io.hauptmenue(gps.found_exists)
         if task == "aktualisieren":
-            new = GPS_content(user_io.PATH)
+            new = GPS_content(PATH)
             show_main_menu(new)
         elif task == "alle_anzeigen":
             gps.sortieren_und_anzeigen()
         elif task == "einen_anzeigen":
             gps.einen_anzeigen()
         elif task == "suchen":
-            gps.suchen()
+            results = gps.suchen()
+            gps.aktionen_auswahl_suchen(results)
         elif task == "gefundene_anzeigen":
             gps.gefundene_anzeigen()
         elif task == "google-maps":
@@ -321,9 +327,8 @@ def show_main_menu(gps):
             sys.exit()
           
 if __name__ == "__main__":
-    path = user_io.ask_for_path()
-    if os.path.exists(path):
-        new = GPS_content(path)
+    if os.path.exists(PATH):
+        new = GPS_content(PATH)
         show_main_menu(new)
     else:
-        user_io.general_output("\nERROR: GPS-Geraet nicht unter der Pfadangabe '{}' zu finden.".format(path))
+        user_io.general_output("\nERROR: GPS-Geraet nicht unter der Pfadangabe '{}' zu finden.".format(PATH))

@@ -62,7 +62,7 @@ class Geocache(object):
         letzte Logs vor dem Download
         jedes Element der Liste: Liste vom Typ [Datum, Logtyp, Finder]
         
-    available: string 
+    available: bool 
         Verfuegbarkeit zum Zeitpunkt des Downloads 
         
     downloaddate: datetime.date
@@ -123,7 +123,11 @@ class Geocache(object):
         self.logs = self._logs_auslesen(geocache_tree)                                           # Logs auslesen          
            
         cache = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}cache")             # Auslesen, ob verfuegbar oder nicht
-        self.available = cache.get("available")
+        available = cache.get("available")
+        if available == "True":
+            self.available = True
+        elif available == "False":
+            self.available = False
         
         downloaddate = time.ctime(os.path.getmtime(dateiname_path))       # Downloaddatum aus Aenderungsdatum der gpx-Datei auslesen
         downloaddate = downloaddate.split(" ")
@@ -185,7 +189,7 @@ class Geocache(object):
             
     def kurzinfo(self):                                  
         """ gibt eine einzeilige Kurzinfo zurueck"""
-        return u"{} | {} | {} | D {} | T {} | {} | {} | {} | {}".format(self.gccode.ljust(7), self.koordinatenanzeige, self.type.ljust(17), self.difficulty, self.terrain, self.size_anzeige.ljust(7), self.available.ljust(5), self.downloaddate_anzeige, self.name)
+        return u"{} | {} | {} | D {} | T {} | {} | {} | {} | {}".format(self.gccode.ljust(7), self.koordinatenanzeige, self.type.ljust(17), self.difficulty, self.terrain, self.size_anzeige.ljust(7), str(self.available).ljust(5), self.downloaddate_anzeige, self.name)
 
     def langinfo(self): 
         """gibt eine ausfuehrliche Info zurueck""" 
