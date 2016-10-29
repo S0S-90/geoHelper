@@ -1,4 +1,4 @@
-﻿This is a program that helps you organize your geocaches, downloaded from geocaching.com, on your GPS device. Currently it's only available in a German language version.
+﻿This is a program that helps you organize your geocaches on your GPS device. Currently it's only available in a German language version.
 
 
 #Voraussetzungen
