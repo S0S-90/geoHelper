@@ -251,6 +251,8 @@ class GPS_content(object):
                 for c in self.geocaches:
                     if c.available == True:
                         suchergebnisse.append(c)
+        elif kriterium == "type":
+            print "Suche nach Typ"
         return suchergebnisse
     
     def aktionen_auswahl_suchen(self, suchergebnisse):   

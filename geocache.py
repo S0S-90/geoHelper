@@ -5,6 +5,8 @@ import xml.etree.ElementTree as ElementTree
 
 import ownfunctions  # eigene Datei mit Funktionen
 
+SIZE_LISTE = ["other", "micro", "small", "regular", "large"]
+
 class Geocache(object):
 
     """
@@ -82,6 +84,8 @@ class Geocache(object):
     langinfo(): 
         ausfuehrliche Information ueber den Cache 
     """
+    
+
 
     def __init__(self, dateiname_path):
         self.dateiname_path = dateiname_path
@@ -99,9 +103,13 @@ class Geocache(object):
         self.terrain = float(terrain)
         
         self.size_anzeige = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}container").text # Groesse auslesen
+        if self.size_anzeige not in SIZE_LISTE:
+            self.size_anzeige = "other"
         self.size = self._get_size(self.size_anzeige)
         
         self.type = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}type").text              # Typ auslesen
+        if self.type == "Cache In Trash Out Event":
+            self.type = "Event Cache"
 
         self.beschreibung = self._beschreibung_auslesen(geocache_tree)                               # Beschreibung auslesen
 
