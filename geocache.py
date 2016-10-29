@@ -6,6 +6,7 @@ import xml.etree.ElementTree as ElementTree
 import ownfunctions  # eigene Datei mit Funktionen
 
 SIZE_LISTE = ["other", "micro", "small", "regular", "large"]
+TYPES_LISTE = ["Traditional Cache", "Multi-cache", "EarthCache", "Letterbox Hybrid", "Event Cache", "Webcam Cache", "Wherigo Cache", "Virtual Cache", "Mystery Cache", "Geocaching HQ", "???"]
 
 class Geocache(object):
 
@@ -37,7 +38,12 @@ class Geocache(object):
         Groesse des Caches
         
     type: string
-        Art des Caches
+        Art des Caches (beschraenkt auf Cachetypen aus TYPES_LISTE)
+        wird in der Kurzanzeige sowie beim Sortieren und Suchen verwendet
+        
+    longtype: string
+        Art des Caches (nicht beschraenkt)
+        wird in der Langanzeige verwendet
     
     beschreibung: string
         Cachebeschreibung
@@ -85,8 +91,6 @@ class Geocache(object):
         ausfuehrliche Information ueber den Cache 
     """
     
-
-
     def __init__(self, dateiname_path):
         self.dateiname_path = dateiname_path
         self.gccode = os.path.splitext(os.path.basename(dateiname_path))[0]  # GC-Code
@@ -105,12 +109,19 @@ class Geocache(object):
         self.size_anzeige = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}container").text # Groesse auslesen
         if self.size_anzeige not in SIZE_LISTE:
             self.size_anzeige = "other"
-        self.size = self._get_size(self.size_anzeige)
+        self.size = SIZE_LISTE.index(self.size_anzeige)
         
-        self.type = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}type").text              # Typ auslesen
-        if self.type == "Cache In Trash Out Event":
+        self.longtype = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}type").text                            # Typ auslesen
+        if self.longtype in TYPES_LISTE:
+            self.type = self.longtype
+        elif self.longtype == "Unknown Cache":
+            self.type = "Mystery Cache"
+            self.longtype = "Mystery Cache"
+        elif self.longtype == "Cache In Trash Out Event" or self.longtype == "Mega-Event Cache" or self.longtype == "Giga-Event Cache":
             self.type = "Event Cache"
-
+        else:
+            self.type = "???"
+            
         self.beschreibung = self._beschreibung_auslesen(geocache_tree)                               # Beschreibung auslesen
 
         hint = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}encoded_hints").text # Hint auslesen
@@ -189,11 +200,6 @@ class Geocache(object):
         else:
             beschreibung_lang = ""
         return beschreibung_kurz + "\n\n" + beschreibung_lang
-        
-    def _get_size(self, size):
-        """ordnet die Groessenbezeichnungen einem Zahlenwert zu (zum Sortieren)"""
-        liste = ["other", "micro", "small", "regular", "large"]
-        return liste.index(size)
             
     def kurzinfo(self):                                  
         """ gibt eine einzeilige Kurzinfo zurueck"""
@@ -205,7 +211,7 @@ class Geocache(object):
         z2 = "\n"
         for i in range(len(z1)):
             z2 = z2 + "-"
-        z3 = u"\nSchwierigkeit: {}, Gelaende: {}, Groesse: {}, Typ: {}".format(self.difficulty, self.terrain, self.size, self.type)
+        z3 = u"\nSchwierigkeit: {}, Gelaende: {}, Groesse: {}, Typ: {}".format(self.difficulty, self.terrain, self.size, self.longtype)
         z4 = u"\nKoordinaten: {}".format(self.koordinatenanzeige)
         z5 = u"\nOwner: {}".format(self.owner)
         z6 = u"\nAttribute: "

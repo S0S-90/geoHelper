@@ -283,7 +283,7 @@ class GPS_content(object):
             if open_fieldnotes:
                 webbrowser.open_new_tab("https://www.geocaching.com/my/uploadfieldnotes.aspx")
             if self.warning:
-                user_io.general_output("Warnung! Bei Fortfahren werden auch Log-Informationen ueber Caches geloescht, die nicht gefunden wurden.")
+                user_io.general_output("WARNUNG! Bei Fortfahren werden auch Log-Informationen ueber Caches geloescht, die nicht gefunden wurden.")
             loeschen = self.loeschen(self.found_caches)
             if loeschen:
                 self.found_exists = False
