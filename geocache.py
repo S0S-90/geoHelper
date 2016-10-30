@@ -202,7 +202,7 @@ class Geocache(object):
         z2 = "\n"
         for i in range(len(z1)):
             z2 = z2 + "-"
-        z3 = u"\nSchwierigkeit: {}, Gelaende: {}, Groesse: {}, Typ: {}".format(self.difficulty, self.terrain, self.size, self.type)
+        z3 = u"\nSchwierigkeit: {}, Gelaende: {}, Groesse: {}, Typ: {}".format(self.difficulty, self.terrain, self.size_anzeige, self.type)
         z4 = u"\nKoordinaten: {}".format(self.koordinatenanzeige)
         z5 = u"\nOwner: {}".format(self.owner)
         z6 = u"\nAttribute: "
