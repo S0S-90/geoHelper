@@ -152,7 +152,8 @@ class Geocache(object):
         finder = []
         for i,fd in enumerate(finder_raw):
             if i > 0:  # Index 0 entspricht Attributen
-                finder.append(fd.text)
+                next_fd = ownfunctions.zeichen_ersetzen(fd.text)
+                finder.append(next_fd)
           
         logs = [] 
         loganzahl = len(log_dates)        
