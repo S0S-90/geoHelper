@@ -252,7 +252,13 @@ class GPS_content(object):
                     if c.available == True:
                         suchergebnisse.append(c)
         elif kriterium == "type":
-            print "Suche nach Typ"
+            eingabe = user_io.search_type()
+            if eingabe not in geocache.TYPES_LISTE:
+                user_io.general_output("ERROR: ungueltige Eingabe")
+            else:
+                for c in self.geocaches:
+                    if c.type == eingabe:
+                        suchergebnisse.append(c)
         return suchergebnisse
     
     def aktionen_auswahl_suchen(self, suchergebnisse):   

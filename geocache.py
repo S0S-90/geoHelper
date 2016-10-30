@@ -6,7 +6,7 @@ import xml.etree.ElementTree as ElementTree
 import ownfunctions  # eigene Datei mit Funktionen
 
 SIZE_LISTE = ["other", "micro", "small", "regular", "large"]
-TYPES_LISTE = ["Traditional Cache", "Multi-cache", "EarthCache", "Letterbox Hybrid", "Event Cache", "Webcam Cache", "Wherigo Cache", "Virtual Cache", "Mystery Cache", "Geocaching HQ", "???"]
+TYPES_LISTE = ["Traditional Cache", "Multi-cache", "EarthCache", "Letterbox Hybrid", "Event Cache", "Wherigo Cache", "Mystery Cache", "Geocaching HQ", "Unknown Type"]
 
 class Geocache(object):
 
@@ -120,7 +120,7 @@ class Geocache(object):
         elif self.longtype == "Cache In Trash Out Event" or self.longtype == "Mega-Event Cache" or self.longtype == "Giga-Event Cache":
             self.type = "Event Cache"
         else:
-            self.type = "???"
+            self.type = "Unknown Type"
             
         self.beschreibung = self._beschreibung_auslesen(geocache_tree)                               # Beschreibung auslesen
 
@@ -212,7 +212,7 @@ class Geocache(object):
         z2 = "\n"
         for i in range(len(z1)):
             z2 = z2 + "-"
-        z3 = u"\nSchwierigkeit: {}, Gelaende: {}, Groesse: {}, Typ: {}".format(self.difficulty, self.terrain, self.size, self.longtype)
+        z3 = u"\nSchwierigkeit: {}, Gelaende: {}, Groesse: {}, Typ: {}".format(self.difficulty, self.terrain, self.size_anzeige, self.longtype)
         z4 = u"\nKoordinaten: {}".format(self.koordinatenanzeige)
         z5 = u"\nOwner: {}".format(self.owner)
         z6 = u"\nAttribute: "

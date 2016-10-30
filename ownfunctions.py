@@ -3,14 +3,8 @@ import datetime
 
 def zeichen_ersetzen(string):
     """"ersetzt Zeichen, die Probleme bei der Darstellung machen"""    
-    string = string.replace(u"\u2013", "-") # u2013 -> Bindestrich
+    string = string.replace(u"\u2013", "-")   # u2013 -> Bindestrich
     string = string.replace(u"\u263a", ":-)") # Smiley
-    string = string.replace("<br>", "")     # alle weiteren: html commands
-    string = string.replace("<p>", "\n")
-    string = string.replace("</p>", "")
-    string = string.replace("<br />", "\n")
-    string = string.replace("<strong>", "")
-    string = string.replace("</strong>", "")
     return string
     
 def koordinaten_dezimalgrad_to_minuten(koordinatenliste):

@@ -101,7 +101,7 @@ def suchen():
     print "\nWonach willst du suchen?"
     print "1: Name"
     print "2: Beschreibung"
-    print "3: Cache-Typ (not implemented yet)"
+    print "3: Cache-Typ"
     print "4: D-Wertung"
     print "5: T-Wertung"
     print "6: Groesse"
@@ -116,6 +116,13 @@ def suchen():
         print "Ungueltige Eingabe"
     except ValueError:
         print "Ungueltige Eingabe"
+        
+def search_type():
+    print "Gib den Cachetyp ein, nach dem du suchst."
+    print "Moegliche Typen: Traditional Cache, Multi-cache, Mystery Cache, EarthCache, Letterbox Hybrid, Event Cache, Wherigo Cache, Geocaching HQ, Unknown Type"
+    print "Achtung! Gross- und Kleinschreibung beachten!"
+    eingabe = raw_input(">> ")
+    return eingabe
         
 def aktionen_auswahl_suchen():
     """fragt nach einer Suche nach der naechsten Aktion"""
