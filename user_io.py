@@ -149,7 +149,7 @@ def aktionen_auswahl_gefunden():
     """fragt, nachdem die gefundenen Caches angezeigt wurden, ob sie nun geloescht werden sollen"""
     
     print "\nWas moechtest du als naechstes tun?"
-    print "1: Alle gefundenen Caches loeschen"
+    print "1: Alle gefundenen Caches loeschen (vorher Loggen auf geocaching.com moeglich)"
     print "2: zurueck"
     eingabe = raw_input(">> ")
     if eingabe == "1":
