@@ -112,7 +112,7 @@ class Geocache(object):
         self.size = SIZE_LISTE.index(self.size_anzeige)
         
         self.longtype = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}type").text                            # Typ auslesen
-        if self.longtype = "Unknown Cache":
+        if self.longtype == "Unknown Cache":
             self.longtype = "Mystery Cache"
         self.type = self._typ_auslesen(self.longtype)
             
@@ -206,7 +206,7 @@ class Geocache(object):
         elif lt == "Cache In Trash Out Event" or lt == "Mega-Event Cache" or lt == "Giga-Event Cache":
             type = "Event Cache"
         else:
-            stype = "Unknown Type"
+            type = "Unknown Type"
         return type
             
     def kurzinfo(self):                                  
@@ -219,11 +219,7 @@ class Geocache(object):
         z2 = "\n"
         for i in range(len(z1)):
             z2 = z2 + "-"
-<<<<<<< HEAD
-        z3 = u"\nSchwierigkeit: {}, Gelaende: {}, Groesse: {}, Typ: {}".format(self.difficulty, self.terrain, self.size_anzeige, self.type)
-=======
         z3 = u"\nSchwierigkeit: {}, Gelaende: {}, Groesse: {}, Typ: {}".format(self.difficulty, self.terrain, self.size_anzeige, self.longtype)
->>>>>>> suche
         z4 = u"\nKoordinaten: {}".format(self.koordinatenanzeige)
         z5 = u"\nOwner: {}".format(self.owner)
         z6 = u"\nAttribute: "
