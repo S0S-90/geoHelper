@@ -1,15 +1,12 @@
 ﻿import math
+import datetime
 
 def zeichen_ersetzen(string):
     """"ersetzt Zeichen, die Probleme bei der Darstellung machen"""    
-    string = string.replace(u"\u2013", "-") # u2013 -> Bindestrich
+    string = string.replace(u"\u2013", "-")   # u2013 -> Bindestrich
     string = string.replace(u"\u263a", ":-)") # Smiley
-    string = string.replace("<br>", "")     # alle weiteren: html commands
-    string = string.replace("<p>", "\n")
-    string = string.replace("</p>", "")
-    string = string.replace("<br />", "\n")
-    string = string.replace("<strong>", "")
-    string = string.replace("</strong>", "")
+    string = string.replace(u"\u2211", "sum") # Summenzeichen
+    string = string.replace(u"\u221a", "sqrt") # Wurzelzeichen
     return string
     
 def koordinaten_dezimalgrad_to_minuten(koordinatenliste):
@@ -60,7 +57,7 @@ def koordinaten_minuten_to_sekunden(koordinatenstring):
     ostminuten = int(ostminuten_dez)
     nordsekunden = round((nordminuten_dez - nordminuten)*60,1)
     ostsekunden = round((ostminuten_dez - ostminuten)*60,1)
-    return u"{}°{}'{}".format(nordgrad, nordminuten, nordsekunden) + u'"{}+{}°{}'.format(nordsign, ostgrad, ostminuten) + u"'{}".format(ostsekunden)+ u'"{}'.format(ostsign)
+    return u"{}°{}'{}\"{}+{}°{}'{}\"{}".format(nordgrad, nordminuten, nordsekunden, nordsign, ostgrad, ostminuten, ostsekunden, ostsign)
  
 def koordinaten_url_to_dezimalgrad(url):
     """"liest die Koordinaten aus einer Google-Maps oder geocaching.com/map url aus und gibt sie im Dezimalgrad-Format zurueck"""
@@ -89,17 +86,28 @@ def koordinaten_url_to_dezimalgrad(url):
         ost = float(url[start_ost:end_ost])
     return [nord, ost]
     
+def koordinaten_string_to_dezimalgrad(koords_str):
+    """liest Koordinaten aus einem String (geocaching.com-Format oder url) aus und gibt sie im Dezimalgrad-Format zurueck"""
+    try:         # Koordinaten im geocaching.com-Format
+        koords = koordinaten_minuten_to_dezimalgrad(koords_str)
+    except ValueError:
+        try:     # Koordinaten aus google-maps oder geocaching.com/map url
+            koords = koordinaten_url_to_dezimalgrad(koords_str)  
+        except: 
+            return None
+    return koords
+    
 def calculate_distance(point1, point2):
-        """berechnet Entfernung des Geocaches zu einem bestimmten Punkt, Formel siehe: https://www.kompf.de/gps/distcalc.html)"""
+    """berechnet Entfernung des Geocaches zu einem bestimmten Punkt, Formel siehe: https://www.kompf.de/gps/distcalc.html)"""
 
-        lat1 = point1[0] * (math.pi / 180)
-        lon1 = point1[1] * (math.pi / 180)
-        lat2 = point2[0] * (math.pi / 180)
-        lon2 = point2[1] * (math.pi / 180)
+    lat1 = point1[0] * (math.pi / 180)
+    lon1 = point1[1] * (math.pi / 180)
+    lat2 = point2[0] * (math.pi / 180)
+    lon2 = point2[1] * (math.pi / 180)
 
-        cos_g = math.sin(lat1)*math.sin(lat2) + math.cos(lat1)*math.cos(lat2)*math.cos(lon2-lon1)
-        g = math.acos(cos_g)*6368  # Erdradius
-        return g
+    cos_g = math.sin(lat1)*math.sin(lat2) + math.cos(lat1)*math.cos(lat2)*math.cos(lon2-lon1)
+    g = math.acos(cos_g)*6368  # Erdradius
+    return g
     
 def get_month(string):
     """ordnet Monatsnamen einen Zahlenwert zu"""
@@ -127,3 +135,24 @@ def get_month(string):
         return 11
     elif string == "Dez":
         return 2
+        
+def string_to_date(string):
+    """wandelt einen String im Format 'DD.MM.YYYY' in ein datetime.date-Objekt um"""
+    day = int(string[0:2])
+    month = int(string[3:5])
+    year = int(string[6:10])
+    return datetime.date(year, month, day)
+    
+def remove_spaces(string):
+    """entfernt ueberfluessige Leerzeichen aus einem String"""
+    newstring = ""
+    for i,a in enumerate(string):
+        if i == 0 and a == " ":     # Leerzeichen zu Beginn
+            pass
+        elif a == " " and string[i-1] == " ":   # zwei Leerzeichen hintereinander
+            pass
+        elif a == " " and i == len(string) - 1: # Leerzeichen am Ende
+            pass
+        else:
+            newstring = newstring + a
+    return newstring

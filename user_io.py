@@ -97,10 +97,18 @@ def sortieren():
 def suchen():
     """fragt nach dem Kriterium, wonach gesucht werden soll, und gibt dieses zurueck"""
     
-    kriterien = ["name", "beschreibung"]
+    kriterien = ["name", "beschreibung", "type", "difficulty", "terrain", "size", "downloaddate", "available", "attribute", "distance"]
     print "\nWonach willst du suchen?"
     print "1: Name"
     print "2: Beschreibung"
+    print "3: Cache-Typ"
+    print "4: D-Wertung"
+    print "5: T-Wertung"
+    print "6: Groesse"
+    print "7: Download-Datum"
+    print "8: Verfuegbarkeit"
+    print "9: Attribut"
+    print "10: Abstand von einer bestimmten Position (Koordinaten erforderlich)"
     eingabe = raw_input(">> ")
     try:
         return kriterien[int(eingabe)-1]
@@ -108,6 +116,20 @@ def suchen():
         print "Ungueltige Eingabe"
     except ValueError:
         print "Ungueltige Eingabe"
+        
+def search_type():
+    print "Gib den Cachetyp ein, nach dem du suchen willst."
+    print "Moegliche Typen: Traditional Cache, Multi-cache, Mystery Cache, EarthCache, Letterbox Hybrid, Event Cache, Wherigo Cache, Geocaching HQ, Unknown Type"
+    print "Achtung! Gross- und Kleinschreibung beachten!"
+    eingabe = raw_input(">> ")
+    return eingabe
+    
+def search_attribute(existing_attributes):
+    print "Gib das Attribut ein, nach dem du suchen willst."
+    attr_string = ", ".join(existing_attributes)
+    print "Moegliche Attribute: {}".format(attr_string)
+    eingabe = raw_input(">> ")
+    return eingabe
         
 def aktionen_auswahl_suchen():
     """fragt nach einer Suche nach der naechsten Aktion"""
@@ -134,7 +156,7 @@ def aktionen_auswahl_gefunden():
     """fragt, nachdem die gefundenen Caches angezeigt wurden, ob sie nun geloescht werden sollen"""
     
     print "\nWas moechtest du als naechstes tun?"
-    print "1: Alle gefundenen Caches loeschen"
+    print "1: Alle gefundenen Caches loeschen (vorher Loggen auf geocaching.com moeglich)"
     print "2: zurueck"
     eingabe = raw_input(">> ")
     if eingabe == "1":

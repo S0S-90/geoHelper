@@ -7,6 +7,8 @@ import geocache     # Geocache-Klasse
 import user_io      # Benutzeroberflaeche
 import ownfunctions # eigene Datei mit Funktionen
 
+PATH = user_io.ask_for_path()   # Pfad zum GPS-Geraet
+
 class GPS_content(object):
     """
     Ein Objekt dieser Klasse enthält alle relevanten Informationen vom GPS-Geraet (oder einem anderen Speicherort).
@@ -19,6 +21,9 @@ class GPS_content(object):
         
     geocaches: list
         Liste von allen Geocaches
+        
+    existing_attributes: list
+        Liste aller in den Geocaches vorkommenden Attribute
         
     found_exists: bool
         Information, ob auf dem Geraet Caches als gefunden markiert wurden
@@ -40,13 +45,20 @@ class GPS_content(object):
     def __init__(self, path):
         """liest nach Oeffnen des Programms die Geocaches und die Logdatei ein"""
         
-        self.PATH = path     # Uebernahme der Pfadangabe aus der user_io
-        self.found_exists = False    # Information, ob gefundene Caches auf dem Geraet gespeichert sind
+        self.PATH = path              # Uebernahme der Pfadangabe aus der user_io
+        self.found_exists = False     # Information, ob gefundene Caches auf dem Geraet gespeichert sind
+        self.existing_attributes = [] # Liste von Attributen
         
         self.geocaches = []               # alle Caches aus GC*.gpx-Dateien in PATH\GPX auslesen und in Liste geocaches speichern
         GPX_PATH = os.path.join(self.PATH, "GPX")
         for datei in glob.glob(os.path.join(GPX_PATH,"GC*.gpx")):
             self.geocaches.append(geocache.Geocache(datei))
+            
+        for g in self.geocaches:      # Attribute aus den Geocaches auslesen 
+            for a in g.attribute:
+                if a not in self.existing_attributes and a != "No attributes specified by the author":
+                    self.existing_attributes.append(a)
+        self.existing_attributes.sort()
               
         if os.path.isfile(os.path.join(self.PATH, "geocache_visits.txt")):    # alle gefundenen Caches aus Logdatei in found_caches speichern, falls eine solche vorhanden
             [logged_caches, self.found_caches] = self.get_logged_and_found_caches(os.path.join(self.PATH, "geocache_visits.txt"))
@@ -85,21 +97,16 @@ class GPS_content(object):
         """sortiert alle Caches auf dem Geraet nach gewuenschtem Kriterium und zeigt sie an"""
         [kriterium, rev] = user_io.sortieren()
         if kriterium == "distance":   # Entfernungsberechnung
-            koords = None
             koords_str = user_io.koordinaten_eingabe()
-            try:     # Koordinaten im geocaching.com-Format
-                koords = ownfunctions.koordinaten_minuten_to_dezimalgrad(koords_str)
-            except ValueError:
-                try:     # Koordinaten aus google-maps oder geocaching.com/map url
-                    koords = ownfunctions.koordinaten_url_to_dezimalgrad(koords_str)  
-                except: 
-                    user_io.general_output("ERROR: ungueltige Eingabe!")
+            koords = ownfunctions.koordinaten_string_to_dezimalgrad(koords_str)
             
             if koords:             # falls Koordinatenauslesen erfolgreich war
                 for g in self.geocaches:
                     g.distance = ownfunctions.calculate_distance(g.koordinaten, koords)
                 self.geocaches = sorted(self.geocaches, key = lambda geocache: getattr(geocache, kriterium), reverse = rev)
                 user_io.general_output(self.alle_anzeigen_dist())
+            else:
+                user_io.general_output("ERROR: ungueltige Eingabe")
             
         elif kriterium == "name":    # Kriterien, bei denen die Groß- und Kleinschreibung vernachlaessigt werden soll
             self.geocaches = sorted(self.geocaches, key = lambda geocache: getattr(geocache, kriterium).lower(), reverse = rev)
@@ -165,21 +172,148 @@ class GPS_content(object):
             text = text + c.kurzinfo() + "\n"
         return text
         
+    def gc_auswahl_anzeigen_dist(self, cacheliste):
+        """gibt einen String zurueck, in dem Kurzinfos aller Caches aus Cacheliste + die aktuellen Entfernungsangaben jeweils in einer Zeile stehen"""
+        text = ""
+        for c in cacheliste:
+            newline = u"{:7}km | {}\n".format(round(c.distance,1), c.kurzinfo())
+            text = text + newline
+        return text
+        
     def suchen(self):
-        """durchsucht die Caches nach dem gewuenschten Kriterium und leitet ggf. zu weiteren Aufgaben weiter"""
+        """durchsucht die Caches nach dem gewuenschten Kriterium und gibt Liste mit den Suchergebnissen zurueck"""
         
         suchergebnisse = []
         kriterium = user_io.suchen()
-        if kriterium == "name" or kriterium == "beschreibung":
+        if kriterium == "name" or kriterium == "beschreibung":    # Suche nach Name bzw. Beschreibung
             suchbegriff = user_io.input_decode("Suche nach... ")
             for c in self.geocaches:
                 if suchbegriff in getattr(c, kriterium):
                     suchergebnisse.append(c)
-        if len(suchergebnisse) == 0:
+        elif kriterium == "difficulty" or kriterium == "terrain":  # Suche nach D- bzw. T-Wertung
+            eingabe_str = user_io.general_input("Minimaler und maximaler Wert (mit Komma voneinander getrennt): ") 
+            eingabe = eingabe_str.split(",")
+            if len(eingabe) != 2:
+                user_io.general_output("ERROR: ungueltige Eingabe") 
+            else:
+                try:
+                    min = float(eingabe[0])
+                    max = float(eingabe[1])
+                except ValueError:
+                    user_io.general_output("ERROR: ungueltige Eingabe")
+                else:
+                    if min <= max and min >= 1 and min <=5 and max >=1 and max <=5: # jeweils Werte zwischen 1 und 5 
+                        for c in self.geocaches:
+                            if getattr(c, kriterium) >= min and getattr(c, kriterium) <= max:
+                                suchergebnisse.append(c)
+                    else:
+                        user_io.general_output("ERROR: ungueltige Eingabe")
+        elif kriterium == "size":                                           # Suche nach Cachegroesse
+            liste = ["other", "micro", "small", "regular", "large"]
+            eingabe_str = user_io.general_input("Minimale und maximale Groesse (mit Komma voneinander getrennt). Moegliche Groessen: other, micro, small, regular, large\n>>")
+            eingabe = eingabe_str.split(",")
+            if len(eingabe) != 2:
+                user_io.general_output("ERROR: ungueltige Eingabe")
+            else:
+                try:
+                    if eingabe[1][0] == " ":
+                        max_str = eingabe[1][1:]
+                    else:
+                        max_str = eingabe[1]
+                    min = liste.index(eingabe[0])
+                    max = liste.index(max_str)
+                except ValueError:
+                    user_io.general_output("ERROR: ungueltige Eingabe")
+                else:
+                    if max < min:
+                        user_io.general_output("ERROR: ungueltige Eingabe")
+                    else:
+                        for c in self.geocaches:
+                            if c.size >= min and c.size <= max:
+                                suchergebnisse.append(c)
+        elif kriterium == "downloaddate":                               # Suche nach Downloaddatum
+            eingabe_str = user_io.general_input("Fruehestes und spaetestes Datum (mit Komma voneinander getrennt). Format: DD.MM.YYYY\n>>")
+            eingabe = eingabe_str.split(",")
+            if len(eingabe) != 2:
+                user_io.general_output("ERROR: ungueltige Eingabe")
+            else:
+                fr = eingabe[0]
+                if eingabe[1][0] == " ":
+                    sp = eingabe[1][1:]
+                else:
+                    sp = eingabe[1]
+                try:
+                    fr_date = ownfunctions.string_to_date(fr)
+                    sp_date = ownfunctions.string_to_date(sp)
+                except ValueError:
+                    user_io.general_output("ERROR: ungueltige Eingabe")
+                else:
+                    if fr_date > sp_date:
+                        user_io.general_output("ERROR: ungueltige Eingabe")
+                    else:
+                        for c in self.geocaches:
+                            if c.downloaddate >= fr_date and c.downloaddate <= sp_date:
+                                suchergebnisse.append(c) 
+        elif kriterium == "available":                # Suche nach Verfuegbarkeit
+            eingabe_str = user_io.general_input("Moechtest du die Caches sehen, die verfuegbar sind, oder die, die nicht verfuegbar sind? (y/n) ")
+            if eingabe_str == "n":
+                for c in self.geocaches:
+                    if c.available == False:
+                        suchergebnisse.append(c)
+            else:      # falls ungueltige Eingabe: verfuegbare Caches anzeigen
+                for c in self.geocaches:
+                    if c.available == True:
+                        suchergebnisse.append(c)
+        elif kriterium == "type":
+            eingabe = user_io.search_type()
+            if eingabe not in geocache.TYPES_LISTE:
+                user_io.general_output("ERROR: ungueltige Eingabe")
+            else:
+                for c in self.geocaches:
+                    if c.type == eingabe:
+                        suchergebnisse.append(c)
+        elif kriterium == "attribute":
+            eingabe = user_io.search_attribute(self.existing_attributes)
+            if eingabe not in self.existing_attributes:
+                user_io.general_output("ERROR: ungueltige Eingabe")
+            else:
+                for c in self.geocaches:
+                    if eingabe in c.attribute:
+                        suchergebnisse.append(c)
+        elif kriterium == "distance":
+            koords_str = user_io.koordinaten_eingabe()
+            koords = ownfunctions.koordinaten_string_to_dezimalgrad(koords_str)
+            if koords:
+                eingabe_str = user_io.general_input("Minimale und maximale Distanz in Kilometers (mit Komma voneinander getrennt): ") 
+                eingabe = eingabe_str.split(",")
+                if len(eingabe) != 2:
+                    user_io.general_output("ERROR: ungueltige Eingabe") 
+                else:
+                    try:
+                        min = float(eingabe[0])
+                        max = float(eingabe[1])
+                    except ValueError:
+                        user_io.general_output("ERROR: ungueltige Eingabe")
+                    else:
+                        for c in self.geocaches:
+                            c.distance = ownfunctions.calculate_distance(koords,c.koordinaten)
+                            if c.distance >= min and c.distance <= max:
+                                suchergebnisse.append(c)
+            else:
+                user_io.general_output("ERROR: ungueltige Eingabe")
+        
+        if len(suchergebnisse) == 0:                        # Ausgabe der Suchergebnisse
             user_io.general_output("keine Geocaches gefunden")
         else:
-            user_io.general_output(self.gc_auswahl_anzeigen(suchergebnisse))
-            
+            if kriterium == "distance":
+                user_io.general_output(self.gc_auswahl_anzeigen_dist(suchergebnisse))  
+            else:
+                user_io.general_output(self.gc_auswahl_anzeigen(suchergebnisse))
+        return suchergebnisse
+    
+    def aktionen_auswahl_suchen(self, suchergebnisse):   
+        """fuehrt Aktionen mit den Suchergebnissen aus"""
+        if len(suchergebnisse) != 0:                        
             while True:
                 task = user_io.aktionen_auswahl_suchen()
                 if task == "neu_anzeigen":
@@ -201,7 +335,7 @@ class GPS_content(object):
             if open_fieldnotes:
                 webbrowser.open_new_tab("https://www.geocaching.com/my/uploadfieldnotes.aspx")
             if self.warning:
-                user_io.general_output("Warnung! Bei Fortfahren werden auch Log-Informationen ueber Caches geloescht, die nicht gefunden wurden.")
+                user_io.general_output("WARNUNG! Bei Fortfahren werden auch Log-Informationen ueber Caches geloescht, die nicht gefunden wurden.")
             loeschen = self.loeschen(self.found_caches)
             if loeschen:
                 self.found_exists = False
@@ -228,14 +362,15 @@ def show_main_menu(gps):
     while True:                                         # Hauptmenue
         task = user_io.hauptmenue(gps.found_exists)
         if task == "aktualisieren":
-            new = GPS_content(user_io.PATH)
+            new = GPS_content(PATH)
             show_main_menu(new)
         elif task == "alle_anzeigen":
             gps.sortieren_und_anzeigen()
         elif task == "einen_anzeigen":
             gps.einen_anzeigen()
         elif task == "suchen":
-            gps.suchen()
+            results = gps.suchen()
+            gps.aktionen_auswahl_suchen(results)
         elif task == "gefundene_anzeigen":
             gps.gefundene_anzeigen()
         elif task == "google-maps":
@@ -246,9 +381,8 @@ def show_main_menu(gps):
             sys.exit()
           
 if __name__ == "__main__":
-    path = user_io.ask_for_path()
-    if os.path.exists(path):
-        new = GPS_content(path)
+    if os.path.exists(PATH):
+        new = GPS_content(PATH)
         show_main_menu(new)
     else:
-        user_io.general_output("\nERROR: GPS-Geraet nicht unter der Pfadangabe '{}' zu finden.".format(path))
+        user_io.general_output("\nERROR: GPS-Geraet nicht unter der Pfadangabe '{}' zu finden.".format(PATH))

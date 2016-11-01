@@ -1,4 +1,4 @@
-﻿This is a program that helps you organize your geocaches, downloaded from geocaching.com, on your GPS device. Currently it's only available in a German language version.
+﻿This is a program that helps you organize your geocaches on your GPS device. Currently it's only available in a German language version.
 
 
 #Voraussetzungen
@@ -24,7 +24,7 @@ wobei das Einlesen der Position entweder über Eingabe der Koordinaten im auf ge
 * Öffnen von https://www.google.de/maps bzw. https://www.geocaching.com/map, um z.B. ein direktes Kopieren der Url für die Abstandsberechnung zu ermöglichen 
 * Anzeigen der vollständigen Beschreibung eines Caches sowie Möglichkeit, direkt zur aktuellen Version der Beschreibung im Browser zu wechseln
 * Amzeigen der Position eines Caches auf https://www.google.de/maps oder https://www.geocaching.com/map
-* Durchsuchen der Caches (Name und Beschreibung)
+* Durchsuchen der Caches (Name, Beschreibung, Cachetyp, D- und T-Wertung, Größe, Download-Datum, Verfügbarkeit, Atttribute, Abstand zu einer bestimmten Position)
 * Löschen eines oder mehrerer Caches
 * Auslesen der als gefunden markierten Caches und Löschen dieser Caches mitsamt der Log-Information, nachdem diese auf der Fieldnote-Seite von geocaching.com geloggt wurden
 

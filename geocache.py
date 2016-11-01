@@ -5,6 +5,9 @@ import xml.etree.ElementTree as ElementTree
 
 import ownfunctions  # eigene Datei mit Funktionen
 
+SIZE_LISTE = ["other", "micro", "small", "regular", "large"]
+TYPES_LISTE = ["Traditional Cache", "Multi-cache", "EarthCache", "Letterbox Hybrid", "Event Cache", "Wherigo Cache", "Mystery Cache", "Geocaching HQ", "Unknown Type"]
+
 class Geocache(object):
 
     """
@@ -35,7 +38,12 @@ class Geocache(object):
         Groesse des Caches
         
     type: string
-        Art des Caches
+        Art des Caches (beschraenkt auf Cachetypen aus TYPES_LISTE)
+        wird in der Kurzanzeige sowie beim Sortieren und Suchen verwendet
+        
+    longtype: string
+        Art des Caches (nicht beschraenkt)
+        wird in der Langanzeige verwendet
     
     beschreibung: string
         Cachebeschreibung
@@ -62,7 +70,7 @@ class Geocache(object):
         letzte Logs vor dem Download
         jedes Element der Liste: Liste vom Typ [Datum, Logtyp, Finder]
         
-    available: bool
+    available: bool 
         Verfuegbarkeit zum Zeitpunkt des Downloads 
         
     downloaddate: datetime.date
@@ -82,7 +90,7 @@ class Geocache(object):
     langinfo(): 
         ausfuehrliche Information ueber den Cache 
     """
-
+    
     def __init__(self, dateiname_path):
         self.dateiname_path = dateiname_path
         self.gccode = os.path.splitext(os.path.basename(dateiname_path))[0]  # GC-Code
@@ -99,10 +107,15 @@ class Geocache(object):
         self.terrain = float(terrain)
         
         self.size_anzeige = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}container").text # Groesse auslesen
-        self.size = self._get_size(self.size_anzeige)
+        if self.size_anzeige not in SIZE_LISTE:
+            self.size_anzeige = "other"
+        self.size = SIZE_LISTE.index(self.size_anzeige)
         
-        self.type = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}type").text              # Typ auslesen
-
+        self.longtype = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}type").text                            # Typ auslesen
+        if self.longtype = "Unknown Cache":
+            self.longtype = "Mystery Cache"
+        self.type = self._typ_auslesen(self.longtype)
+            
         self.beschreibung = self._beschreibung_auslesen(geocache_tree)                               # Beschreibung auslesen
 
         hint = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}encoded_hints").text # Hint auslesen
@@ -117,13 +130,20 @@ class Geocache(object):
         self.koordinaten = [float(wpt.get("lat")), float(wpt.get("lon"))]                           # Liste als Dezimalgrad
         self.koordinatenanzeige = ownfunctions.koordinaten_dezimalgrad_to_minuten(self.koordinaten) # String wie auf geocaching.com         
         
-        attribute = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}text").text     # Attribute auslesen
-        self.attribute = attribute.split(",")
+        attributes = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}text").text     # Attribute auslesen
+        attributes = attributes.split(",")
+        self.attribute = []
+        for a in attributes:
+            self.attribute.append(ownfunctions.remove_spaces(a))
         
         self.logs = self._logs_auslesen(geocache_tree)                                           # Logs auslesen          
            
         cache = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}cache")             # Auslesen, ob verfuegbar oder nicht
-        self.available = cache.get("available")
+        available = cache.get("available")
+        if available == "True":
+            self.available = True
+        elif available == "False":
+            self.available = False
         
         downloaddate = time.ctime(os.path.getmtime(dateiname_path))       # Downloaddatum aus Aenderungsdatum der gpx-Datei auslesen
         downloaddate = downloaddate.split(" ")
@@ -179,22 +199,19 @@ class Geocache(object):
             beschreibung_lang = ""
         return beschreibung_kurz + "\n\n" + beschreibung_lang
         
-    def _get_size(self, size):
-        """ordnet die Groessenbezeichnungen einem Zahlenwert zu (zum Sortieren)"""
-        if size == "other":
-            return 0
-        elif size == "micro":
-            return 2
-        elif size == "small":
-            return 3
-        elif size == "regular":
-            return 4
-        elif size == "large":
-            return 5
+    def _typ_auslesen(self, lt):
+        """wandelt Typen aus XML-Datei in solche aus TYPES_LISTE um, ausgelagerter Teil von __init__"""
+        if lt in TYPES_LISTE:
+            type = lt
+        elif lt == "Cache In Trash Out Event" or lt == "Mega-Event Cache" or lt == "Giga-Event Cache":
+            type = "Event Cache"
+        else:
+            stype = "Unknown Type"
+        return type
             
     def kurzinfo(self):                                  
         """ gibt eine einzeilige Kurzinfo zurueck"""
-        return u"{} | {} | {} | D {} | T {} | {} | {} | {} | {}".format(self.gccode.ljust(7), self.koordinatenanzeige, self.type.ljust(17), self.difficulty, self.terrain, self.size_anzeige.ljust(7), self.available.ljust(5), self.downloaddate_anzeige, self.name)
+        return u"{} | {} | {} | D {} | T {} | {} | {} | {} | {}".format(self.gccode.ljust(7), self.koordinatenanzeige, self.type.ljust(17), self.difficulty, self.terrain, self.size_anzeige.ljust(7), str(self.available).ljust(5), self.downloaddate_anzeige, self.name)
 
     def langinfo(self): 
         """gibt eine ausfuehrliche Info zurueck""" 
@@ -202,7 +219,11 @@ class Geocache(object):
         z2 = "\n"
         for i in range(len(z1)):
             z2 = z2 + "-"
+<<<<<<< HEAD
         z3 = u"\nSchwierigkeit: {}, Gelaende: {}, Groesse: {}, Typ: {}".format(self.difficulty, self.terrain, self.size_anzeige, self.type)
+=======
+        z3 = u"\nSchwierigkeit: {}, Gelaende: {}, Groesse: {}, Typ: {}".format(self.difficulty, self.terrain, self.size_anzeige, self.longtype)
+>>>>>>> suche
         z4 = u"\nKoordinaten: {}".format(self.koordinatenanzeige)
         z5 = u"\nOwner: {}".format(self.owner)
         z6 = u"\nAttribute: "
