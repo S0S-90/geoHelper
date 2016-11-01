@@ -5,6 +5,8 @@ def zeichen_ersetzen(string):
     """"ersetzt Zeichen, die Probleme bei der Darstellung machen"""    
     string = string.replace(u"\u2013", "-")   # u2013 -> Bindestrich
     string = string.replace(u"\u263a", ":-)") # Smiley
+    string = string.replace(u"\u2211", "sum") # Summenzeichen
+    string = string.replace(u"\u221a", "sqrt") # Wurzelzeichen
     return string
     
 def koordinaten_dezimalgrad_to_minuten(koordinatenliste):
@@ -129,3 +131,17 @@ def string_to_date(string):
     month = int(string[3:5])
     year = int(string[6:10])
     return datetime.date(year, month, day)
+    
+def remove_spaces(string):
+    """entfernt ueberfluessige Leerzeichen aus einem String"""
+    newstring = ""
+    for i,a in enumerate(string):
+        if i == 0 and a == " ":
+            pass
+        elif a == " " and string[i-1] == " ":
+            pass
+        elif a == " " and i == len(string) - 1:
+            pass
+        else:
+            newstring = newstring + a
+    return newstring

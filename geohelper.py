@@ -22,6 +22,9 @@ class GPS_content(object):
     geocaches: list
         Liste von allen Geocaches
         
+    existing_attributes: list
+        Liste aller in den Geocaches vorkommenden Attribute
+        
     found_exists: bool
         Information, ob auf dem Geraet Caches als gefunden markiert wurden
     
@@ -42,13 +45,20 @@ class GPS_content(object):
     def __init__(self, path):
         """liest nach Oeffnen des Programms die Geocaches und die Logdatei ein"""
         
-        self.PATH = path     # Uebernahme der Pfadangabe aus der user_io
-        self.found_exists = False    # Information, ob gefundene Caches auf dem Geraet gespeichert sind
+        self.PATH = path              # Uebernahme der Pfadangabe aus der user_io
+        self.found_exists = False     # Information, ob gefundene Caches auf dem Geraet gespeichert sind
+        self.existing_attributes = [] # Liste von Attributen
         
         self.geocaches = []               # alle Caches aus GC*.gpx-Dateien in PATH\GPX auslesen und in Liste geocaches speichern
         GPX_PATH = os.path.join(self.PATH, "GPX")
         for datei in glob.glob(os.path.join(GPX_PATH,"GC*.gpx")):
             self.geocaches.append(geocache.Geocache(datei))
+            
+        for g in self.geocaches:      # Attribute aus den Geocaches auslesen 
+            for a in g.attribute:
+                if a not in self.existing_attributes and a != "No attributes specified by the author":
+                    self.existing_attributes.append(a)
+        self.existing_attributes.sort()
               
         if os.path.isfile(os.path.join(self.PATH, "geocache_visits.txt")):    # alle gefundenen Caches aus Logdatei in found_caches speichern, falls eine solche vorhanden
             [logged_caches, self.found_caches] = self.get_logged_and_found_caches(os.path.join(self.PATH, "geocache_visits.txt"))
@@ -258,6 +268,14 @@ class GPS_content(object):
             else:
                 for c in self.geocaches:
                     if c.type == eingabe:
+                        suchergebnisse.append(c)
+        elif kriterium == "attribute":
+            eingabe = user_io.search_attribute(self.existing_attributes)
+            if eingabe not in self.existing_attributes:
+                user_io.general_output("ERROR: ungueltige Eingabe")
+            else:
+                for c in self.geocaches:
+                    if eingabe in c.attribute:
                         suchergebnisse.append(c)
         return suchergebnisse
     

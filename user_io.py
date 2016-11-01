@@ -107,7 +107,7 @@ def suchen():
     print "6: Groesse"
     print "7: Download-Datum"
     print "8: Verfuegbarkeit"
-    print "9: Attribut (not implemented yet)"
+    print "9: Attribut"
     print "10: Abstand von einer bestimmten Position (Koordinaten erforderlich) - not implemented yet"
     eingabe = raw_input(">> ")
     try:
@@ -118,9 +118,16 @@ def suchen():
         print "Ungueltige Eingabe"
         
 def search_type():
-    print "Gib den Cachetyp ein, nach dem du suchst."
+    print "Gib den Cachetyp ein, nach dem du suchen willst."
     print "Moegliche Typen: Traditional Cache, Multi-cache, Mystery Cache, EarthCache, Letterbox Hybrid, Event Cache, Wherigo Cache, Geocaching HQ, Unknown Type"
     print "Achtung! Gross- und Kleinschreibung beachten!"
+    eingabe = raw_input(">> ")
+    return eingabe
+    
+def search_attribute(existing_attributes):
+    print "Gib das Attribut ein, nach dem du suchen willst."
+    attr_string = ", ".join(existing_attributes)
+    print "Moegliche Attribute: {}".format(attr_string)
     eingabe = raw_input(">> ")
     return eingabe
         

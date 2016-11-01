@@ -136,8 +136,11 @@ class Geocache(object):
         self.koordinaten = [float(wpt.get("lat")), float(wpt.get("lon"))]                           # Liste als Dezimalgrad
         self.koordinatenanzeige = ownfunctions.koordinaten_dezimalgrad_to_minuten(self.koordinaten) # String wie auf geocaching.com         
         
-        attribute = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}text").text     # Attribute auslesen
-        self.attribute = attribute.split(",")
+        attributes = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}text").text     # Attribute auslesen
+        attributes = attributes.split(",")
+        self.attribute = []
+        for a in attributes:
+            self.attribute.append(ownfunctions.remove_spaces(a))
         
         self.logs = self._logs_auslesen(geocache_tree)                                           # Logs auslesen          
            
