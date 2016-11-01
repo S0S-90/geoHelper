@@ -108,7 +108,7 @@ def suchen():
     print "7: Download-Datum"
     print "8: Verfuegbarkeit"
     print "9: Attribut"
-    print "10: Abstand von einer bestimmten Position (Koordinaten erforderlich) - not implemented yet"
+    print "10: Abstand von einer bestimmten Position (Koordinaten erforderlich)"
     eingabe = raw_input(">> ")
     try:
         return kriterien[int(eingabe)-1]

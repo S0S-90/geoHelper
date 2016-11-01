@@ -112,15 +112,9 @@ class Geocache(object):
         self.size = SIZE_LISTE.index(self.size_anzeige)
         
         self.longtype = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}type").text                            # Typ auslesen
-        if self.longtype in TYPES_LISTE:
-            self.type = self.longtype
-        elif self.longtype == "Unknown Cache":
-            self.type = "Mystery Cache"
+        if self.longtype = "Unknown Cache":
             self.longtype = "Mystery Cache"
-        elif self.longtype == "Cache In Trash Out Event" or self.longtype == "Mega-Event Cache" or self.longtype == "Giga-Event Cache":
-            self.type = "Event Cache"
-        else:
-            self.type = "Unknown Type"
+        self.type = self._typ_auslesen(self.longtype)
             
         self.beschreibung = self._beschreibung_auslesen(geocache_tree)                               # Beschreibung auslesen
 
@@ -204,6 +198,16 @@ class Geocache(object):
         else:
             beschreibung_lang = ""
         return beschreibung_kurz + "\n\n" + beschreibung_lang
+        
+    def _typ_auslesen(self, lt):
+        """wandelt Typen aus XML-Datei in solche aus TYPES_LISTE um, ausgelagerter Teil von __init__"""
+        if lt in TYPES_LISTE:
+            type = lt
+        elif lt == "Cache In Trash Out Event" or lt == "Mega-Event Cache" or lt == "Giga-Event Cache":
+            type = "Event Cache"
+        else:
+            stype = "Unknown Type"
+        return type
             
     def kurzinfo(self):                                  
         """ gibt eine einzeilige Kurzinfo zurueck"""

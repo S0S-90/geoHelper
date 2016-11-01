@@ -86,17 +86,28 @@ def koordinaten_url_to_dezimalgrad(url):
         ost = float(url[start_ost:end_ost])
     return [nord, ost]
     
+def koordinaten_string_to_dezimalgrad(koords_str):
+    """liest Koordinaten aus einem String (geocaching.com-Format oder url) aus und gibt sie im Dezimalgrad-Format zurueck"""
+    try:         # Koordinaten im geocaching.com-Format
+        koords = koordinaten_minuten_to_dezimalgrad(koords_str)
+    except ValueError:
+        try:     # Koordinaten aus google-maps oder geocaching.com/map url
+            koords = koordinaten_url_to_dezimalgrad(koords_str)  
+        except: 
+            return None
+    return koords
+    
 def calculate_distance(point1, point2):
-        """berechnet Entfernung des Geocaches zu einem bestimmten Punkt, Formel siehe: https://www.kompf.de/gps/distcalc.html)"""
+    """berechnet Entfernung des Geocaches zu einem bestimmten Punkt, Formel siehe: https://www.kompf.de/gps/distcalc.html)"""
 
-        lat1 = point1[0] * (math.pi / 180)
-        lon1 = point1[1] * (math.pi / 180)
-        lat2 = point2[0] * (math.pi / 180)
-        lon2 = point2[1] * (math.pi / 180)
+    lat1 = point1[0] * (math.pi / 180)
+    lon1 = point1[1] * (math.pi / 180)
+    lat2 = point2[0] * (math.pi / 180)
+    lon2 = point2[1] * (math.pi / 180)
 
-        cos_g = math.sin(lat1)*math.sin(lat2) + math.cos(lat1)*math.cos(lat2)*math.cos(lon2-lon1)
-        g = math.acos(cos_g)*6368  # Erdradius
-        return g
+    cos_g = math.sin(lat1)*math.sin(lat2) + math.cos(lat1)*math.cos(lat2)*math.cos(lon2-lon1)
+    g = math.acos(cos_g)*6368  # Erdradius
+    return g
     
 def get_month(string):
     """ordnet Monatsnamen einen Zahlenwert zu"""
@@ -136,11 +147,11 @@ def remove_spaces(string):
     """entfernt ueberfluessige Leerzeichen aus einem String"""
     newstring = ""
     for i,a in enumerate(string):
-        if i == 0 and a == " ":
+        if i == 0 and a == " ":     # Leerzeichen zu Beginn
             pass
-        elif a == " " and string[i-1] == " ":
+        elif a == " " and string[i-1] == " ":   # zwei Leerzeichen hintereinander
             pass
-        elif a == " " and i == len(string) - 1:
+        elif a == " " and i == len(string) - 1: # Leerzeichen am Ende
             pass
         else:
             newstring = newstring + a

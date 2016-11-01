@@ -97,21 +97,16 @@ class GPS_content(object):
         """sortiert alle Caches auf dem Geraet nach gewuenschtem Kriterium und zeigt sie an"""
         [kriterium, rev] = user_io.sortieren()
         if kriterium == "distance":   # Entfernungsberechnung
-            koords = None
             koords_str = user_io.koordinaten_eingabe()
-            try:     # Koordinaten im geocaching.com-Format
-                koords = ownfunctions.koordinaten_minuten_to_dezimalgrad(koords_str)
-            except ValueError:
-                try:     # Koordinaten aus google-maps oder geocaching.com/map url
-                    koords = ownfunctions.koordinaten_url_to_dezimalgrad(koords_str)  
-                except: 
-                    user_io.general_output("ERROR: ungueltige Eingabe!")
+            koords = ownfunctions.koordinaten_string_to_dezimalgrad(koords_str)
             
             if koords:             # falls Koordinatenauslesen erfolgreich war
                 for g in self.geocaches:
                     g.distance = ownfunctions.calculate_distance(g.koordinaten, koords)
                 self.geocaches = sorted(self.geocaches, key = lambda geocache: getattr(geocache, kriterium), reverse = rev)
                 user_io.general_output(self.alle_anzeigen_dist())
+            else:
+                user_io.general_output("ERROR: ungueltige Eingabe")
             
         elif kriterium == "name":    # Kriterien, bei denen die Groß- und Kleinschreibung vernachlaessigt werden soll
             self.geocaches = sorted(self.geocaches, key = lambda geocache: getattr(geocache, kriterium).lower(), reverse = rev)
@@ -175,6 +170,14 @@ class GPS_content(object):
         text = ""
         for c in cacheliste:
             text = text + c.kurzinfo() + "\n"
+        return text
+        
+    def gc_auswahl_anzeigen_dist(self, cacheliste):
+        """gibt einen String zurueck, in dem Kurzinfos aller Caches aus Cacheliste + die aktuellen Entfernungsangaben jeweils in einer Zeile stehen"""
+        text = ""
+        for c in cacheliste:
+            newline = u"{:7}km | {}\n".format(round(c.distance,1), c.kurzinfo())
+            text = text + newline
         return text
         
     def suchen(self):
@@ -277,15 +280,40 @@ class GPS_content(object):
                 for c in self.geocaches:
                     if eingabe in c.attribute:
                         suchergebnisse.append(c)
+        elif kriterium == "distance":
+            koords_str = user_io.koordinaten_eingabe()
+            koords = ownfunctions.koordinaten_string_to_dezimalgrad(koords_str)
+            if koords:
+                eingabe_str = user_io.general_input("Minimale und maximale Distanz in Kilometers (mit Komma voneinander getrennt): ") 
+                eingabe = eingabe_str.split(",")
+                if len(eingabe) != 2:
+                    user_io.general_output("ERROR: ungueltige Eingabe") 
+                else:
+                    try:
+                        min = float(eingabe[0])
+                        max = float(eingabe[1])
+                    except ValueError:
+                        user_io.general_output("ERROR: ungueltige Eingabe")
+                    else:
+                        for c in self.geocaches:
+                            c.distance = ownfunctions.calculate_distance(koords,c.koordinaten)
+                            if c.distance >= min and c.distance <= max:
+                                suchergebnisse.append(c)
+            else:
+                user_io.general_output("ERROR: ungueltige Eingabe")
+        
+        if len(suchergebnisse) == 0:                        # Ausgabe der Suchergebnisse
+            user_io.general_output("keine Geocaches gefunden")
+        else:
+            if kriterium == "distance":
+                user_io.general_output(self.gc_auswahl_anzeigen_dist(suchergebnisse))  
+            else:
+                user_io.general_output(self.gc_auswahl_anzeigen(suchergebnisse))
         return suchergebnisse
     
     def aktionen_auswahl_suchen(self, suchergebnisse):   
         """fuehrt Aktionen mit den Suchergebnissen aus"""
-        if len(suchergebnisse) == 0:                        
-            user_io.general_output("keine Geocaches gefunden")
-        else:
-            user_io.general_output(self.gc_auswahl_anzeigen(suchergebnisse))
-            
+        if len(suchergebnisse) != 0:                        
             while True:
                 task = user_io.aktionen_auswahl_suchen()
                 if task == "neu_anzeigen":
