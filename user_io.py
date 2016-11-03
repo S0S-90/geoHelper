@@ -177,17 +177,20 @@ def einen_anzeigen():
     print "\nWas moechstest du als naechstes tun?"
     print "1: diesen Cache loeschen"
     print "2: diesen Cache auf geocaching.com oeffnen"
-    print "3: Position des Caches auf der Karte https://www.geocaching.com/map anzeigen"
-    print "4: Position des Caches auf der Karte https://www.google.de/maps anzeigen"
-    print "5: zurueck"
+    print "3: Abstand dieses Caches zu einer bestimmten Position berechnen"
+    print "4: Position des Caches auf der Karte https://www.geocaching.com/map anzeigen"
+    print "5: Position des Caches auf der Karte https://www.google.de/maps anzeigen"
+    print "6: zurueck"
     eingabe = raw_input(">> ")
     if eingabe == "1":
         return "loeschen"
     elif eingabe == "2":
         return "gc.com"
     elif eingabe == "3":
-        return "gc-map"
+        return "dist"
     elif eingabe == "4":
+        return "gc-map"
+    elif eingabe == "5":
         return "googlemaps"
         
 def koordinaten_eingabe():

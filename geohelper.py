@@ -155,6 +155,12 @@ class GPS_content(object):
                     break
                 elif task == "gc.com":
                     webbrowser.open_new_tab(cache.url)
+                elif task == "dist":
+                    koords_str = user_io.koordinaten_eingabe()
+                    koords = ownfunctions.koordinaten_string_to_dezimalgrad(koords_str)
+                    if koords:
+                        d = ownfunctions.calculate_distance(koords,cache.koordinaten)
+                        user_io.general_output("Abstand: {} Kilometer".format(round(d,1)))
                 elif task == "gc-map":
                     url = "https://www.geocaching.com/map/#?ll={},{}&z=16".format(cache.koordinaten[0], cache.koordinaten[1])
                     webbrowser.open_new_tab(url)
