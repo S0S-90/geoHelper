@@ -7,12 +7,13 @@
 
 * Die Fieldnotes-Datei "geocache_visits.txt" sowie die Logdatei "geocache_logs.xml" müssen direkt im angegebenen Ordner für das GPS-Gerät liegen, 
 die gpx-Dateien in einem Unterordner mit Namen "GPX".
-* Die gpx-Dateien müssen in dem Format vorliegen, das vom Firefox-Addon "Geocaching.com GPX Downloader" (https://addons.mozilla.org/de/firefox/addon/geocachingcom-gpx-downloader/) 
+* Die gpx-Dateien sollten in dem Format vorliegen, das vom Firefox-Addon "Geocaching.com GPX Downloader" (https://addons.mozilla.org/de/firefox/addon/geocachingcom-gpx-downloader/) 
 verwendet wird.
 
 
-#Start
-* Download aller .py Dateien und "winstarter.bat" in einen Ordner
+#Download und Start des Programms
+* Falls Python nicht bereits auf dem System vorhanden: Download von Python 2.7, z.B. [hier](https://www.python.org/downloads/)
+* Download und Entpacken des Archivs geoHelper_v1.0-beta.zip auf [Release Page](https://github.com/S0S-90/geoHelper/releases) 
 * Doppelklick auf "winstarter.bat"
 * [Alternativ kann das Programm "geohelper.py" auch direkt (aus der Konsole) geöffnet werden. Dazu muss jedoch vorher die Codierung der Konsole auf Codepage 1252 eingestellt werden.
 So sollte das Programm auch auf Nicht-Windows-Rechnern laufen, was allerdings nicht getestet wurde.]
