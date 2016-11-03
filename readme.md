@@ -6,7 +6,7 @@
 * Module: sys, glob, os, time, datetime, xml.etree.ElementTree, webbrowser (alle in Standardbibliothek vorhanden)
 
 * Die Fieldnotes-Datei "geocache_visits.txt" sowie die Logdatei "geocache_logs.xml" müssen direkt im angegebenen Ordner für das GPS-Gerät liegen, 
-die gpx-Dateien in einem Unterordner mit Namen "GPX".
+die gpx-Dateien in einem Unterordner mit Namen "GPX". (Dies sollte bei Garmin-Geräten automatisch der Fall sein.)
 * Die gpx-Dateien sollten in dem Format vorliegen, das vom Firefox-Addon "Geocaching.com GPX Downloader" (https://addons.mozilla.org/de/firefox/addon/geocachingcom-gpx-downloader/) 
 verwendet wird.
 
