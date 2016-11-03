@@ -2,7 +2,7 @@
 
 
 #Voraussetzungen
-* Python 2.7 (vermutlich auch andere Python 2 Versionen möglich) - Download unter https://www.python.org/downloads/
+* Python 2.7 (vermutlich auch andere Python 2 Versionen möglich)
 * Module: sys, glob, os, time, datetime, xml.etree.ElementTree, webbrowser (alle in Standardbibliothek vorhanden)
 
 * Die Fieldnotes-Datei "geocache_visits.txt" sowie die Logdatei "geocache_logs.xml" müssen direkt im angegebenen Ordner für das GPS-Gerät liegen, 
