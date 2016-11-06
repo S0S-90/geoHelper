@@ -1,6 +1,6 @@
 import unittest
 import sys
-sys.path.append('../') # path to source file (ownfunctions.py)
+sys.path.append('../src/') # path to source file (ownfunctions.py)
 
 import ownfunctions  
 
