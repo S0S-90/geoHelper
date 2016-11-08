@@ -29,7 +29,19 @@ class TestZeichenErsetzen(unittest.TestCase):
     def test_squareroot_u221a(self):
         x = ownfunctions.zeichen_ersetzen(u"{}(4) = 2".format(u"\u221a"))
         self.assertEqual(x, u"sqrt(4) = 2")
+        
+
+class TestBla(unittest.TestCase):  # to be removed
+    def test_bla(self):
+        self.assertEqual(1,1)
+        
+
+def create_testsuite():
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.makeSuite(TestZeichenErsetzen))
+    suite.addTest(unittest.makeSuite(TestBla))
+    return suite
 
 if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestZeichenErsetzen)
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    testsuite = create_testsuite()
+    unittest.TextTestRunner(verbosity=2).run(testsuite)
