@@ -1,4 +1,4 @@
-import unittest
+﻿import unittest
 import sys
 sys.path.append('../src/') # path to source file (ownfunctions.py)
 
@@ -31,15 +31,32 @@ class TestZeichenErsetzen(unittest.TestCase):
         self.assertEqual(x, u"sqrt(4) = 2")
         
 
-class TestBla(unittest.TestCase):  # to be removed
-    def test_bla(self):
-        self.assertEqual(1,1)
+class TestKoordinatenDezimalgradToMinuten(unittest.TestCase):  
+    
+    def test_north_east_coords(self):
+        x = ownfunctions.koordinaten_dezimalgrad_to_minuten([52.520817,13.40945])
+        self.assertEqual(x, u"N 52°31.249, E 013°24.567")
+        
+    def test_south_west(self):
+        pass
+        
+    def test_equator(self):
+        pass
+        
+    def test_zero_meridian(self):
+        pass
+        
+    def test_north_bigger_than_90(self):
+        pass
+        
+    def test_east_bigger_than_180(self):
+        pass
         
 
 def create_testsuite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestZeichenErsetzen))
-    suite.addTest(unittest.makeSuite(TestBla))
+    suite.addTest(unittest.makeSuite(TestKoordinatenDezimalgradToMinuten))
     return suite
 
 if __name__ == '__main__':
