@@ -98,7 +98,7 @@ class Geocache(object):
         geocache_tree = ElementTree.parse(dateiname_path)    # .gpx-Datei einlesen 
         
         name = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}name").text # Name auslesen
-        self.name = ownfunctions.zeichen_ersetzen(name) 
+        self.name = ownfunctions.zeichen_ersetzen(name, ownfunctions.ALLOWED_SIGNS) 
         
         difficulty = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}difficulty").text # Schwierigkeitsgrad auslesen
         self.difficulty = float(difficulty)
@@ -119,10 +119,10 @@ class Geocache(object):
         self.beschreibung = self._beschreibung_auslesen(geocache_tree)                               # Beschreibung auslesen
 
         hint = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}encoded_hints").text # Hint auslesen
-        self.hint = ownfunctions.zeichen_ersetzen(hint)
+        self.hint = ownfunctions.zeichen_ersetzen(hint, ownfunctions.ALLOWED_SIGNS)
         
         owner = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}placed_by").text    # Owner auslesen
-        self.owner = ownfunctions.zeichen_ersetzen(owner)
+        self.owner = ownfunctions.zeichen_ersetzen(owner, ownfunctions.ALLOWED_SIGNS)
         
         self.url = geocache_tree.find(".//{http://www.topografix.com/GPX/1/0}url").text         # url auslesen
         
@@ -172,7 +172,7 @@ class Geocache(object):
         finder = []
         for i,fd in enumerate(finder_raw):
             if i > 0:  # Index 0 entspricht Attributen
-                next_fd = ownfunctions.zeichen_ersetzen(fd.text)
+                next_fd = ownfunctions.zeichen_ersetzen(fd.text, ownfunctions.ALLOWED_SIGNS)
                 finder.append(next_fd)
           
         logs = [] 
@@ -189,12 +189,12 @@ class Geocache(object):
         """liest die Beschreibung aus der XML-Datei aus, ausgelagerter Teil von __init__"""
         beschreibung_kurz = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}short_description").text 
         if beschreibung_kurz:
-            beschreibung_kurz = ownfunctions.zeichen_ersetzen(beschreibung_kurz)
+            beschreibung_kurz = ownfunctions.zeichen_ersetzen(beschreibung_kurz, ownfunctions.ALLOWED_SIGNS)
         else:
             beschreibung_kurz = ""
         beschreibung_lang = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}long_description").text
         if beschreibung_lang:
-            beschreibung_lang = ownfunctions.zeichen_ersetzen(beschreibung_lang)
+            beschreibung_lang = ownfunctions.zeichen_ersetzen(beschreibung_lang, ownfunctions.ALLOWED_SIGNS)
         else:
             beschreibung_lang = ""
         return beschreibung_kurz + "\n\n" + beschreibung_lang

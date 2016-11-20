@@ -1,13 +1,85 @@
 ﻿import math
 import datetime
+import urllib
+from HTMLParser import HTMLParser
+import unicodedata
 
-def zeichen_ersetzen(string):
-    """"ersetzt Zeichen, die Probleme bei der Darstellung machen"""    
-    string = string.replace(u"\u2013", "-")   # u2013 -> Bindestrich
-    string = string.replace(u"\u263a", ":-)") # Smiley
-    string = string.replace(u"\u2211", "sum") # Summenzeichen
-    string = string.replace(u"\u221a", "sqrt") # Wurzelzeichen
-    return string
+
+class MyHTMLParser(HTMLParser):
+    """Parser, um alle Daten, die in einer Tabelle (Tags <td> bzw. </td>) stehen, auszulesen
+    
+    Attribute:
+    -----------
+    read: bool
+        legt fest, ob gerade Daten gelesen werden
+        
+    data: list
+        Speicherort fuer Daten, die gelesen werden
+        
+    
+    Methoden:
+    ---------    
+    define_attributes(): definiert die Attribute read und data
+
+    return data(): gibt Liste data zurueck   
+    """
+
+    def define_attributes(self):
+        self.read = False
+        self.data = []
+    
+    def handle_starttag(self, tag, attrs):
+        if tag == "td":
+            self.read = True
+
+    def handle_endtag(self, tag):
+        if tag == "td":
+            self.read = False
+
+    def handle_data(self, data):
+        if self.read == True:
+            self.data.append(data)
+            
+    def return_data(self):
+        return self.data
+        
+        
+def find_cp1252():
+    """parst Webseite ueber Codepage 1252 und gibt Liste mit den Unicode-Descriptions zurueck"""
+    
+    x = urllib.urlopen("http://www.cp1252.com/").read() # Webseite auslesen
+    
+    parser = MyHTMLParser()        # Webseite parsen 
+    parser.define_attributes()
+    parser.feed(x)  
+    cpdata = parser.return_data()  # Inhalt der Tabelle in cpdata
+    
+    cp1252 = []                    # Unicode-Descriptions fuer Codepage 1252
+    for i, d in enumerate(cpdata):
+        if i%3 == 1 and i > 6:
+            cp1252.append(d)      
+    return cp1252
+    
+ALLOWED_SIGNS = find_cp1252()  # erlaubte Zeichen einmal festlegen
+
+def zeichen_ersetzen(string, allowed_signs):
+    """"ersetzt Zeichen, die Probleme bei der Darstellung machen (nicht in allowed_signs vorhanden)"""  
+
+    newstring = ""
+    for i,c in enumerate(string):   
+        if c == "\n" or c == "\t" or c == "\v":    # Newline, Tab (horizontal oder vertikal)
+            newstring = newstring + c   
+        elif unicodedata.name(unicode(c)) in allowed_signs: # erlaubte Zeichen
+            newstring = newstring + c
+        elif unicode(c) == u"\u263a":     # Smiley
+            newstring = newstring + ":-)"
+        elif unicode(c) == u"\u2211":     # Summenzeichen
+            newstring = newstring + "sum"
+        elif unicode(c) == u"\u221a":     # Wurzel
+            newstring = newstring + "sqrt"
+        else:                               # unbekanntes Zeichen
+            newstring = newstring + u"\u001a"
+    return newstring
     
 def koordinaten_dezimalgrad_to_minuten(koordinatenliste):
     """"rechnet Koordinaten in Dezimalgrad (z.B. in gpx-Datei) in Grad und Minuten um (z.B. auf geocaching.com)"""
