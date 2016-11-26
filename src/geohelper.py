@@ -53,7 +53,7 @@ class GPS_content(object):
         GPX_PATH = os.path.join(self.PATH, "GPX")
         for datei in glob.glob(os.path.join(GPX_PATH,"GC*.gpx")):
             self.geocaches.append(geocache.Geocache(datei))
-        user_io.general_output("\n{} Geocaches eingelesen".format(len(self.geocaches)))
+        user_io.general_output("\n{} Geocaches auf dem Geraet".format(len(self.geocaches)))
             
         for g in self.geocaches:      # Attribute aus den Geocaches auslesen 
             for a in g.attribute:

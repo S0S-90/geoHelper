@@ -83,42 +83,62 @@ def zeichen_ersetzen(string, allowed_signs):
     
 def koordinaten_dezimalgrad_to_minuten(koordinatenliste):
     """"rechnet Koordinaten in Dezimalgrad (z.B. in gpx-Datei) in Grad und Minuten um (z.B. auf geocaching.com)"""
+    if type(koordinatenliste) != list or len(koordinatenliste) != 2:
+        raise TypeError("Bad input.")
     nord = koordinatenliste[0]
     ost = koordinatenliste[1]
+    if (type(nord) != float or type(ost) != float) and (type(nord) != int or type(ost) != int) and (type(nord) != float or type(ost) != int) and (type(nord) != int or type(ost) != float):
+        raise TypeError("One of the coordinates is not a number.")    
+    if nord > 90 or ost > 180 or nord < -90 or ost < -180:
+        raise ValueError("These coordinates do not exist on earth.")
     nordgrad = int(nord)
     ostgrad = int(ost)
     nordminuten = round(60*(nord - nordgrad), 3)
     ostminuten = round(60*(ost - ostgrad), 3)
-    if nordgrad > 0:
+    if nordgrad >= 0:
         nordsign = "N"
     else:
         nordsign = "S"
         nordgrad = -nordgrad
         nordminuten = -nordminuten
-    if ostgrad > 0:
+    if ostgrad >= 0:
         ostsign = "E"
     else:
         ostsign = "W"
         ostgrad = -ostgrad
         ostminuten = -ostminuten
-    return u"{} {:02}°{:6.3f}, {} {:03}°{:6.3f}".format(nordsign, nordgrad, nordminuten, ostsign, ostgrad, ostminuten)
+    return u"{} {:02}°{:06.3f}, {} {:03}°{:06.3f}".format(nordsign, nordgrad, nordminuten, ostsign, ostgrad, ostminuten)
     
 def koordinaten_minuten_to_dezimalgrad(koordinatenstring):
     """"rechnet Koordinaten in Grad und Minuten (z.B. auf geocaching.com) in Dezimalgrad (z.B. in gpx-Datei) um"""
+    if type(koordinatenstring) != unicode:
+        raise TypeError("Wrong input type.")
+    if koordinatenstring[4] != u"°" or koordinatenstring[18] != u"°" or len(koordinatenstring) != 25 or koordinatenstring[7] != u"." or koordinatenstring[21] != u".":
+        raise ValueError("Bad input.")
     nordgrad = int(koordinatenstring[2:4])
     ostgrad = int(koordinatenstring[15:18])
     nordminuten = float(koordinatenstring[5:11])
     ostminuten = float(koordinatenstring[19:25])
     nord = nordgrad + nordminuten/60
     ost = ostgrad + ostminuten/60
+    if nord > 90 or ost > 180:
+        raise ValueError("These coordinates do not exist on earth.")
     if koordinatenstring[0] == "S":
         nord = -nord
+    elif koordinatenstring[0] != "N":
+        raise ValueError("Bad input.")
     if koordinatenstring[13] == "W":
         ost = -ost
+    elif koordinatenstring[13] != "E":
+        raise ValueError("Bad input.")
     return [nord, ost]
     
 def koordinaten_minuten_to_sekunden(koordinatenstring):
     """rechnet Koordinaten in Grad und Minuten (z.B. auf geocaching.com) in Grad, Minuten und Sekunden um (z.B. fuer Eingabe in Google-Maps)"""
+    if type(koordinatenstring) != unicode:
+        raise TypeError("Wrong input type.")
+    if koordinatenstring[4] != u"°" or koordinatenstring[18] != u"°" or len(koordinatenstring) != 25 or koordinatenstring[7] != u"." or koordinatenstring[21] != u".":
+        raise ValueError("Bad input.")
     nordsign = koordinatenstring[0]
     ostsign = koordinatenstring[13]
     nordgrad = int(koordinatenstring[2:4])
@@ -206,7 +226,7 @@ def get_month(string):
     elif string == "Nov":
         return 11
     elif string == "Dez":
-        return 2
+        return 12
         
 def string_to_date(string):
     """wandelt einen String im Format 'DD.MM.YYYY' in ein datetime.date-Objekt um"""
