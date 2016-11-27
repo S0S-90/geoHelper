@@ -2,8 +2,13 @@
 
 
 #Voraussetzungen
+<<<<<<< Updated upstream
 * Python 2.7 (vermutlich auch andere Python 2 Versionen möglich)
 * Module: sys, glob, os, time, datetime, xml.etree.ElementTree, webbrowser (alle in Standardbibliothek vorhanden)
+=======
+* Python 2.7 
+* Module: sys, glob, webbrowser, os, time, math, datetime, urllib, HTMLParser, unicodedata, xml.etree.ElementTree (alle in Standardbibliothek vorhanden)
+>>>>>>> Stashed changes
 
 * Die Fieldnotes-Datei "geocache_visits.txt" sowie die Logdatei "geocache_logs.xml" müssen direkt im angegebenen Ordner für das GPS-Gerät liegen, 
 die gpx-Dateien in einem Unterordner mit Namen "GPX". (Dies sollte bei Garmin-Geräten automatisch der Fall sein.)
