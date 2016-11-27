@@ -123,8 +123,8 @@ class TestKoordinatenMinutenToDezimalgrad(unittest.TestCase):
     def test_small_mistake_in_unicode(self):
         self.assertRaises(ValueError, ownfunctions.koordinaten_minuten_to_dezimalgrad, u"N 92°310249, E 013°24.567")
         
-    def test_string_instead_of_unicode(self):
-        self.assertRaises(TypeError, ownfunctions.koordinaten_minuten_to_dezimalgrad, "N 92.310249, E 013.24.567")
+    def test_list_instead_of_unicode(self):
+        self.assertRaises(TypeError, ownfunctions.koordinaten_minuten_to_dezimalgrad, [u"N 52°31.249, E 013°24.567"])
         
 class TestKoordinatenMinutenToSekunden(unittest.TestCase):
 

@@ -111,8 +111,8 @@ def koordinaten_dezimalgrad_to_minuten(koordinatenliste):
     
 def koordinaten_minuten_to_dezimalgrad(koordinatenstring):
     """"rechnet Koordinaten in Grad und Minuten (z.B. auf geocaching.com) in Dezimalgrad (z.B. in gpx-Datei) um"""
-    if type(koordinatenstring) != unicode:
-        raise TypeError("Wrong input type.")
+    if type(koordinatenstring) != unicode and type(koordinatenstring) != str:
+        raise TypeError("Wrong input type: {}".format(type(koordinatenstring)))
     if koordinatenstring[4] != u"°" or koordinatenstring[18] != u"°" or len(koordinatenstring) != 25 or koordinatenstring[7] != u"." or koordinatenstring[21] != u".":
         raise ValueError("Bad input.")
     nordgrad = int(koordinatenstring[2:4])
@@ -135,8 +135,8 @@ def koordinaten_minuten_to_dezimalgrad(koordinatenstring):
     
 def koordinaten_minuten_to_sekunden(koordinatenstring):
     """rechnet Koordinaten in Grad und Minuten (z.B. auf geocaching.com) in Grad, Minuten und Sekunden um (z.B. fuer Eingabe in Google-Maps)"""
-    if type(koordinatenstring) != unicode:
-        raise TypeError("Wrong input type.")
+    if type(koordinatenstring) != unicode and type(koordinatenstring) != str:
+        raise TypeError("Wrong input type: {}".format(type(koordinatenstring)))
     if koordinatenstring[4] != u"°" or koordinatenstring[18] != u"°" or len(koordinatenstring) != 25 or koordinatenstring[7] != u"." or koordinatenstring[21] != u".":
         raise ValueError("Bad input.")
     nordsign = koordinatenstring[0]
