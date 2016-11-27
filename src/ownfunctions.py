@@ -141,10 +141,16 @@ def koordinaten_minuten_to_sekunden(koordinatenstring):
         raise ValueError("Bad input.")
     nordsign = koordinatenstring[0]
     ostsign = koordinatenstring[13]
+    if (nordsign != "N" and nordsign != "S") or (ostsign != "E" and ostsign != "W"):
+        raise ValueError("Bad input.")
     nordgrad = int(koordinatenstring[2:4])
     ostgrad = int(koordinatenstring[15:18])
+    if nordgrad > 90 or ostgrad > 180:
+        raise ValueError("These coordinates do not exist on earth.")
     nordminuten_dez = float(koordinatenstring[5:11])
     ostminuten_dez = float(koordinatenstring[19:25])
+    if (nordgrad == 90 and nordminuten_dez) > 0 or (ostgrad == 180 and ostminuten_dez > 0):
+        raise ValueError("These coordinates do not exist on earth.")
     nordminuten = int(nordminuten_dez)
     ostminuten = int(ostminuten_dez)
     nordsekunden = round((nordminuten_dez - nordminuten)*60,1)
@@ -153,8 +159,11 @@ def koordinaten_minuten_to_sekunden(koordinatenstring):
  
 def koordinaten_url_to_dezimalgrad(url):
     """"liest die Koordinaten aus einer Google-Maps oder geocaching.com/map url aus und gibt sie im Dezimalgrad-Format zurueck"""
-    if url[-5:-2] == "&z=" or url[-4:-1] == "&z=":    # geocaching.com/map
-        end = -5
+    if type(url) != str and type(url) != unicode:
+        raise TypeError("Wrong input type: {}".format(type(koordinatenstring)))
+    if url[:31] == "https://www.geocaching.com/map/":    # geocaching.com/map
+        indizes = [index for index, char in enumerate(url) if char == "&"]
+        end = indizes[-1]
         for i in range(-5,-100,-1):
             if url[i] == "=":
                 start = i+1
@@ -162,7 +171,7 @@ def koordinaten_url_to_dezimalgrad(url):
         koords_list = url[start:end].split(",")
         nord = float(koords_list[0])
         ost = float(koords_list[1])
-    else:                     # Google Maps
+    elif url[:27] == "https://www.google.de/maps/":                     # Google Maps
         start_nord = 0
         start_ost = 0
         for i,z in enumerate(url):
@@ -176,6 +185,8 @@ def koordinaten_url_to_dezimalgrad(url):
                 break
         nord = float(url[start_nord:end_nord])
         ost = float(url[start_ost:end_ost])
+    else:
+        raise ValueError("Bad input.")
     return [nord, ost]
     
 def koordinaten_string_to_dezimalgrad(koords_str):

@@ -109,7 +109,7 @@ class TestKoordinatenMinutenToDezimalgrad(unittest.TestCase):
         self.assertEqual([n,e], [52.520817,0])
         
     def test_north_bigger_than_90(self):
-        self.assertRaises(ValueError, ownfunctions.koordinaten_minuten_to_dezimalgrad, u"N 92°31.249, E 013°24.567")
+        self.assertRaises(ValueError, ownfunctions.koordinaten_minuten_to_dezimalgrad, u"N 90°31.249, E 013°24.567")
         
     def test_east_bigger_than_180(self):
         self.assertRaises(ValueError, ownfunctions.koordinaten_minuten_to_dezimalgrad, u"N 52°31.249, E 213°24.567")
@@ -128,7 +128,75 @@ class TestKoordinatenMinutenToDezimalgrad(unittest.TestCase):
         
 class TestKoordinatenMinutenToSekunden(unittest.TestCase):
 
-    pass
+    def test_north_east_coords(self):
+        x = ownfunctions.koordinaten_minuten_to_sekunden(u"N 52°31.249, E 013°24.567")
+        self.assertEqual(x, u"52°31'14.9\"N+13°24'34.0\"E")
+        
+    def test_south_west(self):
+        x = ownfunctions.koordinaten_minuten_to_sekunden(u"S 52°31.249, W 013°24.567")
+        self.assertEqual(x, u"52°31'14.9\"S+13°24'34.0\"W")
+        
+    def test_equator(self):
+        x = ownfunctions.koordinaten_minuten_to_sekunden(u"N 00°00.000, E 013°24.567")
+        self.assertEqual(x, u"0°0'0.0\"N+13°24'34.0\"E")
+        
+    def test_zero_meridian(self):
+        x = ownfunctions.koordinaten_minuten_to_sekunden(u"N 52°31.249, E 000°00.000")
+        self.assertEqual(x, u"52°31'14.9\"N+0°0'0.0\"E")
+
+    def test_north_bigger_than_90(self):
+        self.assertRaises(ValueError, ownfunctions.koordinaten_minuten_to_sekunden, u"N 90°31.249, E 013°24.567")
+        
+    def test_east_bigger_than_180(self):
+        self.assertRaises(ValueError, ownfunctions.koordinaten_minuten_to_sekunden, u"N 52°31.249, E 213°24.567")
+        
+    def test_north_bigger_than_90_south(self):
+        self.assertRaises(ValueError, ownfunctions.koordinaten_minuten_to_sekunden, u"S 92°31.249, E 013°24.567")
+        
+    def test_east_bigger_than_180_west(self):
+        self.assertRaises(ValueError, ownfunctions.koordinaten_minuten_to_sekunden, u"N 52°31.249, W 213°24.567")
+        
+    def test_small_mistake_in_unicode(self):
+        self.assertRaises(ValueError, ownfunctions.koordinaten_minuten_to_sekunden, u"N 92°310249, E 013°24.567")
+        
+    def test_list_instead_of_unicode(self):
+        self.assertRaises(TypeError, ownfunctions.koordinaten_minuten_to_sekunden, [u"N 52°31.249, E 013°24.567"])
+        
+class TestKoordinatenUrlToDezimalgrad(unittest.TestCase):
+     
+    def test_gc_north_east(self):
+        x = ownfunctions.koordinaten_url_to_dezimalgrad("https://www.geocaching.com/map/#?ll=49.7821,9.87731&z=14S")
+        self.assertEqual(x, [49.7821, 9.87731])
+
+    def test_gc_south_west(self):
+        x = ownfunctions.koordinaten_url_to_dezimalgrad("https://www.geocaching.com/map/#?ll=-32.54681,-23.20312&z=2")
+        self.assertEqual(x, [-32.54681, -23.20312])
+
+    def test_gc_from_special_location(self):
+        x = ownfunctions.koordinaten_url_to_dezimalgrad("https://www.geocaching.com/map/default.aspx?lat=49.81&lng=9.936667#?ll=49.77877,9.9131&z=14")
+        self.assertEqual(x, [49.77877, 9.9131])
+
+    def test_gc_equator(self):
+        x = ownfunctions.koordinaten_url_to_dezimalgrad("https://www.geocaching.com/map/#?ll=0,-68.49309&z=18")
+        self.assertEqual(x, [0.0, -68.49309])
+        
+    def test_googlemaps_north_east(self):
+        x = ownfunctions.koordinaten_url_to_dezimalgrad("https://www.google.de/maps/@49.780988,9.9699965,14z")
+        self.assertEqual(x, [49.780988, 9.9699965])
+
+    def test_googlemaps_south_west(self):
+        x = ownfunctions.koordinaten_url_to_dezimalgrad("https://www.google.de/maps/place/Rio+de+Janeiro,+Brasilien/@-22.9108558,-43.5884197,11z/data=!3m1!4b1!4m5!3m4!1s0x9bde559108a05b:0x50dc426c672fd24e!8m2!3d-22.9068467!4d-43.1728965")
+        self.assertEqual(x, [-22.9108558, -43.5884197])
+
+    def test_googlemaps_equator(self):
+        x = ownfunctions.koordinaten_url_to_dezimalgrad("https://www.google.de/maps/place/0%C2%B000'00.0%22N+34%C2%B027'07.3%22E/@0,34.4497481,17z/data=!4m4!3m3!1s0x0:0x0!8m1!4d34.4520333")
+        self.assertEqual(x, [0.0, 34.4497481])
+        
+    def test_different_website(self):
+        self.assertRaises(ValueError, ownfunctions.koordinaten_minuten_to_sekunden, "https://www.google.de/")
+        
+    def test_different_input_type(self):
+        self.assertRaises(TypeError, ownfunctions.koordinaten_minuten_to_sekunden, 42)
         
 
 def create_testsuite():
@@ -137,6 +205,7 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestKoordinatenDezimalgradToMinuten))
     suite.addTest(unittest.makeSuite(TestKoordinatenMinutenToDezimalgrad))
     suite.addTest(unittest.makeSuite(TestKoordinatenMinutenToSekunden))
+    suite.addTest(unittest.makeSuite(TestKoordinatenUrlToDezimalgrad))
     return suite
 
 if __name__ == '__main__':
