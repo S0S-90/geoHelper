@@ -13,35 +13,35 @@ class TestZeichenErsetzen(unittest.TestCase):
         self.assertEqual(x,expected_result)
 
     def test_hallo(self):
-        x = ownfunctions.zeichen_ersetzen("hallo", ownfunctions.ALLOWED_SIGNS)
+        x = ownfunctions.zeichen_ersetzen("hallo")
         self.assertEqual(x,"hallo")
         
     def test_maerchen(self):
-        x = ownfunctions.zeichen_ersetzen(u"m{}rchen".format(u"\u00E4"), ownfunctions.ALLOWED_SIGNS)
+        x = ownfunctions.zeichen_ersetzen(u"m{}rchen".format(u"\u00E4"))
         self.assertEqual(x, u"m{}rchen".format(u"\u00E4"))
         
     def test_smiley_u263a(self):
-        x = ownfunctions.zeichen_ersetzen(u"hallo {}".format(u"\u263a"), ownfunctions.ALLOWED_SIGNS)
+        x = ownfunctions.zeichen_ersetzen(u"hallo {}".format(u"\u263a"))
         self.assertEqual(x, u"hallo :-)")
     
     def test_sum_u2211(self):
-        x = ownfunctions.zeichen_ersetzen(u"{}(1,2,3,4)".format(u"\u2211"), ownfunctions.ALLOWED_SIGNS)
+        x = ownfunctions.zeichen_ersetzen(u"{}(1,2,3,4)".format(u"\u2211"))
         self.assertEqual(x, u"sum(1,2,3,4)")
         
     def test_squareroot_u221a(self):
-        x = ownfunctions.zeichen_ersetzen(u"{}(4) = 2".format(u"\u221a"), ownfunctions.ALLOWED_SIGNS)
+        x = ownfunctions.zeichen_ersetzen(u"{}(4) = 2".format(u"\u221a"))
         self.assertEqual(x, u"sqrt(4) = 2")
         
     def test_newline(self):
-        x = ownfunctions.zeichen_ersetzen(u"hallo\nWelt", ownfunctions.ALLOWED_SIGNS)
+        x = ownfunctions.zeichen_ersetzen(u"hallo\nWelt")
         self.assertEqual(x, u"hallo\nWelt")
         
     def test_tab(self):
-        x = ownfunctions.zeichen_ersetzen(u"hallo\tWelt\v", ownfunctions.ALLOWED_SIGNS)
+        x = ownfunctions.zeichen_ersetzen(u"hallo\tWelt\v")
         self.assertEqual(x, u"hallo\tWelt\v")
     
     def test_unknown_sign(self):
-        x = ownfunctions.zeichen_ersetzen(u"tuerkische Flagge: {}".format(u"\u262a"), ownfunctions.ALLOWED_SIGNS)
+        x = ownfunctions.zeichen_ersetzen(u"tuerkische Flagge: {}".format(u"\u262a"))
         self.assertEqual(x, u"tuerkische Flagge: {}".format(u"\u001a"))
 
 class TestKoordinatenDezimalgradToMinuten(unittest.TestCase):  

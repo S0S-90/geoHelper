@@ -62,14 +62,14 @@ def find_cp1252():
     
 ALLOWED_SIGNS = find_cp1252()  # erlaubte Zeichen einmal festlegen
 
-def zeichen_ersetzen(string, allowed_signs):
+def zeichen_ersetzen(string):
     """"ersetzt Zeichen, die Probleme bei der Darstellung machen (nicht in allowed_signs vorhanden)"""  
 
     newstring = ""
     for i,c in enumerate(string):   
         if c == "\n" or c == "\t" or c == "\v":    # Newline, Tab (horizontal oder vertikal)
             newstring = newstring + c   
-        elif unicodedata.name(unicode(c)) in allowed_signs: # erlaubte Zeichen
+        elif unicodedata.name(unicode(c)) in ALLOWED_SIGNS: # erlaubte Zeichen
             newstring = newstring + c
         elif unicode(c) == u"\u263a":     # Smiley
             newstring = newstring + ":-)"
