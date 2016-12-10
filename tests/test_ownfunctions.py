@@ -1,4 +1,5 @@
 ﻿import unittest
+import datetime
 import sys
 sys.path.append('../src/') # path to source file (ownfunctions.py)
 
@@ -197,8 +198,179 @@ class TestKoordinatenUrlToDezimalgrad(unittest.TestCase):
         
     def test_different_input_type(self):
         self.assertRaises(TypeError, ownfunctions.koordinaten_minuten_to_sekunden, 42)
-        
 
+class TestKoordinatenStringToDezimalgrad(unittest.TestCase):
+
+    def test_manual_coords(self):
+        x = ownfunctions.koordinaten_string_to_dezimalgrad(u"N 52°31.249, E 013°24.567") 
+        n = round(x[0],6)
+        e = round(x[1],5)
+        self.assertEqual([n,e], [52.520817,13.40945])     
+
+    def test_geocachingcom_coords(self): 
+        x = ownfunctions.koordinaten_string_to_dezimalgrad("https://www.geocaching.com/map/#?ll=49.7821,9.87731&z=14S")
+        self.assertEqual(x, [49.7821, 9.87731])
+        
+    def test_googlemaps_coords(self):
+        x = ownfunctions.koordinaten_string_to_dezimalgrad("https://www.google.de/maps/place/Rio+de+Janeiro,+Brasilien/@-22.9108558,-43.5884197,11z/data=!3m1!4b1!4m5!3m4!1s0x9bde559108a05b:0x50dc426c672fd24e!8m2!3d-22.9068467!4d-43.1728965")
+        self.assertEqual(x, [-22.9108558, -43.5884197])
+        
+    def test_bullshitstring_givesNone(self):
+        x = ownfunctions.koordinaten_string_to_dezimalgrad("grwttqq")
+        self.assertEqual(x, None)
+        
+    def test_nostring_givesError(self):
+        self.assertRaises(TypeError, ownfunctions.koordinaten_string_to_dezimalgrad, 42)
+        
+class TestCalculateDistance(unittest.TestCase):
+
+    def test_both_north_east(self):
+        x = ownfunctions.calculate_distance([49.7781628,9.8729888],[50.3342402,10.1413188])
+        x = round(x,1)
+        self.assertEqual(x, 64.7) 
+        
+    def test_both_south_west(self):
+        x = ownfunctions.calculate_distance([-49.7781628,-9.8729888],[-50.3342402,-10.1413188])
+        x = round(x,1)
+        self.assertEqual(x, 64.7) 
+        
+    def test_both_identical(self):
+        x = ownfunctions.calculate_distance([49.7781628,9.8729888],[49.7781628,9.8729888])
+        self.assertEqual(x, 0) 
+        
+    def test_one_north_one_south(self):
+        x = ownfunctions.calculate_distance([0.1245831,29.2351313],[-0.0968813,29.2067241])
+        x = round(x,1)
+        self.assertEqual(x, 24.8)
+        
+    def test_one_east_one_west(self):
+        x = ownfunctions.calculate_distance([51.4819611,-0.0030331],[51.476207,0.0216696])
+        x = round(x,1)
+        self.assertEqual(x, 1.8)
+        
+    def test_both_sides_of_dateline(self):
+        x = ownfunctions.calculate_distance([-16.9008043,179.9575312],[-16.826478,-179.9430943])
+        x = round(x,1)
+        self.assertEqual(x, 13.4)
+        
+    def test_north_bigger_than_90(self):
+        self.assertRaises(ValueError, ownfunctions.calculate_distance, [92.520817,13.40945], [49.7781628,9.8729888])
+        
+    def test_east_bigger_than_180(self):
+        self.assertRaises(ValueError, ownfunctions.calculate_distance, [52.520817,200.40945], [49.7781628,9.8729888])
+        
+    def test_north_smaller_than_minus90(self):
+        self.assertRaises(ValueError, ownfunctions.calculate_distance, [49.7781628,9.8729888], [-92.520817,13.40945])
+        
+    def test_east_smaller_than_minus180(self):
+        self.assertRaises(ValueError, ownfunctions.calculate_distance, [49.7781628,9.8729888], [52.520817,-200.40945])
+        
+    def test_one_coord_is_shit(self):
+        self.assertRaises(TypeError, ownfunctions.calculate_distance, [52.520817,"bla"], [49.7781628,9.8729888])
+        
+    def test_string_instead_of_list(self):
+        self.assertRaises(TypeError, ownfunctions.calculate_distance, [49.7781628,9.8729888], "12")
+        
+    def test_list_of_wrong_length(self):
+        self.assertRaises(TypeError, ownfunctions.calculate_distance, [52.520817,13.40945, 42.42], [49.7781628,9.8729888])
+        
+class TestGetMonth(unittest.TestCase):
+
+    def test_january(self):
+        x = ownfunctions.get_month("Jan")
+        self.assertEqual(x, 1)
+        
+    def test_february(self):
+        x = ownfunctions.get_month("Feb")
+        self.assertEqual(x, 2)
+    
+    def test_march(self):
+        x = ownfunctions.get_month("Mar")
+        self.assertEqual(x, 3)
+        
+    def test_april(self):
+        x = ownfunctions.get_month("Apr")
+        self.assertEqual(x, 4)
+        
+    def test_may(self):
+        x = ownfunctions.get_month("May")
+        self.assertEqual(x, 5)
+        
+    def test_june(self):
+        x = ownfunctions.get_month("Jun")
+        self.assertEqual(x, 6)
+        
+    def test_july(self):
+        x = ownfunctions.get_month("Jul")
+        self.assertEqual(x, 7)
+        
+    def test_august(self):
+        x = ownfunctions.get_month("Aug")
+        self.assertEqual(x, 8)
+        
+    def test_september(self):
+        x = ownfunctions.get_month("Sep")
+        self.assertEqual(x, 9)
+        
+    def test_october(self):
+        x = ownfunctions.get_month("Oct")
+        self.assertEqual(x, 10)
+        
+    def test_november(self):
+        x = ownfunctions.get_month("Nov")
+        self.assertEqual(x, 11)
+        
+    def test_december(self):
+        x = ownfunctions.get_month("Dec")
+        self.assertEqual(x, 12)
+        
+    def test_other_string_givesNone(self):
+        x = ownfunctions.get_month("bla")
+        self.assertEqual(x, None)
+        
+    def test_other_type_givesNone(self):
+        x = ownfunctions.get_month(42)
+        self.assertEqual(x, None)
+        
+class TestStringToDate(unittest.TestCase):
+
+    def test_normal_date(self):
+        x = ownfunctions.string_to_date("04.07.1990")
+        expected_result = datetime.date(1990,7,4)
+        self.assertEqual(x,expected_result)
+        
+    def test_day_is_zero(self):
+        self.assertRaises(ValueError, ownfunctions.string_to_date, "00.07.1990")
+        
+    def test_month_is_zero(self):
+        self.assertRaises(ValueError, ownfunctions.string_to_date, "04.00.1990")
+        
+    def test_year_is_zero_givesError(self):
+        self.assertRaises(ValueError, ownfunctions.string_to_date, "04.07.0000")
+        
+    def test_29th_feb(self):
+        self.assertRaises(ValueError, ownfunctions.string_to_date, "29.02.2005")
+        
+    def test_29th_feb_leapyear(self):
+        x = ownfunctions.string_to_date("29.02.2004")
+        expected_result = datetime.date(2004,2,29)
+        self.assertEqual(x,expected_result)
+        
+    def test_wrong_type(self):
+        self.assertRaises(TypeError, ownfunctions.string_to_date, 42)
+        
+    def test_small_mistake_in_string(self):
+        self.assertRaises(ValueError, ownfunctions.string_to_date, "29.x2.2005")
+        
+class TestRemoveSpaces(unittest.TestCase):
+
+    def test_text(self):
+        x = ownfunctions.remove_spaces("   abc   def   ")
+        self.assertEqual(x,"abc def")
+        
+    def test_wrong_type(self):
+        self.assertRaises(TypeError, ownfunctions.remove_spaces, 42)
+        
 def create_testsuite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestZeichenErsetzen))
@@ -206,8 +378,13 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestKoordinatenMinutenToDezimalgrad))
     suite.addTest(unittest.makeSuite(TestKoordinatenMinutenToSekunden))
     suite.addTest(unittest.makeSuite(TestKoordinatenUrlToDezimalgrad))
+    suite.addTest(unittest.makeSuite(TestKoordinatenStringToDezimalgrad))
+    suite.addTest(unittest.makeSuite(TestCalculateDistance))
+    suite.addTest(unittest.makeSuite(TestGetMonth))
+    suite.addTest(unittest.makeSuite(TestStringToDate))
+    suite.addTest(unittest.makeSuite(TestRemoveSpaces))
     return suite
 
 if __name__ == '__main__':
     testsuite = create_testsuite()
-    unittest.TextTestRunner(verbosity=2).run(testsuite)
+    unittest.TextTestRunner(verbosity=1).run(testsuite)   # set verbosity to 2 if you want to see the name and result of every test

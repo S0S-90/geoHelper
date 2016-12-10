@@ -201,9 +201,20 @@ def koordinaten_string_to_dezimalgrad(koords_str):
     return koords
     
 def calculate_distance(point1, point2):
-    """berechnet Entfernung des Geocaches zu einem bestimmten Punkt, Formel siehe: https://www.kompf.de/gps/distcalc.html)"""
+    """berechnet Entfernung zwischen den Punkten point1 und point2 in Kilometern, Formel siehe: https://www.kompf.de/gps/distcalc.html)
+    point1, point2 = Listen der Form [lat, lon] mit lat, lon in Dezimalgrad"""
+    
+    if type(point1) != list or len(point1) != 2 or type(point2) != list or len(point2) != 2:  # see if input is ok
+        raise TypeError("Bad input.")
+        
+    if (type(point1[0]) != float or type(point1[1]) != float) and (type(point1[0]) != int or type(point1[1]) != int) and (type(point1[0]) != float or type(point1[1]) != int) and (type(point1[0]) != int or type(point1[1]) != float):
+        raise TypeError("One of the coordinates is not a number.")  
+    if (type(point2[0]) != float or type(point2[1]) != float) and (type(point2[0]) != int or type(point2[1]) != int) and (type(point2[0]) != float or type(point2[1]) != int) and (type(point2[0]) != int or type(point2[1]) != float):
+        raise TypeError("One of the coordinates is not a number.")        
+    if point1[0] > 90 or point1[1] > 180 or point1[0] < -90 or point1[1] < -180 or point2[0] > 90 or point2[1] > 180 or point2[0] < -90 or point2[1] < -180:
+        raise ValueError("These coordinates do not exist on earth.")
 
-    lat1 = point1[0] * (math.pi / 180)
+    lat1 = point1[0] * (math.pi / 180)   # start of the calculation
     lon1 = point1[1] * (math.pi / 180)
     lat2 = point2[0] * (math.pi / 180)
     lon2 = point2[1] * (math.pi / 180)
@@ -241,6 +252,10 @@ def get_month(string):
         
 def string_to_date(string):
     """wandelt einen String im Format 'DD.MM.YYYY' in ein datetime.date-Objekt um"""
+    
+    if len(string) != 10 or string[2] != "." or string[5] != ".":
+        raise ValueError("Bad input.")
+    
     day = int(string[0:2])
     month = int(string[3:5])
     year = int(string[6:10])
@@ -252,9 +267,9 @@ def remove_spaces(string):
     for i,a in enumerate(string):
         if i == 0 and a == " ":     # Leerzeichen zu Beginn
             pass
-        elif a == " " and string[i-1] == " ":   # zwei Leerzeichen hintereinander
-            pass
         elif a == " " and i == len(string) - 1: # Leerzeichen am Ende
+            return remove_spaces(newstring)
+        elif a == " " and string[i-1] == " ":   # zwei Leerzeichen hintereinander
             pass
         else:
             newstring = newstring + a
