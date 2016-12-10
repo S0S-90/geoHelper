@@ -134,7 +134,7 @@ def get_month(string):
     elif string == "Nov":
         return 11
     elif string == "Dec":
-        return 2
+        return 12
         
 def string_to_date(string):
     """wandelt einen String im Format 'DD.MM.YYYY' in ein datetime.date-Objekt um"""
