@@ -236,7 +236,7 @@ def get_month(string):
         return 10
     elif string == "Nov":
         return 11
-    elif string == "Dez":
+    elif string == "Dec":
         return 12
         
 def string_to_date(string):
