@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<gpx xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" version="1.0" creator="GPX Downloader" xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd http://www.groundspeak.com/cache/1/0 http://www.groundspeak.com/cache/1/0/cache.xsd" xmlns="http://www.topografix.com/GPX/1/0">
+	<bounds minlat="49.80761666666667" minlon="9.912116666666666" maxlat="49.80761666666667" maxlon="9.912116666666666" />
+	<wpt lat="49.80761666666667" lon="9.912116666666666">
+		<time>2015-02-19T00:00:00</time>
+		<name>GC5N23T</name>
+		<desc>67 - MedTrix - ἒρνος by Die4Ma-Trickser, Unknown Cache (3/4)</desc>
+		<url>https://www.geocaching.com/geocache/GC5N23T_67-medtrix</url>
+		<urlname>67 - MedTrix - ἒρνος</urlname>
+		<sym>Geocache</sym>
+		<type>Geocache|Unknown Cache</type>
+		<groundspeak:cache id="4834136&amp;lcn=1" xmlns:groundspeak="http://www.groundspeak.com/cache/1/0" available="True" archived="False">
+			<groundspeak:name>67 - MedTrix - ἒρνος</groundspeak:name>
+			<groundspeak:placed_by>Biene@85</groundspeak:placed_by>
+			<groundspeak:type>Unknown Cache</groundspeak:type>
+			<groundspeak:container>micro</groundspeak:container>
+			<groundspeak:difficulty>3</groundspeak:difficulty>
+			<groundspeak:terrain>4</groundspeak:terrain>
+			<groundspeak:short_description html="True"><![CDATA[]]></groundspeak:short_description>
+			<groundspeak:long_description html="True"><![CDATA[<h2 style="font-style:italic;">... unerwartet....plötzlich.... mit einem Hammerschlag.... JETZT ist sie da: ....<span style="color:#FF0000;">MedTrix</span><span class="marker">, die erste Würzburger Mystery-Matrix.... 81 Caches, 81 Mysteries, 81 mal ultimativer Cachingspaß...... Alle D und T Kategorien..... alle Kombinationen..... und alles Rätsel aus der Kombination von Medizin und Kryptographie... unserem gemeinsamen Spezialgebiet.... dem Gebiet der 4Ma-Trickser.....</span></h2>
+<h2 style="font-style:italic;"><span class="marker">und nun viel Spaß</span>!!!</h2>
+<h2 style="font-style:italic;">&nbsp;</h2>
+<h2 style="font-style:italic;text-align:center;"><strong><u>Hier das Rätsel:</u></strong></h2>
+<p>&nbsp;</p>
+<span><br>
+<br>
+<font face="ARIAL" size="3">Die Hernien sind angeborene oder erworbene Lücken in den tragenden Bauchwandschichten. Im deutschen bezeichnet man diese als Bruch. Um diese operativ zu versorgen, gibt es mehrere Möglichkeiten: Eine der ersten war die OP nach ___A___(7). Dabei werden Bauchmuskeln, Leistenband und Schambeinperiost vernäht. Die Weiterentwicklung davon ist die OP nach ___B___(9), wo über der Bruchlücke eine Fasziendopplung durchgeführt wird. Die OP nach ___C___(12) ist eine weitere Art der Hernienversorgung, in der ein Kunststoffnetz eingesetzt wird und mit der Muskulatur vernäht, um die Bruchwand hinter dem Leistenkanal zu verstärken. Zu den neueren Arten der Hernienversorgung zählen die ___D___ (16). Hier unterscheidet man drei Methoden: Bei der __E__ (4) wird ein Pneumoperitoneum angelegt, wo ein Netz innenseitig zwischen Bruchpforte und Bauchwand fixiert wird. Im Gegensatz dazu wird bei der ___F___ (3) außerhalb des Bauchraumes operiert und ein Netz zwischen Muskulatur und Bauchwand eingelegt, um die Bruchpforte zu verschließen. Die ___G___ (4)-Methode beschreibt eine Hernienversorgung mittels Netzeinlage direkt an das Bauchfell. Dafür gibt es spezielle Netze, die auf der viszeralen Seite besonders beschichtet sind. Das Ziel der operativen Versorgung ist die Behebung der Hernie und die Vermeidung von Rezidiven. &nbsp;</font></span>
+<p><span><span><span><br>
+<br>
+<font face="ARIAL" size="3">Findet die Wörter aus dem Lückentext und bildet dann die Buchstabenwortwerte! Setzt sie dann in unten stehende Formel ein!</font></span><br>
+<br></span></span></p>
+<p><span><span><br>
+<br>
+<font face="Tahoma" size="3">Formel zur Berechnung des Finals:<br>
+<br>
+<b>N 49°(AxB/146). ∑(A, B, D, E, G) // E 009°(√(E*G+C-31). E*G-E*F + D/2</b></font></span><br>
+<br></span></p>
+<br>
+<br>
+<a href="http://geocheck.org/geo_inputchkcoord.php?gid=620474120c36e28-b765-4ff6-a6e4-b2f00c504981"><img src="http://geocheck.org/geocheck_large.php?gid=620474120c36e28-b765-4ff6-a6e4-b2f00c504981" title="Prüfe Deine Lösung" border="0"></a>
+]]>
+			</groundspeak:long_description>
+			<groundspeak:encoded_hints>Indoor: die Zahlen in Klammern sind die Anzahl der Buchstaben
+Outdoor: oben :-) Mit Leiter</groundspeak:encoded_hints>
+			<groundspeak:logs>
+				<groundspeak:log id="0">
+					<groundspeak:date>2016-06-16T11:25:59</groundspeak:date>
+					<groundspeak:type>Write note</groundspeak:type>
+					<groundspeak:finder id="00000000-0000-0000-0000-000000000000"><![CDATA[Attributes]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[bikes allowed, available in winter, tree climbing required, available 24-7, difficult climbing, teamwork required, takes less than 1  hour, thorns!, hike shorter than 1km, ticks!, dogs allowed, special tool required]]></groundspeak:text>
+				</groundspeak:log>
+				<groundspeak:log id="143568283">
+					<groundspeak:date>2016-07-03T00:00:00</groundspeak:date>
+					<groundspeak:type>Found it</groundspeak:type>
+					<groundspeak:finder id="67aff351-8945-4438-bbaa-7ad14194266d"><![CDATA[☺Mitchsa & firefly70]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[]]></groundspeak:text>
+				</groundspeak:log>
+				<groundspeak:log id="143568283">
+					<groundspeak:date>2016-04-03T00:00:00</groundspeak:date>
+					<groundspeak:type>Found it</groundspeak:type>
+					<groundspeak:finder id="e3dfe2e6-c324-4f3b-8ab6-02c01fe43371"><![CDATA[Hackstock]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[]]></groundspeak:text>
+				</groundspeak:log>
+			</groundspeak:logs>
+		</groundspeak:cache>
+	</wpt>
+</gpx>

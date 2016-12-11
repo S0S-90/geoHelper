@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gpx xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" version="1.0" creator="GPX Downloader" xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd http://www.groundspeak.com/cache/1/0 http://www.groundspeak.com/cache/1/0/cache.xsd" xmlns="http://www.topografix.com/GPX/1/0">
+	<bounds minlat="49.794497" minlon="9.94094" maxlat="49.794497" maxlon="9.94094" />
+	<wpt lat="49.794497" lon="9.94094">
+		<time>2016-09-08T00:00:00</time>
+		<name>GC6RNTX</name>
+		<desc>Hochschule für Musik 1 by Müllipützchen, Unknown Cache (2/1.5)</desc>
+		<url>https://www.geocaching.com/geocache/GC6RNTX_hochschule-fur-musik-1</url>
+		<urlname>Hochschule für Musik 1</urlname>
+		<sym>Geocache</sym>
+		<type>Geocache|Unknown Cache</type>
+		<groundspeak:cache id="5865974&amp;lcn=1" xmlns:groundspeak="http://www.groundspeak.com/cache/1/0" available="True" archived="False">
+			<groundspeak:name>Hochschule für Musik 1</groundspeak:name>
+			<groundspeak:placed_by>Müllipützchen</groundspeak:placed_by>
+			<groundspeak:type>Unknown Cache</groundspeak:type>
+			<groundspeak:container>micro</groundspeak:container>
+			<groundspeak:difficulty>2</groundspeak:difficulty>
+			<groundspeak:terrain>1.5</groundspeak:terrain>
+			<groundspeak:short_description html="True"><![CDATA[<p>Diese Mystery-Reihe führt euch zu den drei Gebäuden der Hochschule für Musik Würzburg.</p>
+Die drei unterschiedlichen Musiker-Rätsel können unabhängig voneinander und auch von Musik-Laien mit etwas Kreativität gelöst werden.]]></groundspeak:short_description>
+			<groundspeak:long_description html="True"><![CDATA[<table style="" width="100%" bordercolor="#008000" border="1">
+<tbody><tr>
+<td style=""><img src="https://s3.amazonaws.com/gs-geo-images/028693e0-6dd5-466c-bebb-27de448a84db_l.jpg" alt="1" style="max-width: 670px;" class="InsideTable" width="640" border="0" height="198"></td>
+</tr>
+</tbody></table>
+Bitte eigenen Stift mitbringen! Viel Erfolg beim Knobeln! :)
+]]>
+			</groundspeak:long_description>
+			<groundspeak:encoded_hints>Licht!</groundspeak:encoded_hints>
+			<groundspeak:logs>
+				<groundspeak:log id="0">
+					<groundspeak:date>2016-09-08T13:26:21</groundspeak:date>
+					<groundspeak:type>Write note</groundspeak:type>
+					<groundspeak:finder id="00000000-0000-0000-0000-000000000000"><![CDATA[Attributes]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[takes less than 1  hour, available 24-7, available in winter, public transit available, picnic tables available, restrooms available, stroller accessible, stealth required, hike shorter than 1km]]></groundspeak:text>
+				</groundspeak:log>
+				<groundspeak:log id="143568283">
+					<groundspeak:date>2016-10-04T00:00:00</groundspeak:date>
+					<groundspeak:type>Found it</groundspeak:type>
+					<groundspeak:finder id="1ac69907-4746-4ede-ab13-b7b4d016a731"><![CDATA[Haegaer]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[]]></groundspeak:text>
+				</groundspeak:log>
+				<groundspeak:log id="143568283">
+					<groundspeak:date>2016-09-29T00:00:00</groundspeak:date>
+					<groundspeak:type>Found it</groundspeak:type>
+					<groundspeak:finder id="01261062-40c6-481a-9f31-d8a7a01684b8"><![CDATA[Scout.30]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[]]></groundspeak:text>
+				</groundspeak:log>
+				<groundspeak:log id="143568283">
+					<groundspeak:date>2016-09-28T00:00:00</groundspeak:date>
+					<groundspeak:type>Found it</groundspeak:type>
+					<groundspeak:finder id="3c2ee223-3e8b-4b3b-b119-90b9ee70a8af"><![CDATA[Caipirat]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[]]></groundspeak:text>
+				</groundspeak:log>
+				<groundspeak:log id="143568283">
+					<groundspeak:date>2016-09-28T00:00:00</groundspeak:date>
+					<groundspeak:type>Found it</groundspeak:type>
+					<groundspeak:finder id="5edf378d-1a15-4041-8bde-0597b5870686"><![CDATA[Alokasie]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[]]></groundspeak:text>
+				</groundspeak:log>
+				<groundspeak:log id="143568283">
+					<groundspeak:date>2016-09-27T00:00:00</groundspeak:date>
+					<groundspeak:type>Found it</groundspeak:type>
+					<groundspeak:finder id="9e3bdaa7-3dec-4ae4-bdb0-d31968b1f9f2"><![CDATA[geovi]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[]]></groundspeak:text>
+				</groundspeak:log>
+				<groundspeak:log id="143568283">
+					<groundspeak:date>2016-09-27T00:00:00</groundspeak:date>
+					<groundspeak:type>Found it</groundspeak:type>
+					<groundspeak:finder id="32592143-ed33-478f-918d-4baa7e398455"><![CDATA[famerlor_dragon]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[]]></groundspeak:text>
+				</groundspeak:log>
+				<groundspeak:log id="143568283">
+					<groundspeak:date>2016-09-27T00:00:00</groundspeak:date>
+					<groundspeak:type>Found it</groundspeak:type>
+					<groundspeak:finder id="def78202-4300-4ced-9651-016c75a2ca61"><![CDATA[NobSim]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[]]></groundspeak:text>
+				</groundspeak:log>
+				<groundspeak:log id="143568283">
+					<groundspeak:date>2016-09-27T00:00:00</groundspeak:date>
+					<groundspeak:type>Publish Listing</groundspeak:type>
+					<groundspeak:finder id="78c089cb-91c1-4d6c-8565-70c32cfa84cc"><![CDATA[walpot]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[]]></groundspeak:text>
+				</groundspeak:log>
+			</groundspeak:logs>
+		</groundspeak:cache>
+	</wpt>
+</gpx>
