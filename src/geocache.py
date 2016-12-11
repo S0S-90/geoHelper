@@ -92,6 +92,10 @@ class Geocache(object):
     """
     
     def __init__(self, dateiname_path):
+    
+        if type(dateiname_path) != str and type(dateiname_path) != unicode:
+            raise TypeError("Bad input.")
+        
         self.dateiname_path = dateiname_path
         self.gccode = os.path.splitext(os.path.basename(dateiname_path))[0]  # GC-Code
         

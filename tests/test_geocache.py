@@ -348,94 +348,74 @@ class TestMedrixErnos(unittest.TestCase):
     def test_gccode(self):
         self.assertEqual(self.gc.gccode, "GC5N23T")
         
-    # TODO: Tests aktivieren, Grund: besondere Zeichen in Cachenamen, Beschreibung, Owner und Finder
+    def test_name(self):
+        self.assertEqual(self.gc.name, u"67 - MedTrix - \u001a\u001a\u001a\u001a\u001a")
         
-    # def test_name(self):
-        # self.assertEqual(self.gc.name, "Saaletalblick")
+    def test_difficulty(self):
+        self.assertEqual(self.gc.difficulty, 3)
         
-    # def test_difficulty(self):
-        # self.assertEqual(self.gc.difficulty, 2)
+    def test_terrain(self):
+        self.assertEqual(self.gc.terrain, 4)
         
-    # def test_terrain(self):
-        # self.assertEqual(self.gc.terrain, 2)
+    def test_size(self):
+        self.assertEqual(self.gc.size, 1)
         
-    # def test_size(self):
-        # self.assertEqual(self.gc.size, 1)
+    def test_size_anzeige(self):
+        self.assertEqual(self.gc.size_anzeige, "micro")
         
-    # def test_size_anzeige(self):
-        # self.assertEqual(self.gc.size_anzeige, "micro")
+    def test_type(self):
+        self.assertEqual(self.gc.type, "Mystery Cache")
         
-    # def test_type(self):
-        # self.assertEqual(self.gc.type, "Traditional Cache")
+    def test_longtype(self):
+        self.assertEqual(self.gc.longtype, "Mystery Cache")
         
-    # def test_longtype(self):
-        # self.assertEqual(self.gc.longtype, "Traditional Cache")
-        
-    # def test_beschreibung(self):
-        # self.assertEqual(self.gc.beschreibung, u"\n\nNach einem kleinen Spaziergang und dem Finden des Döschens werdet ihr mit einem tollen Blick ins Saaletal und auf die Saalewiesen belohnt! FTF: Jobi Voma STF: JoLoClMa TTF: Mone216\n\n\t\t\t")
+    def test_beschreibung(self):
+        self.assertEqual(self.gc.beschreibung, u'\n\n<h2 style="font-style:italic;">... unerwartet....plötzlich.... mit einem Hammerschlag.... JETZT ist sie da: ....<span style="color:#FF0000;">MedTrix</span><span class="marker">, die erste Würzburger Mystery-Matrix.... 81 Caches, 81 Mysteries, 81 mal ultimativer Cachingspaß...... Alle D und T Kategorien..... alle Kombinationen..... und alles Rätsel aus der Kombination von Medizin und Kryptographie... unserem gemeinsamen Spezialgebiet.... dem Gebiet der 4Ma-Trickser.....</span></h2>\n<h2 style="font-style:italic;"><span class="marker">und nun viel Spaß</span>!!!</h2>\n<h2 style="font-style:italic;">&nbsp;</h2>\n<h2 style="font-style:italic;text-align:center;"><strong><u>Hier das Rätsel:</u></strong></h2>\n<p>&nbsp;</p>\n<span><br>\n<br>\n<font face="ARIAL" size="3">Die Hernien sind angeborene oder erworbene Lücken in den tragenden Bauchwandschichten. Im deutschen bezeichnet man diese als Bruch. Um diese operativ zu versorgen, gibt es mehrere Möglichkeiten: Eine der ersten war die OP nach ___A___(7). Dabei werden Bauchmuskeln, Leistenband und Schambeinperiost vernäht. Die Weiterentwicklung davon ist die OP nach ___B___(9), wo über der Bruchlücke eine Fasziendopplung durchgeführt wird. Die OP nach ___C___(12) ist eine weitere Art der Hernienversorgung, in der ein Kunststoffnetz eingesetzt wird und mit der Muskulatur vernäht, um die Bruchwand hinter dem Leistenkanal zu verstärken. Zu den neueren Arten der Hernienversorgung zählen die ___D___ (16). Hier unterscheidet man drei Methoden: Bei der __E__ (4) wird ein Pneumoperitoneum angelegt, wo ein Netz innenseitig zwischen Bruchpforte und Bauchwand fixiert wird. Im Gegensatz dazu wird bei der ___F___ (3) außerhalb des Bauchraumes operiert und ein Netz zwischen Muskulatur und Bauchwand eingelegt, um die Bruchpforte zu verschließen. Die ___G___ (4)-Methode beschreibt eine Hernienversorgung mittels Netzeinlage direkt an das Bauchfell. Dafür gibt es spezielle Netze, die auf der viszeralen Seite besonders beschichtet sind. Das Ziel der operativen Versorgung ist die Behebung der Hernie und die Vermeidung von Rezidiven. &nbsp;</font></span>\n<p><span><span><span><br>\n<br>\n<font face="ARIAL" size="3">Findet die Wörter aus dem Lückentext und bildet dann die Buchstabenwortwerte! Setzt sie dann in unten stehende Formel ein!</font></span><br>\n<br></span></span></p>\n<p><span><span><br>\n<br>\n<font face="Tahoma" size="3">Formel zur Berechnung des Finals:<br>\n<br>\n<b>N 49°(AxB/146). sum(A, B, D, E, G) // E 009°(sqrt(E*G+C-31). E*G-E*F + D/2</b></font></span><br>\n<br></span></p>\n<br>\n<br>\n<a href="http://geocheck.org/geo_inputchkcoord.php?gid=620474120c36e28-b765-4ff6-a6e4-b2f00c504981"><img src="http://geocheck.org/geocheck_large.php?gid=620474120c36e28-b765-4ff6-a6e4-b2f00c504981" title="Prüfe Deine Lösung" border="0"></a>\n\n\t\t\t')
     
-    # def test_hint(self):
-        # self.assertEqual(self.gc.hint, "Und ab durch die Hecke!")
+    def test_hint(self):
+        self.assertEqual(self.gc.hint, "Indoor: die Zahlen in Klammern sind die Anzahl der Buchstaben\nOutdoor: oben :-) Mit Leiter")
         
-    # def test_owner(self):
-        # self.assertEqual(self.gc.owner, "bigkruemel")
+    def test_owner(self):
+        self.assertEqual(self.gc.owner, ":-)Biene@85")
         
-    # def test_url(self):
-        # self.assertEqual(self.gc.url, "https://www.geocaching.com/geocache/GC6K86W_saaletalblick")
+    def test_url(self):
+        self.assertEqual(self.gc.url, "https://www.geocaching.com/geocache/GC5N23T_67-medtrix")
         
-    # def test_koordinaten(self):
-        # self.assertEqual(self.gc.koordinaten, [50.318883,10.1936])
+    def test_koordinaten(self):
+        self.assertEqual(self.gc.koordinaten, [49.80761666666667, 9.912116666666666])
         
-    # def test_koordinatenanzeige(self):
-        # self.assertEqual(self.gc.koordinatenanzeige, u"N 50°19.133, E 010°11.616")
+    def test_logs(self):
+        expected_logs = [['2016-07-03', 'Found it', ':-)Mitchsa & firefly70'], ['2016-04-03', "Found it", 'Hackstock']]
+        self.assertEqual(self.gc.logs, expected_logs)
         
-    # def test_attribute(self):
-        # self.assertEqual(self.gc.attribute, ["no camping", "no parking available", "not wheelchair accessible", "kid friendly", "hike shorter than 1km", "stroller accessible"])
-    
-    # def test_logs(self):
-        # expected_logs = [['2016-07-16', 'Found it', 'Ziaepf'], ['2016-07-10', "Didn't find it", 'NES-GN 310362'], ['2016-06-20', 'Found it', 'HerbieWo'], ['2016-06-15', 'Found it', "Fantastic'4"], ['2016-06-11', 'Found it', 'vicmouse'], ['2016-06-11', 'Found it', 'melimouse'], ['2016-06-10', 'Found it', 'Mone216'], ['2016-06-08', 'Found it', 'JoLoClMa'], ['2016-06-08', 'Found it', 'Jobi Voma'], ['2016-06-07', 'Publish Listing', 'Sabbelwasser']]
-        # self.assertEqual(self.gc.logs, expected_logs)
+    def test_available(self):
+        self.assertEqual(self.gc.available, True)
         
-    # def test_available(self):
-        # self.assertEqual(self.gc.available, True)
+    def test_downloaddate(self):
+        expected_date = datetime.date(2016,12,11)
+        self.assertEqual(self.gc.downloaddate, expected_date)
         
-    # def test_downloaddate(self):
-        # expected_date = datetime.date(2016,8,4)
-        # self.assertEqual(self.gc.downloaddate, expected_date)
+    def test_downloaddate_anzeige(self):
+        self.assertEqual(self.gc.downloaddate_anzeige, "11 Dec 2016")
         
-    # def test_downloaddate_anzeige(self):
-        # self.assertEqual(self.gc.downloaddate_anzeige, "04 Aug 2016")
+class TestInvalidInput(unittest.TestCase):
         
-    # def test_kurzinfo(self):
-        # x = self.gc.kurzinfo()
-        # expected = u"GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | True  | 04 Aug 2016 | Saaletalblick"
-        # self.assertEqual(x, expected)
+    def test_wrong_type(self):
+        self.assertRaises(TypeError, geocache.Geocache, [4,2])
         
-    # def test_langinfo(self):
-        # x = self.gc.langinfo()
-        # z1 = u"\nGC6K86W : Saaletalblick"
-        # z2 =  "\n------------------------"
-        # z3 = u"\nSchwierigkeit: 2.0, Gelaende: 2.0, Groesse: micro, Typ: Traditional Cache"
-        # z4 = u"\nKoordinaten: N 50°19.133, E 010°11.616"
-        # z5 = u"\nOwner: bigkruemel"
-        # z6 = u"\nAttribute: no camping, no parking available, not wheelchair accessible, kid friendly, hike shorter than 1km, stroller accessible"
-        # z7 = u"\nCache ist aktiv: True, Stand: 04 Aug 2016"
-        # z8 = u"\nLink: https://www.geocaching.com/geocache/GC6K86W_saaletalblick"
-        # z9 = u"\n\n\n\nNach einem kleinen Spaziergang und dem Finden des Döschens werdet ihr mit einem tollen Blick ins Saaletal und auf die Saalewiesen belohnt! FTF: Jobi Voma STF: JoLoClMa TTF: Mone216\n\n\t\t\t"
-        # z10 = u"\nHinweise: Und ab durch die Hecke!"
-        # z11 = u"\n\n"
-        # z12 = u"2016-07-16: Found it by Ziaepf\n"
-        # z13 = u"2016-07-10: Didn't find it by NES-GN 310362\n"
-        # z14 = u"2016-06-20: Found it by HerbieWo\n"
-        # z15 = u"2016-06-15: Found it by Fantastic'4\n"
-        # z16 = u"2016-06-11: Found it by vicmouse\n"
-        # z17 = u"2016-06-11: Found it by melimouse\n"
-        # z18 = u"2016-06-10: Found it by Mone216\n"
-        # z19 = u"2016-06-08: Found it by JoLoClMa\n"
-        # z20 = u"2016-06-08: Found it by Jobi Voma\n" 
-        # z21 = u"2016-06-07: Publish Listing by Sabbelwasser\n"
-        # expected = z1 + z2 + z3 + z4 + z5 + z6 + z7 + z8 + z9 + z10 + z11 + z12 + z13 + z14 + z15 + z16 + z17 + z18 + z19 + z20 + z21
-        # self.assertEqual(x, expected)
+    def test_not_existing_file(self):
+        self.assertRaises(IOError, geocache.Geocache, "examples/dfgjlg.gpx")
+        
+    def test_broken_file(self):
+        exception = False             # has to be that complicated because ParseError unknown 
+        try:
+            geocache.Geocache("examples/GC6V4PN.gpx")
+        except:
+            exception = True
+        self.assertTrue(exception)
+        
+    def test_missing_attributes(self):
+        self.assertRaises(AttributeError, geocache.Geocache, "examples/GC6V793.gpx")
     
 def create_testsuite():
     suite = unittest.TestSuite()
@@ -445,8 +425,9 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestMusikhochschule))
     suite.addTest(unittest.makeSuite(TestWuerzburgerWebcam))
     suite.addTest(unittest.makeSuite(TestMedrixErnos))
+    suite.addTest(unittest.makeSuite(TestInvalidInput))
     return suite
 
 if __name__ == '__main__':
     testsuite = create_testsuite()
-    unittest.TextTestRunner(verbosity=2).run(testsuite)   # set verbosity to 2 if you want to see the name and result of every test and to 1 if you don't
+    unittest.TextTestRunner(verbosity=1).run(testsuite)   # set verbosity to 2 if you want to see the name and result of every test and to 1 if you don't

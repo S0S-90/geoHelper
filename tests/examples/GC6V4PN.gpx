@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gpx xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" version="1.0" creator="GPX Downloader" xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd http://www.groundspeak.com/cache/1/0 http://www.groundspeak.com/cache/1/0/cache.xsd" xmlns="http://www.topografix.com/GPX/1/0">
+	<bounds minlat="41.83748333333333" minlon="-91.87155" maxlat="41.837817" maxlon="-91.87006666666667" />
+	<wpt lat="41.837817" lon="-91.87155">
+	
+<p>Additional Hidden Waypoints</p>
+R164726 - Driveway<br>
+N 41° 50.249 W 091° 52.204<br>
+<br>
+<p>Additional Hidden Waypoints</p>
+R06DK9A - Driveway<br>
+N 41° 50.249 W 091° 52.204<br>
+<br>
+				<p>Additional waypoints:
+					<br />Driveway (R0): 
+				</p>]]>
+			</groundspeak:long_description>
+			<groundspeak:encoded_hints>No hints available.</groundspeak:encoded_hints>
+			<groundspeak:logs>
+				<groundspeak:log id="0">
+					<groundspeak:date>2016-09-29T12:46:49</groundspeak:date>
+					<groundspeak:type>Write note</groundspeak:type>
+					<groundspeak:finder id="00000000-0000-0000-0000-000000000000"><![CDATA[Attributes]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[takes more than 1 hour, not wheelchair accessible, no public restrooms, ticks!, parking available, hike between 1km-10km, teamwork required]]></groundspeak:text>
+				</groundspeak:log>
+				<groundspeak:log id="143568283">
+					<groundspeak:date>2016-10-28T00:00:00</groundspeak:date>
+					<groundspeak:type>Will Attend</groundspeak:type>
+					<groundspeak:finder id="d2849eb5-da7f-4587-acfa-317f100ccf2f"><![CDATA[Freunden]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[]]></groundspeak:text>
+				</groundspeak:log>
+				<groundspeak:log id="143568283">
+					<groundspeak:date>2016-10-16T00:00:00</groundspeak:date>
+					<groundspeak:type>Will Attend</groundspeak:type>
+					<groundspeak:finder id="8acf25a3-5e2b-4e46-a7d2-19291f129362"><![CDATA[LyleVB]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[]]></groundspeak:text>
+				</groundspeak:log>
+				<groundspeak:log id="143568283">
+					<groundspeak:date>2016-10-15T00:00:00</groundspeak:date>
+					<groundspeak:type>Will Attend</groundspeak:type>
+					<groundspeak:finder id="33a941cf-9d0e-48fc-a756-04a9c6218f55"><![CDATA[L J Silver]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[]]></groundspeak:text>
+				</groundspeak:log>
+				<groundspeak:log id="143568283">
+					<groundspeak:date>2016-10-12T00:00:00</groundspeak:date>
+					<groundspeak:type>Will Attend</groundspeak:type>
+					<groundspeak:finder id="217fe89f-443c-43a6-83ed-2e596cb4a580"><![CDATA[RonTon]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[]]></groundspeak:text>
+				</groundspeak:log>
+				<groundspeak:log id="143568283">
+					<groundspeak:date>2016-10-12T00:00:00</groundspeak:date>
+					<groundspeak:type>Will Attend</groundspeak:type>
+					<groundspeak:finder id="98802321-59a9-4a1c-bf12-a6b5305ef6e9"><![CDATA[wrxymama]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[]]></groundspeak:text>
+				</groundspeak:log>
+				<groundspeak:log id="143568283">
+					<groundspeak:date>2016-10-07T00:00:00</groundspeak:date>
+					<groundspeak:type>Publish Listing</groundspeak:type>
+					<groundspeak:finder id="347d2a09-f504-4b27-85a4-2b14d20e9e8c"><![CDATA[-Tiki-]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[]]></groundspeak:text>
+				</groundspeak:log>
+			</groundspeak:logs>
+		</groundspeak:cache>
+	</wpt>
+  <rte>
+    <name>Iowa Co's AAH Fall 2016 Clean-up</name>
+    <rtept lat="41.83748333333333" lon="-91.87006666666667">
+      <name><![CDATA[Driveway]]></name>
+    </rtept>
+  </rte>
+</gpx>
