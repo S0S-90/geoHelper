@@ -226,7 +226,7 @@ class Geocache(object):
         for a in self.attribute:
             z6 = z6 + str(a) + ", "
         z6 = z6[:-2]
-        z7 = u"\nCache ist aktiv: {}, Stand: {}".format(self.available, self. downloaddate)
+        z7 = u"\nCache ist aktiv: {}, Stand: {}".format(self.available, self.downloaddate_anzeige)
         z8 = u"\nLink: {}".format(self.url)
         z9 = u"\n\n{}".format(self.beschreibung)
         z10 = u"\nHinweise: {}".format(self.hint)

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gpx xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" version="1.0" creator="GPX Downloader" xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd http://www.groundspeak.com/cache/1/0 http://www.groundspeak.com/cache/1/0/cache.xsd" xmlns="http://www.topografix.com/GPX/1/0">
+	<bounds minlat="50.318883" minlon="10.1936" maxlat="50.318883" maxlon="10.1936" />
+	<wpt lat="50.318883" lon="10.1936">
+		<time>2016-06-06T00:00:00</time>
+		<name>GC6K86W</name>
+		<desc>Saaletalblick by bigkruemel, Traditional Cache (2/2)</desc>
+		<url>https://www.geocaching.com/geocache/GC6K86W_saaletalblick</url>
+		<urlname>Saaletalblick</urlname>
+		<sym>Geocache</sym>
+		<type>Geocache|Traditional Cache</type>
+		<groundspeak:cache id="5703936&amp;lcn=1" xmlns:groundspeak="http://www.groundspeak.com/cache/1/0" available="True" archived="False">
+			<groundspeak:name>Saaletalblick</groundspeak:name>
+			<groundspeak:placed_by>bigkruemel</groundspeak:placed_by>
+			<groundspeak:type>Traditional Cache</groundspeak:type>
+			<groundspeak:container>micro</groundspeak:container>
+			<groundspeak:difficulty>2</groundspeak:difficulty>
+			<groundspeak:terrain>2</groundspeak:terrain>
+			<groundspeak:short_description html="True"><![CDATA[]]></groundspeak:short_description>
+			<groundspeak:long_description html="True"><![CDATA[Nach einem kleinen Spaziergang und dem Finden des Döschens werdet ihr mit einem tollen Blick ins Saaletal und auf die Saalewiesen belohnt! FTF: Jobi Voma STF: JoLoClMa TTF: Mone216
+]]>
+			</groundspeak:long_description>
+			<groundspeak:encoded_hints>Und ab durch die Hecke!</groundspeak:encoded_hints>
+			<groundspeak:logs>
+				<groundspeak:log id="0">
+					<groundspeak:date>2016-07-04T10:25:28</groundspeak:date>
+					<groundspeak:type>Write note</groundspeak:type>
+					<groundspeak:finder id="00000000-0000-0000-0000-000000000000"><![CDATA[Attributes]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[no camping, no parking available, not wheelchair accessible, kid friendly, hike shorter than 1km, stroller accessible]]></groundspeak:text>
+				</groundspeak:log>
+				<groundspeak:log id="143568283">
+					<groundspeak:date>2016-07-16T00:00:00</groundspeak:date>
+					<groundspeak:type>Found it</groundspeak:type>
+					<groundspeak:finder id="dac395bd-f3fd-49f2-b10b-38808a344e00"><![CDATA[Ziaepf]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[]]></groundspeak:text>
+				</groundspeak:log>
+				<groundspeak:log id="143568283">
+					<groundspeak:date>2016-07-10T00:00:00</groundspeak:date>
+					<groundspeak:type>Didn't find it</groundspeak:type>
+					<groundspeak:finder id="141c0260-3edb-4460-81e0-2cc4d881bdf1"><![CDATA[NES-GN 310362]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[]]></groundspeak:text>
+				</groundspeak:log>
+				<groundspeak:log id="143568283">
+					<groundspeak:date>2016-06-20T00:00:00</groundspeak:date>
+					<groundspeak:type>Found it</groundspeak:type>
+					<groundspeak:finder id="12140d3a-f619-4eda-a66e-f20367c29cd1"><![CDATA[HerbieWo]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[]]></groundspeak:text>
+				</groundspeak:log>
+				<groundspeak:log id="143568283">
+					<groundspeak:date>2016-06-15T00:00:00</groundspeak:date>
+					<groundspeak:type>Found it</groundspeak:type>
+					<groundspeak:finder id="2bee17df-c824-4dda-8e0e-192b39bc4d92"><![CDATA[Fantastic'4]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[]]></groundspeak:text>
+				</groundspeak:log>
+				<groundspeak:log id="143568283">
+					<groundspeak:date>2016-06-11T00:00:00</groundspeak:date>
+					<groundspeak:type>Found it</groundspeak:type>
+					<groundspeak:finder id="225ac2f3-1d79-4466-9f36-2ab04d3b8450"><![CDATA[vicmouse]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[]]></groundspeak:text>
+				</groundspeak:log>
+				<groundspeak:log id="143568283">
+					<groundspeak:date>2016-06-11T00:00:00</groundspeak:date>
+					<groundspeak:type>Found it</groundspeak:type>
+					<groundspeak:finder id="50da6f3e-9563-4f6f-a210-45ddf052b1b8"><![CDATA[melimouse]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[]]></groundspeak:text>
+				</groundspeak:log>
+				<groundspeak:log id="143568283">
+					<groundspeak:date>2016-06-10T00:00:00</groundspeak:date>
+					<groundspeak:type>Found it</groundspeak:type>
+					<groundspeak:finder id="a283c5b4-bdbd-474c-a108-8ab75f2696b6"><![CDATA[Mone216]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[]]></groundspeak:text>
+				</groundspeak:log>
+				<groundspeak:log id="143568283">
+					<groundspeak:date>2016-06-08T00:00:00</groundspeak:date>
+					<groundspeak:type>Found it</groundspeak:type>
+					<groundspeak:finder id="e308cf11-d909-4f41-9b22-4791a2a2431f"><![CDATA[JoLoClMa]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[]]></groundspeak:text>
+				</groundspeak:log>
+				<groundspeak:log id="143568283">
+					<groundspeak:date>2016-06-08T00:00:00</groundspeak:date>
+					<groundspeak:type>Found it</groundspeak:type>
+					<groundspeak:finder id="7c662b63-115a-4829-8fa3-9f0b9b68b55c"><![CDATA[Jobi Voma]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[]]></groundspeak:text>
+				</groundspeak:log>
+				<groundspeak:log id="143568283">
+					<groundspeak:date>2016-06-07T00:00:00</groundspeak:date>
+					<groundspeak:type>Publish Listing</groundspeak:type>
+					<groundspeak:finder id="1ca9f531-a222-431d-a289-570057bc386a"><![CDATA[Sabbelwasser]]></groundspeak:finder>
+					<groundspeak:text><![CDATA[]]></groundspeak:text>
+				</groundspeak:log>
+			</groundspeak:logs>
+		</groundspeak:cache>
+	</wpt>
+</gpx>
