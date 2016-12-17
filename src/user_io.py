@@ -1,8 +1,11 @@
 ﻿PATH = r"F:\Garmin"    # Pfad zu dem Geraet (Standardwert)
 CODIERUNG = "cp1252"   # Codierung der Kosole (cp1252 empfohlen)
 
+import ownfunctions
+
 def general_output(string):
     """gibt einen String auf der Konsole aus"""
+    string = ownfunctions.zeichen_ersetzen(string)
     print string
     
 def general_input(string):
