@@ -13,7 +13,8 @@ def general_input(string):
     return raw_input(string)
  
 def input_decode(string):
-    """fragt mit Hilfe von string nach einer Benutzereingabe, dekodiert diese und gibt sie zurueck"""
+    """fragt mit Hilfe von string nach einer Benutzereingabe, dekodiert diese und gibt sie zurueck
+    string darf keine Charakters enthalten, die nicht in der CODIERUNG vorhanden sind"""
     return raw_input(string).decode(CODIERUNG)
     
 def hauptmenue(found_exists):

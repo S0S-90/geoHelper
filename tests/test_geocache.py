@@ -1,7 +1,7 @@
 ﻿import unittest
 import datetime
 import sys
-sys.path.append('../src/') # path to source file (ownfunctions.py)
+sys.path.append('../src/') # path to source file (geocache.py)
 
 import geocache 
     
