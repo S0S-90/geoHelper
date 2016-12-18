@@ -113,8 +113,10 @@ def koordinaten_minuten_to_dezimalgrad(koordinatenstring):
     """"rechnet Koordinaten in Grad und Minuten (z.B. auf geocaching.com) in Dezimalgrad (z.B. in gpx-Datei) um"""
     if type(koordinatenstring) != unicode and type(koordinatenstring) != str:
         raise TypeError("Wrong input type: {}".format(type(koordinatenstring)))
-    if koordinatenstring[4] != u"°" or koordinatenstring[18] != u"°" or len(koordinatenstring) != 25 or koordinatenstring[7] != u"." or koordinatenstring[21] != u".":
-        raise ValueError("Bad input.")
+    if len(koordinatenstring) != 25:
+        raise ValueError("Wrong input format.")
+    if koordinatenstring[4] != u"°" or koordinatenstring[18] != u"°" or koordinatenstring[7] != u"." or koordinatenstring[21] != u".":
+        raise ValueError("Wrong input format.")
     nordgrad = int(koordinatenstring[2:4])
     ostgrad = int(koordinatenstring[15:18])
     nordminuten = float(koordinatenstring[5:11])
@@ -126,23 +128,25 @@ def koordinaten_minuten_to_dezimalgrad(koordinatenstring):
     if koordinatenstring[0] == "S":
         nord = -nord
     elif koordinatenstring[0] != "N":
-        raise ValueError("Bad input.")
+        raise ValueError("Wrong input format.")
     if koordinatenstring[13] == "W":
         ost = -ost
     elif koordinatenstring[13] != "E":
-        raise ValueError("Bad input.")
+        raise ValueError("Wrong input format.")
     return [nord, ost]
     
 def koordinaten_minuten_to_sekunden(koordinatenstring):
     """rechnet Koordinaten in Grad und Minuten (z.B. auf geocaching.com) in Grad, Minuten und Sekunden um (z.B. fuer Eingabe in Google-Maps)"""
     if type(koordinatenstring) != unicode and type(koordinatenstring) != str:
         raise TypeError("Wrong input type: {}".format(type(koordinatenstring)))
-    if koordinatenstring[4] != u"°" or koordinatenstring[18] != u"°" or len(koordinatenstring) != 25 or koordinatenstring[7] != u"." or koordinatenstring[21] != u".":
-        raise ValueError("Bad input.")
+    if len(koordinatenstring) != 25:
+        raise ValueError("Wrong input format.")
+    if koordinatenstring[4] != u"°" or koordinatenstring[18] != u"°" or koordinatenstring[7] != u"." or koordinatenstring[21] != u".":
+        raise ValueError("Wrong input format.")
     nordsign = koordinatenstring[0]
     ostsign = koordinatenstring[13]
     if (nordsign != "N" and nordsign != "S") or (ostsign != "E" and ostsign != "W"):
-        raise ValueError("Bad input.")
+        raise ValueError("Wrong input format.")
     nordgrad = int(koordinatenstring[2:4])
     ostgrad = int(koordinatenstring[15:18])
     if nordgrad > 90 or ostgrad > 180:

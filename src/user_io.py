@@ -82,14 +82,18 @@ def sortieren():
     print "8: Verfuegbarkeit"
     print "9: Abstand von einer bestimmten Position (Koordinaten erforderlich)"
     eingabe_kriterium = raw_input(">> ")
-    try:
-        kriterium = kriterien[int(eingabe_kriterium)-1]
-    except IndexError:
+    if eingabe_kriterium == "0":
         print "Ungueltige Eingabe: Sortierung erfolgt nach GC-Code"
         kriterium = "gccode"
-    except ValueError:
-        print "Ungueltige Eingabe: Sortierung erfolgt nach GC-Code"
-        kriterium = "gccode"
+    else:
+        try:
+            kriterium = kriterien[int(eingabe_kriterium)-1]
+        except IndexError:
+            print "Ungueltige Eingabe: Sortierung erfolgt nach GC-Code"
+            kriterium = "gccode"
+        except ValueError:
+            print "Ungueltige Eingabe: Sortierung erfolgt nach GC-Code"
+            kriterium = "gccode"
         
     print "In welche Richtung sollen die Caches sortiert werden?"
     print "1: aufsteigend"
@@ -118,12 +122,15 @@ def suchen():
     print "9: Attribut"
     print "10: Abstand von einer bestimmten Position (Koordinaten erforderlich)"
     eingabe = raw_input(">> ")
-    try:
-        return kriterien[int(eingabe)-1]
-    except IndexError:
+    if eingabe == "0":
         print "Ungueltige Eingabe"
-    except ValueError:
-        print "Ungueltige Eingabe"
+    else:
+        try:
+            return kriterien[int(eingabe)-1]
+        except IndexError:
+            print "Ungueltige Eingabe"
+        except ValueError:
+            print "Ungueltige Eingabe"
         
 def search_type():
     print "Gib den Cachetyp ein, nach dem du suchen willst."
