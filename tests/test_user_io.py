@@ -1,6 +1,6 @@
 ﻿import unittest
-import datetime
 import mock
+import datetime
 import sys
 sys.path.append('../src/') # path to source file (user_io.py)
 from StringIO import StringIO
@@ -47,54 +47,54 @@ class TestGeneralOutput(unittest.TestCase):
 class TestGeneralInput(unittest.TestCase):   
 
     def test_normaltext(self):
-        __builtins__.raw_input = lambda _: 'hello'   # mock raw_input 
-        self.assertEqual(user_io.general_input(">> "), 'hello')
+        with mock.patch('__builtin__.raw_input', return_value="hello"):
+            self.assertEqual(user_io.general_input(">> "), 'hello')
         
     def test_textwithcapitalsandnumbers(self):
-        __builtins__.raw_input = lambda _: 'hAllo2'   # mock raw_input 
-        self.assertEqual(user_io.general_input(">> "), 'hAllo2')
+        with mock.patch('__builtin__.raw_input', return_value="hAllo2"):
+            self.assertEqual(user_io.general_input(">> "), 'hAllo2')
         
     def test_replacable_signs(self):
-        __builtins__.raw_input = lambda _: u"hallo {}".format(u"\u263a")   # mock raw_input 
-        self.assertEqual(user_io.general_input(">> "), u"hallo {}".format(u"\u263a"))
+        with mock.patch('__builtin__.raw_input', return_value=u"hallo {}".format(u"\u263a")): 
+            self.assertEqual(user_io.general_input(">> "), u"hallo {}".format(u"\u263a"))
         
     def test_umlaute(self):
-        __builtins__.raw_input = lambda _: u"m{}rchen".format(u"\u00E4")   # mock raw_input 
-        self.assertEqual(user_io.general_input(">> "), u"m{}rchen".format(u"\u00E4"))
+        with mock.patch('__builtin__.raw_input', return_value=u"m{}rchen".format(u"\u00E4")):
+            self.assertEqual(user_io.general_input(">> "), u"m{}rchen".format(u"\u00E4"))
         
     def test_unknown_signs(self):
-        __builtins__.raw_input = lambda _: u"tuerkische Flagge: {}".format(u"\u262a")   # mock raw_input 
-        self.assertEqual(user_io.general_input(">> "), u"tuerkische Flagge: {}".format(u"\u262a"))
+        with mock.patch('__builtin__.raw_input', return_value=u"tuerkische Flagge: {}".format(u"\u262a")):
+            self.assertEqual(user_io.general_input(">> "), u"tuerkische Flagge: {}".format(u"\u262a"))
         
     def test_number(self):
-        __builtins__.raw_input = lambda _: "42"   # mock raw_input 
-        self.assertEqual(user_io.general_input(">> "), "42")
+        with mock.patch('__builtin__.raw_input', return_value="42"):
+            self.assertEqual(user_io.general_input(">> "), "42")
         
 class TestInputDecode(unittest.TestCase):   
 
     def test_normaltext(self):
-        __builtins__.raw_input = lambda _: 'hello'   # mock raw_input 
-        self.assertEqual(user_io.input_decode(">> "), 'hello')
+        with mock.patch('__builtin__.raw_input', return_value="hello"):
+            self.assertEqual(user_io.input_decode(">> "), 'hello')
         
     def test_textwithcapitalsandnumbers(self):
-        __builtins__.raw_input = lambda _: 'hAllo2'   # mock raw_input 
-        self.assertEqual(user_io.input_decode(">> "), 'hAllo2')
+        with mock.patch('__builtin__.raw_input', return_value="hAllo2"):
+            self.assertEqual(user_io.input_decode(">> "), 'hAllo2')
         
     def test_replacable_signs(self):
-        __builtins__.raw_input = lambda _: "hallo {}".format(u"\u263a")   # mock raw_input 
-        self.assertRaises(UnicodeEncodeError, user_io.input_decode, ">> ")
+        with mock.patch('__builtin__.raw_input', return_value=u"hallo {}".format(u"\u263a")):
+            self.assertRaises(UnicodeEncodeError, user_io.input_decode, ">> ")
         
     def test_umlaute(self):
-        __builtins__.raw_input = lambda _: 'M\xe4rchen'   # mock raw_input 
-        self.assertEqual(user_io.input_decode(">> "), u"Märchen")
+        with mock.patch('__builtin__.raw_input', return_value='M\xe4rchen'):
+            self.assertEqual(user_io.input_decode(">> "), u"Märchen")
         
     def test_unknown_signs(self):
-        __builtins__.raw_input = lambda _: u"tuerkische Flagge: {}".format(u"\u262a")   # mock raw_input 
-        self.assertRaises(UnicodeEncodeError, user_io.input_decode, ">> ")
+        with mock.patch('__builtin__.raw_input', return_value=u"tuerkische Flagge: {}".format(u"\u262a")):
+            self.assertRaises(UnicodeEncodeError, user_io.input_decode, ">> ")
         
     def test_number(self):
-        __builtins__.raw_input = lambda _: "42"   # mock raw_input 
-        self.assertEqual(user_io.input_decode(">> "), "42")
+        with mock.patch('__builtin__.raw_input', return_value="42"):
+            self.assertEqual(user_io.input_decode(">> "), "42")
         
 class TestHauptmenueAnzeigen(unittest.TestCase):
     
