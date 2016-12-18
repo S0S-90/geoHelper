@@ -3,7 +3,6 @@
 
 #Voraussetzungen
 * Python 2.7 mit Modulen: sys, glob, webbrowser, os, time, math, datetime, urllib, HTMLParser, unicodedata, xml.etree.ElementTree (alle in Standardbibliothek vorhanden)
-* [zum Ausführen der Tests: unittest (Standardbibliothek), mock (über pip erhältlich)]
 
 * Die Fieldnotes-Datei "geocache_visits.txt" sowie die Logdatei "geocache_logs.xml" müssen direkt im angegebenen Ordner für das GPS-Gerät liegen, 
 die gpx-Dateien in einem Unterordner mit Namen "GPX". (Dies sollte bei Garmin-Geräten automatisch der Fall sein.)
@@ -14,7 +13,7 @@ verwendet wird.
 #Download und Start des Programms
 * Falls Python nicht bereits auf dem System vorhanden: Download von Python 2.7, z.B. [hier](https://www.python.org/downloads/)
 * Download und Entpacken des Archivs "geoHelper_v1.0-beta.zip" auf [Release Page](https://github.com/S0S-90/geoHelper/releases) 
-* Doppelklick auf "winstarter.bat"
+* Doppelklick auf "winstarter.bat" im Ordner src
 * [Alternativ kann das Programm "geohelper.py" auch direkt (aus der Konsole) geöffnet werden. Dazu muss jedoch vorher die Codierung der Konsole auf Codepage 1252 eingestellt werden.
 So sollte das Programm auch auf Nicht-Windows-Rechnern laufen, was allerdings nicht getestet wurde.]
 
@@ -32,6 +31,11 @@ GPX-Datei heruntergeladen, kann diese mittels "Geocaches aktualisieren" in das P
 * Löschen eines oder mehrerer Caches
 * Auslesen der als gefunden markierten Caches und Löschen dieser Caches mitsamt der Log-Information, nachdem diese auf der Fieldnote-Seite von geocaching.com geloggt wurden
 
+
+#Testen des Programms (nur für Entwickler)
+* Zusätzlich zur Python-Standardinstallation muss das Package mock installiert werden. Für die Installation über pip in den Ordner C:\Python27\Scripts gehen, eine Konsole öffnen 
+und "pip install mock" eingeben.
+* Ausführen: Doppelklick auf "wintest.bat" im Ordner tests
 
 
 
