@@ -17,9 +17,8 @@ def input_decode(string):
     string darf keine Charakters enthalten, die nicht in der CODIERUNG vorhanden sind"""
     return raw_input(string).decode(CODIERUNG)
     
-def hauptmenue(found_exists):
-    """"gibt das Hauptmenue aus und je nach Benutzereingabe die Aufgabe zurueck, die als naechstes ausgefuehrt werden soll"""
-    
+def hauptmenue_anzeigen(found_exists):
+    """gibt das Hauptmenue aus"""
     print "\nWas moechtest du als naechstes tun?"
     print "1: Geocaches aktualisieren"
     print "2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen"
@@ -34,6 +33,11 @@ def hauptmenue(found_exists):
         print "5: https://www.geocaching.com/map aufrufen"
         print "6: https://www.google.de/maps aufrufen"
         print "7: Programm verlassen"
+    
+def hauptmenue(found_exists):
+    """"gibt das Hauptmenue aus und je nach Benutzereingabe die Aufgabe zurueck, die als naechstes ausgefuehrt werden soll"""
+    
+    hauptmenue_anzeigen(found_exists)
     eingabe = raw_input(">> ")
     
     if eingabe == "1":

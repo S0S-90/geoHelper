@@ -3,6 +3,7 @@
 
 #Voraussetzungen
 * Python 2.7 mit Modulen: sys, glob, webbrowser, os, time, math, datetime, urllib, HTMLParser, unicodedata, xml.etree.ElementTree (alle in Standardbibliothek vorhanden)
+* [zum Ausführen der Tests: unittest (Standardbibliothek), mock (über pip erhältlich)]
 
 * Die Fieldnotes-Datei "geocache_visits.txt" sowie die Logdatei "geocache_logs.xml" müssen direkt im angegebenen Ordner für das GPS-Gerät liegen, 
 die gpx-Dateien in einem Unterordner mit Namen "GPX". (Dies sollte bei Garmin-Geräten automatisch der Fall sein.)
