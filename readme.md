@@ -13,7 +13,7 @@ verwendet wird.
 #Download und Start des Programms
 * Falls Python nicht bereits auf dem System vorhanden: Download von Python 2.7, z.B. [hier](https://www.python.org/downloads/)
 * Download und Entpacken des Archivs "geoHelper_v1.0-beta.zip" auf [Release Page](https://github.com/S0S-90/geoHelper/releases) 
-* Doppelklick auf "winstarter.bat" im Ordner src
+* Doppelklick auf "winstarter.bat"
 * [Alternativ kann das Programm "geohelper.py" auch direkt (aus der Konsole) geöffnet werden. Dazu muss jedoch vorher die Codierung der Konsole auf Codepage 1252 eingestellt werden.
 So sollte das Programm auch auf Nicht-Windows-Rechnern laufen, was allerdings nicht getestet wurde.]
 
