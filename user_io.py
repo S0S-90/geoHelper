@@ -174,7 +174,7 @@ def loeschbestaetigung():
 def einen_anzeigen():
     """fragt nach dem Anzeigen eines Caches, ob dieser geloescht werden soll"""
     
-    print "\nWas moechstest du als naechstes tun?"
+    print "\nWas moechtest du als naechstes tun?"
     print "1: diesen Cache loeschen"
     print "2: diesen Cache auf geocaching.com oeffnen"
     print "3: Abstand dieses Caches zu einer bestimmten Position berechnen"
