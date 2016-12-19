@@ -4,6 +4,8 @@ import urllib
 from HTMLParser import HTMLParser
 import unicodedata
 
+import user_io
+
 
 class MyHTMLParser(HTMLParser):
     """Parser, um alle Daten, die in einer Tabelle (Tags <td> bzw. </td>) stehen, auszulesen
@@ -114,9 +116,9 @@ def koordinaten_minuten_to_dezimalgrad(koordinatenstring):
     if type(koordinatenstring) != unicode and type(koordinatenstring) != str:
         raise TypeError("Wrong input type: {}".format(type(koordinatenstring)))
     if len(koordinatenstring) != 25:
-        raise ValueError("Wrong input format.")
+        raise ValueError("Bad Input,")
     if koordinatenstring[4] != u"°" or koordinatenstring[18] != u"°" or koordinatenstring[7] != u"." or koordinatenstring[21] != u".":
-        raise ValueError("Wrong input format.")
+        raise ValueError("Bad Input,")
     nordgrad = int(koordinatenstring[2:4])
     ostgrad = int(koordinatenstring[15:18])
     nordminuten = float(koordinatenstring[5:11])
@@ -124,15 +126,18 @@ def koordinaten_minuten_to_dezimalgrad(koordinatenstring):
     nord = nordgrad + nordminuten/60
     ost = ostgrad + ostminuten/60
     if nord > 90 or ost > 180:
-        raise ValueError("These coordinates do not exist on earth.")
+        user_io.general_output("These coordinates do not exist on earth.")
+        return None
     if koordinatenstring[0] == "S":
         nord = -nord
     elif koordinatenstring[0] != "N":
-        raise ValueError("Wrong input format.")
+        user_io.general_output("Wrong input format.")
+        return None
     if koordinatenstring[13] == "W":
         ost = -ost
     elif koordinatenstring[13] != "E":
-        raise ValueError("Wrong input format.")
+        user_io.general_output("Wrong input format.")
+        return None
     return [nord, ost]
     
 def koordinaten_minuten_to_sekunden(koordinatenstring):
@@ -140,21 +145,24 @@ def koordinaten_minuten_to_sekunden(koordinatenstring):
     if type(koordinatenstring) != unicode and type(koordinatenstring) != str:
         raise TypeError("Wrong input type: {}".format(type(koordinatenstring)))
     if len(koordinatenstring) != 25:
-        raise ValueError("Wrong input format.")
+        return None
     if koordinatenstring[4] != u"°" or koordinatenstring[18] != u"°" or koordinatenstring[7] != u"." or koordinatenstring[21] != u".":
-        raise ValueError("Wrong input format.")
+        return None
     nordsign = koordinatenstring[0]
     ostsign = koordinatenstring[13]
     if (nordsign != "N" and nordsign != "S") or (ostsign != "E" and ostsign != "W"):
-        raise ValueError("Wrong input format.")
+        user_io.general_output("Wrong input format.")
+        return None
     nordgrad = int(koordinatenstring[2:4])
     ostgrad = int(koordinatenstring[15:18])
     if nordgrad > 90 or ostgrad > 180:
-        raise ValueError("These coordinates do not exist on earth.")
+        user_io.general_output("These coordinates do not exist on earth.")
+        return None
     nordminuten_dez = float(koordinatenstring[5:11])
     ostminuten_dez = float(koordinatenstring[19:25])
     if (nordgrad == 90 and nordminuten_dez) > 0 or (ostgrad == 180 and ostminuten_dez > 0):
-        raise ValueError("These coordinates do not exist on earth.")
+        user_io.general_output("These coordinates do not exist on earth.")
+        return None
     nordminuten = int(nordminuten_dez)
     ostminuten = int(ostminuten_dez)
     nordsekunden = round((nordminuten_dez - nordminuten)*60,1)
@@ -258,7 +266,8 @@ def string_to_date(string):
     """wandelt einen String im Format 'DD.MM.YYYY' in ein datetime.date-Objekt um"""
     
     if len(string) != 10 or string[2] != "." or string[5] != ".":
-        raise ValueError("Bad input.")
+        user_io.general_output("Bad input.")
+        return None
     
     day = int(string[0:2])
     month = int(string[3:5])

@@ -430,8 +430,131 @@ class TestSearchType(unittest.TestCase):
             expected_output = expected_output + "Achtung! Gross- und Kleinschreibung beachten!"
             self.assertEqual(output, expected_output)
             
-# weiter mit search_attribute
+class TestSearchAttribute(unittest.TestCase):
+    
+    def test_return(self):
+        with mock.patch('__builtin__.raw_input', return_value= "does not need to be an attr"): 
+            self.assertEqual(user_io.search_attribute(["attr1", "attr2"]), "does not need to be an attr")
             
+    def test_output(self):
+        with mock.patch('__builtin__.raw_input', return_value= "any_nonsense"):
+            out = StringIO()
+            sys.stdout = out                 
+            user_io.search_attribute(["attr1", "attr2"])  
+            output = out.getvalue().strip()  
+            expected_output = "Gib das Attribut ein, nach dem du suchen willst.\n"
+            expected_output = expected_output + "Moegliche Attribute: attr1, attr2" 
+            self.assertEqual(output, expected_output)
+            
+class TestAktionenAuswahlSuchen(unittest.TestCase):
+
+    def test_1(self):
+        with mock.patch('__builtin__.raw_input', return_value= "1"):
+            self.assertEqual(user_io.aktionen_auswahl_suchen(), "neu_anzeigen")
+            
+    def test_2(self):
+        with mock.patch('__builtin__.raw_input', return_value= "2"):
+            self.assertEqual(user_io.aktionen_auswahl_suchen(), "loeschen")
+            
+    def test_3(self):
+        with mock.patch('__builtin__.raw_input', return_value= "3"):
+            self.assertEqual(user_io.aktionen_auswahl_suchen(), "einen_anzeigen")
+            
+    def test_4(self):
+        with mock.patch('__builtin__.raw_input', return_value= "4"):
+            self.assertEqual(user_io.aktionen_auswahl_suchen(), "back")
+            
+    def test_other(self):
+        with mock.patch('__builtin__.raw_input', return_value= "0"):
+            self.assertEqual(user_io.aktionen_auswahl_suchen(), None)
+            
+    def test_output(self):
+        with mock.patch('__builtin__.raw_input', return_value= "1"):
+            out = StringIO()
+            sys.stdout = out                 
+            user_io.aktionen_auswahl_suchen()
+            output = out.getvalue().strip()  
+            expected_output = "Was moechtest du als naechstes tun?\n"
+            expected_output = expected_output + "1: Alle Suchergebnisse erneut anzeigen (bei evtl. Loeschen nicht aktualisiert)\n" 
+            expected_output = expected_output + "2: Alle Suchergebnisse loeschen\n"
+            expected_output = expected_output + "3: Beschreibung fuer eines der Suchergebnisse anzeigen\n"
+            expected_output = expected_output + "4: zurueck"
+            self.assertEqual(output, expected_output)
+            
+    def test_output_invalid_input(self):
+        with mock.patch('__builtin__.raw_input', return_value= "bla"):
+            out = StringIO()
+            sys.stdout = out                 
+            user_io.aktionen_auswahl_suchen()
+            output = out.getvalue().strip()  
+            expected_output = "Was moechtest du als naechstes tun?\n"
+            expected_output = expected_output + "1: Alle Suchergebnisse erneut anzeigen (bei evtl. Loeschen nicht aktualisiert)\n" 
+            expected_output = expected_output + "2: Alle Suchergebnisse loeschen\n"
+            expected_output = expected_output + "3: Beschreibung fuer eines der Suchergebnisse anzeigen\n"
+            expected_output = expected_output + "4: zurueck\n"
+            expected_output = expected_output + "Ungueltige Eingabe"
+            self.assertEqual(output, expected_output)
+            
+class TestLoeschbestaetigung(unittest.TestCase):
+
+    def test_yes(self):
+        with mock.patch('__builtin__.raw_input', return_value= "y"):
+            self.assertEqual(user_io.loeschbestaetigung(), True)
+            
+    def test_no(self):
+        with mock.patch('__builtin__.raw_input', return_value= "n"):
+            self.assertEqual(user_io.loeschbestaetigung(), False)
+            
+    def test_nonsense(self):
+        with mock.patch('__builtin__.raw_input', return_value= "any_nonsense"):
+            self.assertEqual(user_io.loeschbestaetigung(), False)
+            
+class TestEinenAnzeigen(unittest.TestCase):
+
+    def test_1(self):
+        with mock.patch('__builtin__.raw_input', return_value= "1"):
+            self.assertEqual(user_io.einen_anzeigen(), "loeschen")
+            
+    def test_2(self):
+        with mock.patch('__builtin__.raw_input', return_value= "2"):
+            self.assertEqual(user_io.einen_anzeigen(), "gc.com")
+            
+    def test_3(self):
+        with mock.patch('__builtin__.raw_input', return_value= "3"):
+            self.assertEqual(user_io.einen_anzeigen(), "dist")
+            
+    def test_4(self):
+        with mock.patch('__builtin__.raw_input', return_value= "4"):
+            self.assertEqual(user_io.einen_anzeigen(), "gc-map")
+            
+    def test_5(self):
+        with mock.patch('__builtin__.raw_input', return_value= "5"):
+            self.assertEqual(user_io.einen_anzeigen(), "googlemaps")
+            
+    def test_6(self):
+        with mock.patch('__builtin__.raw_input', return_value= "6"):
+            self.assertEqual(user_io.einen_anzeigen(), None)
+            
+    def test_other(self):
+        with mock.patch('__builtin__.raw_input', return_value= "0"):
+            self.assertEqual(user_io.einen_anzeigen(), None)
+            
+    def test_output(self):
+        with mock.patch('__builtin__.raw_input', return_value= "bla"):
+            out = StringIO()
+            sys.stdout = out                 
+            user_io.einen_anzeigen()
+            output = out.getvalue().strip()  
+            expected_output = "Was moechtest du als naechstes tun?\n"
+            expected_output = expected_output + "1: diesen Cache loeschen\n" 
+            expected_output = expected_output + "2: diesen Cache auf geocaching.com oeffnen\n"
+            expected_output = expected_output + "3: Abstand dieses Caches zu einer bestimmten Position berechnen\n"
+            expected_output = expected_output + "4: Position des Caches auf der Karte https://www.geocaching.com/map anzeigen\n"
+            expected_output = expected_output + "5: Position des Caches auf der Karte https://www.google.de/maps anzeigen\n"
+            expected_output = expected_output + "6: zurueck"
+            self.assertEqual(output, expected_output)
+
+# weiter mit koordinaten_eingabe()            
         
 def create_testsuite():
     suite = unittest.TestSuite()
@@ -443,6 +566,10 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestSortieren))
     suite.addTest(unittest.makeSuite(TestSuchen))
     suite.addTest(unittest.makeSuite(TestSearchType))
+    suite.addTest(unittest.makeSuite(TestSearchAttribute))
+    suite.addTest(unittest.makeSuite(TestAktionenAuswahlSuchen))
+    suite.addTest(unittest.makeSuite(TestLoeschbestaetigung))
+    suite.addTest(unittest.makeSuite(TestEinenAnzeigen))
     return suite
 
 if __name__ == '__main__':

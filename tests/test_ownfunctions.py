@@ -2,8 +2,12 @@
 import datetime
 import sys
 sys.path.append('../src/') # path to source file (ownfunctions.py)
+from StringIO import StringIO
 
 import ownfunctions  
+
+out = StringIO()
+sys.stdout = out   # don't print output
     
 class TestZeichenErsetzen(unittest.TestCase):
 
@@ -110,16 +114,16 @@ class TestKoordinatenMinutenToDezimalgrad(unittest.TestCase):
         self.assertEqual([n,e], [52.520817,0])
         
     def test_north_bigger_than_90(self):
-        self.assertRaises(ValueError, ownfunctions.koordinaten_minuten_to_dezimalgrad, u"N 90°31.249, E 013°24.567")
+        self.assertEqual(ownfunctions.koordinaten_minuten_to_dezimalgrad(u"N 90°31.249, E 013°24.567"), None)
         
     def test_east_bigger_than_180(self):
-        self.assertRaises(ValueError, ownfunctions.koordinaten_minuten_to_dezimalgrad, u"N 52°31.249, E 213°24.567")
+        self.assertEqual(ownfunctions.koordinaten_minuten_to_dezimalgrad(u"N 52°31.249, E 213°24.567"), None)
         
     def test_north_bigger_than_90_south(self):
-        self.assertRaises(ValueError, ownfunctions.koordinaten_minuten_to_dezimalgrad, u"S 92°31.249, E 013°24.567")
+        self.assertEqual(ownfunctions.koordinaten_minuten_to_dezimalgrad(u"S 92°31.249, E 013°24.567"), None)
         
     def test_east_bigger_than_180_west(self):
-        self.assertRaises(ValueError, ownfunctions.koordinaten_minuten_to_dezimalgrad, u"N 52°31.249, W 213°24.567")
+        self.assertEqual(ownfunctions.koordinaten_minuten_to_dezimalgrad(u"N 52°31.249, W 213°24.567"), None)
         
     def test_small_mistake_in_unicode(self):
         self.assertRaises(ValueError, ownfunctions.koordinaten_minuten_to_dezimalgrad, u"N 92°310249, E 013°24.567")
@@ -146,19 +150,19 @@ class TestKoordinatenMinutenToSekunden(unittest.TestCase):
         self.assertEqual(x, u"52°31'14.9\"N+0°0'0.0\"E")
 
     def test_north_bigger_than_90(self):
-        self.assertRaises(ValueError, ownfunctions.koordinaten_minuten_to_sekunden, u"N 90°31.249, E 013°24.567")
+        self.assertEqual(ownfunctions.koordinaten_minuten_to_sekunden(u"N 90°31.249, E 013°24.567"), None)
         
     def test_east_bigger_than_180(self):
-        self.assertRaises(ValueError, ownfunctions.koordinaten_minuten_to_sekunden, u"N 52°31.249, E 213°24.567")
+        self.assertEqual(ownfunctions.koordinaten_minuten_to_sekunden(u"N 52°31.249, E 213°24.567"), None)
         
     def test_north_bigger_than_90_south(self):
-        self.assertRaises(ValueError, ownfunctions.koordinaten_minuten_to_sekunden, u"S 92°31.249, E 013°24.567")
+        self.assertEqual(ownfunctions.koordinaten_minuten_to_sekunden(u"S 92°31.249, E 013°24.567"), None)
         
     def test_east_bigger_than_180_west(self):
-        self.assertRaises(ValueError, ownfunctions.koordinaten_minuten_to_sekunden, u"N 52°31.249, W 213°24.567")
+        self.assertEqual(ownfunctions.koordinaten_minuten_to_sekunden(u"N 52°31.249, W 213°24.567"), None)
         
     def test_small_mistake_in_unicode(self):
-        self.assertRaises(ValueError, ownfunctions.koordinaten_minuten_to_sekunden, u"N 92°310249, E 013°24.567")
+        self.assertEqual(ownfunctions.koordinaten_minuten_to_sekunden(u"N 92°310249, E 013°24.567"), None)
         
     def test_list_instead_of_unicode(self):
         self.assertRaises(TypeError, ownfunctions.koordinaten_minuten_to_sekunden, [u"N 52°31.249, E 013°24.567"])
@@ -194,7 +198,7 @@ class TestKoordinatenUrlToDezimalgrad(unittest.TestCase):
         self.assertEqual(x, [0.0, 34.4497481])
         
     def test_different_website(self):
-        self.assertRaises(ValueError, ownfunctions.koordinaten_minuten_to_sekunden, "https://www.google.de/")
+        self.assertEqual(ownfunctions.koordinaten_minuten_to_sekunden("https://www.google.de/"), None)
         
     def test_different_input_type(self):
         self.assertRaises(TypeError, ownfunctions.koordinaten_minuten_to_sekunden, 42)
