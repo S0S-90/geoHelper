@@ -430,4 +430,4 @@ def create_testsuite():
 
 if __name__ == '__main__':
     testsuite = create_testsuite()
-    unittest.TextTestRunner(verbosity=1).run(testsuite)   # set verbosity to 2 if you want to see the name and result of every test and to 1 if you don't
+    unittest.TextTestRunner(verbosity=2).run(testsuite)   # set verbosity to 2 if you want to see the name and result of every test and to 1 if you don't
