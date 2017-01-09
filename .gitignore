@@ -2,3 +2,4 @@
 *.pyc
 # ignoriert temporäre Dateien
 *~
+tests/examples/*

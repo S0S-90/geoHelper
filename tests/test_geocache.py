@@ -392,11 +392,11 @@ class TestMedrixErnos(unittest.TestCase):
         self.assertEqual(self.gc.available, True)
         
     def test_downloaddate(self):
-        expected_date = datetime.date(2016,12,11)
+        expected_date = datetime.date(2017,1,9)
         self.assertEqual(self.gc.downloaddate, expected_date)
         
     def test_downloaddate_anzeige(self):
-        self.assertEqual(self.gc.downloaddate_anzeige, "11 Dec 2016")
+        self.assertEqual(self.gc.downloaddate_anzeige, "09 Jan 2017")
         
 class TestInvalidInput(unittest.TestCase):
         
