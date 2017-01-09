@@ -6,6 +6,8 @@ sys.path.append('../src/') # path to source file (user_io.py)
 from StringIO import StringIO
 
 import user_io  
+
+saved_stdout = sys.stdout # save standard output
     
 class TestGeneralOutput(unittest.TestCase):
 
@@ -588,6 +590,11 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestKoordinatenEingabe))
     return suite
 
-if __name__ == '__main__':
+def main(v):
+    sys.stdout = saved_stdout  # print output to display
+    print "\nTesting user_io.py"
     testsuite = create_testsuite()
-    unittest.TextTestRunner(verbosity=1).run(testsuite)   # set verbosity to 2 if you want to see the name and result of every test and to 1 if you don't
+    unittest.TextTestRunner(verbosity=v).run(testsuite)  
+
+if __name__ == '__main__':
+    main(2)

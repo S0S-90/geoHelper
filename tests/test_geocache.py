@@ -4,6 +4,8 @@ import sys
 sys.path.append('../src/') # path to source file (geocache.py)
 
 import geocache 
+
+saved_stdout = sys.stdout # save standard output
     
 class TestSaaletalblick(unittest.TestCase):
 
@@ -428,6 +430,11 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestInvalidInput))
     return suite
 
-if __name__ == '__main__':
+def main(v):
+    sys.stdout = saved_stdout  # print output to display
+    print "\nTesting geocache.py"
     testsuite = create_testsuite()
-    unittest.TextTestRunner(verbosity=2).run(testsuite)   # set verbosity to 2 if you want to see the name and result of every test and to 1 if you don't
+    unittest.TextTestRunner(verbosity=v).run(testsuite)  
+
+if __name__ == '__main__':
+    main(2)

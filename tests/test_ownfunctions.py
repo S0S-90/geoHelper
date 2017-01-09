@@ -5,9 +5,6 @@ sys.path.append('../src/') # path to source file (ownfunctions.py)
 from StringIO import StringIO
 
 import ownfunctions  
-
-out = StringIO()
-sys.stdout = out   # don't print output
     
 class TestZeichenErsetzen(unittest.TestCase):
 
@@ -388,7 +385,13 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestStringToDate))
     suite.addTest(unittest.makeSuite(TestRemoveSpaces))
     return suite
+    
+def main(v):
+    print "\nTesting ownfunctions.py"
+    out = StringIO()
+    sys.stdout = out   # don't print output
+    testsuite = create_testsuite()
+    unittest.TextTestRunner(verbosity=v).run(testsuite)  
 
 if __name__ == '__main__':
-    testsuite = create_testsuite()
-    unittest.TextTestRunner(verbosity=1).run(testsuite)   # set verbosity to 2 if you want to see the name and result of every test and to 1 if you don't
+    main(2)
