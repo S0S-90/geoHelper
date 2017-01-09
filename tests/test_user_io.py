@@ -554,7 +554,22 @@ class TestEinenAnzeigen(unittest.TestCase):
             expected_output = expected_output + "6: zurueck"
             self.assertEqual(output, expected_output)
 
-# weiter mit koordinaten_eingabe()            
+class TestKoordinatenEingabe(unittest.TestCase):
+    
+    def test_return(self):
+        with mock.patch('__builtin__.raw_input', return_value= "X XX°XX.XXX, X XXX°XX.XXX"): 
+            self.assertEqual(user_io.koordinaten_eingabe(), "X XX°XX.XXX, X XXX°XX.XXX")
+            
+    def test_output(self):
+        with mock.patch('__builtin__.raw_input', return_value= "any_nonsense"):
+            out = StringIO()
+            sys.stdout = out                 
+            user_io.koordinaten_eingabe()  
+            output = out.getvalue().strip()  
+            expected_output = u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX oder URL (google maps oder geocaching.com/map)"
+            self.assertEqual(output, expected_output)     
+
+# weiter mit openfieldnotes            
         
 def create_testsuite():
     suite = unittest.TestSuite()
@@ -570,8 +585,9 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestAktionenAuswahlSuchen))
     suite.addTest(unittest.makeSuite(TestLoeschbestaetigung))
     suite.addTest(unittest.makeSuite(TestEinenAnzeigen))
+    suite.addTest(unittest.makeSuite(TestKoordinatenEingabe))
     return suite
 
 if __name__ == '__main__':
     testsuite = create_testsuite()
-    unittest.TextTestRunner(verbosity=2).run(testsuite)   # set verbosity to 2 if you want to see the name and result of every test and to 1 if you don't
+    unittest.TextTestRunner(verbosity=1).run(testsuite)   # set verbosity to 2 if you want to see the name and result of every test and to 1 if you don't
