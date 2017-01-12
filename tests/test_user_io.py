@@ -571,7 +571,49 @@ class TestKoordinatenEingabe(unittest.TestCase):
             expected_output = u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX oder URL (google maps oder geocaching.com/map)"
             self.assertEqual(output, expected_output)     
 
-# weiter mit openfieldnotes            
+class TestOpenFieldnotes(unittest.TestCase):
+    
+    def test_return_yes(self):
+        with mock.patch('__builtin__.raw_input', return_value= "y"): 
+            self.assertEqual(user_io.open_fieldnotes(), True)
+            
+    def test_return_no(self):
+        with mock.patch('__builtin__.raw_input', return_value= "n"): 
+            self.assertEqual(user_io.open_fieldnotes(), False)
+            
+    def test_return_no_with_nonsense(self):
+        with mock.patch('__builtin__.raw_input', return_value= "nonsense1234"): 
+            self.assertEqual(user_io.open_fieldnotes(), False)
+            
+    def test_output(self):
+        with mock.patch('__builtin__.raw_input', return_value= "any_nonsense"):
+            out = StringIO()
+            sys.stdout = out                 
+            user_io.open_fieldnotes()  
+            output = out.getvalue().strip()  
+            expected_output = "Achtung! Du solltest die Caches vor dem Loeschen auf geocaching.com loggen."
+            self.assertEqual(output, expected_output)   
+
+class TestAskForPath(unittest.TestCase): 
+
+    def test_output(self):
+        with mock.patch('__builtin__.raw_input', return_value= "any_nonsense"):
+            out = StringIO()
+            sys.stdout = out                 
+            user_io.ask_for_path()  
+            output = out.getvalue().strip()  
+            expected_output = "Gib den Pfad zum GPS-Geraet ein (NICHT zum Unterordner 'GPX').\n"
+            expected_output = expected_output + "Falls Standardpfad 'F:\Garmin' uebernommen werden soll: keine Eingabe"
+            self.assertEqual(output, expected_output) 
+
+    def test_return(self):
+        with mock.patch('__builtin__.raw_input', return_value= "any_path"): 
+            self.assertEqual(user_io.ask_for_path(), "any_path") 
+
+    def test_default_return(self):
+        with mock.patch('__builtin__.raw_input', return_value= ""): 
+            self.assertEqual(user_io.ask_for_path(), r"F:\Garmin")      
+            
         
 def create_testsuite():
     suite = unittest.TestSuite()
@@ -588,6 +630,8 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestLoeschbestaetigung))
     suite.addTest(unittest.makeSuite(TestEinenAnzeigen))
     suite.addTest(unittest.makeSuite(TestKoordinatenEingabe))
+    suite.addTest(unittest.makeSuite(TestOpenFieldnotes))
+    suite.addTest(unittest.makeSuite(TestAskForPath))
     return suite
 
 def main(v):
