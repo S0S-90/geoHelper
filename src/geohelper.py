@@ -3,11 +3,9 @@ import os
 import glob
 import webbrowser
 
-import geocache     # Geocache-Klasse
+from geocache import Geocache   # Geocache-Klasse
 import user_io      # Benutzeroberflaeche
 import ownfunctions # eigene Datei mit Funktionen
-
-PATH = user_io.ask_for_path()   # Pfad zum GPS-Geraet
 
 class GPS_content(object):
     """
@@ -52,7 +50,7 @@ class GPS_content(object):
         self.geocaches = []               # alle Caches aus GC*.gpx-Dateien in PATH\GPX auslesen und in Liste geocaches speichern
         GPX_PATH = os.path.join(self.PATH, "GPX")
         for datei in glob.glob(os.path.join(GPX_PATH,"GC*.gpx")):
-            self.geocaches.append(geocache.Geocache(datei))
+            self.geocaches.append(Geocache(datei))
         user_io.general_output("\n{} Geocaches auf dem Geraet".format(len(self.geocaches)))
             
         for g in self.geocaches:      # Attribute aus den Geocaches auslesen 
@@ -89,7 +87,7 @@ class GPS_content(object):
         for lc in logged_caches:
             if lc[-1] == "Found it":
                 try:
-                    found_caches.append(geocache.Geocache(os.path.join(self.PATH,"GPX",lc[0]+".gpx")))
+                    found_caches.append(Geocache(os.path.join(self.PATH,"GPX",lc[0]+".gpx")))
                 except IOError:
                     user_io.general_output("\nWARNUNG! Der Geocache {} befindet sich nicht auf dem Geraet. Er wird daher im Folgenden nicht mehr beruecksichtigt.".format(lc[0])) 
         return [logged_caches, found_caches]
@@ -386,8 +384,9 @@ def show_main_menu(gps):
             webbrowser.open_new_tab("https://www.geocaching.com/map")
         elif task == "exit":
             sys.exit()
-          
+         
 if __name__ == "__main__":
+    PATH = user_io.ask_for_path()   # Pfad zum GPS-Geraet
     if os.path.exists(PATH):
         new = GPS_content(PATH)
         show_main_menu(new)
