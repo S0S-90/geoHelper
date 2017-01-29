@@ -8,16 +8,40 @@ import geohelper
 
 saved_stdout = sys.stdout # save standard output
 
-class TestInit(unittest.TestCase):
+class TestInitNoLogfile(unittest.TestCase):
 
-    def test_no_logfile_geocaches(self):
-        x = geohelper.GPS_content(r"examples\no_logfile")
-        number_of_geocaches = len(x.geocaches)
+    def setUp(self):
+        self.x = geohelper.GPS_content(r"examples\no_logfile")
+
+    def test_geocaches(self):
+        number_of_geocaches = len(self.x.geocaches)
         self.assertEqual(number_of_geocaches,6)
+        
+    def test_attributes(self):
+        expected_output = ['available 24-7', 'available in winter', 'bikes allowed', 'dangerous area', 'difficult climbing', 'dogs allowed', 'flashlight required', 'hike shorter than 1km', 'kid friendly', 'needs maintenance', 'no camping', 'no kids', 'no parking available', 'not stroller accessible', 'not wheelchair accessible', 'parking available', 'picnic tables available', 'public transit available', 'restrooms available', 'special tool required', 'stealth required', 'stroller accessible', 'takes less than 1 hour', 'teamwork required', 'thorns!', 'ticks!', 'tree climbing required', 'wheelchair accessible']
+        self.assertEqual(self.x.existing_attributes, expected_output)
+        
+    def test_found_exists(self):
+        self.assertEqual(self.x.found_exists, False)
+        
+    def test_warning(self):
+        self.assertEqual(self.x.warning, False)
+        
+class TestInitOnlyFound(unittest.TestCase):
+        
+    def setUp(self):
+        self.x = geohelper.GPS_content(r"examples\only_found")
 
+    def test_geocaches(self):
+        number_of_geocaches = len(self.x.geocaches)
+        self.assertEqual(number_of_geocaches,7)
+        
+    # hier geht's weiter
+        
 def create_testsuite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestInit))
+    suite.addTest(unittest.makeSuite(TestInitNoLogfile))
+    suite.addTest(unittest.makeSuite(TestInitOnlyFound))
     return suite
 
 def main(v):

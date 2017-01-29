@@ -45,6 +45,7 @@ class GPS_content(object):
         
         self.PATH = path              # Uebernahme der Pfadangabe aus der user_io
         self.found_exists = False     # Information, ob gefundene Caches auf dem Geraet gespeichert sind
+        self.warning = False          # Warnung, falls Caches in Logdatei, die noch nicht gefunden wurden
         self.existing_attributes = [] # Liste von Attributen
         
         self.geocaches = []               # alle Caches aus GC*.gpx-Dateien in PATH\GPX auslesen und in Liste geocaches speichern
