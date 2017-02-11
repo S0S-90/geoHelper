@@ -362,6 +362,9 @@ class GPS_content(object):
             self.geocaches = [c for c in self.geocaches if c not in removelist]
         return loeschen
         
+    def show_all_on_map():
+        print "not implemented yet"
+        
             
 def show_main_menu(gps):    
     """startet das Hauptmenue"""
@@ -372,6 +375,8 @@ def show_main_menu(gps):
             show_main_menu(new)
         elif task == "alle_anzeigen":
             gps.sortieren_und_anzeigen()
+        elif task == "show_all_on_map":
+            gps.show_all_on_map()
         elif task == "einen_anzeigen":
             gps.einen_anzeigen()
         elif task == "suchen":

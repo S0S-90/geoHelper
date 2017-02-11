@@ -108,11 +108,12 @@ class TestHauptmenueAnzeigen(unittest.TestCase):
         expected_output = "Was moechtest du als naechstes tun?\n"
         expected_output = expected_output + "1: Geocaches aktualisieren\n"
         expected_output = expected_output + "2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen\n"
-        expected_output = expected_output + "3: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)\n"
-        expected_output = expected_output + "4: Geocaches durchsuchen\n" 
-        expected_output = expected_output + "5: https://www.geocaching.com/map aufrufen\n"
-        expected_output = expected_output + "6: https://www.google.de/maps aufrufen\n"
-        expected_output = expected_output + "7: Programm verlassen"
+        expected_output = expected_output + "3: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen\n"
+        expected_output = expected_output + "4: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)\n"
+        expected_output = expected_output + "5: Geocaches durchsuchen\n" 
+        expected_output = expected_output + "6: https://www.geocaching.com/map aufrufen\n"
+        expected_output = expected_output + "7: https://www.google.de/maps aufrufen\n"
+        expected_output = expected_output + "8: Programm verlassen"
         self.assertEqual(output, expected_output)
         
     def test_foundexists(self):
@@ -123,12 +124,13 @@ class TestHauptmenueAnzeigen(unittest.TestCase):
         expected_output = "Was moechtest du als naechstes tun?\n"
         expected_output = expected_output + "1: Geocaches aktualisieren\n"
         expected_output = expected_output + "2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen\n"
-        expected_output = expected_output + "3: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)\n"
-        expected_output = expected_output + "4: Geocaches durchsuchen\n" 
-        expected_output = expected_output + "5: Alle gefundenen Caches anzeigen\n"
-        expected_output = expected_output + "6: https://www.geocaching.com/map aufrufen\n"
-        expected_output = expected_output + "7: https://www.google.de/maps aufrufen\n"
-        expected_output = expected_output + "8: Programm verlassen"
+        expected_output = expected_output + "3: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen\n"
+        expected_output = expected_output + "4: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)\n"
+        expected_output = expected_output + "5: Geocaches durchsuchen\n" 
+        expected_output = expected_output + "6: Alle gefundenen Caches anzeigen\n"
+        expected_output = expected_output + "7: https://www.geocaching.com/map aufrufen\n"
+        expected_output = expected_output + "8: https://www.google.de/maps aufrufen\n"
+        expected_output = expected_output + "9: Programm verlassen"
         self.assertEqual(output, expected_output)
         
 class TestHauptmenue(unittest.TestCase):
@@ -143,26 +145,30 @@ class TestHauptmenue(unittest.TestCase):
         
     def test_3_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="3"):
-            self.assertEqual(user_io.hauptmenue(False), 'einen_anzeigen')
-        
+            self.assertEqual(user_io.hauptmenue(False), 'show_all_on_map')
+            
     def test_4_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="4"):
-            self.assertEqual(user_io.hauptmenue(False), 'suchen')
+            self.assertEqual(user_io.hauptmenue(False), 'einen_anzeigen')
         
     def test_5_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="5"):
-            self.assertEqual(user_io.hauptmenue(False), 'gc-maps')
+            self.assertEqual(user_io.hauptmenue(False), 'suchen')
         
     def test_6_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="6"):
-            self.assertEqual(user_io.hauptmenue(False), 'google-maps')
+            self.assertEqual(user_io.hauptmenue(False), 'gc-maps')
         
     def test_7_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="7"):
-            self.assertEqual(user_io.hauptmenue(False), 'exit')
+            self.assertEqual(user_io.hauptmenue(False), 'google-maps')
         
     def test_8_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="8"):
+            self.assertEqual(user_io.hauptmenue(False), 'exit')
+        
+    def test_9_nofoundexists(self):
+        with mock.patch('__builtin__.raw_input', return_value="9"):
             self.assertEqual(user_io.hauptmenue(False), None)
         
     def test_1_foundexists(self):
@@ -175,26 +181,30 @@ class TestHauptmenue(unittest.TestCase):
         
     def test_3_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="3"):
-            self.assertEqual(user_io.hauptmenue(True), 'einen_anzeigen')
-        
+            self.assertEqual(user_io.hauptmenue(True), 'show_all_on_map')
+            
     def test_4_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="4"):
-            self.assertEqual(user_io.hauptmenue(True), 'suchen')
+            self.assertEqual(user_io.hauptmenue(True), 'einen_anzeigen')
         
     def test_5_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="5"):
-            self.assertEqual(user_io.hauptmenue(True), 'gefundene_anzeigen')
+            self.assertEqual(user_io.hauptmenue(True), 'suchen')
         
     def test_6_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="6"):
-            self.assertEqual(user_io.hauptmenue(True), 'gc-maps')
+            self.assertEqual(user_io.hauptmenue(True), 'gefundene_anzeigen')
         
     def test_7_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="7"):
-            self.assertEqual(user_io.hauptmenue(True), 'google-maps')
+            self.assertEqual(user_io.hauptmenue(True), 'gc-maps')
         
     def test_8_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="8"):
+            self.assertEqual(user_io.hauptmenue(True), 'google-maps')
+        
+    def test_9_foundexists(self):
+        with mock.patch('__builtin__.raw_input', return_value="9"):
             self.assertEqual(user_io.hauptmenue(True), 'exit')
         
 class TestSortieren(unittest.TestCase):
