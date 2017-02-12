@@ -1,5 +1,6 @@
 ﻿PATH = r"F:\Garmin"    # Pfad zu dem Geraet (Standardwert)
 CODIERUNG = "cp1252"   # Codierung der Kosole (cp1252 empfohlen)
+EDITORNAME = "notepad.exe" # Name (+Pfad) des Standardeditors
 
 import ownfunctions
 
@@ -232,6 +233,28 @@ def ask_for_path():
         return PATH
     else:
         return eingabe
+        
+def show_all_on_map_start():
+    print "\nNach dem Klicken werden sich mehrere Fenster oeffnen. Eines davon ist der Editor, das andere die Seite mapcustomizer.com in deinem Browser."
+    print "Um die Caches auf der Karte anzuzeigen, kopiere den vollstaendigen Inhalt der Textdatei aus deinem Editor in das Feld 'Bulk Entry' im Browser."
+    print "Die Caches werden in folgenden Farben angezeigt:"
+    print "Gruen: Traditional Cache"
+    print "Rot: Multi-cache"
+    print "Blau: Mystery Cache"
+    print "Braun: EarthCache"
+    print "Grau: Letterbox, Geocaching HQ"
+    print "Gelb: Event Cache, Wherigo Cache"
+    print "Pink: unbekannter Typ"
+    print "Gib nun den Pfad zu deinem Editor an: (bei Benutzung von Windows sollte das unnoetig sein)"
+    eingabe = raw_input(">> ")
+    if eingabe == "":
+        return EDITORNAME
+    else:
+        return eingabe
+    
+def show_all_on_map_end():
+    print "Schliesse den Editor und druecke Enter."
+    raw_input()
 
 
         

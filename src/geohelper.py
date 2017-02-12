@@ -2,6 +2,7 @@
 import os
 import glob
 import webbrowser
+import subprocess
 
 from geocache import Geocache   # Geocache-Klasse
 import user_io      # Benutzeroberflaeche
@@ -362,8 +363,30 @@ class GPS_content(object):
             self.geocaches = [c for c in self.geocaches if c not in removelist]
         return loeschen
         
-    def show_all_on_map():
-        print "not implemented yet"
+    def show_all_on_map(self):
+        editor = user_io.show_all_on_map_start()
+        with open("mapinfo.txt","w") as mapinfo:
+            for i,g in enumerate(self.geocaches):
+                if g.type == "Traditional Cache":
+                    color = "green"
+                elif g.type == "Multi-cache":
+                    color = "default"
+                elif g.type == "EarthCache":
+                    color = "tan"
+                elif g.type == "Letterbox Hybrid" or g.type == "Geocaching HQ":
+                    color = "gray"
+                elif g.type == "Event Cache" or g.type == "Wherigo Cache":
+                    color = "yellow"
+                elif g.type == "Mystery Cache":
+                    color = "blue"
+                else:                        # cache of unknown type
+                    color = "pink"
+                mapinfo.write("{},{} {{{}}} <{}>\n".format(g.koordinaten[0], g.koordinaten[1], g.name.encode("cp1252"), color))
+        subprocess.Popen([editor,"mapinfo.txt"]) 
+        webbrowser.open_new_tab("https://www.mapcustomizer.com/#bulkEntryModal") 
+        user_io.show_all_on_map_end()
+        os.remove("mapinfo.txt")        
+            
         
             
 def show_main_menu(gps):    

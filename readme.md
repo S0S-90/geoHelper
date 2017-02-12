@@ -2,7 +2,7 @@
 
 
 #Voraussetzungen
-* Python 2.7 mit Modulen: sys, glob, webbrowser, os, time, math, datetime, urllib, HTMLParser, unicodedata, xml.etree.ElementTree (alle in Standardbibliothek vorhanden)
+* Python 2.7 mit Modulen: sys, glob, webbrowser, os, time, math, datetime, urllib, HTMLParser, unicodedata, xml.etree.ElementTree, subprocess (alle in Standardbibliothek vorhanden)
 
 * Die Fieldnotes-Datei "geocache_visits.txt" sowie die Logdatei "geocache_logs.xml" müssen direkt im angegebenen Ordner für das GPS-Gerät liegen, 
 die gpx-Dateien in einem Unterordner mit Namen "GPX". (Dies sollte bei Garmin-Geräten automatisch der Fall sein.)
@@ -26,7 +26,8 @@ Eingabe der Koordinaten im auf geocaching.com üblichen Format (Grad und Minuten
 * Öffnen von https://www.google.de/maps bzw. https://www.geocaching.com/map, um z.B. ein direktes Kopieren der Url für die Abstandsberechnung zu ermöglichen 
 * Anzeigen der vollständigen Beschreibung eines Caches sowie Möglichkeit, direkt zur aktuellen Version der Beschreibung im Browser zu wechseln - wird von dort aus eine neue Version der 
 GPX-Datei heruntergeladen, kann diese mittels "Geocaches aktualisieren" in das Program eingebunden werden, ohne es neu zu starten
-* Amzeigen der Position eines Caches auf https://www.google.de/maps oder https://www.geocaching.com/map
+* Anzeigen der Position eines Caches auf https://www.google.de/maps oder https://www.geocaching.com/map
+* Anzeigen aller Caches auf der Karte https://www.mapcustomizer.com
 * Durchsuchen der Caches (Name, Beschreibung, Cachetyp, D- und T-Wertung, Größe, Download-Datum, Verfügbarkeit, Atttribute, Abstand zu einer bestimmten Position)
 * Löschen eines oder mehrerer Caches
 * Auslesen der als gefunden markierten Caches und Löschen dieser Caches mitsamt der Log-Information, nachdem diese auf der Fieldnote-Seite von geocaching.com geloggt wurden
