@@ -45,6 +45,7 @@ class TestGeneralOutput(unittest.TestCase):
         user_io.general_output(u"tuerkische Flagge: {}".format(u"\u262a"))  # fill out 
         output = out.getvalue().strip()                                     # save value of out in output
         self.assertEqual(output, u"tuerkische Flagge: {}".format(u"\u001a"))
+        
 
 class TestGeneralInput(unittest.TestCase):   
 
@@ -622,8 +623,47 @@ class TestAskForPath(unittest.TestCase):
 
     def test_default_return(self):
         with mock.patch('__builtin__.raw_input', return_value= ""): 
-            self.assertEqual(user_io.ask_for_path(), r"F:\Garmin")      
+            self.assertEqual(user_io.ask_for_path(), r"F:\Garmin") 
+
+class TestShowAllOnMapStart(unittest.TestCase):
+
+    def test_output(self):
+        with mock.patch('__builtin__.raw_input', return_value= "any_nonsense"):
+            out = StringIO()
+            sys.stdout = out
+            user_io.show_all_on_map_start()
+            output = out.getvalue().strip()
+            expected_output = "Nach dem Klicken werden sich mehrere Fenster oeffnen. Eines davon ist der Editor, das andere die Seite mapcustomizer.com in deinem Browser.\n"            
+            expected_output = expected_output + "Um die Caches auf der Karte anzuzeigen, kopiere den vollstaendigen Inhalt der Textdatei aus deinem Editor in das Feld 'Bulk Entry' im Browser.\n"
+            expected_output = expected_output + "Die Caches werden in folgenden Farben angezeigt:\n"
+            expected_output = expected_output + "Gruen: Traditional Cache\n"
+            expected_output = expected_output + "Rot: Multi-cache\n"
+            expected_output = expected_output + "Blau: Mystery Cache\n"
+            expected_output = expected_output + "Braun: EarthCache\n"
+            expected_output = expected_output + "Grau: Letterbox, Geocaching HQ\n"
+            expected_output = expected_output + "Gelb: Event Cache, Wherigo Cache\n"
+            expected_output = expected_output + "Pink: unbekannter Typ\n"
+            expected_output = expected_output + "Gib nun den Pfad zu deinem Editor an: (bei Benutzung von Windows sollte das unnoetig sein)"
+            self.assertEqual(output, expected_output) 
             
+    def test_return(self):
+        with mock.patch('__builtin__.raw_input', return_value= "any_editor"): 
+            self.assertEqual(user_io.show_all_on_map_start(), "any_editor") 
+            
+    def test_default_return(self):
+        with mock.patch('__builtin__.raw_input', return_value= ""): 
+            self.assertEqual(user_io.show_all_on_map_start(), "notepad.exe") 
+            
+class TestShowAllOnMapEnd(unittest.TestCase):
+
+    def test_output(self):
+        with mock.patch('__builtin__.raw_input', return_value= "any_nonsense"):
+            out = StringIO()
+            sys.stdout = out
+            user_io.show_all_on_map_end()
+            output = out.getvalue().strip()
+            expected_output = "Schliesse den Editor und druecke Enter."
+            self.assertEqual(output, expected_output) 
         
 def create_testsuite():
     suite = unittest.TestSuite()
@@ -642,13 +682,16 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestKoordinatenEingabe))
     suite.addTest(unittest.makeSuite(TestOpenFieldnotes))
     suite.addTest(unittest.makeSuite(TestAskForPath))
+    suite.addTest(unittest.makeSuite(TestShowAllOnMapStart))
+    suite.addTest(unittest.makeSuite(TestShowAllOnMapEnd))
     return suite
 
 def main(v):
     sys.stdout = saved_stdout  # print output to display
     print "\nTesting user_io.py"
     testsuite = create_testsuite()
-    unittest.TextTestRunner(verbosity=v).run(testsuite)  
+    x = unittest.TextTestRunner(verbosity=v).run(testsuite) 
+    return x.testsRun, len(x.failures)
 
 if __name__ == '__main__':
     main(2)

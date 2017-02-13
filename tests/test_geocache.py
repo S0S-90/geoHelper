@@ -434,7 +434,8 @@ def main(v):
     sys.stdout = saved_stdout  # print output to display
     print "\nTesting geocache.py"
     testsuite = create_testsuite()
-    unittest.TextTestRunner(verbosity=v).run(testsuite)  
+    x = unittest.TextTestRunner(verbosity=v).run(testsuite) 
+    return x.testsRun, len(x.failures)
 
 if __name__ == '__main__':
     main(2)
