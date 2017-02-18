@@ -2,12 +2,11 @@
 import os
 import glob
 import webbrowser
+import subprocess
 
-import geocache     # Geocache-Klasse
+from geocache import Geocache   # Geocache-Klasse
 import user_io      # Benutzeroberflaeche
 import ownfunctions # eigene Datei mit Funktionen
-
-PATH = user_io.ask_for_path()   # Pfad zum GPS-Geraet
 
 class GPS_content(object):
     """
@@ -47,12 +46,14 @@ class GPS_content(object):
         
         self.PATH = path              # Uebernahme der Pfadangabe aus der user_io
         self.found_exists = False     # Information, ob gefundene Caches auf dem Geraet gespeichert sind
+        self.warning = False          # Warnung, falls Caches in Logdatei, die noch nicht gefunden wurden
         self.existing_attributes = [] # Liste von Attributen
         
         self.geocaches = []               # alle Caches aus GC*.gpx-Dateien in PATH\GPX auslesen und in Liste geocaches speichern
         GPX_PATH = os.path.join(self.PATH, "GPX")
         for datei in glob.glob(os.path.join(GPX_PATH,"GC*.gpx")):
-            self.geocaches.append(geocache.Geocache(datei))
+            self.geocaches.append(Geocache(datei))
+        user_io.general_output("\n{} Geocaches auf dem Geraet".format(len(self.geocaches)))
             
         for g in self.geocaches:      # Attribute aus den Geocaches auslesen 
             for a in g.attribute:
@@ -88,7 +89,7 @@ class GPS_content(object):
         for lc in logged_caches:
             if lc[-1] == "Found it":
                 try:
-                    found_caches.append(geocache.Geocache(os.path.join(self.PATH,"GPX",lc[0]+".gpx")))
+                    found_caches.append(Geocache(os.path.join(self.PATH,"GPX",lc[0]+".gpx")))
                 except IOError:
                     user_io.general_output("\nWARNUNG! Der Geocache {} befindet sich nicht auf dem Geraet. Er wird daher im Folgenden nicht mehr beruecksichtigt.".format(lc[0])) 
         return [logged_caches, found_caches]
@@ -362,6 +363,31 @@ class GPS_content(object):
             self.geocaches = [c for c in self.geocaches if c not in removelist]
         return loeschen
         
+    def show_all_on_map(self):
+        editor = user_io.show_all_on_map_start()
+        with open("mapinfo.txt","w") as mapinfo:
+            for i,g in enumerate(self.geocaches):
+                if g.type == "Traditional Cache":
+                    color = "green"
+                elif g.type == "Multi-cache":
+                    color = "default"
+                elif g.type == "EarthCache":
+                    color = "tan"
+                elif g.type == "Letterbox Hybrid" or g.type == "Geocaching HQ":
+                    color = "gray"
+                elif g.type == "Event Cache" or g.type == "Wherigo Cache":
+                    color = "yellow"
+                elif g.type == "Mystery Cache":
+                    color = "blue"
+                else:                        # cache of unknown type
+                    color = "pink"
+                mapinfo.write("{},{} {{{}}} <{}>\n".format(g.koordinaten[0], g.koordinaten[1], g.name.encode("cp1252"), color))
+        subprocess.Popen([editor,"mapinfo.txt"]) 
+        webbrowser.open_new_tab("https://www.mapcustomizer.com/#bulkEntryModal") 
+        user_io.show_all_on_map_end()
+        os.remove("mapinfo.txt")        
+            
+        
             
 def show_main_menu(gps):    
     """startet das Hauptmenue"""
@@ -372,6 +398,8 @@ def show_main_menu(gps):
             show_main_menu(new)
         elif task == "alle_anzeigen":
             gps.sortieren_und_anzeigen()
+        elif task == "show_all_on_map":
+            gps.show_all_on_map()
         elif task == "einen_anzeigen":
             gps.einen_anzeigen()
         elif task == "suchen":
@@ -385,8 +413,9 @@ def show_main_menu(gps):
             webbrowser.open_new_tab("https://www.geocaching.com/map")
         elif task == "exit":
             sys.exit()
-          
+         
 if __name__ == "__main__":
+    PATH = user_io.ask_for_path()   # Pfad zum GPS-Geraet
     if os.path.exists(PATH):
         new = GPS_content(PATH)
         show_main_menu(new)

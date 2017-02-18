@@ -92,6 +92,10 @@ class Geocache(object):
     """
     
     def __init__(self, dateiname_path):
+    
+        if type(dateiname_path) != str and type(dateiname_path) != unicode:
+            raise TypeError("Bad input.")
+        
         self.dateiname_path = dateiname_path
         self.gccode = os.path.splitext(os.path.basename(dateiname_path))[0]  # GC-Code
         
@@ -226,7 +230,7 @@ class Geocache(object):
         for a in self.attribute:
             z6 = z6 + str(a) + ", "
         z6 = z6[:-2]
-        z7 = u"\nCache ist aktiv: {}, Stand: {}".format(self.available, self. downloaddate)
+        z7 = u"\nCache ist aktiv: {}, Stand: {}".format(self.available, self.downloaddate_anzeige)
         z8 = u"\nLink: {}".format(self.url)
         z9 = u"\n\n{}".format(self.beschreibung)
         z10 = u"\nHinweise: {}".format(self.hint)

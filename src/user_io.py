@@ -1,8 +1,12 @@
 ﻿PATH = r"F:\Garmin"    # Pfad zu dem Geraet (Standardwert)
 CODIERUNG = "cp1252"   # Codierung der Kosole (cp1252 empfohlen)
+EDITORNAME = "notepad.exe" # Name (+Pfad) des Standardeditors
+
+import ownfunctions
 
 def general_output(string):
     """gibt einen String auf der Konsole aus"""
+    string = ownfunctions.zeichen_ersetzen(string)
     print string
     
 def general_input(string):
@@ -10,26 +14,32 @@ def general_input(string):
     return raw_input(string)
  
 def input_decode(string):
-    """fragt mit Hilfe von string nach einer Benutzereingabe, dekodiert diese und gibt sie zurueck"""
+    """fragt mit Hilfe von string nach einer Benutzereingabe, dekodiert diese und gibt sie zurueck
+    string darf keine Charakters enthalten, die nicht in der CODIERUNG vorhanden sind"""
     return raw_input(string).decode(CODIERUNG)
+    
+def hauptmenue_anzeigen(found_exists):
+    """gibt das Hauptmenue aus"""
+    print "\nWas moechtest du als naechstes tun?"
+    print "1: Geocaches aktualisieren"
+    print "2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen"
+    print "3: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen"
+    print "4: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)"
+    print "5: Geocaches durchsuchen"
+    if found_exists:
+        print "6: Alle gefundenen Caches anzeigen"
+        print "7: https://www.geocaching.com/map aufrufen"
+        print "8: https://www.google.de/maps aufrufen"
+        print "9: Programm verlassen"
+    else:
+        print "6: https://www.geocaching.com/map aufrufen"
+        print "7: https://www.google.de/maps aufrufen"
+        print "8: Programm verlassen"
     
 def hauptmenue(found_exists):
     """"gibt das Hauptmenue aus und je nach Benutzereingabe die Aufgabe zurueck, die als naechstes ausgefuehrt werden soll"""
     
-    print "\nWas moechtest du als naechstes tun?"
-    print "1: Geocaches aktualisieren"
-    print "2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen"
-    print "3: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)"
-    print "4: Geocaches durchsuchen"
-    if found_exists:
-        print "5: Alle gefundenen Caches anzeigen"
-        print "6: https://www.geocaching.com/map aufrufen"
-        print "7: https://www.google.de/maps aufrufen"
-        print "8: Programm verlassen"
-    else:
-        print "5: https://www.geocaching.com/map aufrufen"
-        print "6: https://www.google.de/maps aufrufen"
-        print "7: Programm verlassen"
+    hauptmenue_anzeigen(found_exists)
     eingabe = raw_input(">> ")
     
     if eingabe == "1":
@@ -37,22 +47,24 @@ def hauptmenue(found_exists):
     elif eingabe == "2":
         return "alle_anzeigen"
     elif eingabe == "3":
-        return "einen_anzeigen"
+        return "show_all_on_map"
     elif eingabe == "4":
+        return "einen_anzeigen"
+    elif eingabe == "5":
         return "suchen"
-    elif eingabe == "5" and found_exists:
-        return "gefundene_anzeigen"
     elif eingabe == "6" and found_exists:
-        return "gc-maps"
+        return "gefundene_anzeigen"
     elif eingabe == "7" and found_exists:
-        return "google-maps"
-    elif eingabe == "8" and found_exists:
-        return "exit"
-    elif eingabe == "5" and not found_exists:
         return "gc-maps"
-    elif eingabe == "6" and not found_exists:
+    elif eingabe == "8" and found_exists:
         return "google-maps"
+    elif eingabe == "9" and found_exists:
+        return "exit"
+    elif eingabe == "6" and not found_exists:
+        return "gc-maps"
     elif eingabe == "7" and not found_exists:
+        return "google-maps"
+    elif eingabe == "8" and not found_exists:
         return "exit"
     else:
         print "Ungueltige Eingabe!"  
@@ -74,14 +86,18 @@ def sortieren():
     print "8: Verfuegbarkeit"
     print "9: Abstand von einer bestimmten Position (Koordinaten erforderlich)"
     eingabe_kriterium = raw_input(">> ")
-    try:
-        kriterium = kriterien[int(eingabe_kriterium)-1]
-    except IndexError:
+    if eingabe_kriterium == "0":
         print "Ungueltige Eingabe: Sortierung erfolgt nach GC-Code"
         kriterium = "gccode"
-    except ValueError:
-        print "Ungueltige Eingabe: Sortierung erfolgt nach GC-Code"
-        kriterium = "gccode"
+    else:
+        try:
+            kriterium = kriterien[int(eingabe_kriterium)-1]
+        except IndexError:
+            print "Ungueltige Eingabe: Sortierung erfolgt nach GC-Code"
+            kriterium = "gccode"
+        except ValueError:
+            print "Ungueltige Eingabe: Sortierung erfolgt nach GC-Code"
+            kriterium = "gccode"
         
     print "In welche Richtung sollen die Caches sortiert werden?"
     print "1: aufsteigend"
@@ -110,12 +126,15 @@ def suchen():
     print "9: Attribut"
     print "10: Abstand von einer bestimmten Position (Koordinaten erforderlich)"
     eingabe = raw_input(">> ")
-    try:
-        return kriterien[int(eingabe)-1]
-    except IndexError:
+    if eingabe == "0":
         print "Ungueltige Eingabe"
-    except ValueError:
-        print "Ungueltige Eingabe"
+    else:
+        try:
+            return kriterien[int(eingabe)-1]
+        except IndexError:
+            print "Ungueltige Eingabe"
+        except ValueError:
+            print "Ungueltige Eingabe"
         
 def search_type():
     print "Gib den Cachetyp ein, nach dem du suchen willst."
@@ -214,6 +233,28 @@ def ask_for_path():
         return PATH
     else:
         return eingabe
+        
+def show_all_on_map_start():
+    print "\nNach dem Klicken werden sich mehrere Fenster oeffnen. Eines davon ist der Editor, das andere die Seite mapcustomizer.com in deinem Browser."
+    print "Um die Caches auf der Karte anzuzeigen, kopiere den vollstaendigen Inhalt der Textdatei aus deinem Editor in das Feld 'Bulk Entry' im Browser."
+    print "Die Caches werden in folgenden Farben angezeigt:"
+    print "Gruen: Traditional Cache"
+    print "Rot: Multi-cache"
+    print "Blau: Mystery Cache"
+    print "Braun: EarthCache"
+    print "Grau: Letterbox, Geocaching HQ"
+    print "Gelb: Event Cache, Wherigo Cache"
+    print "Pink: unbekannter Typ"
+    print "Gib nun den Pfad zu deinem Editor an: (bei Benutzung von Windows sollte das unnoetig sein)"
+    eingabe = raw_input(">> ")
+    if eingabe == "":
+        return EDITORNAME
+    else:
+        return eingabe
+    
+def show_all_on_map_end():
+    print "Schliesse den Editor und druecke Enter."
+    raw_input()
 
 
         

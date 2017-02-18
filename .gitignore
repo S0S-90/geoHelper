@@ -1,4 +1,4 @@
-# ignoriert pyc-Dateien
-*.pyc
-# ignoriert temporäre Dateien
 *~
+
+*.pyc
+tests/examples/*
