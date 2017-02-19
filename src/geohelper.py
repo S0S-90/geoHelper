@@ -66,6 +66,7 @@ class GPS_content(object):
             if len(self.found_caches) > 0:
                 self.found_exists = True
             if len(self.found_caches) < len(logged_caches): # Warnung, falls weitere Caches in Logdatei, die noch nicht gefunden wurden
+                print logged_caches
                 self.warning = True
             else:
                 self.warning = False

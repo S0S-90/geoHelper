@@ -65,6 +65,44 @@ class TestInitOnlyNotFound(unittest.TestCase):
     def test_warning(self):
         self.assertEqual(self.x.warning, True)
         
+class TestInitNotOnlyFound(unittest.TestCase):
+
+    def setUp(self):
+        self.x = geohelper.GPS_content(r"examples\not_only_found")
+
+    def test_geocaches(self):
+        number_of_geocaches = len(self.x.geocaches)
+        self.assertEqual(number_of_geocaches,7)
+        
+    def test_attributes(self):
+        expected_output = ['available 24-7', 'available in winter', 'bikes allowed', 'dangerous area', 'difficult climbing', 'dogs allowed', 'flashlight required', 'hike shorter than 1km', 'kid friendly', 'needs maintenance', 'no camping', 'no kids', 'no parking available', 'not stroller accessible', 'not wheelchair accessible', 'parking available', 'picnic tables available', 'public transit available', 'restrooms available', 'special tool required', 'stealth required', 'stroller accessible', 'takes less than 1 hour', 'teamwork required', 'thorns!', 'ticks!', 'tree climbing required', 'wheelchair accessible']
+        self.assertEqual(self.x.existing_attributes, expected_output)
+        
+    def test_found_exists(self):
+        self.assertEqual(self.x.found_exists, True)
+        
+    def test_warning(self):
+        self.assertEqual(self.x.warning, True)
+
+class TestInitFoundNotOnGPS(unittest.TestCase):
+
+    def setUp(self):
+        self.x = geohelper.GPS_content(r"examples\found_not_on_gps")
+
+    def test_geocaches(self):
+        number_of_geocaches = len(self.x.geocaches)
+        self.assertEqual(number_of_geocaches,6)
+        
+    def test_attributes(self):
+        expected_output = ['available 24-7', 'available in winter', 'bikes allowed', 'difficult climbing', 'dogs allowed', 'flashlight required', 'hike shorter than 1km', 'kid friendly', 'no camping', 'no parking available', 'not wheelchair accessible', 'parking available', 'picnic tables available', 'public transit available', 'restrooms available', 'special tool required', 'stealth required', 'stroller accessible', 'takes less than 1 hour', 'teamwork required', 'thorns!', 'ticks!', 'tree climbing required', 'wheelchair accessible']
+        self.assertEqual(self.x.existing_attributes, expected_output)
+        
+    def test_found_exists(self):
+        self.assertEqual(self.x.found_exists, True)
+        
+    def test_warning(self):
+        self.assertEqual(self.x.warning, False)           
+        
 # hier geht's weiter
         
 def create_testsuite():
@@ -72,6 +110,8 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestInitNoLogfile))
     suite.addTest(unittest.makeSuite(TestInitOnlyFound))
     suite.addTest(unittest.makeSuite(TestInitOnlyNotFound))
+    suite.addTest(unittest.makeSuite(TestInitNotOnlyFound))
+    suite.addTest(unittest.makeSuite(TestInitFoundNotOnGPS))
     return suite
 
 def main(v):
