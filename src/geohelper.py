@@ -65,7 +65,7 @@ class GPS_content(object):
         self.existing_attributes.sort()
               
         if os.path.isfile(os.path.join(self.PATH, "geocache_visits.txt")):    # alle gefundenen Caches aus Logdatei in found_caches speichern, falls eine solche vorhanden
-            [logged_caches, self.found_caches] = self.get_logged_and_found_caches(os.path.join(self.PATH, "geocache_visits.txt"))
+            [logged_caches, self.found_caches] = self.get_logged_and_found_caches()
             if len(self.found_caches) > 0:
                 self.found_exists = True
             if len(self.found_caches) < len(logged_caches): # Warnung, falls weitere Caches in Logdatei, die noch nicht gefunden wurden
@@ -74,11 +74,11 @@ class GPS_content(object):
             else:
                 self.warning = False
 
-    def get_logged_and_found_caches(self, visits_file):
+    def get_logged_and_found_caches(self):
         """liest aus visits_file die geloggten und gefundenen Caches aus (nur Caches, die auch auf dem Geraet gespeichert sind)"""
 
         logged_caches_raw = []           
-        with open(visits_file) as visits:
+        with open(os.path.join(self.PATH, "geocache_visits.txt")) as visits:
             visits = visits.read().decode("utf-16")
             visits_lines = visits.split("\n")
             for line in visits_lines:

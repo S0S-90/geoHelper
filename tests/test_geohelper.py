@@ -27,6 +27,10 @@ class TestInitNoLogfile(unittest.TestCase):
     def test_warning(self):
         self.assertEqual(self.x.warning, False)
         
+    def test_logged_and_found_caches_fails(self):
+        self.assertRaises(IOError, self.x.get_logged_and_found_caches)
+        
+        
 class TestInitOnlyFound(unittest.TestCase):
         
     def setUp(self):
@@ -141,7 +145,21 @@ class TestInitErrorInGPX(unittest.TestCase):
     def test_warning(self):
         self.assertEqual(self.x.warning, False)        
         
-# hier geht's weiter mit logged and found
+class TestGetLoggedAndFoundCachesOnlyFound(unittest.TestCase):
+
+    def setUp(self):
+        self.x = geohelper.GPS_content(r"examples\only_found")
+        
+    def test_found_caches(self):
+        found_caches = self.x.get_logged_and_found_caches()[0]
+        #hier weiter!!!
+        
+    def test_found_caches(self):
+        found_caches = self.x.get_logged_and_found_caches()[1]
+        self.assertEqual(len(found_caches),2)
+        self.assertEqual(found_caches[0].gccode, "GC1XRPM")
+        self.assertEqual(found_caches[1].gccode, "GC5G5F5")
+
         
 def create_testsuite():
     suite = unittest.TestSuite()
@@ -152,6 +170,7 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestInitFoundNotOnGPS))
     suite.addTest(unittest.makeSuite(TestInitNotFoundNotOnGPS))
     suite.addTest(unittest.makeSuite(TestInitErrorInGPX))
+    suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesOnlyFound))
     return suite
 
 def main(v):
