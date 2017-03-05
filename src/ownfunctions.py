@@ -70,17 +70,23 @@ def zeichen_ersetzen(string):
     newstring = ""
     for i,c in enumerate(string):   
         if c == "\n" or c == "\t" or c == "\v":    # Newline, Tab (horizontal oder vertikal)
-            newstring = newstring + c   
-        elif unicodedata.name(unicode(c)) in ALLOWED_SIGNS: # erlaubte Zeichen
-            newstring = newstring + c
-        elif unicode(c) == u"\u263a":     # Smiley
-            newstring = newstring + ":-)"
-        elif unicode(c) == u"\u2211":     # Summenzeichen
-            newstring = newstring + "sum"
-        elif unicode(c) == u"\u221a":     # Wurzel
-            newstring = newstring + "sqrt"
-        else:                               # unbekanntes Zeichen
-            newstring = newstring + u"\u001a"
+            newstring = newstring + c 
+        else:
+            try:
+                unic = unicodedata.name(unicode(c))  
+            except ValueError:                   # if sign not in unicode
+                newstring = newstring + u"\u001a"
+            else:            
+                if unic in ALLOWED_SIGNS: # erlaubte Zeichen
+                    newstring = newstring + c
+                elif unicode(c) == u"\u263a":     # Smiley
+                    newstring = newstring + ":-)"
+                elif unicode(c) == u"\u2211":     # Summenzeichen
+                    newstring = newstring + "sum"
+                elif unicode(c) == u"\u221a":     # Wurzel
+                    newstring = newstring + "sqrt"
+                else:                               # unbekanntes Zeichen
+                    newstring = newstring + u"\u001a"
     return newstring
     
 def koordinaten_dezimalgrad_to_minuten(koordinatenliste):
