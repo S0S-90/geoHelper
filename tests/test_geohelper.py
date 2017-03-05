@@ -240,6 +240,43 @@ class TestSortierenUndAnzeigen(unittest.TestCase):
             for g in self.x.geocaches:
                 sorted.append(g.gccode)
             self.assertEqual(sorted, expected)
+            
+    def test_name_up(self):
+        with mock.patch('__builtin__.raw_input', side_effect=['2', '1']):
+            expected = ["GC5N23T","GC6RNTX","GC1XRPM","GC6K86W","GC33QGC","GCJJ20"]
+            self.x.sortieren_und_anzeigen()
+            sorted = []
+            for g in self.x.geocaches:
+                sorted.append(g.gccode)
+            self.assertEqual(sorted, expected)
+            
+    def test_name_down(self):
+        with mock.patch('__builtin__.raw_input', side_effect=['2', '2']):
+            expected = ["GCJJ20","GC33QGC","GC6K86W","GC1XRPM","GC6RNTX","GC5N23T"]
+            self.x.sortieren_und_anzeigen()
+            sorted = []
+            for g in self.x.geocaches:
+                sorted.append(g.gccode)
+            self.assertEqual(sorted, expected)
+            
+    def test_typ_up(self):
+        with mock.patch('__builtin__.raw_input', side_effect=['3', '1']):
+            expected = ["GC1XRPM","GC5N23T","GC6RNTX","GC33QGC","GC6K86W","GCJJ20"]
+            self.x.sortieren_und_anzeigen()
+            sorted = []
+            for g in self.x.geocaches:
+                sorted.append(g.gccode)
+            self.assertEqual(sorted, expected)
+            
+    def test_typ_down(self):
+        with mock.patch('__builtin__.raw_input', side_effect=['3', '2']):
+            expected = ["GCJJ20","GC33QGC","GC6K86W","GC5N23T","GC6RNTX","GC1XRPM"]
+            self.x.sortieren_und_anzeigen()
+            sorted = []
+            for g in self.x.geocaches:
+                sorted.append(g.gccode)
+            self.assertEqual(sorted, expected)
+            
         
 def create_testsuite():
     suite = unittest.TestSuite()
