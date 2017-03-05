@@ -1,5 +1,5 @@
 ﻿import unittest
-import datetime
+import mock
 import sys
 sys.path.append('../src/') # path to source file (geohelper.py)
 from StringIO import StringIO
@@ -29,7 +29,6 @@ class TestInitNoLogfile(unittest.TestCase):
         
     def test_logged_and_found_caches_fails(self):
         self.assertRaises(IOError, self.x.get_logged_and_found_caches)
-        
         
 class TestInitOnlyFound(unittest.TestCase):
         
@@ -150,16 +149,97 @@ class TestGetLoggedAndFoundCachesOnlyFound(unittest.TestCase):
     def setUp(self):
         self.x = geohelper.GPS_content(r"examples\only_found")
         
-    def test_found_caches(self):
-        found_caches = self.x.get_logged_and_found_caches()[0]
-        #hier weiter!!!
+    def test_logged_caches(self):
+        logged_caches = self.x.get_logged_and_found_caches()[0]
+        expected = [["GC1XRPM","2016-09-03T09:40Z","Found it"], ["GC5G5F5","2016-09-03T09:40Z","Found it"]]
+        self.assertEqual(logged_caches, expected)
         
     def test_found_caches(self):
         found_caches = self.x.get_logged_and_found_caches()[1]
         self.assertEqual(len(found_caches),2)
         self.assertEqual(found_caches[0].gccode, "GC1XRPM")
         self.assertEqual(found_caches[1].gccode, "GC5G5F5")
+        
+class TestGetLoggedAndFoundCachesNotOnlyFound(unittest.TestCase):
 
+    def setUp(self):
+        self.x = geohelper.GPS_content(r"examples\not_only_found")
+        
+    def test_logged_caches(self):
+        logged_caches = self.x.get_logged_and_found_caches()[0]
+        expected = [["GC1XRPM","2016-09-03T09:40Z","Found it"],["GC5G5F5","2016-09-03T09:40Z","unattempted"],["GC5N23T","2017-02-12T09:40Z","Found it"]]
+        self.assertEqual(logged_caches, expected)
+        
+    def test_found_caches(self):
+        found_caches = self.x.get_logged_and_found_caches()[1]
+        self.assertEqual(len(found_caches),2)
+        self.assertEqual(found_caches[0].gccode, "GC1XRPM")
+        self.assertEqual(found_caches[1].gccode, "GC5N23T")
+        
+class TestGetLoggedAndFoundCachesOnlyNotFound(unittest.TestCase):
+
+    def setUp(self):
+        self.x = geohelper.GPS_content(r"examples\only_notfound")
+        
+    def test_logged_caches(self):
+        logged_caches = self.x.get_logged_and_found_caches()[0]
+        expected = [["GC1XRPM","2016-09-03T09:40Z","unattempted"],["GC5G5F5","2016-09-03T09:40Z","unattempted"]]
+        self.assertEqual(logged_caches, expected)
+        
+    def test_found_caches(self):
+        found_caches = self.x.get_logged_and_found_caches()[1]
+        self.assertEqual(len(found_caches),0)
+        
+class TestGetLoggedAndFoundCachesFoundNotOnGPS(unittest.TestCase):
+
+    def setUp(self):
+        self.x = geohelper.GPS_content(r"examples\found_not_on_gps")
+        
+    def test_logged_caches(self):
+        logged_caches = self.x.get_logged_and_found_caches()[0]
+        expected = [["GC5G5F5","2016-09-03T09:40Z","Found it"]]
+        
+    def test_found_caches(self):
+        found_caches = self.x.get_logged_and_found_caches()[1]
+        self.assertEqual(len(found_caches),1)
+        self.assertEqual(found_caches[0].gccode, "GC5G5F5")
+        
+class TestGetLoggedAndFoundCachesNotFoundNotOnGPS(unittest.TestCase):
+
+    def setUp(self):
+        self.x = geohelper.GPS_content(r"examples\not_found_not_on_gps")
+        
+    def test_logged_caches(self):
+        logged_caches = self.x.get_logged_and_found_caches()[0]
+        expected = [["GC5G5F5","2016-09-03T09:40Z","unattempted"]]
+        
+    def test_found_caches(self):
+        found_caches = self.x.get_logged_and_found_caches()[1]
+        self.assertEqual(len(found_caches),1)
+        self.assertEqual(found_caches[0].gccode, "GC5G5F5")
+        
+class TestSortierenUndAnzeigen(unittest.TestCase):
+
+    def setUp(self):
+        self.x = geohelper.GPS_content(r"examples\no_logfile")
+        
+    def test_gccode_up(self):
+        with mock.patch('__builtin__.raw_input', side_effect=['1', '1']):
+            expected = ["GC1XRPM","GC33QGC","GC5N23T","GC6K86W","GC6RNTX","GCJJ20"]
+            self.x.sortieren_und_anzeigen()
+            sorted = []
+            for g in self.x.geocaches:
+                sorted.append(g.gccode)
+            self.assertEqual(sorted, expected)
+            
+    def test_gccode_down(self):
+        with mock.patch('__builtin__.raw_input', side_effect=['1', '2']):
+            expected = ["GCJJ20","GC6RNTX","GC6K86W","GC5N23T","GC33QGC","GC1XRPM"]
+            self.x.sortieren_und_anzeigen()
+            sorted = []
+            for g in self.x.geocaches:
+                sorted.append(g.gccode)
+            self.assertEqual(sorted, expected)
         
 def create_testsuite():
     suite = unittest.TestSuite()
@@ -171,6 +251,11 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestInitNotFoundNotOnGPS))
     suite.addTest(unittest.makeSuite(TestInitErrorInGPX))
     suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesOnlyFound))
+    suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesNotOnlyFound))
+    suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesOnlyNotFound))
+    suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesFoundNotOnGPS))
+    suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesNotFoundNotOnGPS))
+    suite.addTest(unittest.makeSuite(TestSortierenUndAnzeigen))
     return suite
 
 def main(v):

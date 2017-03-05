@@ -254,7 +254,7 @@ def show_all_on_map_start():
     
 def show_all_on_map_end():
     print "Schliesse den Editor und druecke Enter."
-    raw_input()
+    raw_input(">> ")
 
 
         
