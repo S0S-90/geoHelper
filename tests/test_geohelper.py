@@ -277,6 +277,8 @@ class TestSortierenUndAnzeigen(unittest.TestCase):
                 sorted.append(g.gccode)
             self.assertEqual(sorted, expected)
             
+    # hier weiter mit D-Wertung, T-Wertung, Groesse, Downloaddatum, Verfügbarkeit und Abstand
+            
         
 def create_testsuite():
     suite = unittest.TestSuite()
