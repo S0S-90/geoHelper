@@ -240,6 +240,168 @@ class TestSortierenUndAnzeigen(unittest.TestCase):
             for g in self.x.geocaches:
                 sorted.append(g.gccode)
             self.assertEqual(sorted, expected)
+            
+    def test_name_up(self):
+        with mock.patch('__builtin__.raw_input', side_effect=['2', '1']):
+            expected = ["GC5N23T","GC6RNTX","GC1XRPM","GC6K86W","GC33QGC","GCJJ20"]
+            self.x.sortieren_und_anzeigen()
+            sorted = []
+            for g in self.x.geocaches:
+                sorted.append(g.gccode)
+            self.assertEqual(sorted, expected)
+            
+    def test_name_down(self):
+        with mock.patch('__builtin__.raw_input', side_effect=['2', '2']):
+            expected = ["GCJJ20","GC33QGC","GC6K86W","GC1XRPM","GC6RNTX","GC5N23T"]
+            self.x.sortieren_und_anzeigen()
+            sorted = []
+            for g in self.x.geocaches:
+                sorted.append(g.gccode)
+            self.assertEqual(sorted, expected)
+            
+    def test_typ_up(self):
+        with mock.patch('__builtin__.raw_input', side_effect=['3', '1']):
+            expected = ["GC1XRPM","GC5N23T","GC6RNTX","GC33QGC","GC6K86W","GCJJ20"]
+            self.x.sortieren_und_anzeigen()
+            sorted = []
+            for g in self.x.geocaches:
+                sorted.append(g.gccode)
+            self.assertEqual(sorted, expected)
+            
+    def test_typ_down(self):
+        with mock.patch('__builtin__.raw_input', side_effect=['3', '2']):
+            expected = ["GCJJ20","GC33QGC","GC6K86W","GC5N23T","GC6RNTX","GC1XRPM"]
+            self.x.sortieren_und_anzeigen()
+            sorted = []
+            for g in self.x.geocaches:
+                sorted.append(g.gccode)
+            self.assertEqual(sorted, expected)
+            
+    def test_difficulty_up(self):
+        with mock.patch('__builtin__.raw_input', side_effect=['4', '1']):
+            expected = ["GCJJ20","GC33QGC","GC6K86W","GC6RNTX","GC1XRPM","GC5N23T"]
+            self.x.sortieren_und_anzeigen()
+            sorted = []
+            for g in self.x.geocaches:
+                sorted.append(g.gccode)
+            self.assertEqual(sorted, expected)  
+
+    def test_difficulty_down(self):
+        with mock.patch('__builtin__.raw_input', side_effect=['4', '2']):
+            expected = ["GC5N23T","GC1XRPM","GC33QGC","GC6K86W","GC6RNTX","GCJJ20"]
+            self.x.sortieren_und_anzeigen()
+            sorted = []
+            for g in self.x.geocaches:
+                sorted.append(g.gccode)
+            self.assertEqual(sorted, expected)  
+
+    def test_terrain_up(self):
+        with mock.patch('__builtin__.raw_input', side_effect=['5', '1']):
+            expected = ["GCJJ20","GC6RNTX","GC6K86W","GC33QGC","GC1XRPM","GC5N23T"]
+            self.x.sortieren_und_anzeigen()
+            sorted = []
+            for g in self.x.geocaches:
+                sorted.append(g.gccode)
+            self.assertEqual(sorted, expected) 
+
+    def test_terrain_down(self):
+        with mock.patch('__builtin__.raw_input', side_effect=['5', '2']):
+            expected = ["GC5N23T","GC1XRPM","GC33QGC","GC6K86W","GC6RNTX","GCJJ20"]
+            self.x.sortieren_und_anzeigen()
+            sorted = []
+            for g in self.x.geocaches:
+                sorted.append(g.gccode)
+            self.assertEqual(sorted, expected) 
+
+    def test_size_up(self):
+        with mock.patch('__builtin__.raw_input', side_effect=['6', '1']):
+            expected = ["GCJJ20","GC1XRPM","GC5N23T","GC6K86W","GC6RNTX","GC33QGC"]
+            self.x.sortieren_und_anzeigen()
+            sorted = []
+            for g in self.x.geocaches:
+                sorted.append(g.gccode)
+            self.assertEqual(sorted, expected) 
+
+    def test_size_down(self):
+        with mock.patch('__builtin__.raw_input', side_effect=['6', '2']):
+            expected = ["GC33QGC","GC1XRPM","GC5N23T","GC6K86W","GC6RNTX","GCJJ20"]
+            self.x.sortieren_und_anzeigen()
+            sorted = []
+            for g in self.x.geocaches:
+                sorted.append(g.gccode)
+            self.assertEqual(sorted, expected) 
+
+    def test_downloaddate_up(self):
+        with mock.patch('__builtin__.raw_input', side_effect=['7', '1']):
+            expected = ["GC6K86W","GC1XRPM","GC33QGC","GC6RNTX","GCJJ20","GC5N23T"]
+            self.x.sortieren_und_anzeigen()
+            sorted = []
+            for g in self.x.geocaches:
+                sorted.append(g.gccode)
+            self.assertEqual(sorted, expected) 
+
+    def test_downloaddate_down(self):
+        with mock.patch('__builtin__.raw_input', side_effect=['7', '2']):
+            expected = ["GC5N23T","GCJJ20","GC6RNTX","GC33QGC","GC1XRPM","GC6K86W"]
+            self.x.sortieren_und_anzeigen()
+            sorted = []
+            for g in self.x.geocaches:
+                sorted.append(g.gccode)
+            self.assertEqual(sorted, expected) 
+
+    def test_available_up(self):
+        with mock.patch('__builtin__.raw_input', side_effect=['8', '1']):
+            expected = ["GC5N23T","GC1XRPM","GC33QGC","GC6K86W","GC6RNTX","GCJJ20"]
+            self.x.sortieren_und_anzeigen()
+            sorted = []
+            for g in self.x.geocaches:
+                sorted.append(g.gccode)
+            self.assertEqual(sorted, expected) 
+
+    def test_available_down(self):
+        with mock.patch('__builtin__.raw_input', side_effect=['8', '2']):
+            expected = ["GC1XRPM","GC33QGC","GC6K86W","GC6RNTX","GCJJ20","GC5N23T"]
+            self.x.sortieren_und_anzeigen()
+            sorted = []
+            for g in self.x.geocaches:
+                sorted.append(g.gccode)
+            self.assertEqual(sorted, expected) 
+
+    def test_distance_up(self):
+        with mock.patch('__builtin__.raw_input', side_effect=['9', '1', 'https://www.google.de/maps/place/97209+Veitsh%C3%B6chheim/@49.8414697,9.8579699,13z/data=!3m1!4b1!4m5!3m4!1s0x47a2915cbab1bfe3:0xdbe76ec582bb3aa5!8m2!3d49.8312701!4d9.8803666']):
+            expected = ["GC5N23T","GC1XRPM","GCJJ20","GC6RNTX","GC6K86W","GC33QGC"]
+            self.x.sortieren_und_anzeigen()
+            sorted = []
+            for g in self.x.geocaches:
+                sorted.append(g.gccode)
+            self.assertEqual(sorted, expected)   
+
+    def test_distance_down(self):
+        with mock.patch('__builtin__.raw_input', side_effect=['9', '2', 'https://www.google.de/maps/place/97209+Veitsh%C3%B6chheim/@49.8414697,9.8579699,13z/data=!3m1!4b1!4m5!3m4!1s0x47a2915cbab1bfe3:0xdbe76ec582bb3aa5!8m2!3d49.8312701!4d9.8803666']):
+            expected = ["GC33QGC","GC6K86W","GC6RNTX","GCJJ20","GC1XRPM","GC5N23T"]
+            self.x.sortieren_und_anzeigen()
+            sorted = []
+            for g in self.x.geocaches:
+                sorted.append(g.gccode)
+            self.assertEqual(sorted, expected)            
+            
+class TestAlleAnzeigen(unittest.TestCase):
+
+    def test_nix_anzeigen(self):
+        x = geohelper.GPS_content(r"examples\empty")
+        self.assertEqual(x.alle_anzeigen(), "Keine Caches auf dem Geraet.") 
+
+    def test_anzeigen(self):
+        x = geohelper.GPS_content(r"examples\no_logfile")
+        expected = u"GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  | 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
+        expected = expected + u"GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | True  | 11 Sep 2016 | Tesoro Ameghino\n"
+        expected = expected + u"GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | False | 05 Mar 2017 | 67 - MedTrix - {}\n".format(u"\u001a"+u"\u001a"+u"\u001a"+u"\u001a"+u"\u001a")
+        expected = expected + u"GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | True  | 04 Aug 2016 | Saaletalblick\n"
+        expected = expected + u"GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   | True  | 08 Oct 2016 | Hochschule für Musik 1\n"
+        expected = expected + u"GCJJ20  | N 49°47.688, E 009°55.816 | Unknown Type      | D 1.0 | T 1.0 | other   | True  | 29 Oct 2016 | Wuerzburger webcam\n"
+        self.assertEqual(x.alle_anzeigen(), expected)    
+
+#weiter mit alle_anzeigen_dist        
         
 def create_testsuite():
     suite = unittest.TestSuite()
@@ -256,6 +418,7 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesFoundNotOnGPS))
     suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesNotFoundNotOnGPS))
     suite.addTest(unittest.makeSuite(TestSortierenUndAnzeigen))
+    suite.addTest(unittest.makeSuite(TestAlleAnzeigen))
     return suite
 
 def main(v):
