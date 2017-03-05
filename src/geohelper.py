@@ -52,7 +52,10 @@ class GPS_content(object):
         self.geocaches = []               # alle Caches aus GC*.gpx-Dateien in PATH\GPX auslesen und in Liste geocaches speichern
         GPX_PATH = os.path.join(self.PATH, "GPX")
         for datei in glob.glob(os.path.join(GPX_PATH,"GC*.gpx")):
-            self.geocaches.append(Geocache(datei))
+            try:
+                self.geocaches.append(Geocache(datei))
+            except:
+                user_io.general_output("Achtung! Kaputte Datei: {}".format(os.path.basename(datei)))
         user_io.general_output("\n{} Geocaches auf dem Geraet".format(len(self.geocaches)))
             
         for g in self.geocaches:      # Attribute aus den Geocaches auslesen 
@@ -62,19 +65,20 @@ class GPS_content(object):
         self.existing_attributes.sort()
               
         if os.path.isfile(os.path.join(self.PATH, "geocache_visits.txt")):    # alle gefundenen Caches aus Logdatei in found_caches speichern, falls eine solche vorhanden
-            [logged_caches, self.found_caches] = self.get_logged_and_found_caches(os.path.join(self.PATH, "geocache_visits.txt"))
+            [logged_caches, self.found_caches] = self.get_logged_and_found_caches()
             if len(self.found_caches) > 0:
                 self.found_exists = True
             if len(self.found_caches) < len(logged_caches): # Warnung, falls weitere Caches in Logdatei, die noch nicht gefunden wurden
+                print logged_caches
                 self.warning = True
             else:
                 self.warning = False
 
-    def get_logged_and_found_caches(self, visits_file):
-        """liest aus visits_file die geloggten und gefundenen Caches aus"""
+    def get_logged_and_found_caches(self):
+        """liest aus visits_file die geloggten und gefundenen Caches aus (nur Caches, die auch auf dem Geraet gespeichert sind)"""
 
         logged_caches_raw = []           
-        with open(visits_file) as visits:
+        with open(os.path.join(self.PATH, "geocache_visits.txt")) as visits:
             visits = visits.read().decode("utf-16")
             visits_lines = visits.split("\n")
             for line in visits_lines:
@@ -86,13 +90,21 @@ class GPS_content(object):
             if len(lcr) > 0:
                 logged_caches.append(lcr)  
         found_caches = []
+        logged_caches_new = []
         for lc in logged_caches:
             if lc[-1] == "Found it":
                 try:
                     found_caches.append(Geocache(os.path.join(self.PATH,"GPX",lc[0]+".gpx")))
+                    logged_caches_new.append(lc)
                 except IOError:
                     user_io.general_output("\nWARNUNG! Der Geocache {} befindet sich nicht auf dem Geraet. Er wird daher im Folgenden nicht mehr beruecksichtigt.".format(lc[0])) 
-        return [logged_caches, found_caches]
+            else:
+                try:
+                    Geocache(os.path.join(self.PATH,"GPX",lc[0]+".gpx"))
+                    logged_caches_new.append(lc)
+                except IOError:
+                    user_io.general_output("\nWARNUNG! Der Geocache {} befindet sich nicht auf dem Geraet. Er wird daher im Folgenden nicht mehr beruecksichtigt.".format(lc[0])) 
+        return [logged_caches_new, found_caches]
 
     def sortieren_und_anzeigen(self):
         """sortiert alle Caches auf dem Geraet nach gewuenschtem Kriterium und zeigt sie an"""
