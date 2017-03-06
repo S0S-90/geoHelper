@@ -4,6 +4,7 @@ import sys
 sys.path.append('../src/') # path to source file (geohelper.py)
 from StringIO import StringIO
 
+import ownfunctions
 import geohelper
 
 saved_stdout = sys.stdout # save standard output
@@ -401,7 +402,26 @@ class TestAlleAnzeigen(unittest.TestCase):
         expected = expected + u"GCJJ20  | N 49°47.688, E 009°55.816 | Unknown Type      | D 1.0 | T 1.0 | other   | True  | 29 Oct 2016 | Wuerzburger webcam\n"
         self.assertEqual(x.alle_anzeigen(), expected)    
 
-#weiter mit alle_anzeigen_dist        
+class TestAlleAnzeigenDist(unittest.TestCase): 
+
+    def test_nix_anzeigen(self):
+        x = geohelper.GPS_content(r"examples\empty")
+        self.assertEqual(x.alle_anzeigen(), "Keine Caches auf dem Geraet.") 
+
+    def test_anzeigen(self):
+        self.maxDiff = None
+        x = geohelper.GPS_content(r"examples\no_logfile")
+        for gc in x.geocaches:
+            gc.distance = ownfunctions.calculate_distance(gc.koordinaten, [49.8414697,9.8579699])
+        expected = u"    6.5km | GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  | 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
+        expected = expected + u"12746.3km | GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | True  | 11 Sep 2016 | Tesoro Ameghino\n"
+        expected = expected + u"    5.4km | GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | False | 05 Mar 2017 | 67 - MedTrix - {}\n".format(u"\u001a"+u"\u001a"+u"\u001a"+u"\u001a"+u"\u001a")
+        expected = expected + u"   58.2km | GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | True  | 04 Aug 2016 | Saaletalblick\n"
+        expected = expected + u"    7.9km | GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   | True  | 08 Oct 2016 | Hochschule für Musik 1\n"
+        expected = expected + u"    7.3km | GCJJ20  | N 49°47.688, E 009°55.816 | Unknown Type      | D 1.0 | T 1.0 | other   | True  | 29 Oct 2016 | Wuerzburger webcam\n"
+        self.assertEqual(x.alle_anzeigen_dist(), expected)        
+        
+#weiter mit einen_anzeigen    
         
 def create_testsuite():
     suite = unittest.TestSuite()
@@ -419,6 +439,7 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesNotFoundNotOnGPS))
     suite.addTest(unittest.makeSuite(TestSortierenUndAnzeigen))
     suite.addTest(unittest.makeSuite(TestAlleAnzeigen))
+    suite.addTest(unittest.makeSuite(TestAlleAnzeigenDist))
     return suite
 
 def main(v):
