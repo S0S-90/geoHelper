@@ -1,6 +1,7 @@
 ﻿import unittest
 import mock
 import sys
+import shutil
 sys.path.append('../src/') # path to source file (geohelper.py)
 from StringIO import StringIO
 
@@ -409,7 +410,6 @@ class TestAlleAnzeigenDist(unittest.TestCase):
         self.assertEqual(x.alle_anzeigen(), "Keine Caches auf dem Geraet.") 
 
     def test_anzeigen(self):
-        self.maxDiff = None
         x = geohelper.GPS_content(r"examples\no_logfile")
         for gc in x.geocaches:
             gc.distance = ownfunctions.calculate_distance(gc.koordinaten, [49.8414697,9.8579699])
@@ -421,7 +421,24 @@ class TestAlleAnzeigenDist(unittest.TestCase):
         expected = expected + u"    7.3km | GCJJ20  | N 49°47.688, E 009°55.816 | Unknown Type      | D 1.0 | T 1.0 | other   | True  | 29 Oct 2016 | Wuerzburger webcam\n"
         self.assertEqual(x.alle_anzeigen_dist(), expected)        
         
-#weiter mit einen_anzeigen    
+class TestEinenAnzeigen(unittest.TestCase): 
+
+    def test_not_existing_cache(self):
+        x = geohelper.GPS_content(r"examples\no_logfile")
+        with mock.patch('__builtin__.raw_input', return_value= "GC12345"):
+            out = StringIO()
+            sys.stdout = out
+            x.einen_anzeigen()
+            output = out.getvalue().strip()
+            self.assertEqual(output, "Dieser GC-Code existiert nicht.")
+            
+    def test_loeschen(self):
+        x = geohelper.GPS_content(r"examples\no_logfile")
+        shutil.copy2(r"examples\no_logfile\GPX\GC1XRPM.gpx", r"examples\no_logfile\GC1XRPM.gpx")  # copy file that is to be removed
+        with mock.patch('__builtin__.raw_input', side_effect=["GC1XRPM","1","y"]):
+            x.einen_anzeigen()
+            self.assertEqual(len(x.geocaches), 5)
+            shutil.move(r"examples\no_logfile\GC1XRPM.gpx", r"examples\no_logfile\GPX\GC1XRPM.gpx") # move deleted file back to GPX folder
         
 def create_testsuite():
     suite = unittest.TestSuite()
@@ -440,6 +457,7 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestSortierenUndAnzeigen))
     suite.addTest(unittest.makeSuite(TestAlleAnzeigen))
     suite.addTest(unittest.makeSuite(TestAlleAnzeigenDist))
+    suite.addTest(unittest.makeSuite(TestEinenAnzeigen))
     return suite
 
 def main(v):
