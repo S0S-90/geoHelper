@@ -188,6 +188,8 @@ class GPS_content(object):
         """gibt einen String zurueck, in dem Kurzinfos aller Caches aus Cacheliste in jeweils einer Zeile stehen"""
         text = ""
         for c in cacheliste:
+            if type(c) != Geocache:
+                raise TypeError("An Element of the selection is not a Geocache!")
             text = text + c.kurzinfo() + "\n"
         return text
         

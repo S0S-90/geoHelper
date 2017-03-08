@@ -423,22 +423,48 @@ class TestAlleAnzeigenDist(unittest.TestCase):
         
 class TestEinenAnzeigen(unittest.TestCase): 
 
+    def setUp(self):
+        self.x = geohelper.GPS_content(r"examples\no_logfile")
+
     def test_not_existing_cache(self):
-        x = geohelper.GPS_content(r"examples\no_logfile")
         with mock.patch('__builtin__.raw_input', return_value= "GC12345"):
             out = StringIO()
             sys.stdout = out
-            x.einen_anzeigen()
+            self.x.einen_anzeigen()
             output = out.getvalue().strip()
             self.assertEqual(output, "Dieser GC-Code existiert nicht.")
             
     def test_loeschen(self):
-        x = geohelper.GPS_content(r"examples\no_logfile")
         shutil.copy2(r"examples\no_logfile\GPX\GC1XRPM.gpx", r"examples\no_logfile\GC1XRPM.gpx")  # copy file that is to be removed
         with mock.patch('__builtin__.raw_input', side_effect=["GC1XRPM","1","y"]):
-            x.einen_anzeigen()
-            self.assertEqual(len(x.geocaches), 5)
+            self.x.einen_anzeigen()
+            self.assertEqual(len(self.x.geocaches), 5)
             shutil.move(r"examples\no_logfile\GC1XRPM.gpx", r"examples\no_logfile\GPX\GC1XRPM.gpx") # move deleted file back to GPX folder
+            
+    def test_nicht_loeschen(self):
+        with mock.patch('__builtin__.raw_input', side_effect=["GC1XRPM","1","n"]):
+            self.x.einen_anzeigen()
+            self.assertEqual(len(self.x.geocaches), 6)
+            
+class TestGCAuswahlAnzeigen(unittest.TestCase):
+
+    def setUp(self):
+        self.x = geohelper.GPS_content(r"examples\no_logfile")
+        
+    def test_nix_anzeigen(self):
+        self.assertEqual(self.x.gc_auswahl_anzeigen([]), "")
+        
+    def test_auswahl_anzeigen(self):
+        selection = self.x.geocaches[3:5]
+        expected = u"GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | True  | 04 Aug 2016 | Saaletalblick\n"
+        expected = expected + u"GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   | True  | 08 Oct 2016 | Hochschule für Musik 1\n"
+        self.assertEqual(self.x.gc_auswahl_anzeigen(selection), expected)
+        
+    def test_bullshitlist(self):
+        selection = ["13",6]
+        self.assertRaises(TypeError, self.x.gc_auswahl_anzeigen, selection)
+        
+# weiter mit gc_auswahl_anzeigen_dist
         
 def create_testsuite():
     suite = unittest.TestSuite()
@@ -458,6 +484,7 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestAlleAnzeigen))
     suite.addTest(unittest.makeSuite(TestAlleAnzeigenDist))
     suite.addTest(unittest.makeSuite(TestEinenAnzeigen))
+    suite.addTest(unittest.makeSuite(TestGCAuswahlAnzeigen))
     return suite
 
 def main(v):
