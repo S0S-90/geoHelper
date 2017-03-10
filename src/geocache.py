@@ -20,7 +20,7 @@ class Geocache(object):
         vollstaendiger Dateiname (mit Pfadangabe) 
         
     gccode: string
-        CG-Code
+        CG-Code - wird fuer die überladenen Operatoren == und != sowie fuer den Printbefehl genutzt
         
     name: string
         Name des Geocaches 
@@ -212,6 +212,15 @@ class Geocache(object):
         else:
             type = "Unknown Type"
         return type
+        
+    def __str__(self):
+        return self.gccode
+        
+    def __eq__(self, other):
+        return self.gccode == other
+        
+    def __ne__(self, other):
+        return self.gccode != other
             
     def kurzinfo(self):                                  
         """ gibt eine einzeilige Kurzinfo zurueck"""

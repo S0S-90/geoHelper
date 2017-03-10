@@ -197,6 +197,8 @@ class GPS_content(object):
         """gibt einen String zurueck, in dem Kurzinfos aller Caches aus Cacheliste + die aktuellen Entfernungsangaben jeweils in einer Zeile stehen"""
         text = ""
         for c in cacheliste:
+            if type(c) != Geocache:
+                raise TypeError("An Element of the selection is not a Geocache!")
             newline = u"{:7}km | {}\n".format(round(c.distance,1), c.kurzinfo())
             text = text + newline
         return text

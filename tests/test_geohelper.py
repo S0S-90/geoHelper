@@ -464,7 +464,35 @@ class TestGCAuswahlAnzeigen(unittest.TestCase):
         selection = ["13",6]
         self.assertRaises(TypeError, self.x.gc_auswahl_anzeigen, selection)
         
-# weiter mit gc_auswahl_anzeigen_dist
+class TestGCAuswahlAnzeigenDist(unittest.TestCase):
+
+    def setUp(self):
+        self.x = geohelper.GPS_content(r"examples\no_logfile")
+        for gc in self.x.geocaches:
+            gc.distance = ownfunctions.calculate_distance(gc.koordinaten, [49.8414697,9.8579699])
+        
+    def test_nix_anzeigen(self):
+        self.assertEqual(self.x.gc_auswahl_anzeigen_dist([]), "")
+        
+    def test_auswahl_anzeigen(self):
+        selection = self.x.geocaches[3:5]
+        expected = u"   58.2km | GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | True  | 04 Aug 2016 | Saaletalblick\n"
+        expected = expected + u"    7.9km | GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   | True  | 08 Oct 2016 | Hochschule für Musik 1\n"
+        self.assertEqual(self.x.gc_auswahl_anzeigen_dist(selection), expected)
+        
+    def test_bullshitlist(self):
+        selection = ["13",6]
+        self.assertRaises(TypeError, self.x.gc_auswahl_anzeigen_dist, selection)
+        
+class TestSuchen(unittest.TestCase):
+
+    def setUp(self):
+        self.x = geohelper.GPS_content(r"examples\no_logfile")
+
+    def test_name(self):
+        with mock.patch('__builtin__.raw_input', side_effect = ["1","A"]): 
+            expected = [self.x.geocaches[0], self.x.geocaches[1]]
+            self.assertEqual(self.x.suchen(), expected)      
         
 def create_testsuite():
     suite = unittest.TestSuite()
@@ -485,6 +513,8 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestAlleAnzeigenDist))
     suite.addTest(unittest.makeSuite(TestEinenAnzeigen))
     suite.addTest(unittest.makeSuite(TestGCAuswahlAnzeigen))
+    suite.addTest(unittest.makeSuite(TestGCAuswahlAnzeigenDist))
+    suite.addTest(unittest.makeSuite(TestSuchen))
     return suite
 
 def main(v):
