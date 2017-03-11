@@ -531,7 +531,7 @@ class TestSuchen(unittest.TestCase):
             expected = [self.x.geocaches[3], self.x.geocaches[4]]
             self.assertEqual(self.x.suchen(), expected)   
 
-    # weiter mit test_size            
+    # weiter mit test_size ; look first for test summary!!!          
         
 def create_testsuite():
     suite = unittest.TestSuite()
