@@ -4,6 +4,7 @@ import glob
 import webbrowser
 import subprocess
 
+import geocache     # Konstanten aus geocache.py (Typen und Groessen)
 from geocache import Geocache   # Geocache-Klasse
 import user_io      # Benutzeroberflaeche
 import ownfunctions # eigene Datei mit Funktionen

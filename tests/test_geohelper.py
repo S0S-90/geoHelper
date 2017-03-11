@@ -492,7 +492,46 @@ class TestSuchen(unittest.TestCase):
     def test_name(self):
         with mock.patch('__builtin__.raw_input', side_effect = ["1","A"]): 
             expected = [self.x.geocaches[0], self.x.geocaches[1]]
-            self.assertEqual(self.x.suchen(), expected)      
+            self.assertEqual(self.x.suchen(), expected) 
+
+    def test_beschreibung(self):
+        with mock.patch('__builtin__.raw_input', side_effect = ["2","ist"]): 
+            expected = [self.x.geocaches[0], self.x.geocaches[1], self.x.geocaches[2], self.x.geocaches[5]]
+            self.assertEqual(self.x.suchen(), expected)     
+
+    def test_cachetyp(self):   
+        with mock.patch('__builtin__.raw_input', side_effect = ["3","Mystery Cache"]): 
+            expected = [self.x.geocaches[2], self.x.geocaches[4]]
+            self.assertEqual(self.x.suchen(), expected)
+
+    def test_cachetyp_invalid(self):   
+        with mock.patch('__builtin__.raw_input', side_effect = ["3","Mystery"]): 
+            self.assertEqual(self.x.suchen(), [])  
+
+    def test_difficulty(self):   
+        with mock.patch('__builtin__.raw_input', side_effect = ["4","2, 2.5"]): 
+            expected = [self.x.geocaches[0], self.x.geocaches[1], self.x.geocaches[3], self.x.geocaches[4]]
+            self.assertEqual(self.x.suchen(), expected) 
+
+    def test_difficulty_without_space(self):   
+        with mock.patch('__builtin__.raw_input', side_effect = ["4","2,2.5"]): 
+            expected = [self.x.geocaches[0], self.x.geocaches[1], self.x.geocaches[3], self.x.geocaches[4]]
+            self.assertEqual(self.x.suchen(), expected)     
+
+    def test_difficulty_error(self):   
+        with mock.patch('__builtin__.raw_input', side_effect = ["4","2.5,2"]): 
+            self.assertEqual(self.x.suchen(), []) 
+
+    def test_difficulty_error2(self):   
+        with mock.patch('__builtin__.raw_input', side_effect = ["4","2.5,7"]): 
+            self.assertEqual(self.x.suchen(), [])  
+
+    def test_terrain(self):   
+        with mock.patch('__builtin__.raw_input', side_effect = ["5","1.5, 2"]): 
+            expected = [self.x.geocaches[3], self.x.geocaches[4]]
+            self.assertEqual(self.x.suchen(), expected)   
+
+    # weiter mit test_size            
         
 def create_testsuite():
     suite = unittest.TestSuite()
