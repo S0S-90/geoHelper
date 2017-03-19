@@ -273,7 +273,7 @@ def string_to_date(string):
     
     if len(string) != 10 or string[2] != "." or string[5] != ".":
         user_io.general_output("Bad input.")
-        return None
+        raise ValueError
     
     day = int(string[0:2])
     month = int(string[3:5])
