@@ -531,7 +531,85 @@ class TestSuchen(unittest.TestCase):
             expected = [self.x.geocaches[3], self.x.geocaches[4]]
             self.assertEqual(self.x.suchen(), expected)   
 
-    # weiter mit test_size            
+    def test_size(self):   
+        with mock.patch('__builtin__.raw_input', side_effect = ["6","micro, small"]): 
+            expected = [self.x.geocaches[0], self.x.geocaches[1], self.x.geocaches[2], self.x.geocaches[3], self.x.geocaches[4]]
+            self.assertEqual(self.x.suchen(), expected)     
+
+    def test_size_without_space(self):   
+        with mock.patch('__builtin__.raw_input', side_effect = ["6","micro,small"]): 
+            expected = [self.x.geocaches[0], self.x.geocaches[1], self.x.geocaches[2], self.x.geocaches[3], self.x.geocaches[4]]
+            self.assertEqual(self.x.suchen(), expected) 
+
+    def test_size_error(self):   
+        with mock.patch('__builtin__.raw_input', side_effect = ["6","small, micro"]): 
+            self.assertEqual(self.x.suchen(), [])  
+
+    def test_downloaddate(self):   
+        with mock.patch('__builtin__.raw_input', side_effect = ["7","01.10.2016, 31.10.2016"]): 
+            expected = [self.x.geocaches[4], self.x.geocaches[5]]
+            self.assertEqual(self.x.suchen(), expected)  
+
+    def test_downloaddate_without_space(self):   
+        with mock.patch('__builtin__.raw_input', side_effect = ["7","01.10.2016,31.10.2016"]): 
+            expected = [self.x.geocaches[4], self.x.geocaches[5]]
+            self.assertEqual(self.x.suchen(), expected)  
+
+    def test_downloaddate_error(self):   
+        with mock.patch('__builtin__.raw_input', side_effect = ["7","1.10.2016, 31.10.2016"]): 
+            self.assertEqual(self.x.suchen(), [])   
+
+    def test_downloaddate_error2(self):   
+        with mock.patch('__builtin__.raw_input', side_effect = ["7","31.10.2016, 01.10.2016"]): 
+            self.assertEqual(self.x.suchen(), [])  
+
+    def test_not_available(self):   
+        with mock.patch('__builtin__.raw_input', side_effect = ["8","n"]): 
+            expected = [self.x.geocaches[2]]
+            self.assertEqual(self.x.suchen(), expected) 
+
+    def test_available(self):   
+        with mock.patch('__builtin__.raw_input', side_effect = ["8","y"]): 
+            expected = [self.x.geocaches[0], self.x.geocaches[1], self.x.geocaches[3], self.x.geocaches[4], self.x.geocaches[5]]
+            self.assertEqual(self.x.suchen(), expected)  
+
+    def test_available_by_bullshit(self):   
+        with mock.patch('__builtin__.raw_input', side_effect = ["8","dfghj"]): 
+            expected = [self.x.geocaches[0], self.x.geocaches[1], self.x.geocaches[3], self.x.geocaches[4], self.x.geocaches[5]]
+            self.assertEqual(self.x.suchen(), expected)    
+
+    def test_attributes(self):   
+        with mock.patch('__builtin__.raw_input', side_effect = ["9","available 24-7"]): 
+            expected = [self.x.geocaches[2], self.x.geocaches[4], self.x.geocaches[5]]
+            self.assertEqual(self.x.suchen(), expected)  
+
+    def test_attribute_that_doesnt_exist(self):   
+        with mock.patch('__builtin__.raw_input', side_effect = ["9","No attributes specified by the author"]): 
+            self.assertEqual(self.x.suchen(), [])  
+
+    def test_distance(self):   
+        with mock.patch('__builtin__.raw_input', side_effect = ["10","https://www.google.de/maps/place/97209+Veitsh%C3%B6chheim/@49.8414697,9.8579699,13z/data=!3m1!4b1!4m5!3m4!1s0x47a2915cbab1bfe3:0xdbe76ec582bb3aa5!8m2!3d49.8312701!4d9.8803666", "6.4, 7.4"]): 
+            expected = [self.x.geocaches[0], self.x.geocaches[5]]
+            self.assertEqual(self.x.suchen(), expected) 
+
+    def test_distance_without_space(self):   
+        with mock.patch('__builtin__.raw_input', side_effect = ["10","https://www.google.de/maps/place/97209+Veitsh%C3%B6chheim/@49.8414697,9.8579699,13z/data=!3m1!4b1!4m5!3m4!1s0x47a2915cbab1bfe3:0xdbe76ec582bb3aa5!8m2!3d49.8312701!4d9.8803666", "6.4,7.4"]): 
+            expected = [self.x.geocaches[0], self.x.geocaches[5]]
+            self.assertEqual(self.x.suchen(), expected)  
+
+    def test_distance_error(self):   
+        with mock.patch('__builtin__.raw_input', side_effect = ["10","https://www.gooe/maps/place/97209+Veitsh%C3%B6chheim/@49.8414697,9.8579699,13z/data=!3m1!4b1!4m5!3m4!1s0x47a2915cbab1bfe3:0xdbe76ec582bb3aa5!8m2!3d49.8312701!4d9.8803666", "6.4,7.4"]): 
+            self.assertEqual(self.x.suchen(), [])    
+
+    def test_distance_error2(self):   
+        with mock.patch('__builtin__.raw_input', side_effect = ["10","https://www.google.de/maps/place/97209+Veitsh%C3%B6chheim/@49.8414697,9.8579699,13z/data=!3m1!4b1!4m5!3m4!1s0x47a2915cbab1bfe3:0xdbe76ec582bb3aa5!8m2!3d49.8312701!4d9.8803666", "hh, 7.4"]): 
+            self.assertEqual(self.x.suchen(), [])  
+
+    def test_distance_error3(self):   
+        with mock.patch('__builtin__.raw_input', side_effect = ["10","https://www.google.de/maps/place/97209+Veitsh%C3%B6chheim/@49.8414697,9.8579699,13z/data=!3m1!4b1!4m5!3m4!1s0x47a2915cbab1bfe3:0xdbe76ec582bb3aa5!8m2!3d49.8312701!4d9.8803666", "10.3, 7.4"]): 
+            self.assertEqual(self.x.suchen(), [])   
+
+# weiter mit aktionen_auswahl_suchen ???            
         
 def create_testsuite():
     suite = unittest.TestSuite()

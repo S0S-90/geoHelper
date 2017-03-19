@@ -340,6 +340,9 @@ class TestStringToDate(unittest.TestCase):
         expected_result = datetime.date(1990,7,4)
         self.assertEqual(x,expected_result)
         
+    def test_date_has_too_less_signs(self):
+        self.assertRaises(ValueError, ownfunctions.string_to_date, "4.7.1990")
+        
     def test_day_is_zero(self):
         self.assertRaises(ValueError, ownfunctions.string_to_date, "00.07.1990")
         

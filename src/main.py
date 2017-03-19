@@ -308,7 +308,7 @@ class GPS_content(object):
             koords_str = user_io.koordinaten_eingabe()
             koords = ownfunctions.koordinaten_string_to_dezimalgrad(koords_str)
             if koords:
-                eingabe_str = user_io.general_input("Minimale und maximale Distanz in Kilometers (mit Komma voneinander getrennt): ") 
+                eingabe_str = user_io.general_input("Minimale und maximale Distanz in Kilometern (mit Komma voneinander getrennt): ") 
                 eingabe = eingabe_str.split(",")
                 if len(eingabe) != 2:
                     user_io.general_output("ERROR: ungueltige Eingabe") 
