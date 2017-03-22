@@ -2,6 +2,7 @@
 import mock
 import sys
 import shutil
+import os
 sys.path.append('../src/') # path to source file (geotooly.py)
 from StringIO import StringIO
 
@@ -435,11 +436,11 @@ class TestEinenAnzeigen(unittest.TestCase):
             self.assertEqual(output, "Dieser GC-Code existiert nicht.")
             
     def test_loeschen(self):
-        shutil.copy2(r"examples\no_logfile\GPX\GC1XRPM.gpx", r"examples\no_logfile\GC1XRPM.gpx")  # copy file that is to be removed
+        shutil.copy2(r"examples\no_logfile\GPX\GC1XRPM.gpx", r"examples\temp\GC1XRPM.gpx")  # copy file that is to be removed
         with mock.patch('__builtin__.raw_input', side_effect=["GC1XRPM","1","y"]):
             self.x.einen_anzeigen()
             self.assertEqual(len(self.x.geocaches), 5)
-            shutil.move(r"examples\no_logfile\GC1XRPM.gpx", r"examples\no_logfile\GPX\GC1XRPM.gpx") # move deleted file back to GPX folder
+        shutil.move(r"examples\temp\GC1XRPM.gpx", r"examples\no_logfile\GPX\GC1XRPM.gpx") # move deleted file back to GPX folder
             
     def test_nicht_loeschen(self):
         with mock.patch('__builtin__.raw_input', side_effect=["GC1XRPM","1","n"]):
@@ -609,7 +610,50 @@ class TestSuchen(unittest.TestCase):
         with mock.patch('__builtin__.raw_input', side_effect = ["10","https://www.google.de/maps/place/97209+Veitsh%C3%B6chheim/@49.8414697,9.8579699,13z/data=!3m1!4b1!4m5!3m4!1s0x47a2915cbab1bfe3:0xdbe76ec582bb3aa5!8m2!3d49.8312701!4d9.8803666", "10.3, 7.4"]): 
             self.assertEqual(self.x.suchen(), [])   
 
-# weiter mit aktionen_auswahl_suchen ???            
+class TestGefundeneAnzeigenNoFoundCaches(unittest.TestCase):  
+
+    def setUp(self):
+        self.x = geotooly.GPS_content(r"examples\no_logfile")  
+        
+    def test_gives_error(self):
+        self.assertRaises(ValueError, self.x.gefundene_anzeigen)
+        
+class TestGefundeneAnzeigenOnlyFound(unittest.TestCase):  
+
+    def setUp(self):
+        self.x = geotooly.GPS_content(r"examples\only_found")  
+        
+    def test_anzeigen(self):
+        with mock.patch('__builtin__.raw_input', return_value = ["anything_except_for_1"]):
+            out = StringIO()
+            sys.stdout = out                                                    
+            self.x.gefundene_anzeigen() 
+            output = out.getvalue().strip()  
+            expected = u"GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  | 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
+            expected = expected + u"GC5G5F5 | N 49°47.955, E 009°58.566 | Traditional Cache | D 1.5 | T 4.0 | small   | True  | 08 Oct 2016 | Urban Buildering\n\n" 
+            expected = expected +  "\nWas moechtest du als naechstes tun?\n"
+            expected = expected + "1: Alle gefundenen Caches loeschen (vorher Loggen auf geocaching.com moeglich)\n"
+            expected = expected + "2: zurueck"            
+            self.assertEqual(output, expected)
+            
+    def test_loeschen(self):
+        shutil.copy2(r"examples\only_found\GPX\GC1XRPM.gpx", r"examples\temp\GC1XRPM.gpx")              # copy files that are to be removed
+        shutil.copy2(r"examples\only_found\GPX\GC5G5F5.gpx", r"examples\temp\GC5G5F5.gpx")
+        shutil.copy2(r"examples\only_found\geocache_visits.txt", r"examples\temp\geocache_visits.txt")
+        shutil.copy2(r"examples\only_found\geocache_logs.xml", r"examples\temp\geocache_logs.xml")
+        
+        with mock.patch('__builtin__.raw_input', side_effect = ["1","n","y"]):
+            self.x.gefundene_anzeigen()
+            self.assertEqual(len(self.x.geocaches), 5)   # less geocaches
+            self.assertFalse(os.path.isfile(r"examples\only_found\geocache_visits.txt"))  # logfiles deleted
+            self.assertFalse(os.path.isfile(r"examples\only_found\geocache_logs.xml"))
+        
+        shutil.move(r"examples\temp\GC1XRPM.gpx", r"examples\only_found\GPX\GC1XRPM.gpx") # move deleted files back
+        shutil.move(r"examples\temp\GC5G5F5.gpx", r"examples\only_found\GPX\GC5G5F5.gpx")
+        shutil.move(r"examples\temp\geocache_visits.txt", r"examples\only_found\geocache_visits.txt")
+        shutil.move(r"examples\temp\geocache_logs.xml", r"examples\only_found\geocache_logs.xml")
+        
+# hier geht's weiter
         
 def create_testsuite():
     suite = unittest.TestSuite()
@@ -632,6 +676,8 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestGCAuswahlAnzeigen))
     suite.addTest(unittest.makeSuite(TestGCAuswahlAnzeigenDist))
     suite.addTest(unittest.makeSuite(TestSuchen))
+    suite.addTest(unittest.makeSuite(TestGefundeneAnzeigenNoFoundCaches))
+    suite.addTest(unittest.makeSuite(TestGefundeneAnzeigenOnlyFound))
     return suite
 
 def main(v):

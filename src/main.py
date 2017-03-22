@@ -352,6 +352,8 @@ class GPS_content(object):
     def gefundene_anzeigen(self):
         """zeigt alle auf dem Geraet als gefunden gespeicherten Caches an und loescht diese auf Wunsch"""
         
+        if not self.found_exists:
+            raise ValueError("ERROR: no found caches")
         user_io.general_output(self.gc_auswahl_anzeigen(self.found_caches))
         task = user_io.aktionen_auswahl_gefunden()
         if task == "loeschen":
