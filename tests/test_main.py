@@ -531,9 +531,6 @@ class TestSuchen(unittest.TestCase):
             expected = [self.x.geocaches[3], self.x.geocaches[4]]
             self.assertEqual(self.x.suchen(), expected)   
 
-<<<<<<< HEAD:tests/test_geohelper.py
-    # weiter mit test_size ; look first for test summary!!!          
-=======
     def test_size(self):   
         with mock.patch('__builtin__.raw_input', side_effect = ["6","micro, small"]): 
             expected = [self.x.geocaches[0], self.x.geocaches[1], self.x.geocaches[2], self.x.geocaches[3], self.x.geocaches[4]]
@@ -613,7 +610,6 @@ class TestSuchen(unittest.TestCase):
             self.assertEqual(self.x.suchen(), [])   
 
 # weiter mit aktionen_auswahl_suchen ???            
->>>>>>> master:tests/test_main.py
         
 def create_testsuite():
     suite = unittest.TestSuite()
@@ -640,7 +636,7 @@ def create_testsuite():
 
 def main(v):
     sys.stdout = saved_stdout  # print output to display
-    print "\nTesting geotooly.py"
+    print "\nTesting main.py"
     out = StringIO()
     sys.stdout = out   # don't print output
     testsuite = create_testsuite()
