@@ -395,7 +395,7 @@ def main(v):
     sys.stdout = out   # don't print output
     testsuite = create_testsuite()
     x = unittest.TextTestRunner(verbosity=v).run(testsuite)  
-    return x.testsRun, len(x.failures)
+    return x.testsRun, len(x.failures), len(x.errors)
 
 if __name__ == '__main__':
     main(2)
