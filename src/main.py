@@ -376,7 +376,7 @@ class GPS_content(object):
             removelist = []
             for c1 in self.geocaches:
                 for c2 in cacheliste:
-                    if c1.gccode == c2.gccode:
+                    if c1 == c2:
                         removelist.append(c1)
             self.geocaches = [c for c in self.geocaches if c not in removelist]
         return loeschen

@@ -7,6 +7,7 @@ sys.path.append('../src/') # path to source file (geotooly.py)
 from StringIO import StringIO
 
 import ownfunctions
+import geocache
 import main as geotooly
 
 saved_stdout = sys.stdout # save standard output
@@ -728,7 +729,43 @@ class TestGefundeneAnzeigenFoundNotOnGPS(unittest.TestCase):
         shutil.move(r"examples\temp\geocache_visits.txt", r"examples\found_not_on_gps\geocache_visits.txt")
         shutil.move(r"examples\temp\geocache_logs.xml", r"examples\found_not_on_gps\geocache_logs.xml")
         
-# weiter mit Loeschen
+class TestLoeschen(unittest.TestCase):  
+
+    def setUp(self):
+        self.x = geotooly.GPS_content(r"examples\no_logfile") 
+        
+    def test_nicht_loeschen(self):
+        cache = geocache.Geocache(r"examples\no_logfile\GPX\GC5N23T.gpx")
+        with mock.patch('__builtin__.raw_input', return_value = "anything_except_for_y"):
+            self.x.loeschen([cache])
+            self.assertEqual(len(self.x.geocaches), 6)
+        
+    def test_einen_loeschen(self):
+        cache = geocache.Geocache(r"examples\no_logfile\GPX\GC5N23T.gpx")
+        shutil.copy2(r"examples\no_logfile\GPX\GC5N23T.gpx", r"examples\temp\GC5N23T.gpx")      # copy file that is to be removed
+        with mock.patch('__builtin__.raw_input', return_value = "y"):
+            self.x.loeschen([cache])
+            self.assertEqual(len(self.x.geocaches), 5)
+            self.assertFalse(os.path.isfile(r"examples\no_logfile\GPX\GC5N23T.gpx"))
+        shutil.move(r"examples\temp\GC5N23T.gpx", r"examples\no_logfile\GPX\GC5N23T.gpx")       # move deleted file back
+        
+    def test_mehrere_loeschen(self):
+        cache1 = geocache.Geocache(r"examples\no_logfile\GPX\GC5N23T.gpx")
+        cache2 = geocache.Geocache(r"examples\no_logfile\GPX\GC1XRPM.gpx")
+        shutil.copy2(r"examples\no_logfile\GPX\GC5N23T.gpx", r"examples\temp\GC5N23T.gpx")      # copy files that are to be removed
+        shutil.copy2(r"examples\no_logfile\GPX\GC1XRPM.gpx", r"examples\temp\GC1XRPM.gpx")
+        with mock.patch('__builtin__.raw_input', return_value = "y"):
+            self.x.loeschen([cache1, cache2])
+            self.assertEqual(len(self.x.geocaches), 4)
+            self.assertFalse(os.path.isfile(r"examples\no_logfile\GPX\GC5N23T.gpx"))
+            self.assertFalse(os.path.isfile(r"examples\no_logfile\GPX\GC1XRPM.gpx"))
+        shutil.move(r"examples\temp\GC5N23T.gpx", r"examples\no_logfile\GPX\GC5N23T.gpx")       # move deleted files back
+        shutil.move(r"examples\temp\GC1XRPM.gpx", r"examples\no_logfile\GPX\GC1XRPM.gpx")
+        
+    def test_bullshit_cacheliste_gives_error(self):
+        with mock.patch('__builtin__.raw_input', return_value = "y"):
+            self.assertRaises(AttributeError, self.x.loeschen, [42, "hallo"]) 
+ 
         
 def create_testsuite():
     suite = unittest.TestSuite()
@@ -756,6 +793,7 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestGefundeneAnzeigenOnlyNotFound))
     suite.addTest(unittest.makeSuite(TestGefundeneAnzeigenNotOnlyFound))
     suite.addTest(unittest.makeSuite(TestGefundeneAnzeigenFoundNotOnGPS))
+    suite.addTest(unittest.makeSuite(TestLoeschen))
     return suite
 
 def main(v):
