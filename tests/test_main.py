@@ -653,7 +653,82 @@ class TestGefundeneAnzeigenOnlyFound(unittest.TestCase):
         shutil.move(r"examples\temp\geocache_visits.txt", r"examples\only_found\geocache_visits.txt")
         shutil.move(r"examples\temp\geocache_logs.xml", r"examples\only_found\geocache_logs.xml")
         
-# hier geht's weiter
+class TestGefundeneAnzeigenOnlyNotFound(unittest.TestCase):  
+
+    def setUp(self):
+        self.x = geotooly.GPS_content(r"examples\only_notfound")  
+        
+    def test_gives_error(self):
+        self.assertRaises(ValueError, self.x.gefundene_anzeigen)
+        
+class TestGefundeneAnzeigenNotOnlyFound(unittest.TestCase):  
+
+    def setUp(self):
+        self.x = geotooly.GPS_content(r"examples\not_only_found")  
+        
+    def test_anzeigen(self):
+        with mock.patch('__builtin__.raw_input', return_value = ["anything_except_for_1"]):
+            out = StringIO()
+            sys.stdout = out                                                    
+            self.x.gefundene_anzeigen() 
+            output = out.getvalue().strip()  
+            expected = u"GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  | 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
+            expected = expected + u"GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | True  | 09 Jan 2017 | 67 - MedTrix - \u001a\u001a\u001a\u001a\u001a\n\n" 
+            expected = expected +  "\nWas moechtest du als naechstes tun?\n"
+            expected = expected + "1: Alle gefundenen Caches loeschen (vorher Loggen auf geocaching.com moeglich)\n"
+            expected = expected + "2: zurueck"            
+            self.assertEqual(output, expected)
+            
+    def test_loeschen(self):
+        shutil.copy2(r"examples\not_only_found\GPX\GC1XRPM.gpx", r"examples\temp\GC1XRPM.gpx")              # copy files that are to be removed
+        shutil.copy2(r"examples\not_only_found\GPX\GC5N23T.gpx", r"examples\temp\GC5N23T.gpx")
+        shutil.copy2(r"examples\not_only_found\geocache_visits.txt", r"examples\temp\geocache_visits.txt")
+        shutil.copy2(r"examples\not_only_found\geocache_logs.xml", r"examples\temp\geocache_logs.xml")
+        
+        with mock.patch('__builtin__.raw_input', side_effect = ["1","n","y"]):
+            self.x.gefundene_anzeigen()
+            self.assertEqual(len(self.x.geocaches), 5)   # less geocaches
+            self.assertFalse(os.path.isfile(r"examples\not_only_found\geocache_visits.txt"))  # logfiles deleted
+            self.assertFalse(os.path.isfile(r"examples\not_only_found\geocache_logs.xml"))
+        
+        shutil.move(r"examples\temp\GC1XRPM.gpx", r"examples\not_only_found\GPX\GC1XRPM.gpx") # move deleted files back
+        shutil.move(r"examples\temp\GC5N23T.gpx", r"examples\not_only_found\GPX\GC5N23T.gpx")
+        shutil.move(r"examples\temp\geocache_visits.txt", r"examples\not_only_found\geocache_visits.txt")
+        shutil.move(r"examples\temp\geocache_logs.xml", r"examples\not_only_found\geocache_logs.xml")
+        
+class TestGefundeneAnzeigenFoundNotOnGPS(unittest.TestCase):  
+
+    def setUp(self):
+        self.x = geotooly.GPS_content(r"examples\found_not_on_gps")  
+        
+    def test_anzeigen(self):
+        with mock.patch('__builtin__.raw_input', return_value = ["anything_except_for_1"]):
+            out = StringIO()
+            sys.stdout = out                                                    
+            self.x.gefundene_anzeigen() 
+            output = out.getvalue().strip()  
+            expected = u"GC5G5F5 | N 49°47.955, E 009°58.566 | Traditional Cache | D 1.5 | T 4.0 | small   | True  | 08 Oct 2016 | Urban Buildering\n\n"
+            expected = expected +  "\nWas moechtest du als naechstes tun?\n"
+            expected = expected + "1: Alle gefundenen Caches loeschen (vorher Loggen auf geocaching.com moeglich)\n"
+            expected = expected + "2: zurueck"            
+            self.assertEqual(output, expected)
+            
+    def test_loeschen(self):
+        shutil.copy2(r"examples\found_not_on_gps\GPX\GC5G5F5.gpx", r"examples\temp\GC5G5F5.gpx")              # copy files that are to be removed
+        shutil.copy2(r"examples\found_not_on_gps\geocache_visits.txt", r"examples\temp\geocache_visits.txt")
+        shutil.copy2(r"examples\found_not_on_gps\geocache_logs.xml", r"examples\temp\geocache_logs.xml")
+        
+        with mock.patch('__builtin__.raw_input', side_effect = ["1","n","y"]):
+            self.x.gefundene_anzeigen()
+            self.assertEqual(len(self.x.geocaches), 5)   # less geocaches
+            self.assertFalse(os.path.isfile(r"examples\found_not_on_gps\geocache_visits.txt"))  # logfiles deleted
+            self.assertFalse(os.path.isfile(r"examples\found_not_on_gps\geocache_logs.xml"))
+        
+        shutil.move(r"examples\temp\GC5G5F5.gpx", r"examples\found_not_on_gps\GPX\GC5G5F5.gpx") # move deleted files back
+        shutil.move(r"examples\temp\geocache_visits.txt", r"examples\found_not_on_gps\geocache_visits.txt")
+        shutil.move(r"examples\temp\geocache_logs.xml", r"examples\found_not_on_gps\geocache_logs.xml")
+        
+# weiter mit Loeschen
         
 def create_testsuite():
     suite = unittest.TestSuite()
@@ -678,6 +753,9 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestSuchen))
     suite.addTest(unittest.makeSuite(TestGefundeneAnzeigenNoFoundCaches))
     suite.addTest(unittest.makeSuite(TestGefundeneAnzeigenOnlyFound))
+    suite.addTest(unittest.makeSuite(TestGefundeneAnzeigenOnlyNotFound))
+    suite.addTest(unittest.makeSuite(TestGefundeneAnzeigenNotOnlyFound))
+    suite.addTest(unittest.makeSuite(TestGefundeneAnzeigenFoundNotOnGPS))
     return suite
 
 def main(v):
