@@ -8,29 +8,29 @@ import user_io
 
 
 class MyHTMLParser(HTMLParser):
-    """Parser, um alle Daten, die in einer Tabelle (Tags <td> bzw. </td>) stehen, auszulesen
+    """parser to read all data that is in a table (tags <td> / </td)
     
-    Attribute:
+    Attributs:
     -----------
     read: bool
-        legt fest, ob gerade Daten gelesen werden
+        if true data is read, if false no data is read
         
     data: list
-        Speicherort fuer Daten, die gelesen werden
+        container for data that is read
         
     
-    Methoden:
+    Methods:
     ---------    
-    define_attributes(): definiert die Attribute read und data
+    define_attributes(): defines the attributed read and data
 
-    return data(): gibt Liste data zurueck   
+    return data(): return list data 
     """
 
     def define_attributes(self):
         self.read = False
         self.data = []
     
-    def handle_starttag(self, tag, attrs):
+    def handle_starttag(self, tag, attr):
         if tag == "td":
             self.read = True
 
@@ -47,22 +47,24 @@ class MyHTMLParser(HTMLParser):
         
         
 def find_cp1252():
-    """parst Webseite ueber Codepage 1252 und gibt Liste mit den Unicode-Descriptions zurueck"""
+    """parses website about codepage 1252 and gives back a list with unicode descriptions"""
     
-    x = urllib.urlopen("http://www.cp1252.com/").read() # Webseite auslesen
+    x = urllib.urlopen("http://www.cp1252.com/").read() # read website
     
-    parser = MyHTMLParser()        # Webseite parsen 
+    parser = MyHTMLParser()        # parse website
     parser.define_attributes()
     parser.feed(x)  
-    cpdata = parser.return_data()  # Inhalt der Tabelle in cpdata
+    cpdata = parser.return_data()  # content of table in cpdata
     
-    cp1252 = []                    # Unicode-Descriptions fuer Codepage 1252
+    cp1252 = []                    # find unicode-descriptions in cpdata and save them in cp1252
     for i, d in enumerate(cpdata):
         if i%3 == 1 and i > 6:
             cp1252.append(d)      
     return cp1252
     
-ALLOWED_SIGNS = find_cp1252()  # erlaubte Zeichen einmal festlegen
+ALLOWED_SIGNS = find_cp1252()  # define allowed signs (codepage 1252) once 
+
+# cleanup until here
 
 def zeichen_ersetzen(string):
     """"ersetzt Zeichen, die Probleme bei der Darstellung machen (nicht in allowed_signs vorhanden)"""  

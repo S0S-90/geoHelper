@@ -3,7 +3,7 @@ import time
 import datetime
 import xml.etree.ElementTree as ElementTree
 
-import ownfunctions  # eigene Datei mit Funktionen
+import ownfunctions  
 
 SIZE_LISTE = ["other", "micro", "small", "regular", "large"]
 TYPES_LISTE = ["Traditional Cache", "Multi-cache", "EarthCache", "Letterbox Hybrid", "Event Cache", "Wherigo Cache", "Mystery Cache", "Geocaching HQ", "Unknown Type"]
@@ -11,84 +11,84 @@ TYPES_LISTE = ["Traditional Cache", "Multi-cache", "EarthCache", "Letterbox Hybr
 class Geocache(object):
 
     """
-    Ein Objekt dieser Klasse enthält alle relevanten Informationen aus der entsprechenden GPX-Datei.
+    An object of this class contains all relevant information of the corresponding gpx-file
     
     
-    Attribute:
+    Attributs:
     -----------
     dateiname_path: string
-        vollstaendiger Dateiname (mit Pfadangabe) 
+        filename (including path)
         
     gccode: string
-        CG-Code - wird fuer die überladenen Operatoren == und != sowie fuer den Printbefehl genutzt
+        gc-code - used for overloaded operators == and != and is printed by "print"
         
     name: string
-        Name des Geocaches 
+        name of the geocache
     
     difficulty: float
-        Schwierigkeitsgrad
+        difficulty value of the cache
         
     terrain: float
-        Gelaendewertung
+        terrain value of the cache
         
     size: int
-        Groesse des Caches (other = 0, dann mit der Groesse aufsteigend)
+        size of the cache as number (other = 0, then increasing by size)
         
-    size_anzeige: string
-        Groesse des Caches
+    size_string: string
+        size of the cache as word
         
     type: string
-        Art des Caches (beschraenkt auf Cachetypen aus TYPES_LISTE)
-        wird in der Kurzanzeige sowie beim Sortieren und Suchen verwendet
+        type of the cache (member of TYPES_LISTE)
+        used in short description as well as for searching and sorting
         
     longtype: string
-        Art des Caches (nicht beschraenkt)
-        wird in der Langanzeige verwendet
+        type of the cache (any description possible)
+        used in long description
     
     beschreibung: string
-        Cachebeschreibung
+        description of the cache
         
     hint: string
-        Hinweis
+        hint for the cache
         
     owner: string
-        Besitzer des Caches
+        owner of the cache
         
     url: string
-        Link zur Cacheseite auf geocaching.com 
+        weblink to the cache on geocaching.com 
         
     koordinaten: list 
-        Koordinaten als Dezimalgrad, erstes Element der Liste: Breitengrad, zweites Element: Laengengrad
+        coordinates in decimal degree, first element of the list: latitude, second element: longitude
         
     koordinatenanzeige: string
-        Koordinaten als Grad und Minuten
+        coordinates as degree and minutes
         
     attribute: list
-        Attribute des Caches 
+        attributes of the cache
         
     logs: list
-        letzte Logs vor dem Download
-        jedes Element der Liste: Liste vom Typ [Datum, Logtyp, Finder]
+        last logs before download
+        every element of list: list [date, logtype, name of logger]
         
     available: bool 
-        Verfuegbarkeit zum Zeitpunkt des Downloads 
+        availability at the time of download 
         
     downloaddate: datetime.date
-        Datum des Downloads der gpx-Datei
+        date when the gpx-file was downloaded from geocaching.com
         
     downloaddate_anzeige: string
-        Datum des Downloads der gpx-Datei wie in der Anzeige
+        date when the gpx-file was downloaded from geocaching.com as string
     
     
-    Methoden:
+    Methods:
     ---------
-    __init__(dateiname_path): Erstellung eines Geocache-Objekt aus dem vollstaendigen Dateinamen der zugehoerigen GPX-Datei
+    __init__(dateiname_path): Create a Geocache-object out of the gpx-file (complete name with path)
     
     kurzinfo(): unicode
-        einzeilige Information ueber den Cache 
+        one-line information about the cache 
         
     langinfo(): 
-        ausfuehrliche Information ueber den Cache 
+        detailed information about the cache
     """
     
     def __init__(self, dateiname_path):
@@ -97,30 +97,32 @@ class Geocache(object):
             raise TypeError("Bad input.")
         
         self.dateiname_path = dateiname_path
-        self.gccode = os.path.splitext(os.path.basename(dateiname_path))[0]  # GC-Code
+        self.gccode = os.path.splitext(os.path.basename(dateiname_path))[0]  # gc-code
         
-        geocache_tree = ElementTree.parse(dateiname_path)    # .gpx-Datei einlesen 
+        geocache_tree = ElementTree.parse(dateiname_path)    # read .gpx-Datei 
         
-        name = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}name").text # Name auslesen
+        name = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}name").text # read name
         self.name = ownfunctions.zeichen_ersetzen(name) 
         
-        difficulty = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}difficulty").text # Schwierigkeitsgrad auslesen
+        difficulty = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}difficulty").text # read difficulty
         self.difficulty = float(difficulty)
         
-        terrain = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}terrain").text  # Terrainwertung auslesen
+        terrain = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}terrain").text  # read terrain
         self.terrain = float(terrain)
         
-        self.size_anzeige = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}container").text # Groesse auslesen
-        if self.size_anzeige not in SIZE_LISTE:
-            self.size_anzeige = "other"
-        self.size = SIZE_LISTE.index(self.size_anzeige)
+        self.size_string = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}container").text # read size
+        if self.size_string not in SIZE_LISTE:
+            self.size_string = "other"
+        self.size = SIZE_LISTE.index(self.size_string)
         
-        self.longtype = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}type").text                            # Typ auslesen
+        self.longtype = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}type").text      # read type
         if self.longtype == "Unknown Cache":
             self.longtype = "Mystery Cache"
-        self.type = self._typ_auslesen(self.longtype)
+        self.type = self._read_type(self.longtype)
+        
+# cleanup until here -> continue with ownfunctions.py
             
-        self.beschreibung = self._beschreibung_auslesen(geocache_tree)                               # Beschreibung auslesen
+        self.beschreibung = self._read_description(geocache_tree)                               # Beschreibung auslesen
 
         hint = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}encoded_hints").text # Hint auslesen
         self.hint = ownfunctions.zeichen_ersetzen(hint)
@@ -140,7 +142,7 @@ class Geocache(object):
         for a in attributes:
             self.attribute.append(ownfunctions.remove_spaces(a))
         
-        self.logs = self._logs_auslesen(geocache_tree)                                           # Logs auslesen          
+        self.logs = self._read_logs(geocache_tree)                                           # Logs auslesen          
            
         cache = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}cache")             # Auslesen, ob verfuegbar oder nicht
         available = cache.get("available")
@@ -157,7 +159,7 @@ class Geocache(object):
         
         self.distance = 0     # initialise for later use
         
-    def _logs_auslesen(self, geocache_tree):
+    def _read_logs(self, geocache_tree):
         """liest die Logs aus der XML-Datei aus, ausgelagerter Teil von __init__"""
     
         log_dates_raw = geocache_tree.findall(".//{http://www.groundspeak.com/cache/1/0}date")
@@ -189,7 +191,7 @@ class Geocache(object):
         
         return logs
         
-    def _beschreibung_auslesen(self, geocache_tree):
+    def _read_description(self, geocache_tree):
         """liest die Beschreibung aus der XML-Datei aus, ausgelagerter Teil von __init__"""
         beschreibung_kurz = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}short_description").text 
         if beschreibung_kurz:
@@ -203,7 +205,7 @@ class Geocache(object):
             beschreibung_lang = ""
         return beschreibung_kurz + "\n\n" + beschreibung_lang
         
-    def _typ_auslesen(self, lt):
+    def _read_type(self, lt):
         """wandelt Typen aus XML-Datei in solche aus TYPES_LISTE um, ausgelagerter Teil von __init__"""
         if lt in TYPES_LISTE:
             type = lt
@@ -224,7 +226,7 @@ class Geocache(object):
             
     def kurzinfo(self):                                  
         """ gibt eine einzeilige Kurzinfo zurueck"""
-        return u"{} | {} | {} | D {} | T {} | {} | {} | {} | {}".format(self.gccode.ljust(7), self.koordinatenanzeige, self.type.ljust(17), self.difficulty, self.terrain, self.size_anzeige.ljust(7), str(self.available).ljust(5), self.downloaddate_anzeige, self.name)
+        return u"{} | {} | {} | D {} | T {} | {} | {} | {} | {}".format(self.gccode.ljust(7), self.koordinatenanzeige, self.type.ljust(17), self.difficulty, self.terrain, self.size_string.ljust(7), str(self.available).ljust(5), self.downloaddate_anzeige, self.name)
 
     def langinfo(self): 
         """gibt eine ausfuehrliche Info zurueck""" 
@@ -232,7 +234,7 @@ class Geocache(object):
         z2 = "\n"
         for i in range(len(z1)):
             z2 = z2 + "-"
-        z3 = u"\nSchwierigkeit: {}, Gelaende: {}, Groesse: {}, Typ: {}".format(self.difficulty, self.terrain, self.size_anzeige, self.longtype)
+        z3 = u"\nSchwierigkeit: {}, Gelaende: {}, Groesse: {}, Typ: {}".format(self.difficulty, self.terrain, self.size_string, self.longtype)
         z4 = u"\nKoordinaten: {}".format(self.koordinatenanzeige)
         z5 = u"\nOwner: {}".format(self.owner)
         z6 = u"\nAttribute: "

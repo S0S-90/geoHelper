@@ -27,8 +27,8 @@ class TestSaaletalblick(unittest.TestCase):
     def test_size(self):
         self.assertEqual(self.gc.size, 1)
         
-    def test_size_anzeige(self):
-        self.assertEqual(self.gc.size_anzeige, "micro")
+    def test_size_string(self):
+        self.assertEqual(self.gc.size_string, "micro")
         
     def test_type(self):
         self.assertEqual(self.gc.type, "Traditional Cache")
@@ -122,8 +122,8 @@ class TestMaerchenstuhl(unittest.TestCase):
     def test_size(self):
         self.assertEqual(self.gc.size, 1)
         
-    def test_size_anzeige(self):
-        self.assertEqual(self.gc.size_anzeige, "micro")
+    def test_size_string(self):
+        self.assertEqual(self.gc.size_string, "micro")
         
     def test_type(self):
         self.assertEqual(self.gc.type, "Multi-cache")
@@ -178,8 +178,8 @@ class TestTesoroAmeghino(unittest.TestCase):
     def test_size(self):
         self.assertEqual(self.gc.size, 2)
         
-    def test_size_anzeige(self):
-        self.assertEqual(self.gc.size_anzeige, "small")
+    def test_size_string(self):
+        self.assertEqual(self.gc.size_string, "small")
         
     def test_type(self):
         self.assertEqual(self.gc.type, "Traditional Cache")
@@ -237,8 +237,8 @@ class TestMusikhochschule(unittest.TestCase):
     def test_size(self):
         self.assertEqual(self.gc.size, 1)
         
-    def test_size_anzeige(self):
-        self.assertEqual(self.gc.size_anzeige, "micro")
+    def test_size_string(self):
+        self.assertEqual(self.gc.size_string, "micro")
         
     def test_type(self):
         self.assertEqual(self.gc.type, "Mystery Cache")
@@ -288,8 +288,8 @@ class TestWuerzburgerWebcam(unittest.TestCase):
     def test_size(self):
         self.assertEqual(self.gc.size, 0)
         
-    def test_size_anzeige(self):
-        self.assertEqual(self.gc.size_anzeige, "other")
+    def test_size_string(self):
+        self.assertEqual(self.gc.size_string, "other")
         
     def test_type(self):
         self.assertEqual(self.gc.type, "Unknown Type")
@@ -362,8 +362,8 @@ class TestMedrixErnos(unittest.TestCase):
     def test_size(self):
         self.assertEqual(self.gc.size, 1)
         
-    def test_size_anzeige(self):
-        self.assertEqual(self.gc.size_anzeige, "micro")
+    def test_size_string(self):
+        self.assertEqual(self.gc.size_string, "micro")
         
     def test_type(self):
         self.assertEqual(self.gc.type, "Mystery Cache")
