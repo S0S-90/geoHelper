@@ -10,7 +10,7 @@ import user_io
 class MyHTMLParser(HTMLParser):
     """parser to read all data that is in a table (tags <td> / </td)
     
-    Attributs:
+    Attributes:
     -----------
     read: bool
         if true data is read, if false no data is read
@@ -64,14 +64,13 @@ def find_cp1252():
     
 ALLOWED_SIGNS = find_cp1252()  # define allowed signs (codepage 1252) once 
 
-# cleanup until here
-
-def zeichen_ersetzen(string):
-    """"ersetzt Zeichen, die Probleme bei der Darstellung machen (nicht in allowed_signs vorhanden)"""  
+def replace_signs(string):
+    """replaces signs in inputstring that cannot represented correctly on screen (not in ALLOWED_SIGNS)
+    returns the new string without the 'forbidden' signs"""
 
     newstring = ""
     for i,c in enumerate(string):   
-        if c == "\n" or c == "\t" or c == "\v":    # Newline, Tab (horizontal oder vertikal)
+        if c == "\n" or c == "\t" or c == "\v":    # Newline, Tab (horizonal or vertical)
             newstring = newstring + c 
         else:
             try:
@@ -79,150 +78,170 @@ def zeichen_ersetzen(string):
             except ValueError:                   # if sign not in unicode
                 newstring = newstring + u"\u001a"
             else:            
-                if unic in ALLOWED_SIGNS: # erlaubte Zeichen
+                if unic in ALLOWED_SIGNS: # allowed signs
                     newstring = newstring + c
-                elif unicode(c) == u"\u263a":     # Smiley
+                elif unicode(c) == u"\u263a":     # smiley
                     newstring = newstring + ":-)"
-                elif unicode(c) == u"\u2211":     # Summenzeichen
+                elif unicode(c) == u"\u2211":     # sign for sum
                     newstring = newstring + "sum"
-                elif unicode(c) == u"\u221a":     # Wurzel
+                elif unicode(c) == u"\u221a":     # sign for square root
                     newstring = newstring + "sqrt"
-                else:                               # unbekanntes Zeichen
+                else:                               # unknown sign
                     newstring = newstring + u"\u001a"
     return newstring
     
-def koordinaten_dezimalgrad_to_minuten(koordinatenliste):
-    """"rechnet Koordinaten in Dezimalgrad (z.B. in gpx-Datei) in Grad und Minuten um (z.B. auf geocaching.com)"""
-    if type(koordinatenliste) != list or len(koordinatenliste) != 2:
+def coords_decimal_to_minutes(coordlist):
+    """converts decimal coordinates (e.g. from gpx-file) to degrees and minutes (e.g. like on geocaching.com)
+    
+    input: list of floats [lat, lon]
+    return: string 'X XX°XX.XXX, X XXX°XX.XXX'
+    """
+    
+    if type(coordlist) != list or len(coordlist) != 2:
         raise TypeError("Bad input.")
-    nord = koordinatenliste[0]
-    ost = koordinatenliste[1]
-    if (type(nord) != float or type(ost) != float) and (type(nord) != int or type(ost) != int) and (type(nord) != float or type(ost) != int) and (type(nord) != int or type(ost) != float):
+    north = coordlist[0]
+    east = coordlist[1]
+    if (type(north) != float or type(east) != float) and (type(north) != int or type(east) != int) and (type(north) != float or type(east) != int) and (type(north) != int or type(east) != float):
         raise TypeError("One of the coordinates is not a number.")    
-    if nord > 90 or ost > 180 or nord < -90 or ost < -180:
+    if north > 90 or east > 180 or north < -90 or east < -180:
         raise ValueError("These coordinates do not exist on earth.")
-    nordgrad = int(nord)
-    ostgrad = int(ost)
-    nordminuten = round(60*(nord - nordgrad), 3)
-    ostminuten = round(60*(ost - ostgrad), 3)
-    if nordgrad >= 0:
-        nordsign = "N"
+    north_degree = int(north)
+    east_degree = int(east)
+    north_minutes = round(60*(north - north_degree), 3)
+    east_minutes = round(60*(east - east_degree), 3)
+    if north_degree >= 0:
+        north_sign = "N"
     else:
-        nordsign = "S"
-        nordgrad = -nordgrad
-        nordminuten = -nordminuten
-    if ostgrad >= 0:
-        ostsign = "E"
+        north_sign = "S"
+        north_degree = -north_degree
+        north_minutes = -north_minutes
+    if east_degree >= 0:
+        east_sign = "E"
     else:
-        ostsign = "W"
-        ostgrad = -ostgrad
-        ostminuten = -ostminuten
-    return u"{} {:02}°{:06.3f}, {} {:03}°{:06.3f}".format(nordsign, nordgrad, nordminuten, ostsign, ostgrad, ostminuten)
+        east_sign = "W"
+        east_degree = -east_degree
+        east_minutes = -east_minutes
+    return u"{} {:02}°{:06.3f}, {} {:03}°{:06.3f}".format(north_sign, north_degree, north_minutes, east_sign, east_degree, east_minutes)
     
-def koordinaten_minuten_to_dezimalgrad(koordinatenstring):
-    """"rechnet Koordinaten in Grad und Minuten (z.B. auf geocaching.com) in Dezimalgrad (z.B. in gpx-Datei) um"""
-    if type(koordinatenstring) != unicode and type(koordinatenstring) != str:
-        raise TypeError("Wrong input type: {}".format(type(koordinatenstring)))
-    if len(koordinatenstring) != 25:
-        raise ValueError("Bad Input,")
-    if koordinatenstring[4] != u"°" or koordinatenstring[18] != u"°" or koordinatenstring[7] != u"." or koordinatenstring[21] != u".":
-        raise ValueError("Bad Input,")
-    nordgrad = int(koordinatenstring[2:4])
-    ostgrad = int(koordinatenstring[15:18])
-    nordminuten = float(koordinatenstring[5:11])
-    ostminuten = float(koordinatenstring[19:25])
-    nord = nordgrad + nordminuten/60
-    ost = ostgrad + ostminuten/60
-    if nord > 90 or ost > 180:
-        user_io.general_output("These coordinates do not exist on earth.")
-        return None
-    if koordinatenstring[0] == "S":
-        nord = -nord
-    elif koordinatenstring[0] != "N":
-        user_io.general_output("Wrong input format.")
-        return None
-    if koordinatenstring[13] == "W":
-        ost = -ost
-    elif koordinatenstring[13] != "E":
-        user_io.general_output("Wrong input format.")
-        return None
-    return [nord, ost]
+def coords_minutes_to_decimal(coordstring):
+    """converts coordinates given in degrees and minutes (e.g. like on geocaching.com) to decimal degrees (e.g. like from gpx-file)
+    which is format in which calculations can be done
     
-def koordinaten_minuten_to_sekunden(koordinatenstring):
-    """rechnet Koordinaten in Grad und Minuten (z.B. auf geocaching.com) in Grad, Minuten und Sekunden um (z.B. fuer Eingabe in Google-Maps)"""
-    if type(koordinatenstring) != unicode and type(koordinatenstring) != str:
-        raise TypeError("Wrong input type: {}".format(type(koordinatenstring)))
-    if len(koordinatenstring) != 25:
+    input: string 'X XX°XX.XXX, X XXX°XX.XXX'
+    return: list of floats [lat, lon]
+    """
+    
+    if type(coordstring) != unicode and type(coordstring) != str:
+        raise TypeError("Wrong input type: {}".format(type(coordstring)))
+    if len(coordstring) != 25:
+        raise ValueError("Bad Input,")
+    if coordstring[4] != u"°" or coordstring[18] != u"°" or coordstring[7] != u"." or coordstring[21] != u".":
+        raise ValueError("Bad Input,")
+    north_degree = int(coordstring[2:4])
+    east_degree = int(coordstring[15:18])
+    north_minutes = float(coordstring[5:11])
+    east_minutes = float(coordstring[19:25])
+    north = north_degree + north_minutes/60
+    east = east_degree + east_minutes/60
+    if north > 90 or east > 180:
+        user_io.general_output("These coordinates do not exist on earth.")
         return None
-    if koordinatenstring[4] != u"°" or koordinatenstring[18] != u"°" or koordinatenstring[7] != u"." or koordinatenstring[21] != u".":
-        return None
-    nordsign = koordinatenstring[0]
-    ostsign = koordinatenstring[13]
-    if (nordsign != "N" and nordsign != "S") or (ostsign != "E" and ostsign != "W"):
+    if coordstring[0] == "S":
+        north = -north
+    elif coordstring[0] != "N":
         user_io.general_output("Wrong input format.")
         return None
-    nordgrad = int(koordinatenstring[2:4])
-    ostgrad = int(koordinatenstring[15:18])
-    if nordgrad > 90 or ostgrad > 180:
+    if coordstring[13] == "W":
+        east = -east
+    elif coordstring[13] != "E":
+        user_io.general_output("Wrong input format.")
+        return None
+    return [north, east]
+    
+def coords_minutes_to_seconds(coordstring):
+    """converts coordinates given in degrees and minutes (e.g. like on geocaching.com) to degrees, minutes and seconds (e.g. for google maps input)
+    input and return value is a string"""
+    
+    if type(coordstring) != unicode and type(coordstring) != str:
+        raise TypeError("Wrong input type: {}".format(type(coordstring)))
+    if len(coordstring) != 25:
+        return None
+    if coordstring[4] != u"°" or coordstring[18] != u"°" or coordstring[7] != u"." or coordstring[21] != u".":
+        return None
+    north_sign = coordstring[0]
+    east_sign = coordstring[13]
+    if (north_sign != "N" and north_sign != "S") or (east_sign != "E" and east_sign != "W"):
+        user_io.general_output("Wrong input format.")
+        return None
+    north_degree = int(coordstring[2:4])
+    east_degree = int(coordstring[15:18])
+    if north_degree > 90 or east_degree > 180:
         user_io.general_output("These coordinates do not exist on earth.")
         return None
-    nordminuten_dez = float(koordinatenstring[5:11])
-    ostminuten_dez = float(koordinatenstring[19:25])
-    if (nordgrad == 90 and nordminuten_dez) > 0 or (ostgrad == 180 and ostminuten_dez > 0):
+    north_minutes_exact = float(coordstring[5:11])
+    east_minutes_exact = float(coordstring[19:25])
+    if (north_degree == 90 and north_minutes_exact) > 0 or (east_degree == 180 and east_minutes_exact > 0):
         user_io.general_output("These coordinates do not exist on earth.")
         return None
-    nordminuten = int(nordminuten_dez)
-    ostminuten = int(ostminuten_dez)
-    nordsekunden = round((nordminuten_dez - nordminuten)*60,1)
-    ostsekunden = round((ostminuten_dez - ostminuten)*60,1)
-    return u"{}°{}'{}\"{}+{}°{}'{}\"{}".format(nordgrad, nordminuten, nordsekunden, nordsign, ostgrad, ostminuten, ostsekunden, ostsign)
+    north_minutes_rounded = int(north_minutes_exact)
+    east_minutes_rounded = int(east_minutes_exact)
+    north_seconds = round((north_minutes_exact - north_minutes_rounded)*60,1)
+    east_seconds = round((east_minutes_exact - east_minutes_rounded)*60,1)
+    return u"{}°{}'{}\"{}+{}°{}'{}\"{}".format(north_degree, north_minutes_rounded, north_seconds, north_sign, east_degree, east_minutes_rounded, east_seconds, east_sign)
  
-def koordinaten_url_to_dezimalgrad(url):
-    """"liest die Koordinaten aus einer Google-Maps oder geocaching.com/map url aus und gibt sie im Dezimalgrad-Format zurueck"""
+def coords_url_to_decimal(url):
+    """reads coordinates from a url (google maps or geocaching.com/map) and returns them as decimal degrees
+    input: string
+    return: list of floats [lat, lon]"""
+    
     if type(url) != str and type(url) != unicode:
-        raise TypeError("Wrong input type: {}".format(type(koordinatenstring)))
-    if url[:31] == "https://www.geocaching.com/map/":    # geocaching.com/map
-        indizes = [index for index, char in enumerate(url) if char == "&"]
-        end = indizes[-1]
+        raise TypeError("Wrong input type: {}".format(type(url)))
+    if url[:31] == "https://www.geocaching.com/map/":                  # geocaching.com/map
+        indices = [index for index, char in enumerate(url) if char == "&"]
+        end = indices[-1]
         for i in range(-5,-100,-1):
             if url[i] == "=":
                 start = i+1
                 break
-        koords_list = url[start:end].split(",")
-        nord = float(koords_list[0])
-        ost = float(koords_list[1])
+        coordlist = url[start:end].split(",")
+        north = float(coordlist[0])
+        east = float(coordlist[1])
     elif url[:27] == "https://www.google.de/maps/":                     # Google Maps
-        start_nord = 0
-        start_ost = 0
+        start_north = 0
+        start_east = 0
         for i,z in enumerate(url):
             if z == "@":
-                start_nord = i+1
-            elif z == "," and start_nord > 0 and start_ost == 0:
-                end_nord = i
-                start_ost = i+1
-            elif z == "," and start_ost > 0:
-                end_ost = i
+                start_north = i+1
+            elif z == "," and start_north > 0 and start_east == 0:
+                end_north = i
+                start_east = i+1
+            elif z == "," and start_east > 0:
+                end_east = i
                 break
-        nord = float(url[start_nord:end_nord])
-        ost = float(url[start_ost:end_ost])
+        north = float(url[start_north:end_north])
+        east = float(url[start_east:end_east])
     else:
         raise ValueError("Bad input.")
-    return [nord, ost]
+    return [north, east]
     
-def koordinaten_string_to_dezimalgrad(koords_str):
-    """liest Koordinaten aus einem String (geocaching.com-Format oder url) aus und gibt sie im Dezimalgrad-Format zurueck"""
-    try:         # Koordinaten im geocaching.com-Format
-        koords = koordinaten_minuten_to_dezimalgrad(koords_str)
+def coords_string_to_decimal(coordstring):
+    """reads coordinates from a string (X XX°XX.XXX, X XXX°XX.XXX or url) and returns them as decimal degrees
+    return: list of floats [lat, lon]"""
+    
+    try:         # coordinates in geocaching.com format
+        coords = coords_minutes_to_decimal(coordstring)
     except ValueError:
-        try:     # Koordinaten aus google-maps oder geocaching.com/map url
-            koords = koordinaten_url_to_dezimalgrad(koords_str)  
+        try:     # url
+            coords = coords_url_to_decimal(coordstring)  
         except: 
             return None
-    return koords
+    return coords
     
 def calculate_distance(point1, point2):
-    """berechnet Entfernung zwischen den Punkten point1 und point2 in Kilometern, Formel siehe: https://www.kompf.de/gps/distcalc.html)
-    point1, point2 = Listen der Form [lat, lon] mit lat, lon in Dezimalgrad"""
+    """calculates distance between point1 and point2 in kilometers, for the formula see: https://www.kompf.de/gps/distcalc.html)
+    
+    input: point1, point2 = list [lat, lon] with lat, lon in decimal degrees
+    return: distance as float (int)"""
     
     if type(point1) != list or len(point1) != 2 or type(point2) != list or len(point2) != 2:  # see if input is ok
         raise TypeError("Bad input.")
@@ -240,11 +259,14 @@ def calculate_distance(point1, point2):
     lon2 = point2[1] * (math.pi / 180)
 
     cos_g = math.sin(lat1)*math.sin(lat2) + math.cos(lat1)*math.cos(lat2)*math.cos(lon2-lon1)
-    g = math.acos(cos_g)*6368  # Erdradius
+    g = math.acos(cos_g)*6368  # radius of the earth
     return g
     
 def get_month(string):
-    """ordnet Monatsnamen einen Zahlenwert zu"""
+    """
+    input: month as three letter string
+    return: number of this month in the year
+    """
     if string == "Jan":
         return 1
     elif string == "Feb":
@@ -271,7 +293,10 @@ def get_month(string):
         return 12
         
 def string_to_date(string):
-    """wandelt einen String im Format 'DD.MM.YYYY' in ein datetime.date-Objekt um"""
+    """converts string 'DD.MM.YYYY' to datetime.date objekt
+    
+    input: date as string
+    return: date as datetime.date"""
     
     if len(string) != 10 or string[2] != "." or string[5] != ".":
         user_io.general_output("Bad input.")
@@ -283,14 +308,18 @@ def string_to_date(string):
     return datetime.date(year, month, day)
     
 def remove_spaces(string):
-    """entfernt ueberfluessige Leerzeichen aus einem String"""
+    """removes unnecessary spaces from a string
+    
+    input: string
+    return: string without the unnecessary spaces"""
+    
     newstring = ""
     for i,a in enumerate(string):
-        if i == 0 and a == " ":     # Leerzeichen zu Beginn
+        if i == 0 and a == " ":     # spaces at the beginning
             pass
-        elif a == " " and i == len(string) - 1: # Leerzeichen am Ende
+        elif a == " " and i == len(string) - 1: # spaces at the end
             return remove_spaces(newstring)
-        elif a == " " and string[i-1] == " ":   # zwei Leerzeichen hintereinander
+        elif a == " " and string[i-1] == " ":   # two spaces back to back
             pass
         else:
             newstring = newstring + a

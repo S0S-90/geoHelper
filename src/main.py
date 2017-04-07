@@ -111,7 +111,7 @@ class GPS_content(object):
         [kriterium, rev] = user_io.sortieren()
         if kriterium == "distance":   # Entfernungsberechnung
             koords_str = user_io.koordinaten_eingabe()
-            koords = ownfunctions.koordinaten_string_to_dezimalgrad(koords_str)
+            koords = ownfunctions.coords_string_to_decimal(koords_str)
             
             if koords:             # falls Koordinatenauslesen erfolgreich war
                 for g in self.geocaches:
@@ -170,7 +170,7 @@ class GPS_content(object):
                     webbrowser.open_new_tab(cache.url)
                 elif task == "dist":
                     koords_str = user_io.koordinaten_eingabe()
-                    koords = ownfunctions.koordinaten_string_to_dezimalgrad(koords_str)
+                    koords = ownfunctions.coords_string_to_decimal(koords_str)
                     if koords:
                         d = ownfunctions.calculate_distance(koords,cache.koordinaten)
                         user_io.general_output("Abstand: {} Kilometer".format(round(d,1)))
@@ -178,7 +178,7 @@ class GPS_content(object):
                     url = "https://www.geocaching.com/map/#?ll={},{}&z=16".format(cache.koordinaten[0], cache.koordinaten[1])
                     webbrowser.open_new_tab(url)
                 elif task == "googlemaps":
-                    koords_sec = ownfunctions.koordinaten_minuten_to_sekunden(cache.koordinatenanzeige)
+                    koords_sec = ownfunctions.coords_minutes_to_seconds(cache.koordinatenanzeige)
                     url = u"https://www.google.de/maps/place/{}".format(koords_sec)
                     webbrowser.open_new_tab(url)
                 else:
@@ -305,7 +305,7 @@ class GPS_content(object):
                         suchergebnisse.append(c)
         elif kriterium == "distance":
             koords_str = user_io.koordinaten_eingabe()
-            koords = ownfunctions.koordinaten_string_to_dezimalgrad(koords_str)
+            koords = ownfunctions.coords_string_to_decimal(koords_str)
             if koords:
                 eingabe_str = user_io.general_input("Minimale und maximale Distanz in Kilometern (mit Komma voneinander getrennt): ") 
                 eingabe = eingabe_str.split(",")

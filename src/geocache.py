@@ -14,7 +14,7 @@ class Geocache(object):
     An object of this class contains all relevant information of the corresponding gpx-file
     
     
-    Attributs:
+    Attributes:
     -----------
     dateiname_path: string
         filename (including path)
@@ -102,7 +102,7 @@ class Geocache(object):
         geocache_tree = ElementTree.parse(dateiname_path)    # read .gpx-Datei 
         
         name = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}name").text # read name
-        self.name = ownfunctions.zeichen_ersetzen(name) 
+        self.name = ownfunctions.replace_signs(name) 
         
         difficulty = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}difficulty").text # read difficulty
         self.difficulty = float(difficulty)
@@ -125,16 +125,16 @@ class Geocache(object):
         self.beschreibung = self._read_description(geocache_tree)                               # Beschreibung auslesen
 
         hint = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}encoded_hints").text # Hint auslesen
-        self.hint = ownfunctions.zeichen_ersetzen(hint)
+        self.hint = ownfunctions.replace_signs(hint)
         
         owner = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}placed_by").text    # Owner auslesen
-        self.owner = ownfunctions.zeichen_ersetzen(owner)
+        self.owner = ownfunctions.replace_signs(owner)
         
         self.url = geocache_tree.find(".//{http://www.topografix.com/GPX/1/0}url").text         # url auslesen
         
         wpt = geocache_tree.find(".//{http://www.topografix.com/GPX/1/0}wpt")                       # Koordinaten auslesen
         self.koordinaten = [float(wpt.get("lat")), float(wpt.get("lon"))]                           # Liste als Dezimalgrad
-        self.koordinatenanzeige = ownfunctions.koordinaten_dezimalgrad_to_minuten(self.koordinaten) # String wie auf geocaching.com         
+        self.koordinatenanzeige = ownfunctions.coords_decimal_to_minutes(self.koordinaten) # String wie auf geocaching.com         
         
         attributes = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}text").text     # Attribute auslesen
         attributes = attributes.split(",")
@@ -178,7 +178,7 @@ class Geocache(object):
         finder = []
         for i,fd in enumerate(finder_raw):
             if i > 0:  # Index 0 entspricht Attributen
-                next_fd = ownfunctions.zeichen_ersetzen(fd.text)
+                next_fd = ownfunctions.replace_signs(fd.text)
                 finder.append(next_fd)
           
         logs = [] 
@@ -195,12 +195,12 @@ class Geocache(object):
         """liest die Beschreibung aus der XML-Datei aus, ausgelagerter Teil von __init__"""
         beschreibung_kurz = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}short_description").text 
         if beschreibung_kurz:
-            beschreibung_kurz = ownfunctions.zeichen_ersetzen(beschreibung_kurz)
+            beschreibung_kurz = ownfunctions.replace_signs(beschreibung_kurz)
         else:
             beschreibung_kurz = ""
         beschreibung_lang = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}long_description").text
         if beschreibung_lang:
-            beschreibung_lang = ownfunctions.zeichen_ersetzen(beschreibung_lang)
+            beschreibung_lang = ownfunctions.replace_signs(beschreibung_lang)
         else:
             beschreibung_lang = ""
         return beschreibung_kurz + "\n\n" + beschreibung_lang

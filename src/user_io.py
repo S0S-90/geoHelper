@@ -6,7 +6,7 @@ import ownfunctions
 
 def general_output(string):
     """gibt einen String auf der Konsole aus"""
-    string = ownfunctions.zeichen_ersetzen(string)
+    string = ownfunctions.replace_signs(string)
     print string
     
 def general_input(string):
