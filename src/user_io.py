@@ -175,11 +175,16 @@ def aktionen_auswahl_gefunden():
     """fragt, nachdem die gefundenen Caches angezeigt wurden, ob sie nun geloescht werden sollen"""
     
     print "\nWas moechtest du als naechstes tun?"
-    print "1: Alle gefundenen Caches loeschen (vorher Loggen auf geocaching.com moeglich)"
-    print "2: zurueck"
+    print "1: Gefundene Caches auf geocaching.com loggen (by uploading drafts / fieldnotes)"
+    print "2: Alle gefundenen Caches loeschen"
+    print "3: zurueck"
     eingabe = raw_input(">> ")
     if eingabe == "1":
+        return "loggen"
+    elif eingabe == "2":
         return "loeschen"
+    elif eingabe == "3":
+        return "exit"    
       
 def loeschbestaetigung():
     """fragt vor dem Loeschen von Caches nach, ob tatsaechlich geloescht werden soll"""
@@ -216,14 +221,6 @@ def koordinaten_eingabe():
     print u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX oder URL (google maps oder geocaching.com/map)"
     koords = raw_input(">> ")
     return koords
-
-def open_fieldnotes():
-    print "Achtung! Du solltest die Caches vor dem Loeschen auf geocaching.com loggen."
-    eingabe = raw_input("Moechtest du deine Fieldnotes auf geocaching.com hochladen? (y/n) ")
-    if eingabe == "y":
-        return True
-    else:
-        return False
         
 def ask_for_path():
     print "\nGib den Pfad zum GPS-Geraet ein (NICHT zum Unterordner 'GPX')."

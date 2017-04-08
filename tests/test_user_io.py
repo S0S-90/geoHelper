@@ -508,6 +508,37 @@ class TestAktionenAuswahlSuchen(unittest.TestCase):
             expected_output = expected_output + "Ungueltige Eingabe"
             self.assertEqual(output, expected_output)
             
+class TestAktionenAuswahlGefunden(unittest.TestCase):
+
+    def test_1(self):
+        with mock.patch('__builtin__.raw_input', return_value= "1"):
+            self.assertEqual(user_io.aktionen_auswahl_gefunden(), "loggen")
+            
+    def test_2(self):
+        with mock.patch('__builtin__.raw_input', return_value= "2"):
+            self.assertEqual(user_io.aktionen_auswahl_gefunden(), "loeschen")
+            
+    def test_3(self):
+        with mock.patch('__builtin__.raw_input', return_value= "3"):
+            self.assertEqual(user_io.aktionen_auswahl_gefunden(), "exit")
+            
+    def test_other(self):
+        with mock.patch('__builtin__.raw_input', return_value= "0"):
+            self.assertEqual(user_io.aktionen_auswahl_suchen(), None)
+            
+    def test_output(self):
+        with mock.patch('__builtin__.raw_input', return_value= "3"):
+            out = StringIO()
+            sys.stdout = out                 
+            user_io.aktionen_auswahl_gefunden()
+            output = out.getvalue().strip()  
+            expected_output = "Was moechtest du als naechstes tun?\n"
+            expected_output = expected_output + "1: Gefundene Caches auf geocaching.com loggen (by uploading drafts / fieldnotes)\n" 
+            expected_output = expected_output + "2: Alle gefundenen Caches loeschen\n"
+            expected_output = expected_output + "3: zurueck"
+            self.assertEqual(output, expected_output)
+            
+            
 class TestLoeschbestaetigung(unittest.TestCase):
 
     def test_yes(self):
@@ -582,29 +613,6 @@ class TestKoordinatenEingabe(unittest.TestCase):
             expected_output = u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX oder URL (google maps oder geocaching.com/map)"
             self.assertEqual(output, expected_output)     
 
-class TestOpenFieldnotes(unittest.TestCase):
-    
-    def test_return_yes(self):
-        with mock.patch('__builtin__.raw_input', return_value= "y"): 
-            self.assertEqual(user_io.open_fieldnotes(), True)
-            
-    def test_return_no(self):
-        with mock.patch('__builtin__.raw_input', return_value= "n"): 
-            self.assertEqual(user_io.open_fieldnotes(), False)
-            
-    def test_return_no_with_nonsense(self):
-        with mock.patch('__builtin__.raw_input', return_value= "nonsense1234"): 
-            self.assertEqual(user_io.open_fieldnotes(), False)
-            
-    def test_output(self):
-        with mock.patch('__builtin__.raw_input', return_value= "any_nonsense"):
-            out = StringIO()
-            sys.stdout = out                 
-            user_io.open_fieldnotes()  
-            output = out.getvalue().strip()  
-            expected_output = "Achtung! Du solltest die Caches vor dem Loeschen auf geocaching.com loggen."
-            self.assertEqual(output, expected_output)   
-
 class TestAskForPath(unittest.TestCase): 
 
     def test_output(self):
@@ -677,10 +685,10 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestSearchType))
     suite.addTest(unittest.makeSuite(TestSearchAttribute))
     suite.addTest(unittest.makeSuite(TestAktionenAuswahlSuchen))
+    suite.addTest(unittest.makeSuite(TestAktionenAuswahlGefunden))
     suite.addTest(unittest.makeSuite(TestLoeschbestaetigung))
     suite.addTest(unittest.makeSuite(TestEinenAnzeigen))
     suite.addTest(unittest.makeSuite(TestKoordinatenEingabe))
-    suite.addTest(unittest.makeSuite(TestOpenFieldnotes))
     suite.addTest(unittest.makeSuite(TestAskForPath))
     suite.addTest(unittest.makeSuite(TestShowAllOnMapStart))
     suite.addTest(unittest.makeSuite(TestShowAllOnMapEnd))
