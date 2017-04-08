@@ -354,18 +354,21 @@ class GPS_content(object):
         if not self.found_exists:
             raise ValueError("ERROR: no found caches")
         user_io.general_output(self.gc_auswahl_anzeigen(self.found_caches))
-        task = user_io.aktionen_auswahl_gefunden()
-        if task == "loeschen":
-            open_fieldnotes = user_io.open_fieldnotes()
-            if open_fieldnotes:
+        while True:
+            task = user_io.aktionen_auswahl_gefunden()
+            if task == "loggen":
                 webbrowser.open_new_tab("https://www.geocaching.com/my/uploadfieldnotes.aspx")
-            if self.warning:
-                user_io.general_output("WARNUNG! Bei Fortfahren werden auch Log-Informationen ueber Caches geloescht, die nicht gefunden wurden.")
-            loeschen = self.loeschen(self.found_caches)
-            if loeschen:
-                self.found_exists = False
-                os.remove(os.path.join(self.PATH,"geocache_visits.txt"))
-                os.remove(os.path.join(self.PATH,"geocache_logs.xml"))
+            elif task == "loeschen":
+                if self.warning:
+                    user_io.general_output("WARNUNG! Bei Fortfahren werden auch Log-Informationen ueber Caches geloescht, die nicht gefunden wurden.")
+                loeschen = self.loeschen(self.found_caches)
+                if loeschen:
+                    self.found_exists = False
+                    os.remove(os.path.join(self.PATH,"geocache_visits.txt"))
+                    os.remove(os.path.join(self.PATH,"geocache_logs.xml"))
+                    break
+            elif task == "exit":
+                break
            
     def loeschen(self, cacheliste):
         """loescht alle Caches aus cacheliste vom Geraet"""
