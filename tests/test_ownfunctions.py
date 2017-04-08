@@ -6,16 +6,16 @@ from StringIO import StringIO
 
 import ownfunctions  
     
-class TestZeichenErsetzen(unittest.TestCase):
+class TestReplaceSigns(unittest.TestCase):
 
     def test_find_cp1252(self):
         x = ownfunctions.find_cp1252()
         expected_result = ['NULL', 'START OF HEADING', 'START OF TEXT', 'END OF TEXT', 'END OF TRANSMISSION', 'ENQUIRY', 'ACKNOWLEDGE', 'BELL', 'BACKSPACE', 'HORIZONTAL TABULATION', 'LINE FEED', 'VERTICAL TABULATION', 'FORM FEED', 'CARRIAGE RETURN', 'SHIFT OUT', 'SHIFT IN', 'DATA LINK ESCAPE', 'DEVICE CONTROL ONE', 'DEVICE CONTROL TWO', 'DEVICE CONTROL THREE', 'DEVICE CONTROL FOUR', 'NEGATIVE ACKNOWLEDGE', 'SYNCHRONOUS IDLE', 'END OF TRANSMISSION BLOCK', 'CANCEL', 'END OF MEDIUM', 'SUBSTITUTE', 'ESCAPE', 'FILE SEPARATOR', 'GROUP SEPARATOR', 'RECORD SEPARATOR', 'UNIT SEPARATOR', 'SPACE', 'EXCLAMATION MARK', 'QUOTATION MARK', 'NUMBER SIGN', 'DOLLAR SIGN', 'PERCENT SIGN', 'AMPERSAND', 'APOSTROPHE', 'LEFT PARENTHESIS', 'RIGHT PARENTHESIS', 'ASTERISK', 'PLUS SIGN', 'COMMA', 'HYPHEN-MINUS', 'FULL STOP', 'SOLIDUS', 'DIGIT ZERO', 'DIGIT ONE', 'DIGIT TWO', 'DIGIT THREE', 'DIGIT FOUR', 'DIGIT FIVE', 'DIGIT SIX', 'DIGIT SEVEN', 'DIGIT EIGHT', 'DIGIT NINE', 'COLON', 'SEMICOLON', 'LESS-THAN SIGN', 'EQUALS SIGN', 'GREATER-THAN SIGN', 'QUESTION MARK', 'COMMERCIAL AT', 'LATIN CAPITAL LETTER A', 'LATIN CAPITAL LETTER B', 'LATIN CAPITAL LETTER C', 'LATIN CAPITAL LETTER D', 'LATIN CAPITAL LETTER E', 'LATIN CAPITAL LETTER F', 'LATIN CAPITAL LETTER G', 'LATIN CAPITAL LETTER H', 'LATIN CAPITAL LETTER I', 'LATIN CAPITAL LETTER J', 'LATIN CAPITAL LETTER K', 'LATIN CAPITAL LETTER L', 'LATIN CAPITAL LETTER M', 'LATIN CAPITAL LETTER N', 'LATIN CAPITAL LETTER O', 'LATIN CAPITAL LETTER P', 'LATIN CAPITAL LETTER Q', 'LATIN CAPITAL LETTER R', 'LATIN CAPITAL LETTER S', 'LATIN CAPITAL LETTER T', 'LATIN CAPITAL LETTER U', 'LATIN CAPITAL LETTER V', 'LATIN CAPITAL LETTER W', 'LATIN CAPITAL LETTER X', 'LATIN CAPITAL LETTER Y', 'LATIN CAPITAL LETTER Z', 'LEFT SQUARE BRACKET', 'REVERSE SOLIDUS', 'RIGHT SQUARE BRACKET', 'CIRCUMFLEX ACCENT', 'LOW LINE', 'GRAVE ACCENT', 'LATIN SMALL LETTER A', 'LATIN SMALL LETTER B', 'LATIN SMALL LETTER C', 'LATIN SMALL LETTER D', 'LATIN SMALL LETTER E', 'LATIN SMALL LETTER F', 'LATIN SMALL LETTER G', 'LATIN SMALL LETTER H', 'LATIN SMALL LETTER I', 'LATIN SMALL LETTER J', 'LATIN SMALL LETTER K', 'LATIN SMALL LETTER L', 'LATIN SMALL LETTER M', 'LATIN SMALL LETTER N', 'LATIN SMALL LETTER O', 'LATIN SMALL LETTER P', 'LATIN SMALL LETTER Q', 'LATIN SMALL LETTER R', 'LATIN SMALL LETTER S', 'LATIN SMALL LETTER T', 'LATIN SMALL LETTER U', 'LATIN SMALL LETTER V', 'LATIN SMALL LETTER W', 'LATIN SMALL LETTER X', 'LATIN SMALL LETTER Y', 'LATIN SMALL LETTER Z', 'LEFT CURLY BRACKET', 'VERTICAL LINE', 'RIGHT CURLY BRACKET', 'TILDE', 'DELETE', 'EURO SIGN', 'SINGLE LOW-9 QUOTATION MARK', 'LATIN SMALL LETTER F WITH HOOK', 'DOUBLE LOW-9 QUOTATION MARK', 'HORIZONTAL ELLIPSIS', 'DAGGER', 'DOUBLE DAGGER', 'MODIFIER LETTER CIRCUMFLEX ACCENT', 'PER MILLE SIGN', 'LATIN CAPITAL LETTER S WITH CARON', 'SINGLE LEFT-POINTING ANGLE QUOTATION MARK', 'LATIN CAPITAL LIGATURE OE', 'LATIN CAPITAL LETTER Z WITH CARON', 'LEFT SINGLE QUOTATION MARK', 'RIGHT SINGLE QUOTATION MARK', 'LEFT DOUBLE QUOTATION MARK', 'RIGHT DOUBLE QUOTATION MARK', 'BULLET', 'EN DASH', 'EM DASH', 'SMALL TILDE', 'TRADE MARK SIGN', 'LATIN SMALL LETTER S WITH CARON', 'SINGLE RIGHT-POINTING ANGLE QUOTATION MARK', 'LATIN SMALL LIGATURE OE', 'LATIN SMALL LETTER Z WITH CARON', 'LATIN CAPITAL LETTER Y WITH DIAERESIS', 'NO-BREAK SPACE', 'INVERTED EXCLAMATION MARK', 'CENT SIGN', 'POUND SIGN', 'CURRENCY SIGN', 'YEN SIGN', 'BROKEN BAR', 'SECTION SIGN', 'DIAERESIS', 'COPYRIGHT SIGN', 'FEMININE ORDINAL INDICATOR', 'LEFT-POINTING DOUBLE ANGLE QUOTATION MARK', 'NOT SIGN', 'SOFT HYPHEN', 'REGISTERED SIGN', 'MACRON', 'DEGREE SIGN', 'PLUS-MINUS SIGN', 'SUPERSCRIPT TWO', 'SUPERSCRIPT THREE', 'ACUTE ACCENT', 'MICRO SIGN', 'PILCROW SIGN', 'MIDDLE DOT', 'CEDILLA', 'SUPERSCRIPT ONE', 'MASCULINE ORDINAL INDICATOR', 'RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK', 'VULGAR FRACTION ONE QUARTER', 'VULGAR FRACTION ONE HALF', 'VULGAR FRACTION THREE QUARTERS', 'INVERTED QUESTION MARK', 'LATIN CAPITAL LETTER A WITH GRAVE', 'LATIN CAPITAL LETTER A WITH ACUTE', 'LATIN CAPITAL LETTER A WITH CIRCUMFLEX', 'LATIN CAPITAL LETTER A WITH TILDE', 'LATIN CAPITAL LETTER A WITH DIAERESIS', 'LATIN CAPITAL LETTER A WITH RING ABOVE', 'LATIN CAPITAL LETTER AE', 'LATIN CAPITAL LETTER C WITH CEDILLA', 'LATIN CAPITAL LETTER E WITH GRAVE', 'LATIN CAPITAL LETTER E WITH ACUTE', 'LATIN CAPITAL LETTER E WITH CIRCUMFLEX', 'LATIN CAPITAL LETTER E WITH DIAERESIS', 'LATIN CAPITAL LETTER I WITH GRAVE', 'LATIN CAPITAL LETTER I WITH ACUTE', 'LATIN CAPITAL LETTER I WITH CIRCUMFLEX', 'LATIN CAPITAL LETTER I WITH DIAERESIS', 'LATIN CAPITAL LETTER ETH', 'LATIN CAPITAL LETTER N WITH TILDE', 'LATIN CAPITAL LETTER O WITH GRAVE', 'LATIN CAPITAL LETTER O WITH ACUTE', 'LATIN CAPITAL LETTER O WITH CIRCUMFLEX', 'LATIN CAPITAL LETTER O WITH TILDE', 'LATIN CAPITAL LETTER O WITH DIAERESIS', 'MULTIPLICATION SIGN', 'LATIN CAPITAL LETTER O WITH STROKE', 'LATIN CAPITAL LETTER U WITH GRAVE', 'LATIN CAPITAL LETTER U WITH ACUTE', 'LATIN CAPITAL LETTER U WITH CIRCUMFLEX', 'LATIN CAPITAL LETTER U WITH DIAERESIS', 'LATIN CAPITAL LETTER Y WITH ACUTE', 'LATIN CAPITAL LETTER THORN', 'LATIN SMALL LETTER SHARP S', 'LATIN SMALL LETTER A WITH GRAVE', 'LATIN SMALL LETTER A WITH ACUTE', 'LATIN SMALL LETTER A WITH CIRCUMFLEX', 'LATIN SMALL LETTER A WITH TILDE', 'LATIN SMALL LETTER A WITH DIAERESIS', 'LATIN SMALL LETTER A WITH RING ABOVE', 'LATIN SMALL LETTER AE', 'LATIN SMALL LETTER C WITH CEDILLA', 'LATIN SMALL LETTER E WITH GRAVE', 'LATIN SMALL LETTER E WITH ACUTE', 'LATIN SMALL LETTER E WITH CIRCUMFLEX', 'LATIN SMALL LETTER E WITH DIAERESIS', 'LATIN SMALL LETTER I WITH GRAVE', 'LATIN SMALL LETTER I WITH ACUTE', 'LATIN SMALL LETTER I WITH CIRCUMFLEX', 'LATIN SMALL LETTER I WITH DIAERESIS', 'LATIN SMALL LETTER ETH', 'LATIN SMALL LETTER N WITH TILDE', 'LATIN SMALL LETTER O WITH GRAVE', 'LATIN SMALL LETTER O WITH ACUTE', 'LATIN SMALL LETTER O WITH CIRCUMFLEX', 'LATIN SMALL LETTER O WITH TILDE', 'LATIN SMALL LETTER O WITH DIAERESIS', 'DIVISION SIGN', 'LATIN SMALL LETTER O WITH STROKE', 'LATIN SMALL LETTER U WITH GRAVE', 'LATIN SMALL LETTER U WITH ACUTE', 'LATIN SMALL LETTER U WITH CIRCUMFLEX', 'LATIN SMALL LETTER U WITH DIAERESIS', 'LATIN SMALL LETTER Y WITH ACUTE', 'LATIN SMALL LETTER THORN', 'LATIN SMALL LETTER Y WITH DIAERESIS']
         self.assertEqual(x,expected_result)
 
-    def test_hallo(self):
-        x = ownfunctions.replace_signs("hallo")
-        self.assertEqual(x,"hallo")
+    def test_hello(self):
+        x = ownfunctions.replace_signs("hello")
+        self.assertEqual(x,"hello")
         
     def test_maerchen(self):
         x = ownfunctions.replace_signs(u"m{}rchen".format(u"\u00E4"))
@@ -34,20 +34,20 @@ class TestZeichenErsetzen(unittest.TestCase):
         self.assertEqual(x, u"sqrt(4) = 2")
         
     def test_newline(self):
-        x = ownfunctions.replace_signs(u"hallo\nWelt")
-        self.assertEqual(x, u"hallo\nWelt")
+        x = ownfunctions.replace_signs(u"hello\nWorld")
+        self.assertEqual(x, u"hello\nWorld")
         
     def test_tab(self):
-        x = ownfunctions.replace_signs(u"hallo\tWelt\v")
-        self.assertEqual(x, u"hallo\tWelt\v")
+        x = ownfunctions.replace_signs(u"hello\tWorld\v")
+        self.assertEqual(x, u"hello\tWorld\v")
     
     def test_unknown_sign(self):
-        x = ownfunctions.replace_signs(u"tuerkische Flagge: {}".format(u"\u262a"))
-        self.assertEqual(x, u"tuerkische Flagge: {}".format(u"\u001a"))
+        x = ownfunctions.replace_signs(u"Flag Turkey: {}".format(u"\u262a"))
+        self.assertEqual(x, u"Flag Turkey: {}".format(u"\u001a"))
 
-class TestKoordinatenDezimalgradToMinuten(unittest.TestCase):  
+class TestCoordsDecimalToMinutes(unittest.TestCase):  
     
-    def test_north_east_coords(self):
+    def test_north_east(self):
         x = ownfunctions.coords_decimal_to_minutes([52.520817,13.40945])
         self.assertEqual(x, u"N 52°31.249, E 013°24.567")
         
@@ -84,9 +84,9 @@ class TestKoordinatenDezimalgradToMinuten(unittest.TestCase):
     def test_list_of_wrong_length(self):
         self.assertRaises(TypeError, ownfunctions.coords_decimal_to_minutes, [52.520817,13.40945, 42.42])
         
-class TestKoordinatenMinutenToDezimalgrad(unittest.TestCase):
+class TestCoordsMinutesToDecimal(unittest.TestCase):
 
-    def test_north_east_coords(self):
+    def test_north_east(self):
         x = ownfunctions.coords_minutes_to_decimal(u"N 52°31.249, E 013°24.567")
         n = round(x[0],6)
         e = round(x[1],5)
@@ -128,9 +128,9 @@ class TestKoordinatenMinutenToDezimalgrad(unittest.TestCase):
     def test_list_instead_of_unicode(self):
         self.assertRaises(TypeError, ownfunctions.coords_minutes_to_decimal, [u"N 52°31.249, E 013°24.567"])
         
-class TestKoordinatenMinutenToSekunden(unittest.TestCase):
+class TestCoordsMinutesToSeconds(unittest.TestCase):
 
-    def test_north_east_coords(self):
+    def test_north_east(self):
         x = ownfunctions.coords_minutes_to_seconds(u"N 52°31.249, E 013°24.567")
         self.assertEqual(x, u"52°31'14.9\"N+13°24'34.0\"E")
         
@@ -164,7 +164,7 @@ class TestKoordinatenMinutenToSekunden(unittest.TestCase):
     def test_list_instead_of_unicode(self):
         self.assertRaises(TypeError, ownfunctions.coords_minutes_to_seconds, [u"N 52°31.249, E 013°24.567"])
         
-class TestKoordinatenUrlToDezimalgrad(unittest.TestCase):
+class TestCoordsUrlToDecimal(unittest.TestCase):
      
     def test_gc_north_east(self):
         x = ownfunctions.coords_url_to_decimal("https://www.geocaching.com/map/#?ll=49.7821,9.87731&z=14S")
@@ -200,7 +200,7 @@ class TestKoordinatenUrlToDezimalgrad(unittest.TestCase):
     def test_different_input_type(self):
         self.assertRaises(TypeError, ownfunctions.coords_minutes_to_seconds, 42)
 
-class TestKoordinatenStringToDezimalgrad(unittest.TestCase):
+class TestCoordsStringToDecimal(unittest.TestCase):
 
     def test_manual_coords(self):
         x = ownfunctions.coords_string_to_decimal(u"N 52°31.249, E 013°24.567") 
@@ -349,7 +349,7 @@ class TestStringToDate(unittest.TestCase):
     def test_month_is_zero(self):
         self.assertRaises(ValueError, ownfunctions.string_to_date, "04.00.1990")
         
-    def test_year_is_zero_givesError(self):
+    def test_year_is_zero(self):
         self.assertRaises(ValueError, ownfunctions.string_to_date, "04.07.0000")
         
     def test_29th_feb(self):
@@ -377,12 +377,12 @@ class TestRemoveSpaces(unittest.TestCase):
         
 def create_testsuite():
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestZeichenErsetzen))
-    suite.addTest(unittest.makeSuite(TestKoordinatenDezimalgradToMinuten))
-    suite.addTest(unittest.makeSuite(TestKoordinatenMinutenToDezimalgrad))
-    suite.addTest(unittest.makeSuite(TestKoordinatenMinutenToSekunden))
-    suite.addTest(unittest.makeSuite(TestKoordinatenUrlToDezimalgrad))
-    suite.addTest(unittest.makeSuite(TestKoordinatenStringToDezimalgrad))
+    suite.addTest(unittest.makeSuite(TestReplaceSigns))
+    suite.addTest(unittest.makeSuite(TestCoordsDecimalToMinutes))
+    suite.addTest(unittest.makeSuite(TestCoordsMinutesToDecimal))
+    suite.addTest(unittest.makeSuite(TestCoordsMinutesToSeconds))
+    suite.addTest(unittest.makeSuite(TestCoordsUrlToDecimal))
+    suite.addTest(unittest.makeSuite(TestCoordsStringToDecimal))
     suite.addTest(unittest.makeSuite(TestCalculateDistance))
     suite.addTest(unittest.makeSuite(TestGetMonth))
     suite.addTest(unittest.makeSuite(TestStringToDate))
