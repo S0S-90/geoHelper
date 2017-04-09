@@ -414,7 +414,7 @@ class TestAlleAnzeigenDist(unittest.TestCase):
     def test_anzeigen(self):
         x = geotooly.GPS_content(r"examples\no_logfile")
         for gc in x.geocaches:
-            gc.distance = ownfunctions.calculate_distance(gc.koordinaten, [49.8414697,9.8579699])
+            gc.distance = ownfunctions.calculate_distance(gc.coordinates, [49.8414697,9.8579699])
         expected = u"    6.5km | GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  | 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
         expected = expected + u"12746.3km | GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | True  | 11 Sep 2016 | Tesoro Ameghino\n"
         expected = expected + u"    5.4km | GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | False | 05 Mar 2017 | 67 - MedTrix - {}\n".format(u"\u001a"+u"\u001a"+u"\u001a"+u"\u001a"+u"\u001a")
@@ -471,7 +471,7 @@ class TestGCAuswahlAnzeigenDist(unittest.TestCase):
     def setUp(self):
         self.x = geotooly.GPS_content(r"examples\no_logfile")
         for gc in self.x.geocaches:
-            gc.distance = ownfunctions.calculate_distance(gc.koordinaten, [49.8414697,9.8579699])
+            gc.distance = ownfunctions.calculate_distance(gc.coordinates, [49.8414697,9.8579699])
         
     def test_nix_anzeigen(self):
         self.assertEqual(self.x.gc_auswahl_anzeigen_dist([]), "")
@@ -496,7 +496,7 @@ class TestSuchen(unittest.TestCase):
             expected = [self.x.geocaches[0], self.x.geocaches[1]]
             self.assertEqual(self.x.suchen(), expected) 
 
-    def test_beschreibung(self):
+    def test_description(self):
         with mock.patch('__builtin__.raw_input', side_effect = ["2","ist"]): 
             expected = [self.x.geocaches[0], self.x.geocaches[1], self.x.geocaches[2], self.x.geocaches[5]]
             self.assertEqual(self.x.suchen(), expected)     
@@ -585,7 +585,7 @@ class TestSuchen(unittest.TestCase):
             expected = [self.x.geocaches[2], self.x.geocaches[4], self.x.geocaches[5]]
             self.assertEqual(self.x.suchen(), expected)  
 
-    def test_attribute_that_doesnt_exist(self):   
+    def test_attributes_that_doesnt_exist(self):   
         with mock.patch('__builtin__.raw_input', side_effect = ["9","No attributes specified by the author"]): 
             self.assertEqual(self.x.suchen(), [])  
 

@@ -21,7 +21,7 @@ class MyHTMLParser(HTMLParser):
     
     Methods:
     ---------    
-    define_attributes(): defines the attributed read and data
+    define_attributes(): defines the attributesd read and data
 
     return data(): return list data 
     """

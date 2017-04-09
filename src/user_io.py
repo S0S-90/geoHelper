@@ -113,7 +113,7 @@ def sortieren():
 def suchen():
     """fragt nach dem Kriterium, wonach gesucht werden soll, und gibt dieses zurueck"""
     
-    kriterien = ["name", "beschreibung", "type", "difficulty", "terrain", "size", "downloaddate", "available", "attribute", "distance"]
+    kriterien = ["name", "description", "type", "difficulty", "terrain", "size", "downloaddate", "available", "attributes", "distance"]
     print "\nWonach willst du suchen?"
     print "1: Name"
     print "2: Beschreibung"
@@ -143,7 +143,7 @@ def search_type():
     eingabe = raw_input(">> ")
     return eingabe
     
-def search_attribute(existing_attributes):
+def search_attributes(existing_attributes):
     print "Gib das Attribut ein, nach dem du suchen willst."
     attr_string = ", ".join(existing_attributes)
     print "Moegliche Attribute: {}".format(attr_string)
@@ -217,7 +217,7 @@ def einen_anzeigen():
     elif eingabe == "5":
         return "googlemaps"
         
-def koordinaten_eingabe():
+def coordinates_eingabe():
     print u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX oder URL (google maps oder geocaching.com/map)"
     koords = raw_input(">> ")
     return koords
@@ -252,6 +252,4 @@ def show_all_on_map_start():
 def show_all_on_map_end():
     print "Schliesse den Editor und druecke Enter."
     raw_input(">> ")
-
-
         

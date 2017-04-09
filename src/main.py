@@ -60,7 +60,7 @@ class GPS_content(object):
         user_io.general_output("\n{} Geocaches auf dem Geraet".format(len(self.geocaches)))
             
         for g in self.geocaches:      # Attribute aus den Geocaches auslesen 
-            for a in g.attribute:
+            for a in g.attributes:
                 if a not in self.existing_attributes and a != "No attributes specified by the author":
                     self.existing_attributes.append(a)
         self.existing_attributes.sort()
@@ -110,12 +110,12 @@ class GPS_content(object):
         """sortiert alle Caches auf dem Geraet nach gewuenschtem Kriterium und zeigt sie an"""
         [kriterium, rev] = user_io.sortieren()
         if kriterium == "distance":   # Entfernungsberechnung
-            koords_str = user_io.koordinaten_eingabe()
+            koords_str = user_io.coordinates_eingabe()
             koords = ownfunctions.coords_string_to_decimal(koords_str)
             
             if koords:             # falls Koordinatenauslesen erfolgreich war
                 for g in self.geocaches:
-                    g.distance = ownfunctions.calculate_distance(g.koordinaten, koords)
+                    g.distance = ownfunctions.calculate_distance(g.coordinates, koords)
                 self.geocaches = sorted(self.geocaches, key = lambda geocache: getattr(geocache, kriterium), reverse = rev)
                 user_io.general_output(self.alle_anzeigen_dist())
             else:
@@ -132,7 +132,7 @@ class GPS_content(object):
         """gibt einen String zurueck, in dem die Kurzinfos aller Caches auf dem Geraet jeweils in einer Zeile stehen"""
         text = ""
         for c in self.geocaches:
-            text = text + c.kurzinfo() + "\n"
+            text = text + c.shortinfo() + "\n"
         if len(self.geocaches) == 0:
             return "Keine Caches auf dem Geraet."
         return text
@@ -141,7 +141,7 @@ class GPS_content(object):
         """gibt einen String zurueck, in dem die Kurzinfos aller Caches auf dem Geraet + die aktuellen Entfernungsangaben jeweils in einer Zeile stehen"""
         text = ""
         for c in self.geocaches:
-            newline = u"{:7}km | {}\n".format(round(c.distance,1), c.kurzinfo())
+            newline = u"{:7}km | {}\n".format(round(c.distance,1), c.shortinfo())
             text = text + newline
         if len(self.geocaches) == 0:
             return "Keine Caches auf dem Geraet."
@@ -159,7 +159,7 @@ class GPS_content(object):
         if not cache:
             user_io.general_output("Dieser GC-Code existiert nicht.")
         else:
-            user_io.general_output(cache.langinfo())
+            user_io.general_output(cache.longinfo())
         
             while True:
                 task = user_io.einen_anzeigen()
@@ -169,16 +169,16 @@ class GPS_content(object):
                 elif task == "gc.com":
                     webbrowser.open_new_tab(cache.url)
                 elif task == "dist":
-                    koords_str = user_io.koordinaten_eingabe()
+                    koords_str = user_io.coordinates_eingabe()
                     koords = ownfunctions.coords_string_to_decimal(koords_str)
                     if koords:
-                        d = ownfunctions.calculate_distance(koords,cache.koordinaten)
+                        d = ownfunctions.calculate_distance(koords,cache.coordinates)
                         user_io.general_output("Abstand: {} Kilometer".format(round(d,1)))
                 elif task == "gc-map":
-                    url = "https://www.geocaching.com/map/#?ll={},{}&z=16".format(cache.koordinaten[0], cache.koordinaten[1])
+                    url = "https://www.geocaching.com/map/#?ll={},{}&z=16".format(cache.coordinates[0], cache.coordinates[1])
                     webbrowser.open_new_tab(url)
                 elif task == "googlemaps":
-                    koords_sec = ownfunctions.coords_minutes_to_seconds(cache.koordinatenanzeige)
+                    koords_sec = ownfunctions.coords_minutes_to_seconds(cache.coordinates_string)
                     url = u"https://www.google.de/maps/place/{}".format(koords_sec)
                     webbrowser.open_new_tab(url)
                 else:
@@ -190,7 +190,7 @@ class GPS_content(object):
         for c in cacheliste:
             if type(c) != Geocache:
                 raise TypeError("An Element of the selection is not a Geocache!")
-            text = text + c.kurzinfo() + "\n"
+            text = text + c.shortinfo() + "\n"
         return text
         
     def gc_auswahl_anzeigen_dist(self, cacheliste):
@@ -199,7 +199,7 @@ class GPS_content(object):
         for c in cacheliste:
             if type(c) != Geocache:
                 raise TypeError("An Element of the selection is not a Geocache!")
-            newline = u"{:7}km | {}\n".format(round(c.distance,1), c.kurzinfo())
+            newline = u"{:7}km | {}\n".format(round(c.distance,1), c.shortinfo())
             text = text + newline
         return text
         
@@ -208,7 +208,7 @@ class GPS_content(object):
         
         suchergebnisse = []
         kriterium = user_io.suchen()
-        if kriterium == "name" or kriterium == "beschreibung":    # Suche nach Name bzw. Beschreibung
+        if kriterium == "name" or kriterium == "description":    # Suche nach Name bzw. Beschreibung
             suchbegriff = user_io.input_decode("Suche nach... ")
             for c in self.geocaches:
                 if suchbegriff in getattr(c, kriterium):
@@ -289,22 +289,22 @@ class GPS_content(object):
                         suchergebnisse.append(c)
         elif kriterium == "type":
             eingabe = user_io.search_type()
-            if eingabe not in geocache.TYPES_LISTE:
+            if eingabe not in geocache.TYPES_LIST:
                 user_io.general_output("ERROR: ungueltige Eingabe")
             else:
                 for c in self.geocaches:
                     if c.type == eingabe:
                         suchergebnisse.append(c)
-        elif kriterium == "attribute":
-            eingabe = user_io.search_attribute(self.existing_attributes)
+        elif kriterium == "attributes":
+            eingabe = user_io.search_attributes(self.existing_attributes)
             if eingabe not in self.existing_attributes:
                 user_io.general_output("ERROR: ungueltige Eingabe")
             else:
                 for c in self.geocaches:
-                    if eingabe in c.attribute:
+                    if eingabe in c.attributes:
                         suchergebnisse.append(c)
         elif kriterium == "distance":
-            koords_str = user_io.koordinaten_eingabe()
+            koords_str = user_io.coordinates_eingabe()
             koords = ownfunctions.coords_string_to_decimal(koords_str)
             if koords:
                 eingabe_str = user_io.general_input("Minimale und maximale Distanz in Kilometern (mit Komma voneinander getrennt): ") 
@@ -319,7 +319,7 @@ class GPS_content(object):
                         user_io.general_output("ERROR: ungueltige Eingabe")
                     else:
                         for c in self.geocaches:
-                            c.distance = ownfunctions.calculate_distance(koords,c.koordinaten)
+                            c.distance = ownfunctions.calculate_distance(koords,c.coordinates)
                             if c.distance >= min and c.distance <= max:
                                 suchergebnisse.append(c)
             else:
@@ -375,7 +375,7 @@ class GPS_content(object):
         loeschen = user_io.loeschbestaetigung()
         if loeschen:
             for c in cacheliste:
-                os.remove(c.dateiname_path)
+                os.remove(c.filename_path)
             removelist = []
             for c1 in self.geocaches:
                 for c2 in cacheliste:
@@ -402,7 +402,7 @@ class GPS_content(object):
                     color = "blue"
                 else:                        # cache of unknown type
                     color = "pink"
-                mapinfo.write("{},{} {{{}}} <{}>\n".format(g.koordinaten[0], g.koordinaten[1], g.name.encode("cp1252"), color))
+                mapinfo.write("{},{} {{{}}} <{}>\n".format(g.coordinates[0], g.coordinates[1], g.name.encode("cp1252"), color))
         subprocess.Popen([editor,"mapinfo.txt"]) 
         webbrowser.open_new_tab("https://www.mapcustomizer.com/#bulkEntryModal") 
         user_io.show_all_on_map_end()

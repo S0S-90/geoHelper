@@ -343,9 +343,9 @@ class TestSuchen(unittest.TestCase):
         with mock.patch('__builtin__.raw_input', return_value= "1"):  
             self.assertEqual(user_io.suchen(), "name")
             
-    def test_beschreibung(self):
+    def test_description(self):
         with mock.patch('__builtin__.raw_input', return_value= "2"):  
-            self.assertEqual(user_io.suchen(), "beschreibung")
+            self.assertEqual(user_io.suchen(), "description")
             
     def test_type(self):
         with mock.patch('__builtin__.raw_input', return_value= "3"):  
@@ -371,9 +371,9 @@ class TestSuchen(unittest.TestCase):
         with mock.patch('__builtin__.raw_input', return_value= "8"):  
             self.assertEqual(user_io.suchen(), "available")
             
-    def test_attribute(self):
+    def test_attributes(self):
         with mock.patch('__builtin__.raw_input', return_value= "9"):  
-            self.assertEqual(user_io.suchen(), "attribute")
+            self.assertEqual(user_io.suchen(), "attributes")
             
     def test_distance(self):
         with mock.patch('__builtin__.raw_input', return_value= "10"):  
@@ -447,13 +447,13 @@ class TestSearchAttribute(unittest.TestCase):
     
     def test_return(self):
         with mock.patch('__builtin__.raw_input', return_value= "does not need to be an attr"): 
-            self.assertEqual(user_io.search_attribute(["attr1", "attr2"]), "does not need to be an attr")
+            self.assertEqual(user_io.search_attributes(["attr1", "attr2"]), "does not need to be an attr")
             
     def test_output(self):
         with mock.patch('__builtin__.raw_input', return_value= "any_nonsense"):
             out = StringIO()
             sys.stdout = out                 
-            user_io.search_attribute(["attr1", "attr2"])  
+            user_io.search_attributes(["attr1", "attr2"])  
             output = out.getvalue().strip()  
             expected_output = "Gib das Attribut ein, nach dem du suchen willst.\n"
             expected_output = expected_output + "Moegliche Attribute: attr1, attr2" 
@@ -602,13 +602,13 @@ class TestKoordinatenEingabe(unittest.TestCase):
     
     def test_return(self):
         with mock.patch('__builtin__.raw_input', return_value= "X XX°XX.XXX, X XXX°XX.XXX"): 
-            self.assertEqual(user_io.koordinaten_eingabe(), "X XX°XX.XXX, X XXX°XX.XXX")
+            self.assertEqual(user_io.coordinates_eingabe(), "X XX°XX.XXX, X XXX°XX.XXX")
             
     def test_output(self):
         with mock.patch('__builtin__.raw_input', return_value= "any_nonsense"):
             out = StringIO()
             sys.stdout = out                 
-            user_io.koordinaten_eingabe()  
+            user_io.coordinates_eingabe()  
             output = out.getvalue().strip()  
             expected_output = u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX oder URL (google maps oder geocaching.com/map)"
             self.assertEqual(output, expected_output)     

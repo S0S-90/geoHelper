@@ -36,8 +36,8 @@ class TestSaaletalblick(unittest.TestCase):
     def test_longtype(self):
         self.assertEqual(self.gc.longtype, "Traditional Cache")
         
-    def test_beschreibung(self):
-        self.assertEqual(self.gc.beschreibung, u"\n\nNach einem kleinen Spaziergang und dem Finden des Döschens werdet ihr mit einem tollen Blick ins Saaletal und auf die Saalewiesen belohnt! FTF: Jobi Voma STF: JoLoClMa TTF: Mone216\n\n\t\t\t")
+    def test_description(self):
+        self.assertEqual(self.gc.description, u"\n\nNach einem kleinen Spaziergang und dem Finden des Döschens werdet ihr mit einem tollen Blick ins Saaletal und auf die Saalewiesen belohnt! FTF: Jobi Voma STF: JoLoClMa TTF: Mone216\n\n\t\t\t")
     
     def test_hint(self):
         self.assertEqual(self.gc.hint, "Und ab durch die Hecke!")
@@ -48,14 +48,14 @@ class TestSaaletalblick(unittest.TestCase):
     def test_url(self):
         self.assertEqual(self.gc.url, "https://www.geocaching.com/geocache/GC6K86W_saaletalblick")
         
-    def test_koordinaten(self):
-        self.assertEqual(self.gc.koordinaten, [50.318883,10.1936])
+    def test_coordinates(self):
+        self.assertEqual(self.gc.coordinates, [50.318883,10.1936])
         
-    def test_koordinatenanzeige(self):
-        self.assertEqual(self.gc.koordinatenanzeige, u"N 50°19.133, E 010°11.616")
+    def test_coordinates_string(self):
+        self.assertEqual(self.gc.coordinates_string, u"N 50°19.133, E 010°11.616")
         
-    def test_attribute(self):
-        self.assertEqual(self.gc.attribute, ["no camping", "no parking available", "not wheelchair accessible", "kid friendly", "hike shorter than 1km", "stroller accessible"])
+    def test_attributes(self):
+        self.assertEqual(self.gc.attributes, ["no camping", "no parking available", "not wheelchair accessible", "kid friendly", "hike shorter than 1km", "stroller accessible"])
     
     def test_logs(self):
         expected_logs = [['2016-07-16', 'Found it', 'Ziaepf'], ['2016-07-10', "Didn't find it", 'NES-GN 310362'], ['2016-06-20', 'Found it', 'HerbieWo'], ['2016-06-15', 'Found it', "Fantastic'4"], ['2016-06-11', 'Found it', 'vicmouse'], ['2016-06-11', 'Found it', 'melimouse'], ['2016-06-10', 'Found it', 'Mone216'], ['2016-06-08', 'Found it', 'JoLoClMa'], ['2016-06-08', 'Found it', 'Jobi Voma'], ['2016-06-07', 'Publish Listing', 'Sabbelwasser']]
@@ -68,16 +68,16 @@ class TestSaaletalblick(unittest.TestCase):
         expected_date = datetime.date(2016,8,4)
         self.assertEqual(self.gc.downloaddate, expected_date)
         
-    def test_downloaddate_anzeige(self):
-        self.assertEqual(self.gc.downloaddate_anzeige, "04 Aug 2016")
+    def test_downloaddate_string(self):
+        self.assertEqual(self.gc.downloaddate_string, "04 Aug 2016")
         
-    def test_kurzinfo(self):
-        x = self.gc.kurzinfo()
+    def test_shortinfo(self):
+        x = self.gc.shortinfo()
         expected = u"GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | True  | 04 Aug 2016 | Saaletalblick"
         self.assertEqual(x, expected)
         
-    def test_langinfo(self):
-        x = self.gc.langinfo()
+    def test_longinfo(self):
+        x = self.gc.longinfo()
         z1 = u"\nGC6K86W : Saaletalblick"
         z2 =  "\n------------------------"
         z3 = u"\nSchwierigkeit: 2.0, Gelaende: 2.0, Groesse: micro, Typ: Traditional Cache"
@@ -87,7 +87,7 @@ class TestSaaletalblick(unittest.TestCase):
         z7 = u"\nCache ist aktiv: True, Stand: 04 Aug 2016"
         z8 = u"\nLink: https://www.geocaching.com/geocache/GC6K86W_saaletalblick"
         z9 = u"\n\n\n\nNach einem kleinen Spaziergang und dem Finden des Döschens werdet ihr mit einem tollen Blick ins Saaletal und auf die Saalewiesen belohnt! FTF: Jobi Voma STF: JoLoClMa TTF: Mone216\n\n\t\t\t"
-        z10 = u"\nHinweise: Und ab durch die Hecke!"
+        z10 = u"\nHinweis: Und ab durch die Hecke!"
         z11 = u"\n\n"
         z12 = u"2016-07-16: Found it by Ziaepf\n"
         z13 = u"2016-07-10: Didn't find it by NES-GN 310362\n"
@@ -140,8 +140,8 @@ class TestMaerchenstuhl(unittest.TestCase):
     def test_url(self):
         self.assertEqual(self.gc.url, "https://www.geocaching.com/geocache/GC1XRPM_im-auftrag-ihrer-majestat-der-marchenstuhl")
         
-    def test_koordinaten(self):
-        self.assertEqual(self.gc.koordinaten, [49.809317, 9.93365])
+    def test_coordinates(self):
+        self.assertEqual(self.gc.coordinates, [49.809317, 9.93365])
         
     def test_available(self):
         self.assertEqual(self.gc.available, True)
@@ -150,11 +150,11 @@ class TestMaerchenstuhl(unittest.TestCase):
         expected_date = datetime.date(2016,9,6)
         self.assertEqual(self.gc.downloaddate, expected_date)
         
-    def test_downloaddate_anzeige(self):
-        self.assertEqual(self.gc.downloaddate_anzeige, "06 Sep 2016")
+    def test_downloaddate_string(self):
+        self.assertEqual(self.gc.downloaddate_string, "06 Sep 2016")
         
-    def test_kurzinfo(self):
-        x = self.gc.kurzinfo()
+    def test_shortinfo(self):
+        x = self.gc.shortinfo()
         expected = u"GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  | 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl"
         self.assertEqual(x, expected)
         
@@ -196,11 +196,11 @@ class TestTesoroAmeghino(unittest.TestCase):
     def test_url(self):
         self.assertEqual(self.gc.url, "https://www.geocaching.com/geocache/GC33QGC_tesoro-ameghino")
         
-    def test_koordinaten(self):
-        self.assertEqual(self.gc.koordinaten, [-43.695433, -66.4515])
+    def test_coordinates(self):
+        self.assertEqual(self.gc.coordinates, [-43.695433, -66.4515])
         
-    def test_koordinatenanzeige(self):
-        self.assertEqual(self.gc.koordinatenanzeige, u"S 43°41.726, W 066°27.090")
+    def test_coordinates_string(self):
+        self.assertEqual(self.gc.coordinates_string, u"S 43°41.726, W 066°27.090")
         
     def test_available(self):
         self.assertEqual(self.gc.available, True)
@@ -209,11 +209,11 @@ class TestTesoroAmeghino(unittest.TestCase):
         expected_date = datetime.date(2016,9,11)
         self.assertEqual(self.gc.downloaddate, expected_date)
         
-    def test_downloaddate_anzeige(self):
-        self.assertEqual(self.gc.downloaddate_anzeige, "11 Sep 2016")
+    def test_downloaddate_string(self):
+        self.assertEqual(self.gc.downloaddate_string, "11 Sep 2016")
         
-    def test_kurzinfo(self):
-        x = self.gc.kurzinfo()
+    def test_shortinfo(self):
+        x = self.gc.shortinfo()
         expected = u"GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | True  | 11 Sep 2016 | Tesoro Ameghino"
         self.assertEqual(x, expected)
         
@@ -255,8 +255,8 @@ class TestMusikhochschule(unittest.TestCase):
     def test_url(self):
         self.assertEqual(self.gc.url, "https://www.geocaching.com/geocache/GC6RNTX_hochschule-fur-musik-1")
         
-    def test_koordinaten(self):
-        self.assertEqual(self.gc.koordinaten, [49.794497, 9.94094])
+    def test_coordinates(self):
+        self.assertEqual(self.gc.coordinates, [49.794497, 9.94094])
         
     def test_available(self):
         self.assertEqual(self.gc.available, True)
@@ -265,8 +265,8 @@ class TestMusikhochschule(unittest.TestCase):
         expected_date = datetime.date(2016,10,8)
         self.assertEqual(self.gc.downloaddate, expected_date)
         
-    def test_downloaddate_anzeige(self):
-        self.assertEqual(self.gc.downloaddate_anzeige, "08 Oct 2016")
+    def test_downloaddate_string(self):
+        self.assertEqual(self.gc.downloaddate_string, "08 Oct 2016")
         
 class TestWuerzburgerWebcam(unittest.TestCase):
 
@@ -306,8 +306,8 @@ class TestWuerzburgerWebcam(unittest.TestCase):
     def test_url(self):
         self.assertEqual(self.gc.url, "https://www.geocaching.com/geocache/GCJJ20_wuerzburger-webcam")
         
-    def test_koordinaten(self):
-        self.assertEqual(self.gc.koordinaten, [49.7948, 9.930267])
+    def test_coordinates(self):
+        self.assertEqual(self.gc.coordinates, [49.7948, 9.930267])
         
     def test_available(self):
         self.assertEqual(self.gc.available, True)
@@ -316,16 +316,16 @@ class TestWuerzburgerWebcam(unittest.TestCase):
         expected_date = datetime.date(2016,10,29)
         self.assertEqual(self.gc.downloaddate, expected_date)
         
-    def test_downloaddate_anzeige(self):
-        self.assertEqual(self.gc.downloaddate_anzeige, "29 Oct 2016")
+    def test_downloaddate_string(self):
+        self.assertEqual(self.gc.downloaddate_string, "29 Oct 2016")
         
-    def test_kurzinfo(self):
-        x = self.gc.kurzinfo()
+    def test_shortinfo(self):
+        x = self.gc.shortinfo()
         expected = u"GCJJ20  | N 49°47.688, E 009°55.816 | Unknown Type      | D 1.0 | T 1.0 | other   | True  | 29 Oct 2016 | Wuerzburger webcam"
         self.assertEqual(x, expected)
         
-    def test_langinfo(self):
-        x = self.gc.langinfo()
+    def test_longinfo(self):
+        x = self.gc.longinfo()
         z1 = u"\nGCJJ20 : Wuerzburger webcam"
         z2 =  "\n----------------------------"
         z3 = u"\nSchwierigkeit: 1.0, Gelaende: 1.0, Groesse: other, Typ: Webcam Cache"
@@ -334,8 +334,8 @@ class TestWuerzburgerWebcam(unittest.TestCase):
         z6 = u"\nAttribute: wheelchair accessible, available in winter, available 24-7, public transit available, parking available, takes less than 1 hour, kid friendly, stroller accessible, dogs allowed"
         z7 = u"\nCache ist aktiv: True, Stand: 29 Oct 2016"
         z8 = u"\nLink: https://www.geocaching.com/geocache/GCJJ20_wuerzburger-webcam"
-        z9 = u"\n\n{}".format(self.gc.beschreibung)
-        z10 = u"\nHinweise: No hints available."
+        z9 = u"\n\n{}".format(self.gc.description)
+        z10 = u"\nHinweis: No hints available."
         z11 = u"\n\n"
         for l in self.gc.logs:
             z11 = z11 + u"{}: {} by {}\n".format(l[0], l[1], l[2])
@@ -371,8 +371,8 @@ class TestMedrixErnos(unittest.TestCase):
     def test_longtype(self):
         self.assertEqual(self.gc.longtype, "Mystery Cache")
         
-    def test_beschreibung(self):
-        self.assertEqual(self.gc.beschreibung, u'\n\n<h2 style="font-style:italic;">... unerwartet....plötzlich.... mit einem Hammerschlag.... JETZT ist sie da: ....<span style="color:#FF0000;">MedTrix</span><span class="marker">, die erste Würzburger Mystery-Matrix.... 81 Caches, 81 Mysteries, 81 mal ultimativer Cachingspaß...... Alle D und T Kategorien..... alle Kombinationen..... und alles Rätsel aus der Kombination von Medizin und Kryptographie... unserem gemeinsamen Spezialgebiet.... dem Gebiet der 4Ma-Trickser.....</span></h2>\n<h2 style="font-style:italic;"><span class="marker">und nun viel Spaß</span>!!!</h2>\n<h2 style="font-style:italic;">&nbsp;</h2>\n<h2 style="font-style:italic;text-align:center;"><strong><u>Hier das Rätsel:</u></strong></h2>\n<p>&nbsp;</p>\n<span><br>\n<br>\n<font face="ARIAL" size="3">Die Hernien sind angeborene oder erworbene Lücken in den tragenden Bauchwandschichten. Im deutschen bezeichnet man diese als Bruch. Um diese operativ zu versorgen, gibt es mehrere Möglichkeiten: Eine der ersten war die OP nach ___A___(7). Dabei werden Bauchmuskeln, Leistenband und Schambeinperiost vernäht. Die Weiterentwicklung davon ist die OP nach ___B___(9), wo über der Bruchlücke eine Fasziendopplung durchgeführt wird. Die OP nach ___C___(12) ist eine weitere Art der Hernienversorgung, in der ein Kunststoffnetz eingesetzt wird und mit der Muskulatur vernäht, um die Bruchwand hinter dem Leistenkanal zu verstärken. Zu den neueren Arten der Hernienversorgung zählen die ___D___ (16). Hier unterscheidet man drei Methoden: Bei der __E__ (4) wird ein Pneumoperitoneum angelegt, wo ein Netz innenseitig zwischen Bruchpforte und Bauchwand fixiert wird. Im Gegensatz dazu wird bei der ___F___ (3) außerhalb des Bauchraumes operiert und ein Netz zwischen Muskulatur und Bauchwand eingelegt, um die Bruchpforte zu verschließen. Die ___G___ (4)-Methode beschreibt eine Hernienversorgung mittels Netzeinlage direkt an das Bauchfell. Dafür gibt es spezielle Netze, die auf der viszeralen Seite besonders beschichtet sind. Das Ziel der operativen Versorgung ist die Behebung der Hernie und die Vermeidung von Rezidiven. &nbsp;</font></span>\n<p><span><span><span><br>\n<br>\n<font face="ARIAL" size="3">Findet die Wörter aus dem Lückentext und bildet dann die Buchstabenwortwerte! Setzt sie dann in unten stehende Formel ein!</font></span><br>\n<br></span></span></p>\n<p><span><span><br>\n<br>\n<font face="Tahoma" size="3">Formel zur Berechnung des Finals:<br>\n<br>\n<b>N 49°(AxB/146). sum(A, B, D, E, G) // E 009°(sqrt(E*G+C-31). E*G-E*F + D/2</b></font></span><br>\n<br></span></p>\n<br>\n<br>\n<a href="http://geocheck.org/geo_inputchkcoord.php?gid=620474120c36e28-b765-4ff6-a6e4-b2f00c504981"><img src="http://geocheck.org/geocheck_large.php?gid=620474120c36e28-b765-4ff6-a6e4-b2f00c504981" title="Prüfe Deine Lösung" border="0"></a>\n\n\t\t\t')
+    def test_description(self):
+        self.assertEqual(self.gc.description, u'\n\n<h2 style="font-style:italic;">... unerwartet....plötzlich.... mit einem Hammerschlag.... JETZT ist sie da: ....<span style="color:#FF0000;">MedTrix</span><span class="marker">, die erste Würzburger Mystery-Matrix.... 81 Caches, 81 Mysteries, 81 mal ultimativer Cachingspaß...... Alle D und T Kategorien..... alle Kombinationen..... und alles Rätsel aus der Kombination von Medizin und Kryptographie... unserem gemeinsamen Spezialgebiet.... dem Gebiet der 4Ma-Trickser.....</span></h2>\n<h2 style="font-style:italic;"><span class="marker">und nun viel Spaß</span>!!!</h2>\n<h2 style="font-style:italic;">&nbsp;</h2>\n<h2 style="font-style:italic;text-align:center;"><strong><u>Hier das Rätsel:</u></strong></h2>\n<p>&nbsp;</p>\n<span><br>\n<br>\n<font face="ARIAL" size="3">Die Hernien sind angeborene oder erworbene Lücken in den tragenden Bauchwandschichten. Im deutschen bezeichnet man diese als Bruch. Um diese operativ zu versorgen, gibt es mehrere Möglichkeiten: Eine der ersten war die OP nach ___A___(7). Dabei werden Bauchmuskeln, Leistenband und Schambeinperiost vernäht. Die Weiterentwicklung davon ist die OP nach ___B___(9), wo über der Bruchlücke eine Fasziendopplung durchgeführt wird. Die OP nach ___C___(12) ist eine weitere Art der Hernienversorgung, in der ein Kunststoffnetz eingesetzt wird und mit der Muskulatur vernäht, um die Bruchwand hinter dem Leistenkanal zu verstärken. Zu den neueren Arten der Hernienversorgung zählen die ___D___ (16). Hier unterscheidet man drei Methoden: Bei der __E__ (4) wird ein Pneumoperitoneum angelegt, wo ein Netz innenseitig zwischen Bruchpforte und Bauchwand fixiert wird. Im Gegensatz dazu wird bei der ___F___ (3) außerhalb des Bauchraumes operiert und ein Netz zwischen Muskulatur und Bauchwand eingelegt, um die Bruchpforte zu verschließen. Die ___G___ (4)-Methode beschreibt eine Hernienversorgung mittels Netzeinlage direkt an das Bauchfell. Dafür gibt es spezielle Netze, die auf der viszeralen Seite besonders beschichtet sind. Das Ziel der operativen Versorgung ist die Behebung der Hernie und die Vermeidung von Rezidiven. &nbsp;</font></span>\n<p><span><span><span><br>\n<br>\n<font face="ARIAL" size="3">Findet die Wörter aus dem Lückentext und bildet dann die Buchstabenwortwerte! Setzt sie dann in unten stehende Formel ein!</font></span><br>\n<br></span></span></p>\n<p><span><span><br>\n<br>\n<font face="Tahoma" size="3">Formel zur Berechnung des Finals:<br>\n<br>\n<b>N 49°(AxB/146). sum(A, B, D, E, G) // E 009°(sqrt(E*G+C-31). E*G-E*F + D/2</b></font></span><br>\n<br></span></p>\n<br>\n<br>\n<a href="http://geocheck.org/geo_inputchkcoord.php?gid=620474120c36e28-b765-4ff6-a6e4-b2f00c504981"><img src="http://geocheck.org/geocheck_large.php?gid=620474120c36e28-b765-4ff6-a6e4-b2f00c504981" title="Prüfe Deine Lösung" border="0"></a>\n\n\t\t\t')
     
     def test_hint(self):
         self.assertEqual(self.gc.hint, "Indoor: die Zahlen in Klammern sind die Anzahl der Buchstaben\nOutdoor: oben :-) Mit Leiter")
@@ -383,8 +383,8 @@ class TestMedrixErnos(unittest.TestCase):
     def test_url(self):
         self.assertEqual(self.gc.url, "https://www.geocaching.com/geocache/GC5N23T_67-medtrix")
         
-    def test_koordinaten(self):
-        self.assertEqual(self.gc.koordinaten, [49.80761666666667, 9.912116666666666])
+    def test_coordinates(self):
+        self.assertEqual(self.gc.coordinates, [49.80761666666667, 9.912116666666666])
         
     def test_logs(self):
         expected_logs = [['2016-07-03', 'Found it', ':-)Mitchsa & firefly70'], ['2016-04-03', "Found it", 'Hackstock']]
@@ -397,8 +397,8 @@ class TestMedrixErnos(unittest.TestCase):
         expected_date = datetime.date(2017,1,9)
         self.assertEqual(self.gc.downloaddate, expected_date)
         
-    def test_downloaddate_anzeige(self):
-        self.assertEqual(self.gc.downloaddate_anzeige, "09 Jan 2017")
+    def test_downloaddate_string(self):
+        self.assertEqual(self.gc.downloaddate_string, "09 Jan 2017")
         
 class TestInvalidInput(unittest.TestCase):
         
