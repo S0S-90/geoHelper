@@ -104,14 +104,14 @@ class TestHauptmenueAnzeigen(unittest.TestCase):
     def test_nofoundexists(self):
         out = StringIO()
         sys.stdout = out                  # capture print output in out
-        user_io.hauptmenue_anzeigen(False)   # fill out 
+        user_io.show_main_menu(False)   # fill out 
         output = out.getvalue().strip()   # save value of out in output
         expected_output = "Was moechtest du als naechstes tun?\n"
-        expected_output = expected_output + "1: Geocaches aktualisieren\n"
-        expected_output = expected_output + "2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen\n"
+        expected_output = expected_output + "1: Geocaches update\n"
+        expected_output = expected_output + "2: Alle auf dem Geraet gespeicherten Geocaches sort_caches und anzeigen\n"
         expected_output = expected_output + "3: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen\n"
         expected_output = expected_output + "4: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)\n"
-        expected_output = expected_output + "5: Geocaches durchsuchen\n" 
+        expected_output = expected_output + "5: Geocaches durchsearch\n" 
         expected_output = expected_output + "6: https://www.geocaching.com/map aufrufen\n"
         expected_output = expected_output + "7: https://www.google.de/maps aufrufen\n"
         expected_output = expected_output + "8: Programm verlassen"
@@ -120,14 +120,14 @@ class TestHauptmenueAnzeigen(unittest.TestCase):
     def test_foundexists(self):
         out = StringIO()
         sys.stdout = out                  # capture print output in out
-        user_io.hauptmenue_anzeigen(True)   # fill out 
+        user_io.show_main_menu(True)   # fill out 
         output = out.getvalue().strip()   # save value of out in output
         expected_output = "Was moechtest du als naechstes tun?\n"
-        expected_output = expected_output + "1: Geocaches aktualisieren\n"
-        expected_output = expected_output + "2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen\n"
+        expected_output = expected_output + "1: Geocaches update\n"
+        expected_output = expected_output + "2: Alle auf dem Geraet gespeicherten Geocaches sort_caches und anzeigen\n"
         expected_output = expected_output + "3: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen\n"
         expected_output = expected_output + "4: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)\n"
-        expected_output = expected_output + "5: Geocaches durchsuchen\n" 
+        expected_output = expected_output + "5: Geocaches durchsearch\n" 
         expected_output = expected_output + "6: Alle gefundenen Caches anzeigen\n"
         expected_output = expected_output + "7: https://www.geocaching.com/map aufrufen\n"
         expected_output = expected_output + "8: https://www.google.de/maps aufrufen\n"
@@ -138,167 +138,167 @@ class TestHauptmenue(unittest.TestCase):
 
     def test_1_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="1"):
-            self.assertEqual(user_io.hauptmenue(False), 'aktualisieren')
+            self.assertEqual(user_io.main_menu(False), 'update')
         
     def test_2_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="2"):
-            self.assertEqual(user_io.hauptmenue(False), 'alle_anzeigen')
+            self.assertEqual(user_io.main_menu(False), 'show_all')
         
     def test_3_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="3"):
-            self.assertEqual(user_io.hauptmenue(False), 'show_all_on_map')
+            self.assertEqual(user_io.main_menu(False), 'show_all_on_map')
             
     def test_4_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="4"):
-            self.assertEqual(user_io.hauptmenue(False), 'einen_anzeigen')
+            self.assertEqual(user_io.main_menu(False), 'show_one')
         
     def test_5_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="5"):
-            self.assertEqual(user_io.hauptmenue(False), 'suchen')
+            self.assertEqual(user_io.main_menu(False), 'search')
         
     def test_6_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="6"):
-            self.assertEqual(user_io.hauptmenue(False), 'gc-maps')
+            self.assertEqual(user_io.main_menu(False), 'gc-maps')
         
     def test_7_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="7"):
-            self.assertEqual(user_io.hauptmenue(False), 'google-maps')
+            self.assertEqual(user_io.main_menu(False), 'google-maps')
         
     def test_8_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="8"):
-            self.assertEqual(user_io.hauptmenue(False), 'exit')
+            self.assertEqual(user_io.main_menu(False), 'exit')
         
     def test_9_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="9"):
-            self.assertEqual(user_io.hauptmenue(False), None)
+            self.assertEqual(user_io.main_menu(False), None)
         
     def test_1_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="1"):
-            self.assertEqual(user_io.hauptmenue(True), 'aktualisieren')
+            self.assertEqual(user_io.main_menu(True), 'update')
         
     def test_2_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="2"):
-            self.assertEqual(user_io.hauptmenue(True), 'alle_anzeigen')
+            self.assertEqual(user_io.main_menu(True), 'show_all')
         
     def test_3_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="3"):
-            self.assertEqual(user_io.hauptmenue(True), 'show_all_on_map')
+            self.assertEqual(user_io.main_menu(True), 'show_all_on_map')
             
     def test_4_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="4"):
-            self.assertEqual(user_io.hauptmenue(True), 'einen_anzeigen')
+            self.assertEqual(user_io.main_menu(True), 'show_one')
         
     def test_5_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="5"):
-            self.assertEqual(user_io.hauptmenue(True), 'suchen')
+            self.assertEqual(user_io.main_menu(True), 'search')
         
     def test_6_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="6"):
-            self.assertEqual(user_io.hauptmenue(True), 'gefundene_anzeigen')
+            self.assertEqual(user_io.main_menu(True), 'show_founds')
         
     def test_7_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="7"):
-            self.assertEqual(user_io.hauptmenue(True), 'gc-maps')
+            self.assertEqual(user_io.main_menu(True), 'gc-maps')
         
     def test_8_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="8"):
-            self.assertEqual(user_io.hauptmenue(True), 'google-maps')
+            self.assertEqual(user_io.main_menu(True), 'google-maps')
         
     def test_9_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="9"):
-            self.assertEqual(user_io.hauptmenue(True), 'exit')
+            self.assertEqual(user_io.main_menu(True), 'exit')
         
 class TestSortieren(unittest.TestCase):
 
     def test_gccode(self):
         with mock.patch('__builtin__.raw_input', side_effect=['1', '1']):  
-            self.assertEqual(user_io.sortieren(), ["gccode", False])
+            self.assertEqual(user_io.sort_caches(), ["gccode", False])
         
     def test_name(self):
         with mock.patch('__builtin__.raw_input', side_effect=['2', '1']): 
-            self.assertEqual(user_io.sortieren(), ["name", False])
+            self.assertEqual(user_io.sort_caches(), ["name", False])
 
     def test_type(self):
         with mock.patch('__builtin__.raw_input', side_effect=['3', '1']): 
-            self.assertEqual(user_io.sortieren(), ["type", False])
+            self.assertEqual(user_io.sort_caches(), ["type", False])
         
     def test_difficulty(self):
         with mock.patch('__builtin__.raw_input', side_effect=['4', '1']): 
-            self.assertEqual(user_io.sortieren(), ["difficulty", False])
+            self.assertEqual(user_io.sort_caches(), ["difficulty", False])
         
     def test_terrain(self):
         with mock.patch('__builtin__.raw_input', side_effect=['5', '1']): 
-            self.assertEqual(user_io.sortieren(), ["terrain", False])
+            self.assertEqual(user_io.sort_caches(), ["terrain", False])
         
     def test_size(self):
         with mock.patch('__builtin__.raw_input', side_effect=['6', '1']): 
-            self.assertEqual(user_io.sortieren(), ["size", False])
+            self.assertEqual(user_io.sort_caches(), ["size", False])
         
     def test_downloaddate(self):
         with mock.patch('__builtin__.raw_input', side_effect=['7', '1']): 
-            self.assertEqual(user_io.sortieren(), ["downloaddate", False])
+            self.assertEqual(user_io.sort_caches(), ["downloaddate", False])
         
     def test_available(self):
         with mock.patch('__builtin__.raw_input', side_effect=['8', '1']): 
-            self.assertEqual(user_io.sortieren(), ["available", False])
+            self.assertEqual(user_io.sort_caches(), ["available", False])
         
     def test_distance(self):
         with mock.patch('__builtin__.raw_input', side_effect=['9', '1']): 
-            self.assertEqual(user_io.sortieren(), ["distance", False])
+            self.assertEqual(user_io.sort_caches(), ["distance", False])
             
     def test_gccode_revert(self):
         with mock.patch('__builtin__.raw_input', side_effect=['1', '2']):  
-            self.assertEqual(user_io.sortieren(), ["gccode", True])
+            self.assertEqual(user_io.sort_caches(), ["gccode", True])
         
     def test_name_revert(self):
         with mock.patch('__builtin__.raw_input', side_effect=['2', '2']): 
-            self.assertEqual(user_io.sortieren(), ["name", True])
+            self.assertEqual(user_io.sort_caches(), ["name", True])
 
     def test_type_revert(self):
         with mock.patch('__builtin__.raw_input', side_effect=['3', '2']): 
-            self.assertEqual(user_io.sortieren(), ["type", True])
+            self.assertEqual(user_io.sort_caches(), ["type", True])
         
     def test_difficulty_revert(self):
         with mock.patch('__builtin__.raw_input', side_effect=['4', '2']): 
-            self.assertEqual(user_io.sortieren(), ["difficulty", True])
+            self.assertEqual(user_io.sort_caches(), ["difficulty", True])
         
     def test_terrain_revert(self):
         with mock.patch('__builtin__.raw_input', side_effect=['5', '2']): 
-            self.assertEqual(user_io.sortieren(), ["terrain", True])
+            self.assertEqual(user_io.sort_caches(), ["terrain", True])
         
     def test_size_revert(self):
         with mock.patch('__builtin__.raw_input', side_effect=['6', '2']): 
-            self.assertEqual(user_io.sortieren(), ["size", True])
+            self.assertEqual(user_io.sort_caches(), ["size", True])
         
     def test_downloaddate_revert(self):
         with mock.patch('__builtin__.raw_input', side_effect=['7', '2']): 
-            self.assertEqual(user_io.sortieren(), ["downloaddate", True])
+            self.assertEqual(user_io.sort_caches(), ["downloaddate", True])
         
     def test_available_revert(self):
         with mock.patch('__builtin__.raw_input', side_effect=['8', '2']): 
-            self.assertEqual(user_io.sortieren(), ["available", True])
+            self.assertEqual(user_io.sort_caches(), ["available", True])
         
     def test_distance_revert(self):
         with mock.patch('__builtin__.raw_input', side_effect=['9', '2']): 
-            self.assertEqual(user_io.sortieren(), ["distance", True])
+            self.assertEqual(user_io.sort_caches(), ["distance", True])
             
     def test_criterion0(self):
         with mock.patch('__builtin__.raw_input', side_effect=['0', '2']): 
-            self.assertEqual(user_io.sortieren(), ["gccode", True])
+            self.assertEqual(user_io.sort_caches(), ["gccode", True])
             
     def test_criterion_invalid(self):
         with mock.patch('__builtin__.raw_input', side_effect=['bla', '1']): 
-            self.assertEqual(user_io.sortieren(), ["gccode", False])
+            self.assertEqual(user_io.sort_caches(), ["gccode", False])
             
     def test_revert_invalid(self):
         with mock.patch('__builtin__.raw_input', side_effect=['1', '0']): 
-            self.assertEqual(user_io.sortieren(), ["gccode", False])
+            self.assertEqual(user_io.sort_caches(), ["gccode", False])
             
     def test_output_normal(self):
         with mock.patch('__builtin__.raw_input', side_effect=['3', '2']):
             out = StringIO()
             sys.stdout = out                   
-            user_io.sortieren()    
+            user_io.sort_caches()    
             output = out.getvalue().strip() 
             expected_output = "Wonach sollen die Geocaches sortiert werden?\n"
             expected_output = expected_output + "1: GC-Code\n"
@@ -319,7 +319,7 @@ class TestSortieren(unittest.TestCase):
         with mock.patch('__builtin__.raw_input', side_effect=['0', '2']):
             out = StringIO()
             sys.stdout = out                   
-            user_io.sortieren()    
+            user_io.sort_caches()    
             output = out.getvalue().strip() 
             expected_output = "Wonach sollen die Geocaches sortiert werden?\n"
             expected_output = expected_output + "1: GC-Code\n"
@@ -341,59 +341,59 @@ class TestSuchen(unittest.TestCase):
 
     def test_name(self):
         with mock.patch('__builtin__.raw_input', return_value= "1"):  
-            self.assertEqual(user_io.suchen(), "name")
+            self.assertEqual(user_io.search(), "name")
             
     def test_description(self):
         with mock.patch('__builtin__.raw_input', return_value= "2"):  
-            self.assertEqual(user_io.suchen(), "description")
+            self.assertEqual(user_io.search(), "description")
             
     def test_type(self):
         with mock.patch('__builtin__.raw_input', return_value= "3"):  
-            self.assertEqual(user_io.suchen(), "type")
+            self.assertEqual(user_io.search(), "type")
             
     def test_difficulty(self):
         with mock.patch('__builtin__.raw_input', return_value= "4"):  
-            self.assertEqual(user_io.suchen(), "difficulty")
+            self.assertEqual(user_io.search(), "difficulty")
             
     def test_terrain(self):
         with mock.patch('__builtin__.raw_input', return_value= "5"):  
-            self.assertEqual(user_io.suchen(), "terrain")
+            self.assertEqual(user_io.search(), "terrain")
             
     def test_size(self):
         with mock.patch('__builtin__.raw_input', return_value= "6"):  
-            self.assertEqual(user_io.suchen(), "size")
+            self.assertEqual(user_io.search(), "size")
             
     def test_downloaddate(self):
         with mock.patch('__builtin__.raw_input', return_value= "7"):  
-            self.assertEqual(user_io.suchen(), "downloaddate")
+            self.assertEqual(user_io.search(), "downloaddate")
             
     def test_available(self):
         with mock.patch('__builtin__.raw_input', return_value= "8"):  
-            self.assertEqual(user_io.suchen(), "available")
+            self.assertEqual(user_io.search(), "available")
             
     def test_attributes(self):
         with mock.patch('__builtin__.raw_input', return_value= "9"):  
-            self.assertEqual(user_io.suchen(), "attributes")
+            self.assertEqual(user_io.search(), "attributes")
             
     def test_distance(self):
         with mock.patch('__builtin__.raw_input', return_value= "10"):  
-            self.assertEqual(user_io.suchen(), "distance")
+            self.assertEqual(user_io.search(), "distance")
             
     def test_0(self):
         with mock.patch('__builtin__.raw_input', return_value= "0"): 
-            self.assertEqual(user_io.suchen(), None)
+            self.assertEqual(user_io.search(), None)
             
     def test_invalid(self):
         with mock.patch('__builtin__.raw_input', return_value= "bla"): 
-            self.assertEqual(user_io.suchen(), None)
+            self.assertEqual(user_io.search(), None)
             
     def test_output_normal(self):
         with mock.patch('__builtin__.raw_input', return_value="2"):
             out = StringIO()
             sys.stdout = out                   
-            user_io.suchen()    
+            user_io.search()    
             output = out.getvalue().strip() 
-            expected_output = "Wonach willst du suchen?\n"
+            expected_output = "Wonach willst du search?\n"
             expected_output = expected_output + "1: Name\n"
             expected_output = expected_output + "2: Beschreibung\n"
             expected_output = expected_output + "3: Cache-Typ\n"
@@ -410,9 +410,9 @@ class TestSuchen(unittest.TestCase):
         with mock.patch('__builtin__.raw_input', return_value="bla"):
             out = StringIO()
             sys.stdout = out                   
-            user_io.suchen()    
+            user_io.search()    
             output = out.getvalue().strip() 
-            expected_output = "Wonach willst du suchen?\n"
+            expected_output = "Wonach willst du search?\n"
             expected_output = expected_output + "1: Name\n"
             expected_output = expected_output + "2: Beschreibung\n"
             expected_output = expected_output + "3: Cache-Typ\n"
@@ -438,7 +438,7 @@ class TestSearchType(unittest.TestCase):
             sys.stdout = out                 
             user_io.search_type()  
             output = out.getvalue().strip()  
-            expected_output = "Gib den Cachetyp ein, nach dem du suchen willst.\n"
+            expected_output = "Gib den Cachetyp ein, nach dem du search willst.\n"
             expected_output = expected_output + "Moegliche Typen: Traditional Cache, Multi-cache, Mystery Cache, EarthCache, Letterbox Hybrid, Event Cache, Wherigo Cache, Geocaching HQ, Unknown Type\n"
             expected_output = expected_output + "Achtung! Gross- und Kleinschreibung beachten!"
             self.assertEqual(output, expected_output)
@@ -455,7 +455,7 @@ class TestSearchAttribute(unittest.TestCase):
             sys.stdout = out                 
             user_io.search_attributes(["attr1", "attr2"])  
             output = out.getvalue().strip()  
-            expected_output = "Gib das Attribut ein, nach dem du suchen willst.\n"
+            expected_output = "Gib das Attribut ein, nach dem du search willst.\n"
             expected_output = expected_output + "Moegliche Attribute: attr1, attr2" 
             self.assertEqual(output, expected_output)
             
@@ -463,33 +463,33 @@ class TestAktionenAuswahlSuchen(unittest.TestCase):
 
     def test_1(self):
         with mock.patch('__builtin__.raw_input', return_value= "1"):
-            self.assertEqual(user_io.aktionen_auswahl_suchen(), "neu_anzeigen")
+            self.assertEqual(user_io.actions_after_search(), "show_again")
             
     def test_2(self):
         with mock.patch('__builtin__.raw_input', return_value= "2"):
-            self.assertEqual(user_io.aktionen_auswahl_suchen(), "loeschen")
+            self.assertEqual(user_io.actions_after_search(), "delete")
             
     def test_3(self):
         with mock.patch('__builtin__.raw_input', return_value= "3"):
-            self.assertEqual(user_io.aktionen_auswahl_suchen(), "einen_anzeigen")
+            self.assertEqual(user_io.actions_after_search(), "show_one")
             
     def test_4(self):
         with mock.patch('__builtin__.raw_input', return_value= "4"):
-            self.assertEqual(user_io.aktionen_auswahl_suchen(), "back")
+            self.assertEqual(user_io.actions_after_search(), "back")
             
     def test_other(self):
         with mock.patch('__builtin__.raw_input', return_value= "0"):
-            self.assertEqual(user_io.aktionen_auswahl_suchen(), None)
+            self.assertEqual(user_io.actions_after_search(), None)
             
     def test_output(self):
         with mock.patch('__builtin__.raw_input', return_value= "1"):
             out = StringIO()
             sys.stdout = out                 
-            user_io.aktionen_auswahl_suchen()
+            user_io.actions_after_search()
             output = out.getvalue().strip()  
             expected_output = "Was moechtest du als naechstes tun?\n"
             expected_output = expected_output + "1: Alle Suchergebnisse erneut anzeigen (bei evtl. Loeschen nicht aktualisiert)\n" 
-            expected_output = expected_output + "2: Alle Suchergebnisse loeschen\n"
+            expected_output = expected_output + "2: Alle Suchergebnisse delete\n"
             expected_output = expected_output + "3: Beschreibung fuer eines der Suchergebnisse anzeigen\n"
             expected_output = expected_output + "4: zurueck"
             self.assertEqual(output, expected_output)
@@ -498,11 +498,11 @@ class TestAktionenAuswahlSuchen(unittest.TestCase):
         with mock.patch('__builtin__.raw_input', return_value= "bla"):
             out = StringIO()
             sys.stdout = out                 
-            user_io.aktionen_auswahl_suchen()
+            user_io.actions_after_search()
             output = out.getvalue().strip()  
             expected_output = "Was moechtest du als naechstes tun?\n"
             expected_output = expected_output + "1: Alle Suchergebnisse erneut anzeigen (bei evtl. Loeschen nicht aktualisiert)\n" 
-            expected_output = expected_output + "2: Alle Suchergebnisse loeschen\n"
+            expected_output = expected_output + "2: Alle Suchergebnisse delete\n"
             expected_output = expected_output + "3: Beschreibung fuer eines der Suchergebnisse anzeigen\n"
             expected_output = expected_output + "4: zurueck\n"
             expected_output = expected_output + "Ungueltige Eingabe"
@@ -516,7 +516,7 @@ class TestAktionenAuswahlGefunden(unittest.TestCase):
             
     def test_2(self):
         with mock.patch('__builtin__.raw_input', return_value= "2"):
-            self.assertEqual(user_io.aktionen_auswahl_gefunden(), "loeschen")
+            self.assertEqual(user_io.aktionen_auswahl_gefunden(), "delete")
             
     def test_3(self):
         with mock.patch('__builtin__.raw_input', return_value= "3"):
@@ -524,7 +524,7 @@ class TestAktionenAuswahlGefunden(unittest.TestCase):
             
     def test_other(self):
         with mock.patch('__builtin__.raw_input', return_value= "0"):
-            self.assertEqual(user_io.aktionen_auswahl_suchen(), None)
+            self.assertEqual(user_io.actions_after_search(), None)
             
     def test_output(self):
         with mock.patch('__builtin__.raw_input', return_value= "3"):
@@ -534,7 +534,7 @@ class TestAktionenAuswahlGefunden(unittest.TestCase):
             output = out.getvalue().strip()  
             expected_output = "Was moechtest du als naechstes tun?\n"
             expected_output = expected_output + "1: Gefundene Caches auf geocaching.com loggen (by uploading drafts / fieldnotes)\n" 
-            expected_output = expected_output + "2: Alle gefundenen Caches loeschen\n"
+            expected_output = expected_output + "2: Alle gefundenen Caches delete\n"
             expected_output = expected_output + "3: zurueck"
             self.assertEqual(output, expected_output)
             
@@ -557,40 +557,40 @@ class TestEinenAnzeigen(unittest.TestCase):
 
     def test_1(self):
         with mock.patch('__builtin__.raw_input', return_value= "1"):
-            self.assertEqual(user_io.einen_anzeigen(), "loeschen")
+            self.assertEqual(user_io.show_one(), "delete")
             
     def test_2(self):
         with mock.patch('__builtin__.raw_input', return_value= "2"):
-            self.assertEqual(user_io.einen_anzeigen(), "gc.com")
+            self.assertEqual(user_io.show_one(), "gc.com")
             
     def test_3(self):
         with mock.patch('__builtin__.raw_input', return_value= "3"):
-            self.assertEqual(user_io.einen_anzeigen(), "dist")
+            self.assertEqual(user_io.show_one(), "dist")
             
     def test_4(self):
         with mock.patch('__builtin__.raw_input', return_value= "4"):
-            self.assertEqual(user_io.einen_anzeigen(), "gc-map")
+            self.assertEqual(user_io.show_one(), "gc-map")
             
     def test_5(self):
         with mock.patch('__builtin__.raw_input', return_value= "5"):
-            self.assertEqual(user_io.einen_anzeigen(), "googlemaps")
+            self.assertEqual(user_io.show_one(), "googlemaps")
             
     def test_6(self):
         with mock.patch('__builtin__.raw_input', return_value= "6"):
-            self.assertEqual(user_io.einen_anzeigen(), None)
+            self.assertEqual(user_io.show_one(), None)
             
     def test_other(self):
         with mock.patch('__builtin__.raw_input', return_value= "0"):
-            self.assertEqual(user_io.einen_anzeigen(), None)
+            self.assertEqual(user_io.show_one(), None)
             
     def test_output(self):
         with mock.patch('__builtin__.raw_input', return_value= "bla"):
             out = StringIO()
             sys.stdout = out                 
-            user_io.einen_anzeigen()
+            user_io.show_one()
             output = out.getvalue().strip()  
             expected_output = "Was moechtest du als naechstes tun?\n"
-            expected_output = expected_output + "1: diesen Cache loeschen\n" 
+            expected_output = expected_output + "1: diesen Cache delete\n" 
             expected_output = expected_output + "2: diesen Cache auf geocaching.com oeffnen\n"
             expected_output = expected_output + "3: Abstand dieses Caches zu einer bestimmten Position berechnen\n"
             expected_output = expected_output + "4: Position des Caches auf der Karte https://www.geocaching.com/map anzeigen\n"
@@ -602,13 +602,13 @@ class TestKoordinatenEingabe(unittest.TestCase):
     
     def test_return(self):
         with mock.patch('__builtin__.raw_input', return_value= "X XX°XX.XXX, X XXX°XX.XXX"): 
-            self.assertEqual(user_io.coordinates_eingabe(), "X XX°XX.XXX, X XXX°XX.XXX")
+            self.assertEqual(user_io.coordinates_input(), "X XX°XX.XXX, X XXX°XX.XXX")
             
     def test_output(self):
         with mock.patch('__builtin__.raw_input', return_value= "any_nonsense"):
             out = StringIO()
             sys.stdout = out                 
-            user_io.coordinates_eingabe()  
+            user_io.coordinates_input()  
             output = out.getvalue().strip()  
             expected_output = u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX oder URL (google maps oder geocaching.com/map)"
             self.assertEqual(output, expected_output)     
