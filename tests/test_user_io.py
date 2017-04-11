@@ -512,15 +512,15 @@ class TestAktionenAuswahlGefunden(unittest.TestCase):
 
     def test_1(self):
         with mock.patch('__builtin__.raw_input', return_value= "1"):
-            self.assertEqual(user_io.aktionen_auswahl_gefunden(), "loggen")
+            self.assertEqual(user_io.actions_with_founds(), "log")
             
     def test_2(self):
         with mock.patch('__builtin__.raw_input', return_value= "2"):
-            self.assertEqual(user_io.aktionen_auswahl_gefunden(), "delete")
+            self.assertEqual(user_io.actions_with_founds(), "delete")
             
     def test_3(self):
         with mock.patch('__builtin__.raw_input', return_value= "3"):
-            self.assertEqual(user_io.aktionen_auswahl_gefunden(), "exit")
+            self.assertEqual(user_io.actions_with_founds(), "exit")
             
     def test_other(self):
         with mock.patch('__builtin__.raw_input', return_value= "0"):
@@ -530,10 +530,10 @@ class TestAktionenAuswahlGefunden(unittest.TestCase):
         with mock.patch('__builtin__.raw_input', return_value= "3"):
             out = StringIO()
             sys.stdout = out                 
-            user_io.aktionen_auswahl_gefunden()
+            user_io.actions_with_founds()
             output = out.getvalue().strip()  
             expected_output = "Was moechtest du als naechstes tun?\n"
-            expected_output = expected_output + "1: Gefundene Caches auf geocaching.com loggen (by uploading drafts / fieldnotes)\n" 
+            expected_output = expected_output + "1: Gefundene Caches auf geocaching.com log (by uploading drafts / fieldnotes)\n" 
             expected_output = expected_output + "2: Alle gefundenen Caches delete\n"
             expected_output = expected_output + "3: zurueck"
             self.assertEqual(output, expected_output)
@@ -543,15 +543,15 @@ class TestLoeschbestaetigung(unittest.TestCase):
 
     def test_yes(self):
         with mock.patch('__builtin__.raw_input', return_value= "y"):
-            self.assertEqual(user_io.loeschbestaetigung(), True)
+            self.assertEqual(user_io.confirm_deletion(), True)
             
     def test_no(self):
         with mock.patch('__builtin__.raw_input', return_value= "n"):
-            self.assertEqual(user_io.loeschbestaetigung(), False)
+            self.assertEqual(user_io.confirm_deletion(), False)
             
     def test_nonsense(self):
         with mock.patch('__builtin__.raw_input', return_value= "any_nonsense"):
-            self.assertEqual(user_io.loeschbestaetigung(), False)
+            self.assertEqual(user_io.confirm_deletion(), False)
             
 class TestEinenAnzeigen(unittest.TestCase):
 

@@ -20,6 +20,7 @@ def input_decode(string):
     
 def show_main_menu(found_exists):
     """prints main menu"""
+    
     print "\nWas moechtest du als naechstes tun?"
     print "1: Geocaches update"
     print "2: Alle auf dem Geraet gespeicherten Geocaches sort_caches und anzeigen"
@@ -158,7 +159,7 @@ def search_attributes(existing_attributes):
     return input
         
 def actions_after_search():
-    """asks for next action after a search"""
+    """asks for next action after a search, returns this action as a string"""
     
     print "\nWas moechtest du als naechstes tun?"
     print "1: Alle Suchergebnisse erneut anzeigen (bei evtl. Loeschen nicht aktualisiert)"
@@ -178,25 +179,25 @@ def actions_after_search():
     else:
         print "Ungueltige Eingabe"
         
-# cleanup until here
-        
-def aktionen_auswahl_gefunden():
-    """fragt, nachdem die gefundenen Caches angezeigt wurden, ob sie nun geloescht werden sollen"""
+def actions_with_founds():
+    """asks after showing the found caches what to do next
+    returns the next action as a string"""
     
     print "\nWas moechtest du als naechstes tun?"
-    print "1: Gefundene Caches auf geocaching.com loggen (by uploading drafts / fieldnotes)"
+    print "1: Gefundene Caches auf geocaching.com log (by uploading drafts / fieldnotes)"
     print "2: Alle gefundenen Caches delete"
     print "3: zurueck"
     input = raw_input(">> ")
     if input == "1":
-        return "loggen"
+        return "log"
     elif input == "2":
         return "delete"
     elif input == "3":
         return "exit"    
       
-def loeschbestaetigung():
-    """fragt vor dem Loeschen von Caches nach, ob tatsaechlich geloescht werden soll"""
+def confirm_deletion():
+    """asks before deleting caches if they should really be deleted
+    returns True for yes and False for no"""
     
     input = raw_input("\nWillst du den / die ausgewaehlten Cache(s) wirklich delete? (y/n) ")
     if input == "y":
@@ -205,7 +206,8 @@ def loeschbestaetigung():
         return False
         
 def show_one():
-    """fragt nach dem Anzeigen eines Caches, ob dieser geloescht werden soll"""
+    """asks after showing one cache what to do next
+    returns the next action as a string"""
     
     print "\nWas moechtest du als naechstes tun?"
     print "1: diesen Cache delete"
@@ -227,11 +229,16 @@ def show_one():
         return "googlemaps"
         
 def coordinates_input():
+    """asks for coordinates, returns input as a string"""
+    
     print u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX oder URL (google maps oder geocaching.com/map)"
     koords = raw_input(">> ")
     return koords
         
 def ask_for_path():
+    """asks for the path to the GPS-device and returns it
+    if no path is specified: returns the standard PATH"""
+
     print "\nGib den Pfad zum GPS-Geraet ein (NICHT zum Unterordner 'GPX')."
     print "Falls Standardpfad '{}' uebernommen werden soll: keine Eingabe".format(PATH)
     input = raw_input(">> ")
@@ -241,6 +248,9 @@ def ask_for_path():
         return input
         
 def show_all_on_map_start():
+    """explains how the task 'show_all_on_map' works and asks for path to texteditor
+    returns path to texteditor or - if no path is specified - the standard EDITORNAME"""
+
     print "\nNach dem Klicken werden sich mehrere Fenster oeffnen. Eines davon ist der Editor, das andere die Seite mapcustomizer.com in deinem Browser."
     print "Um die Caches auf der Karte anzuzeigen, kopiere den vollstaendigen Inhalt der Textdatei aus deinem Editor in das Feld 'Bulk Entry' im Browser."
     print "Die Caches werden in folgenden Farben angezeigt:"
@@ -259,6 +269,8 @@ def show_all_on_map_start():
         return input
     
 def show_all_on_map_end():
+    """asks for another input before leaving task 'show_all_on_map'"""
+    
     print "Schliesse den Editor und druecke Enter."
     raw_input(">> ")
         

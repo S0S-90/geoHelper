@@ -355,8 +355,8 @@ class GPS_content(object):
             raise ValueError("ERROR: no found caches")
         user_io.general_output(self.gc_auswahl_anzeigen(self.found_caches))
         while True:
-            task = user_io.aktionen_auswahl_gefunden()
-            if task == "loggen":
+            task = user_io.actions_with_founds()
+            if task == "log":
                 webbrowser.open_new_tab("https://www.geocaching.com/my/uploadfieldnotes.aspx")
             elif task == "delete":
                 if self.warning:
@@ -372,7 +372,7 @@ class GPS_content(object):
            
     def delete(self, cacheliste):
         """loescht alle Caches aus cacheliste vom Geraet"""
-        delete = user_io.loeschbestaetigung()
+        delete = user_io.confirm_deletion()
         if delete:
             for c in cacheliste:
                 os.remove(c.filename_path)
