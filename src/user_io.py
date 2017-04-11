@@ -149,7 +149,7 @@ def search_type():
     input = raw_input(">> ")
     return input
     
-def search_attributes(existing_attributes):
+def search_attribute(existing_attributes):
     """asks for attribute which should be searched and returns it (as string)"""
 
     print "Gib das Attribut ein, nach dem du search willst."

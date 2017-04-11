@@ -14,18 +14,18 @@ class TestGeneralOutput(unittest.TestCase):
     def test_normaltext(self):
         out = StringIO()
         sys.stdout = out                  # capture print output in out
-        user_io.general_output("hallo")   # fill out 
+        user_io.general_output("hello")   # fill out 
         output = out.getvalue().strip()   # save value of out in output
-        self.assertEqual(output, "hallo")
+        self.assertEqual(output, "hello")
         
     def test_textwithcapitalsandnumbers(self):
         out = StringIO()
         sys.stdout = out                  # capture print output in out
-        user_io.general_output("hAllo2")  # fill out 
+        user_io.general_output("hEllo2")  # fill out 
         output = out.getvalue().strip()   # save value of out in output
-        self.assertEqual(output, "hAllo2")
+        self.assertEqual(output, "hEllo2")
         
-    def test_umlaute(self):
+    def test_umlauts(self):
         out = StringIO()
         sys.stdout = out                                       # capture print output in out
         user_io.general_output(u"m{}rchen".format(u"\u00E4"))  # fill out 
@@ -35,16 +35,16 @@ class TestGeneralOutput(unittest.TestCase):
     def test_replacable_signs(self):
         out = StringIO()
         sys.stdout = out                                        # capture print output in out
-        user_io.general_output(u"hallo {}".format(u"\u263a"))   # fill out 
+        user_io.general_output(u"hello {}".format(u"\u263a"))   # fill out 
         output = out.getvalue().strip()                         # save value of out in output
-        self.assertEqual(output, "hallo :-)")
+        self.assertEqual(output, "hello :-)")
         
     def test_unknown_signs(self):
         out = StringIO()
         sys.stdout = out                                                    # capture print output in out
-        user_io.general_output(u"tuerkische Flagge: {}".format(u"\u262a"))  # fill out 
+        user_io.general_output(u"Flag Turkey: {}".format(u"\u262a"))        # fill out 
         output = out.getvalue().strip()                                     # save value of out in output
-        self.assertEqual(output, u"tuerkische Flagge: {}".format(u"\u001a"))
+        self.assertEqual(output, u"Flag Turkey: {}".format(u"\u001a"))
         
 
 class TestGeneralInput(unittest.TestCase):   
@@ -54,20 +54,20 @@ class TestGeneralInput(unittest.TestCase):
             self.assertEqual(user_io.general_input(">> "), 'hello')
         
     def test_textwithcapitalsandnumbers(self):
-        with mock.patch('__builtin__.raw_input', return_value="hAllo2"):
-            self.assertEqual(user_io.general_input(">> "), 'hAllo2')
+        with mock.patch('__builtin__.raw_input', return_value="hEllo2"):
+            self.assertEqual(user_io.general_input(">> "), 'hEllo2')
         
     def test_replacable_signs(self):
-        with mock.patch('__builtin__.raw_input', return_value=u"hallo {}".format(u"\u263a")): 
-            self.assertEqual(user_io.general_input(">> "), u"hallo {}".format(u"\u263a"))
+        with mock.patch('__builtin__.raw_input', return_value=u"hello {}".format(u"\u263a")): 
+            self.assertEqual(user_io.general_input(">> "), u"hello {}".format(u"\u263a"))
         
-    def test_umlaute(self):
+    def test_umlauts(self):
         with mock.patch('__builtin__.raw_input', return_value=u"m{}rchen".format(u"\u00E4")):
             self.assertEqual(user_io.general_input(">> "), u"m{}rchen".format(u"\u00E4"))
         
     def test_unknown_signs(self):
-        with mock.patch('__builtin__.raw_input', return_value=u"tuerkische Flagge: {}".format(u"\u262a")):
-            self.assertEqual(user_io.general_input(">> "), u"tuerkische Flagge: {}".format(u"\u262a"))
+        with mock.patch('__builtin__.raw_input', return_value=u"Flag Turkey: {}".format(u"\u262a")):
+            self.assertEqual(user_io.general_input(">> "), u"Flag Turkey: {}".format(u"\u262a"))
         
     def test_number(self):
         with mock.patch('__builtin__.raw_input', return_value="42"):
@@ -80,11 +80,11 @@ class TestInputDecode(unittest.TestCase):
             self.assertEqual(user_io.input_decode(">> "), 'hello')
         
     def test_textwithcapitalsandnumbers(self):
-        with mock.patch('__builtin__.raw_input', return_value="hAllo2"):
-            self.assertEqual(user_io.input_decode(">> "), 'hAllo2')
+        with mock.patch('__builtin__.raw_input', return_value="hEllo2"):
+            self.assertEqual(user_io.input_decode(">> "), 'hEllo2')
         
     def test_replacable_signs(self):
-        with mock.patch('__builtin__.raw_input', return_value=u"hallo {}".format(u"\u263a")):
+        with mock.patch('__builtin__.raw_input', return_value=u"hello {}".format(u"\u263a")):
             self.assertRaises(UnicodeEncodeError, user_io.input_decode, ">> ")
         
     def test_umlaute(self):
@@ -92,19 +92,19 @@ class TestInputDecode(unittest.TestCase):
             self.assertEqual(user_io.input_decode(">> "), u"Märchen")
         
     def test_unknown_signs(self):
-        with mock.patch('__builtin__.raw_input', return_value=u"tuerkische Flagge: {}".format(u"\u262a")):
+        with mock.patch('__builtin__.raw_input', return_value=u"Flag Turkey: {}".format(u"\u262a")):
             self.assertRaises(UnicodeEncodeError, user_io.input_decode, ">> ")
         
     def test_number(self):
         with mock.patch('__builtin__.raw_input', return_value="42"):
             self.assertEqual(user_io.input_decode(">> "), "42")
         
-class TestHauptmenueAnzeigen(unittest.TestCase):
+class TestShowMainMenu(unittest.TestCase):
     
     def test_nofoundexists(self):
         out = StringIO()
         sys.stdout = out                  # capture print output in out
-        user_io.show_main_menu(False)   # fill out 
+        user_io.show_main_menu(False)     # fill out 
         output = out.getvalue().strip()   # save value of out in output
         expected_output = "Was moechtest du als naechstes tun?\n"
         expected_output = expected_output + "1: Geocaches update\n"
@@ -120,7 +120,7 @@ class TestHauptmenueAnzeigen(unittest.TestCase):
     def test_foundexists(self):
         out = StringIO()
         sys.stdout = out                  # capture print output in out
-        user_io.show_main_menu(True)   # fill out 
+        user_io.show_main_menu(True)      # fill out 
         output = out.getvalue().strip()   # save value of out in output
         expected_output = "Was moechtest du als naechstes tun?\n"
         expected_output = expected_output + "1: Geocaches update\n"
@@ -134,7 +134,7 @@ class TestHauptmenueAnzeigen(unittest.TestCase):
         expected_output = expected_output + "9: Programm verlassen"
         self.assertEqual(output, expected_output)
         
-class TestHauptmenue(unittest.TestCase):
+class TestMainMenu(unittest.TestCase):
 
     def test_1_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="1"):
@@ -208,7 +208,7 @@ class TestHauptmenue(unittest.TestCase):
         with mock.patch('__builtin__.raw_input', return_value="9"):
             self.assertEqual(user_io.main_menu(True), 'exit')
         
-class TestSortieren(unittest.TestCase):
+class TestSortCaches(unittest.TestCase):
 
     def test_gccode(self):
         with mock.patch('__builtin__.raw_input', side_effect=['1', '1']):  
@@ -246,39 +246,39 @@ class TestSortieren(unittest.TestCase):
         with mock.patch('__builtin__.raw_input', side_effect=['9', '1']): 
             self.assertEqual(user_io.sort_caches(), ["distance", False])
             
-    def test_gccode_revert(self):
+    def test_gccode_backwards(self):
         with mock.patch('__builtin__.raw_input', side_effect=['1', '2']):  
             self.assertEqual(user_io.sort_caches(), ["gccode", True])
         
-    def test_name_revert(self):
+    def test_name_backwards(self):
         with mock.patch('__builtin__.raw_input', side_effect=['2', '2']): 
             self.assertEqual(user_io.sort_caches(), ["name", True])
 
-    def test_type_revert(self):
+    def test_type_backwards(self):
         with mock.patch('__builtin__.raw_input', side_effect=['3', '2']): 
             self.assertEqual(user_io.sort_caches(), ["type", True])
         
-    def test_difficulty_revert(self):
+    def test_difficulty_backwards(self):
         with mock.patch('__builtin__.raw_input', side_effect=['4', '2']): 
             self.assertEqual(user_io.sort_caches(), ["difficulty", True])
         
-    def test_terrain_revert(self):
+    def test_terrain_backwards(self):
         with mock.patch('__builtin__.raw_input', side_effect=['5', '2']): 
             self.assertEqual(user_io.sort_caches(), ["terrain", True])
         
-    def test_size_revert(self):
+    def test_size_backwards(self):
         with mock.patch('__builtin__.raw_input', side_effect=['6', '2']): 
             self.assertEqual(user_io.sort_caches(), ["size", True])
         
-    def test_downloaddate_revert(self):
+    def test_downloaddate_backwards(self):
         with mock.patch('__builtin__.raw_input', side_effect=['7', '2']): 
             self.assertEqual(user_io.sort_caches(), ["downloaddate", True])
         
-    def test_available_revert(self):
+    def test_available_backwards(self):
         with mock.patch('__builtin__.raw_input', side_effect=['8', '2']): 
             self.assertEqual(user_io.sort_caches(), ["available", True])
         
-    def test_distance_revert(self):
+    def test_distance_backwards(self):
         with mock.patch('__builtin__.raw_input', side_effect=['9', '2']): 
             self.assertEqual(user_io.sort_caches(), ["distance", True])
             
@@ -337,7 +337,7 @@ class TestSortieren(unittest.TestCase):
             expected_output = expected_output + "2: absteigend"             
             self.assertEqual(output, expected_output)
                   
-class TestSuchen(unittest.TestCase):
+class TestSearch(unittest.TestCase):
 
     def test_name(self):
         with mock.patch('__builtin__.raw_input', return_value= "1"):  
@@ -447,19 +447,19 @@ class TestSearchAttribute(unittest.TestCase):
     
     def test_return(self):
         with mock.patch('__builtin__.raw_input', return_value= "does not need to be an attr"): 
-            self.assertEqual(user_io.search_attributes(["attr1", "attr2"]), "does not need to be an attr")
+            self.assertEqual(user_io.search_attribute(["attr1", "attr2"]), "does not need to be an attr")
             
     def test_output(self):
         with mock.patch('__builtin__.raw_input', return_value= "any_nonsense"):
             out = StringIO()
             sys.stdout = out                 
-            user_io.search_attributes(["attr1", "attr2"])  
+            user_io.search_attribute(["attr1", "attr2"])  
             output = out.getvalue().strip()  
             expected_output = "Gib das Attribut ein, nach dem du search willst.\n"
             expected_output = expected_output + "Moegliche Attribute: attr1, attr2" 
             self.assertEqual(output, expected_output)
             
-class TestAktionenAuswahlSuchen(unittest.TestCase):
+class TestActionsAfterSearch(unittest.TestCase):
 
     def test_1(self):
         with mock.patch('__builtin__.raw_input', return_value= "1"):
@@ -508,7 +508,7 @@ class TestAktionenAuswahlSuchen(unittest.TestCase):
             expected_output = expected_output + "Ungueltige Eingabe"
             self.assertEqual(output, expected_output)
             
-class TestAktionenAuswahlGefunden(unittest.TestCase):
+class TestActionsWithFounds(unittest.TestCase):
 
     def test_1(self):
         with mock.patch('__builtin__.raw_input', return_value= "1"):
@@ -539,7 +539,7 @@ class TestAktionenAuswahlGefunden(unittest.TestCase):
             self.assertEqual(output, expected_output)
             
             
-class TestLoeschbestaetigung(unittest.TestCase):
+class TestConfirmDeletion(unittest.TestCase):
 
     def test_yes(self):
         with mock.patch('__builtin__.raw_input', return_value= "y"):
@@ -553,7 +553,7 @@ class TestLoeschbestaetigung(unittest.TestCase):
         with mock.patch('__builtin__.raw_input', return_value= "any_nonsense"):
             self.assertEqual(user_io.confirm_deletion(), False)
             
-class TestEinenAnzeigen(unittest.TestCase):
+class TestShowOne(unittest.TestCase):
 
     def test_1(self):
         with mock.patch('__builtin__.raw_input', return_value= "1"):
@@ -598,7 +598,7 @@ class TestEinenAnzeigen(unittest.TestCase):
             expected_output = expected_output + "6: zurueck"
             self.assertEqual(output, expected_output)
 
-class TestKoordinatenEingabe(unittest.TestCase):
+class TestCoordinatesInput(unittest.TestCase):
     
     def test_return(self):
         with mock.patch('__builtin__.raw_input', return_value= "X XX°XX.XXX, X XXX°XX.XXX"): 
@@ -678,17 +678,17 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestGeneralOutput))
     suite.addTest(unittest.makeSuite(TestGeneralInput))
     suite.addTest(unittest.makeSuite(TestInputDecode))
-    suite.addTest(unittest.makeSuite(TestHauptmenueAnzeigen))
-    suite.addTest(unittest.makeSuite(TestHauptmenue))
-    suite.addTest(unittest.makeSuite(TestSortieren))
-    suite.addTest(unittest.makeSuite(TestSuchen))
+    suite.addTest(unittest.makeSuite(TestShowMainMenu))
+    suite.addTest(unittest.makeSuite(TestMainMenu))
+    suite.addTest(unittest.makeSuite(TestSortCaches))
+    suite.addTest(unittest.makeSuite(TestSearch))
     suite.addTest(unittest.makeSuite(TestSearchType))
     suite.addTest(unittest.makeSuite(TestSearchAttribute))
-    suite.addTest(unittest.makeSuite(TestAktionenAuswahlSuchen))
-    suite.addTest(unittest.makeSuite(TestAktionenAuswahlGefunden))
-    suite.addTest(unittest.makeSuite(TestLoeschbestaetigung))
-    suite.addTest(unittest.makeSuite(TestEinenAnzeigen))
-    suite.addTest(unittest.makeSuite(TestKoordinatenEingabe))
+    suite.addTest(unittest.makeSuite(TestActionsAfterSearch))
+    suite.addTest(unittest.makeSuite(TestActionsWithFounds))
+    suite.addTest(unittest.makeSuite(TestConfirmDeletion))
+    suite.addTest(unittest.makeSuite(TestShowOne))
+    suite.addTest(unittest.makeSuite(TestCoordinatesInput))
     suite.addTest(unittest.makeSuite(TestAskForPath))
     suite.addTest(unittest.makeSuite(TestShowAllOnMapStart))
     suite.addTest(unittest.makeSuite(TestShowAllOnMapEnd))

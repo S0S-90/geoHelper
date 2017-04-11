@@ -222,7 +222,7 @@ class TestGetLoggedAndFoundCachesNotFoundNotOnGPS(unittest.TestCase):
         self.assertEqual(len(found_caches),1)
         self.assertEqual(found_caches[0].gccode, "GC5G5F5")
         
-class TestSortierenUndAnzeigen(unittest.TestCase):
+class TestSortCachesUndAnzeigen(unittest.TestCase):
 
     def setUp(self):
         self.x = geotooly.GPS_content(r"examples\no_logfile")
@@ -423,7 +423,7 @@ class TestAlleAnzeigenDist(unittest.TestCase):
         expected = expected + u"    7.3km | GCJJ20  | N 49°47.688, E 009°55.816 | Unknown Type      | D 1.0 | T 1.0 | other   | True  | 29 Oct 2016 | Wuerzburger webcam\n"
         self.assertEqual(x.show_all_dist(), expected)        
         
-class TestEinenAnzeigen(unittest.TestCase): 
+class TestShowOne(unittest.TestCase): 
 
     def setUp(self):
         self.x = geotooly.GPS_content(r"examples\no_logfile")
@@ -486,7 +486,7 @@ class TestGCAuswahlAnzeigenDist(unittest.TestCase):
         selection = ["13",6]
         self.assertRaises(TypeError, self.x.gc_auswahl_anzeigen_dist, selection)
         
-class TestSuchen(unittest.TestCase):
+class TestSearch(unittest.TestCase):
 
     def setUp(self):
         self.x = geotooly.GPS_content(r"examples\no_logfile")
@@ -784,13 +784,13 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesOnlyNotFound))
     suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesFoundNotOnGPS))
     suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesNotFoundNotOnGPS))
-    suite.addTest(unittest.makeSuite(TestSortierenUndAnzeigen))
+    suite.addTest(unittest.makeSuite(TestSortCachesUndAnzeigen))
     suite.addTest(unittest.makeSuite(TestAlleAnzeigen))
     suite.addTest(unittest.makeSuite(TestAlleAnzeigenDist))
-    suite.addTest(unittest.makeSuite(TestEinenAnzeigen))
+    suite.addTest(unittest.makeSuite(TestShowOne))
     suite.addTest(unittest.makeSuite(TestGCAuswahlAnzeigen))
     suite.addTest(unittest.makeSuite(TestGCAuswahlAnzeigenDist))
-    suite.addTest(unittest.makeSuite(TestSuchen))
+    suite.addTest(unittest.makeSuite(TestSearch))
     suite.addTest(unittest.makeSuite(TestGefundeneAnzeigenNoFoundCaches))
     suite.addTest(unittest.makeSuite(TestGefundeneAnzeigenOnlyFound))
     suite.addTest(unittest.makeSuite(TestGefundeneAnzeigenOnlyNotFound))

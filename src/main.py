@@ -296,7 +296,7 @@ class GPS_content(object):
                     if c.type == input:
                         suchergebnisse.append(c)
         elif kriterium == "attributes":
-            input = user_io.search_attributes(self.existing_attributes)
+            input = user_io.search_attribute(self.existing_attributes)
             if input not in self.existing_attributes:
                 user_io.general_output("ERROR: ungueltige Eingabe")
             else:
