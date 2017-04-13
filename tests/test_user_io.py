@@ -371,9 +371,9 @@ class TestSearch(unittest.TestCase):
         with mock.patch('__builtin__.raw_input', return_value= "8"):  
             self.assertEqual(user_io.search(), "available")
             
-    def test_attributes(self):
+    def test_attribute(self):
         with mock.patch('__builtin__.raw_input', return_value= "9"):  
-            self.assertEqual(user_io.search(), "attributes")
+            self.assertEqual(user_io.search(), "attribute")
             
     def test_distance(self):
         with mock.patch('__builtin__.raw_input', return_value= "10"):  

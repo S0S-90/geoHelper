@@ -117,7 +117,7 @@ def sort_caches():
 def search():
     """asks for criterion by which search should be performed and returns it (as string)"""
     
-    criterions = ["name", "description", "type", "difficulty", "terrain", "size", "downloaddate", "available", "attributes", "distance"]
+    criterions = ["name", "description", "type", "difficulty", "terrain", "size", "downloaddate", "available", "attribute", "distance"]
     print "\nWonach willst du search?"
     print "1: Name"
     print "2: Beschreibung"
@@ -276,6 +276,18 @@ def show_all_on_map_end():
  
  
 # string collection for main.py
+GPS_NOT_FOUND = "GPS-Geraet nicht unter folgender Pfadangabe zu finden"
+INVALID_INPUT = "Achtung! Ungueltige Eingabe."
 WARNING_BROKEN_FILE = "Achtung! Kaputte Datei"
 GEOCACHES_ON_DEVICE = "Geocaches auf dem Geraet"
 NO_CACHES_ON_DEVICE = "Keine Caches auf dem Geraet."
+INPUT_GCCODE = "Gib den GC-Code ein: "
+GC_DOES_NOT_EXIST = "Dieser GC-Code existiert nicht."
+SEARCH_FOR = "Suche nach... "
+MIN_MAX_SEPERATED_BY_KOMMA = "Minimaler und maximaler Wert (mit Komma voneinander getrennt)"
+POSSIBLE_SIZES = "Moegliche Groessen"
+DATE_SEPERATED_BY_KOMMA = "Fruehestes und spaetestes Datum (mit Komma voneinander getrennt). Format: DD.MM.YYYY"
+CACHES_AVAILABLE_OR_NOT = "Moechtest du die Caches sehen, die verfuegbar sind, oder die, die nicht verfuegbar sind? (y/n) "
+DIST_SEPERATED_BY_KOMMA = "Minimale und maximale Distanz in Kilometern (mit Komma voneinander getrennt): "
+NO_CACHES_FOUND = "keine Geocaches gefunden"
+WARNING_LOG_INFO = "WARNUNG! Bei Fortfahren werden auch Log-Informationen ueber Caches geloescht, die nicht gefunden wurden."
