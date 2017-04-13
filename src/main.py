@@ -38,6 +38,12 @@ class GPS_content(object):
     Methods:
     ---------
     __init__(path): creates a GPS_content-object from path to gps-device
+    
+    show_all(): returns a string with most important infos for each cache, each cache in one line
+    
+    show_all_dist(): returns a string with most important infos (+ distances) for each cache, each cache in one line
+    
+    sort_and_show_caches(): sorts all caches by criterion that is defined by the user and shows them"
 
     """
 
@@ -73,11 +79,13 @@ class GPS_content(object):
                 self.warning = True
             else:
                 self.warning = False
-                
-# code cleanup till here
 
     def _get_logged_and_found_caches(self):
-        """liest aus visits_file die geloggten und gefundenen Caches aus (nur Caches, die auch auf dem Geraet gespeichert sind)"""
+        """reads logged and found caches from logfile 'geocache_visits.txt' (ignores those that are not saved on device as gpx-files), part of __init__
+        
+        return: list of two elements which are also lists
+            first element: logged caches (not as Geocache-objects but as list [gc-code, date-and-time, logtype])
+            second element: list of found caches as Geocache-objects"""
 
         logged_caches_raw = []           
         with open(os.path.join(self.path, "geocache_visits.txt")) as visits:
@@ -108,46 +116,49 @@ class GPS_content(object):
                     user_io.general_output("\nWARNUNG! Der Geocache {} befindet sich nicht auf dem Geraet. Er wird daher im Folgenden nicht mehr beruecksichtigt.".format(lc[0])) 
         return [logged_caches_new, found_caches]
 
-    def sort_caches_und_anzeigen(self):
-        """sortiert alle Caches auf dem Geraet nach gewuenschtem Kriterium und zeigt sie an"""
+    def sort_and_show_caches(self):
+        """sorts all caches by criterion that is defined by the user and shows them"""
+        
         [kriterium, rev] = user_io.sort_caches()
-        if kriterium == "distance":   # Entfernungsberechnung
+        if kriterium == "distance":   # read coordinates from user input
             koords_str = user_io.coordinates_input()
             koords = ownfunctions.coords_string_to_decimal(koords_str)
             
-            if koords:             # falls Koordinatenauslesen erfolgreich war
+            if koords:             # if reading coordinates successful
                 for g in self.geocaches:
-                    g.distance = ownfunctions.calculate_distance(g.coordinates, koords)
+                    g.distance = ownfunctions.calculate_distance(g.coordinates, koords)  # calculate distance
                 self.geocaches = sorted(self.geocaches, key = lambda geocache: getattr(geocache, kriterium), reverse = rev)
                 user_io.general_output(self.show_all_dist())
             else:
-                user_io.general_output("ERROR: ungueltige Eingabe")
+                user_io.general_output("ERROR: invalid input")
             
-        elif kriterium == "name":    # Kriterien, bei denen die Groß- und Kleinschreibung vernachlaessigt werden soll
+        elif kriterium == "name":    # criterions for which capitalization doesn't matter
             self.geocaches = sorted(self.geocaches, key = lambda geocache: getattr(geocache, kriterium).lower(), reverse = rev)
             user_io.general_output(self.show_all())
-        else:                    # Kriterien, bei denen Groß- und Kleinschreibung keine Rolle spielt
+        else:                    # criterions for which capitalization matters
             self.geocaches = sorted(self.geocaches, key = lambda geocache: getattr(geocache, kriterium), reverse = rev)
             user_io.general_output(self.show_all())
         
     def show_all(self):
-        """gibt einen String zurueck, in dem die Kurzinfos aller Caches auf dem Geraet jeweils in einer Zeile stehen"""
+        """returns a string with most important infos for each cache, each cache in one line"""
         text = ""
         for c in self.geocaches:
             text = text + c.shortinfo() + "\n"
         if len(self.geocaches) == 0:
-            return "Keine Caches auf dem Geraet."
+            return user_io.NO_CACHES_ON_DEVICE
         return text
         
     def show_all_dist(self):
-        """gibt einen String zurueck, in dem die Kurzinfos aller Caches auf dem Geraet + die aktuellen Entfernungsangaben jeweils in einer Zeile stehen"""
+        """returns a string with most important infos (+ distances) for each cache, each cache in one line"""
         text = ""
         for c in self.geocaches:
             newline = u"{:7}km | {}\n".format(round(c.distance,1), c.shortinfo())
             text = text + newline
         if len(self.geocaches) == 0:
-            return "Keine Caches auf dem Geraet."
+            return user_io.NO_CACHES_ON_DEVICE
         return text
+        
+#cleanup till here
         
     def show_one(self):
         """zeigt die Langinfo eines Caches an und loescht diesen auf Wunsch"""
@@ -419,7 +430,7 @@ def show_main_menu(gps):
             new = GPS_content(PATH)
             show_main_menu(new)
         elif task == "show_all":
-            gps.sort_caches_und_anzeigen()
+            gps.sort_and_show_caches()
         elif task == "show_all_on_map":
             gps.show_all_on_map()
         elif task == "show_one":

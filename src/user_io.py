@@ -278,3 +278,4 @@ def show_all_on_map_end():
 # string collection for main.py
 WARNING_BROKEN_FILE = "Achtung! Kaputte Datei"
 GEOCACHES_ON_DEVICE = "Geocaches auf dem Geraet"
+NO_CACHES_ON_DEVICE = "Keine Caches auf dem Geraet."
