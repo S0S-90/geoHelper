@@ -6,7 +6,7 @@ import xml.etree.ElementTree as ElementTree
 import ownfunctions  
 
 SIZE_LIST = ["other", "micro", "small", "regular", "large"]
-TYPES_LIST = ["Traditional Cache", "Multi-cache", "EarthCache", "Letterbox Hybrid", "Event Cache", "Wherigo Cache", "Mystery Cache", "Geocaching HQ", "Unknown Type"]
+TYPE_LIST = ["Traditional Cache", "Multi-cache", "EarthCache", "Letterbox Hybrid", "Event Cache", "Wherigo Cache", "Mystery Cache", "Geocaching HQ", "Unknown Type"]
 
 
 # stringcollection for German language
@@ -53,7 +53,7 @@ class Geocache(object):
         size of the cache as word
         
     type: string
-        type of the cache (member of TYPES_LIST)
+        type of the cache (member of TYPE_LIST)
         used in short description as well as for searching and sorting
         
     longtype: string
@@ -220,8 +220,8 @@ class Geocache(object):
         return description_short + "\n\n" + description_long
         
     def _read_type(self, lt):
-        """converts cachetypes from xml-file to those from TYPES_LIST, part of __init__"""
-        if lt in TYPES_LIST:
+        """converts cachetypes from xml-file to those from TYPE_LIST, part of __init__"""
+        if lt in TYPE_LIST:
             type = lt
         elif lt == "Cache In Trash Out Event" or lt == "Mega-Event Cache" or lt == "Giga-Event Cache":
             type = "Event Cache"

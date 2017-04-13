@@ -4,81 +4,83 @@ import glob
 import webbrowser
 import subprocess
 
-import geocache     # Konstanten aus geocache.py (Typen und Groessen)
-from geocache import Geocache   # Geocache-Klasse
-import user_io      # Benutzeroberflaeche
-import ownfunctions # eigene Datei mit Funktionen
+from geocache import TYPE_LIST, SIZE_LIST   # constants from geocache.py 
+from geocache import Geocache   # class Geocache
+import user_io      # user input and output
+import ownfunctions # own file with different functions
 
 class GPS_content(object):
     """
-    Ein Objekt dieser Klasse enthält alle relevanten Informationen vom GPS-Geraet (oder einem anderen Speicherort).
+    An object of this class contains all relevant information from the gps-device (or from another user-defined place)
     
     
-    Attribute:
+    Attributes:
     ----------
-    PATH: string
-        Pfadangabe zum GPS-Geraet oder einem anderen Speicherort, der ausgelesen werden soll
+    path: string
+        path to gps-device (or other place where the information should be read from)
         
     geocaches: list
-        Liste von allen Geocaches
+        list with all geocaches
         
     existing_attributes: list
-        Liste aller in den Geocaches vorkommenden Attribute
+        list with all attributes existing in the geocaches
         
     found_exists: bool
-        Information, ob auf dem Geraet Caches als gefunden markiert wurden
+        is True, if caches are marked as found on gps-device
     
     found_caches: list
-        Liste von gefundenen Geocaches (falls found_exists)
+        list of all geocaches marked as found (if found_exists)
         
     warning: bool
-        aktiv, wenn sich neben den gefundenen Caches auch noch andere in der Logdatei befinden (z.B. als nicht gefunden, needs maintainance)
+        is True, if there are other caches beside the found ones in logfile (e.g. as not found, needs maintainance, ...) 
     
     
-    Methoden:
+    Methods:
     ---------
-    __init__(path): Erstellung eines GPS-Content-Objekts aus der Pfadangabe zum Geraet
+    __init__(path): creates a GPS_content-object from path to gps-device
 
     """
 
     
     def __init__(self, path):
-        """liest nach Oeffnen des Programms die Geocaches und die Logdatei ein"""
+        """reads geocaches and logfile from gps-device"""
         
-        self.PATH = path              # Uebernahme der Pfadangabe aus der user_io
-        self.found_exists = False     # Information, ob gefundene Caches auf dem Geraet gespeichert sind
-        self.warning = False          # Warnung, falls Caches in Logdatei, die noch nicht gefunden wurden
-        self.existing_attributes = [] # Liste von Attributen
+        self.path = path              
+        self.found_exists = False     
+        self.warning = False          
+        self.existing_attributes = [] 
         
-        self.geocaches = []               # alle Caches aus GC*.gpx-Dateien in PATH\GPX auslesen und in Liste geocaches speichern
-        GPX_PATH = os.path.join(self.PATH, "GPX")
-        for datei in glob.glob(os.path.join(GPX_PATH,"GC*.gpx")):
+        self.geocaches = []               # read all caches from GC*.gpx-files in path\GPX and save in list 'geocaches'
+        gpx_path = os.path.join(self.path, "GPX")
+        for file in glob.glob(os.path.join(gpx_path,"GC*.gpx")):
             try:
-                self.geocaches.append(Geocache(datei))
+                self.geocaches.append(Geocache(file))
             except:
-                user_io.general_output("Achtung! Kaputte Datei: {}".format(os.path.basename(datei)))
-        user_io.general_output("\n{} Geocaches auf dem Geraet".format(len(self.geocaches)))
+                user_io.general_output("{}: {}".format(user_io.WARNING_BROKEN_FILE, os.path.basename(file)))
+        user_io.general_output("\n{} {}".format(len(self.geocaches), user_io.GEOCACHES_ON_DEVICE))
             
-        for g in self.geocaches:      # Attribute aus den Geocaches auslesen 
+        for g in self.geocaches:      # read existing attributes from geocaches
             for a in g.attributes:
                 if a not in self.existing_attributes and a != "No attributes specified by the author":
                     self.existing_attributes.append(a)
         self.existing_attributes.sort()
               
-        if os.path.isfile(os.path.join(self.PATH, "geocache_visits.txt")):    # alle gefundenen Caches aus Logdatei in found_caches speichern, falls eine solche vorhanden
-            [logged_caches, self.found_caches] = self.get_logged_and_found_caches()
+        if os.path.isfile(os.path.join(self.path, "geocache_visits.txt")):    # save all found caches from logfile in found_caches (if logfile is present) 
+            [logged_caches, self.found_caches] = self._get_logged_and_found_caches()
             if len(self.found_caches) > 0:
                 self.found_exists = True
-            if len(self.found_caches) < len(logged_caches): # Warnung, falls weitere Caches in Logdatei, die noch nicht gefunden wurden
+            if len(self.found_caches) < len(logged_caches): # warning, if caches in logfile that are not marked as found but as something different
                 self.warning = True
             else:
                 self.warning = False
+                
+# code cleanup till here
 
-    def get_logged_and_found_caches(self):
+    def _get_logged_and_found_caches(self):
         """liest aus visits_file die geloggten und gefundenen Caches aus (nur Caches, die auch auf dem Geraet gespeichert sind)"""
 
         logged_caches_raw = []           
-        with open(os.path.join(self.PATH, "geocache_visits.txt")) as visits:
+        with open(os.path.join(self.path, "geocache_visits.txt")) as visits:
             visits = visits.read().decode("utf-16")
             visits_lines = visits.split("\n")
             for line in visits_lines:
@@ -94,13 +96,13 @@ class GPS_content(object):
         for lc in logged_caches:
             if lc[-1] == "Found it":
                 try:
-                    found_caches.append(Geocache(os.path.join(self.PATH,"GPX",lc[0]+".gpx")))
+                    found_caches.append(Geocache(os.path.join(self.path,"GPX",lc[0]+".gpx")))
                     logged_caches_new.append(lc)
                 except IOError:
                     user_io.general_output("\nWARNUNG! Der Geocache {} befindet sich nicht auf dem Geraet. Er wird daher im Folgenden nicht mehr beruecksichtigt.".format(lc[0])) 
             else:
                 try:
-                    Geocache(os.path.join(self.PATH,"GPX",lc[0]+".gpx"))
+                    Geocache(os.path.join(self.path,"GPX",lc[0]+".gpx"))
                     logged_caches_new.append(lc)
                 except IOError:
                     user_io.general_output("\nWARNUNG! Der Geocache {} befindet sich nicht auf dem Geraet. Er wird daher im Folgenden nicht mehr beruecksichtigt.".format(lc[0])) 
@@ -232,7 +234,6 @@ class GPS_content(object):
                     else:
                         user_io.general_output("ERROR: ungueltige Eingabe")
         elif kriterium == "size":                                           # Suche nach Cachegroesse
-            liste = ["other", "micro", "small", "regular", "large"]
             input_str = user_io.general_input("Minimale und maximale Groesse (mit Komma voneinander getrennt). Moegliche Groessen: other, micro, small, regular, large\n>>")
             input = input_str.split(",")
             if len(input) != 2:
@@ -243,8 +244,8 @@ class GPS_content(object):
                         max_str = input[1][1:]
                     else:
                         max_str = input[1]
-                    min = liste.index(input[0])
-                    max = liste.index(max_str)
+                    min = SIZE_LIST.index(input[0])
+                    max = SIZE_LIST.index(max_str)
                 except ValueError:
                     user_io.general_output("ERROR: ungueltige Eingabe")
                 else:
@@ -289,7 +290,7 @@ class GPS_content(object):
                         suchergebnisse.append(c)
         elif kriterium == "type":
             input = user_io.search_type()
-            if input not in geocache.TYPES_LIST:
+            if input not in TYPE_LIST:
                 user_io.general_output("ERROR: ungueltige Eingabe")
             else:
                 for c in self.geocaches:
@@ -364,8 +365,8 @@ class GPS_content(object):
                 delete = self.delete(self.found_caches)
                 if delete:
                     self.found_exists = False
-                    os.remove(os.path.join(self.PATH,"geocache_visits.txt"))
-                    os.remove(os.path.join(self.PATH,"geocache_logs.xml"))
+                    os.remove(os.path.join(self.path,"geocache_visits.txt"))
+                    os.remove(os.path.join(self.path,"geocache_logs.xml"))
                     break
             elif task == "exit":
                 break

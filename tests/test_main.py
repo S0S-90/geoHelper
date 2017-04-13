@@ -32,7 +32,7 @@ class TestInitNoLogfile(unittest.TestCase):
         self.assertEqual(self.x.warning, False)
         
     def test_logged_and_found_caches_fails(self):
-        self.assertRaises(IOError, self.x.get_logged_and_found_caches)
+        self.assertRaises(IOError, self.x._get_logged_and_found_caches)
         
 class TestInitOnlyFound(unittest.TestCase):
         
@@ -154,12 +154,12 @@ class TestGetLoggedAndFoundCachesOnlyFound(unittest.TestCase):
         self.x = geotooly.GPS_content(r"examples\only_found")
         
     def test_logged_caches(self):
-        logged_caches = self.x.get_logged_and_found_caches()[0]
+        logged_caches = self.x._get_logged_and_found_caches()[0]
         expected = [["GC1XRPM","2016-09-03T09:40Z","Found it"], ["GC5G5F5","2016-09-03T09:40Z","Found it"]]
         self.assertEqual(logged_caches, expected)
         
     def test_found_caches(self):
-        found_caches = self.x.get_logged_and_found_caches()[1]
+        found_caches = self.x._get_logged_and_found_caches()[1]
         self.assertEqual(len(found_caches),2)
         self.assertEqual(found_caches[0].gccode, "GC1XRPM")
         self.assertEqual(found_caches[1].gccode, "GC5G5F5")
@@ -170,12 +170,12 @@ class TestGetLoggedAndFoundCachesNotOnlyFound(unittest.TestCase):
         self.x = geotooly.GPS_content(r"examples\not_only_found")
         
     def test_logged_caches(self):
-        logged_caches = self.x.get_logged_and_found_caches()[0]
+        logged_caches = self.x._get_logged_and_found_caches()[0]
         expected = [["GC1XRPM","2016-09-03T09:40Z","Found it"],["GC5G5F5","2016-09-03T09:40Z","unattempted"],["GC5N23T","2017-02-12T09:40Z","Found it"]]
         self.assertEqual(logged_caches, expected)
         
     def test_found_caches(self):
-        found_caches = self.x.get_logged_and_found_caches()[1]
+        found_caches = self.x._get_logged_and_found_caches()[1]
         self.assertEqual(len(found_caches),2)
         self.assertEqual(found_caches[0].gccode, "GC1XRPM")
         self.assertEqual(found_caches[1].gccode, "GC5N23T")
@@ -186,12 +186,12 @@ class TestGetLoggedAndFoundCachesOnlyNotFound(unittest.TestCase):
         self.x = geotooly.GPS_content(r"examples\only_notfound")
         
     def test_logged_caches(self):
-        logged_caches = self.x.get_logged_and_found_caches()[0]
+        logged_caches = self.x._get_logged_and_found_caches()[0]
         expected = [["GC1XRPM","2016-09-03T09:40Z","unattempted"],["GC5G5F5","2016-09-03T09:40Z","unattempted"]]
         self.assertEqual(logged_caches, expected)
         
     def test_found_caches(self):
-        found_caches = self.x.get_logged_and_found_caches()[1]
+        found_caches = self.x._get_logged_and_found_caches()[1]
         self.assertEqual(len(found_caches),0)
         
 class TestGetLoggedAndFoundCachesFoundNotOnGPS(unittest.TestCase):
@@ -200,11 +200,11 @@ class TestGetLoggedAndFoundCachesFoundNotOnGPS(unittest.TestCase):
         self.x = geotooly.GPS_content(r"examples\found_not_on_gps")
         
     def test_logged_caches(self):
-        logged_caches = self.x.get_logged_and_found_caches()[0]
+        logged_caches = self.x._get_logged_and_found_caches()[0]
         expected = [["GC5G5F5","2016-09-03T09:40Z","Found it"]]
         
     def test_found_caches(self):
-        found_caches = self.x.get_logged_and_found_caches()[1]
+        found_caches = self.x._get_logged_and_found_caches()[1]
         self.assertEqual(len(found_caches),1)
         self.assertEqual(found_caches[0].gccode, "GC5G5F5")
         
@@ -214,11 +214,11 @@ class TestGetLoggedAndFoundCachesNotFoundNotOnGPS(unittest.TestCase):
         self.x = geotooly.GPS_content(r"examples\not_found_not_on_gps")
         
     def test_logged_caches(self):
-        logged_caches = self.x.get_logged_and_found_caches()[0]
+        logged_caches = self.x._get_logged_and_found_caches()[0]
         expected = [["GC5G5F5","2016-09-03T09:40Z","unattempted"]]
         
     def test_found_caches(self):
-        found_caches = self.x.get_logged_and_found_caches()[1]
+        found_caches = self.x._get_logged_and_found_caches()[1]
         self.assertEqual(len(found_caches),1)
         self.assertEqual(found_caches[0].gccode, "GC5G5F5")
         

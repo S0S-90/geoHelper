@@ -273,4 +273,8 @@ def show_all_on_map_end():
     
     print "Schliesse den Editor und druecke Enter."
     raw_input(">> ")
-        
+ 
+ 
+# string collection for main.py
+WARNING_BROKEN_FILE = "Achtung! Kaputte Datei"
+GEOCACHES_ON_DEVICE = "Geocaches auf dem Geraet"
