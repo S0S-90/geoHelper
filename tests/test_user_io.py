@@ -532,7 +532,7 @@ class TestActionsWithFounds(unittest.TestCase):
             user_io.actions_with_founds()
             output = out.getvalue().strip()  
             expected_output = "Was moechtest du als naechstes tun?\n"
-            expected_output = expected_output + "1: Gefundene Caches auf geocaching.com loggen (über den Upload von drafts / fieldnotes)\n" 
+            expected_output = expected_output + "1: Gefundene Caches auf geocaching.com loggen (ueber den Upload von drafts / fieldnotes)\n" 
             expected_output = expected_output + "2: Alle gefundenen Caches loeschen\n"
             expected_output = expected_output + "3: zurueck"
             self.assertEqual(output, expected_output)

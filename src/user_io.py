@@ -184,7 +184,7 @@ def actions_with_founds():
     returns the next action as a string"""
     
     print "\nWas moechtest du als naechstes tun?"
-    print "1: Gefundene Caches auf geocaching.com loggen (über den Upload von drafts / fieldnotes)"
+    print "1: Gefundene Caches auf geocaching.com loggen (ueber den Upload von drafts / fieldnotes)"
     print "2: Alle gefundenen Caches loeschen"
     print "3: zurueck"
     input = raw_input(">> ")
