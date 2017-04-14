@@ -46,7 +46,6 @@ class TestGeneralOutput(unittest.TestCase):
         output = out.getvalue().strip()                                     # save value of out in output
         self.assertEqual(output, u"Flag Turkey: {}".format(u"\u001a"))
         
-
 class TestGeneralInput(unittest.TestCase):   
 
     def test_normaltext(self):
@@ -107,11 +106,11 @@ class TestShowMainMenu(unittest.TestCase):
         user_io.show_main_menu(False)     # fill out 
         output = out.getvalue().strip()   # save value of out in output
         expected_output = "Was moechtest du als naechstes tun?\n"
-        expected_output = expected_output + "1: Geocaches update\n"
-        expected_output = expected_output + "2: Alle auf dem Geraet gespeicherten Geocaches sort_caches und anzeigen\n"
+        expected_output = expected_output + "1: Geocaches aktualisieren\n"
+        expected_output = expected_output + "2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen\n"
         expected_output = expected_output + "3: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen\n"
         expected_output = expected_output + "4: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)\n"
-        expected_output = expected_output + "5: Geocaches durchsearch\n" 
+        expected_output = expected_output + "5: Geocaches durchsuchen\n" 
         expected_output = expected_output + "6: https://www.geocaching.com/map aufrufen\n"
         expected_output = expected_output + "7: https://www.google.de/maps aufrufen\n"
         expected_output = expected_output + "8: Programm verlassen"
@@ -123,11 +122,11 @@ class TestShowMainMenu(unittest.TestCase):
         user_io.show_main_menu(True)      # fill out 
         output = out.getvalue().strip()   # save value of out in output
         expected_output = "Was moechtest du als naechstes tun?\n"
-        expected_output = expected_output + "1: Geocaches update\n"
-        expected_output = expected_output + "2: Alle auf dem Geraet gespeicherten Geocaches sort_caches und anzeigen\n"
+        expected_output = expected_output + "1: Geocaches aktualisieren\n"
+        expected_output = expected_output + "2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen\n"
         expected_output = expected_output + "3: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen\n"
         expected_output = expected_output + "4: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)\n"
-        expected_output = expected_output + "5: Geocaches durchsearch\n" 
+        expected_output = expected_output + "5: Geocaches durchsuchen\n" 
         expected_output = expected_output + "6: Alle gefundenen Caches anzeigen\n"
         expected_output = expected_output + "7: https://www.geocaching.com/map aufrufen\n"
         expected_output = expected_output + "8: https://www.google.de/maps aufrufen\n"
@@ -393,7 +392,7 @@ class TestSearch(unittest.TestCase):
             sys.stdout = out                   
             user_io.search()    
             output = out.getvalue().strip() 
-            expected_output = "Wonach willst du search?\n"
+            expected_output = "Wonach willst du suchen?\n"
             expected_output = expected_output + "1: Name\n"
             expected_output = expected_output + "2: Beschreibung\n"
             expected_output = expected_output + "3: Cache-Typ\n"
@@ -412,7 +411,7 @@ class TestSearch(unittest.TestCase):
             sys.stdout = out                   
             user_io.search()    
             output = out.getvalue().strip() 
-            expected_output = "Wonach willst du search?\n"
+            expected_output = "Wonach willst du suchen?\n"
             expected_output = expected_output + "1: Name\n"
             expected_output = expected_output + "2: Beschreibung\n"
             expected_output = expected_output + "3: Cache-Typ\n"
@@ -438,7 +437,7 @@ class TestSearchType(unittest.TestCase):
             sys.stdout = out                 
             user_io.search_type()  
             output = out.getvalue().strip()  
-            expected_output = "Gib den Cachetyp ein, nach dem du search willst.\n"
+            expected_output = "Gib den Cachetyp ein, nach dem du suchen willst.\n"
             expected_output = expected_output + "Moegliche Typen: Traditional Cache, Multi-cache, Mystery Cache, EarthCache, Letterbox Hybrid, Event Cache, Wherigo Cache, Geocaching HQ, Unknown Type\n"
             expected_output = expected_output + "Achtung! Gross- und Kleinschreibung beachten!"
             self.assertEqual(output, expected_output)
@@ -455,7 +454,7 @@ class TestSearchAttribute(unittest.TestCase):
             sys.stdout = out                 
             user_io.search_attribute(["attr1", "attr2"])  
             output = out.getvalue().strip()  
-            expected_output = "Gib das Attribut ein, nach dem du search willst.\n"
+            expected_output = "Gib das Attribut ein, nach dem du suchen willst.\n"
             expected_output = expected_output + "Moegliche Attribute: attr1, attr2" 
             self.assertEqual(output, expected_output)
             
@@ -489,7 +488,7 @@ class TestActionsAfterSearch(unittest.TestCase):
             output = out.getvalue().strip()  
             expected_output = "Was moechtest du als naechstes tun?\n"
             expected_output = expected_output + "1: Alle Suchergebnisse erneut anzeigen (bei evtl. Loeschen nicht aktualisiert)\n" 
-            expected_output = expected_output + "2: Alle Suchergebnisse delete\n"
+            expected_output = expected_output + "2: Alle Suchergebnisse loeschen\n"
             expected_output = expected_output + "3: Beschreibung fuer eines der Suchergebnisse anzeigen\n"
             expected_output = expected_output + "4: zurueck"
             self.assertEqual(output, expected_output)
@@ -502,7 +501,7 @@ class TestActionsAfterSearch(unittest.TestCase):
             output = out.getvalue().strip()  
             expected_output = "Was moechtest du als naechstes tun?\n"
             expected_output = expected_output + "1: Alle Suchergebnisse erneut anzeigen (bei evtl. Loeschen nicht aktualisiert)\n" 
-            expected_output = expected_output + "2: Alle Suchergebnisse delete\n"
+            expected_output = expected_output + "2: Alle Suchergebnisse loeschen\n"
             expected_output = expected_output + "3: Beschreibung fuer eines der Suchergebnisse anzeigen\n"
             expected_output = expected_output + "4: zurueck\n"
             expected_output = expected_output + "Ungueltige Eingabe"
@@ -533,8 +532,8 @@ class TestActionsWithFounds(unittest.TestCase):
             user_io.actions_with_founds()
             output = out.getvalue().strip()  
             expected_output = "Was moechtest du als naechstes tun?\n"
-            expected_output = expected_output + "1: Gefundene Caches auf geocaching.com log (by uploading drafts / fieldnotes)\n" 
-            expected_output = expected_output + "2: Alle gefundenen Caches delete\n"
+            expected_output = expected_output + "1: Gefundene Caches auf geocaching.com loggen (über den Upload von drafts / fieldnotes)\n" 
+            expected_output = expected_output + "2: Alle gefundenen Caches loeschen\n"
             expected_output = expected_output + "3: zurueck"
             self.assertEqual(output, expected_output)
             
@@ -590,7 +589,7 @@ class TestShowOne(unittest.TestCase):
             user_io.show_one()
             output = out.getvalue().strip()  
             expected_output = "Was moechtest du als naechstes tun?\n"
-            expected_output = expected_output + "1: diesen Cache delete\n" 
+            expected_output = expected_output + "1: diesen Cache loeschen\n" 
             expected_output = expected_output + "2: diesen Cache auf geocaching.com oeffnen\n"
             expected_output = expected_output + "3: Abstand dieses Caches zu einer bestimmten Position berechnen\n"
             expected_output = expected_output + "4: Position des Caches auf der Karte https://www.geocaching.com/map anzeigen\n"

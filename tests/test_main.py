@@ -633,8 +633,8 @@ class TestGefundeneAnzeigenOnlyFound(unittest.TestCase):
             expected = u"GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  | 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
             expected = expected + u"GC5G5F5 | N 49°47.955, E 009°58.566 | Traditional Cache | D 1.5 | T 4.0 | small   | True  | 08 Oct 2016 | Urban Buildering\n\n" 
             expected = expected + "\nWas moechtest du als naechstes tun?\n"
-            expected = expected + "1: Gefundene Caches auf geocaching.com log (by uploading drafts / fieldnotes)\n"
-            expected = expected + "2: Alle gefundenen Caches delete\n"
+            expected = expected + "1: Gefundene Caches auf geocaching.com loggen (über den Upload von drafts / fieldnotes)\n"
+            expected = expected + "2: Alle gefundenen Caches loeschen\n"
             expected = expected + "3: zurueck"            
             self.assertEqual(output, expected)
             
@@ -677,8 +677,8 @@ class TestGefundeneAnzeigenNotOnlyFound(unittest.TestCase):
             expected = u"GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  | 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
             expected = expected + u"GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | True  | 09 Jan 2017 | 67 - MedTrix - \u001a\u001a\u001a\u001a\u001a\n\n" 
             expected = expected +  "\nWas moechtest du als naechstes tun?\n"
-            expected = expected + "1: Gefundene Caches auf geocaching.com log (by uploading drafts / fieldnotes)\n"
-            expected = expected + "2: Alle gefundenen Caches delete\n"
+            expected = expected + "1: Gefundene Caches auf geocaching.com loggen (über den Upload von drafts / fieldnotes)\n"
+            expected = expected + "2: Alle gefundenen Caches loeschen\n"
             expected = expected + "3: zurueck"            
             self.assertEqual(output, expected)
             
@@ -712,8 +712,8 @@ class TestGefundeneAnzeigenFoundNotOnGPS(unittest.TestCase):
             output = out.getvalue().strip()  
             expected = u"GC5G5F5 | N 49°47.955, E 009°58.566 | Traditional Cache | D 1.5 | T 4.0 | small   | True  | 08 Oct 2016 | Urban Buildering\n\n"
             expected = expected +  "\nWas moechtest du als naechstes tun?\n"
-            expected = expected + "1: Gefundene Caches auf geocaching.com log (by uploading drafts / fieldnotes)\n"
-            expected = expected + "2: Alle gefundenen Caches delete\n"
+            expected = expected + "1: Gefundene Caches auf geocaching.com loggen (über den Upload von drafts / fieldnotes)\n"
+            expected = expected + "2: Alle gefundenen Caches loeschen\n"
             expected = expected + "3: zurueck"            
             self.assertEqual(output, expected)
             

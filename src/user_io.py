@@ -22,11 +22,11 @@ def show_main_menu(found_exists):
     """prints main menu"""
     
     print "\nWas moechtest du als naechstes tun?"
-    print "1: Geocaches update"
-    print "2: Alle auf dem Geraet gespeicherten Geocaches sort_caches und anzeigen"
+    print "1: Geocaches aktualisieren"
+    print "2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen"
     print "3: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen"
     print "4: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)"
-    print "5: Geocaches durchsearch"
+    print "5: Geocaches durchsuchen"
     if found_exists:
         print "6: Alle gefundenen Caches anzeigen"
         print "7: https://www.geocaching.com/map aufrufen"
@@ -118,7 +118,7 @@ def search():
     """asks for criterion by which search should be performed and returns it (as string)"""
     
     criterions = ["name", "description", "type", "difficulty", "terrain", "size", "downloaddate", "available", "attribute", "distance"]
-    print "\nWonach willst du search?"
+    print "\nWonach willst du suchen?"
     print "1: Name"
     print "2: Beschreibung"
     print "3: Cache-Typ"
@@ -143,7 +143,7 @@ def search():
 def search_type():
     """asks for cachetype which should be searched and returns it (as string)"""
     
-    print "Gib den Cachetyp ein, nach dem du search willst."
+    print "Gib den Cachetyp ein, nach dem du suchen willst."
     print "Moegliche Typen: Traditional Cache, Multi-cache, Mystery Cache, EarthCache, Letterbox Hybrid, Event Cache, Wherigo Cache, Geocaching HQ, Unknown Type"
     print "Achtung! Gross- und Kleinschreibung beachten!"
     input = raw_input(">> ")
@@ -152,7 +152,7 @@ def search_type():
 def search_attribute(existing_attributes):
     """asks for attribute which should be searched and returns it (as string)"""
 
-    print "Gib das Attribut ein, nach dem du search willst."
+    print "Gib das Attribut ein, nach dem du suchen willst."
     attr_string = ", ".join(existing_attributes)
     print "Moegliche Attribute: {}".format(attr_string)
     input = raw_input(">> ")
@@ -163,7 +163,7 @@ def actions_after_search():
     
     print "\nWas moechtest du als naechstes tun?"
     print "1: Alle Suchergebnisse erneut anzeigen (bei evtl. Loeschen nicht aktualisiert)"
-    print "2: Alle Suchergebnisse delete"
+    print "2: Alle Suchergebnisse loeschen"
     print "3: Beschreibung fuer eines der Suchergebnisse anzeigen"
     print "4: zurueck"
     input = raw_input(">> ")
@@ -184,8 +184,8 @@ def actions_with_founds():
     returns the next action as a string"""
     
     print "\nWas moechtest du als naechstes tun?"
-    print "1: Gefundene Caches auf geocaching.com log (by uploading drafts / fieldnotes)"
-    print "2: Alle gefundenen Caches delete"
+    print "1: Gefundene Caches auf geocaching.com loggen (über den Upload von drafts / fieldnotes)"
+    print "2: Alle gefundenen Caches loeschen"
     print "3: zurueck"
     input = raw_input(">> ")
     if input == "1":
@@ -199,7 +199,7 @@ def confirm_deletion():
     """asks before deleting caches if they should really be deleted
     returns True for yes and False for no"""
     
-    input = raw_input("\nWillst du den / die ausgewaehlten Cache(s) wirklich delete? (y/n) ")
+    input = raw_input("\nWillst du den / die ausgewaehlten Cache(s) wirklich loeschen? (y/n) ")
     if input == "y":
         return True
     else:
@@ -210,7 +210,7 @@ def show_one():
     returns the next action as a string"""
     
     print "\nWas moechtest du als naechstes tun?"
-    print "1: diesen Cache delete"
+    print "1: diesen Cache loeschen"
     print "2: diesen Cache auf geocaching.com oeffnen"
     print "3: Abstand dieses Caches zu einer bestimmten Position berechnen"
     print "4: Position des Caches auf der Karte https://www.geocaching.com/map anzeigen"
@@ -275,8 +275,10 @@ def show_all_on_map_end():
     raw_input(">> ")
  
  
-# string collection for main.py
+# string for main.py
 GPS_NOT_FOUND = "GPS-Geraet nicht unter folgender Pfadangabe zu finden"
+
+# string collection for gps_content.py
 INVALID_INPUT = "Achtung! Ungueltige Eingabe."
 WARNING_BROKEN_FILE = "Achtung! Kaputte Datei"
 GEOCACHES_ON_DEVICE = "Geocaches auf dem Geraet"
