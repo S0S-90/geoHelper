@@ -29,8 +29,8 @@ GPX-Datei heruntergeladen, kann diese mittels "Geocaches aktualisieren" in das P
 * Anzeigen der Position eines Caches auf https://www.google.de/maps oder https://www.geocaching.com/map
 * Anzeigen aller Caches auf der Karte https://www.mapcustomizer.com
 * Durchsuchen der Caches (Name, Beschreibung, Cachetyp, D- und T-Wertung, Größe, Download-Datum, Verfügbarkeit, Atttribute, Abstand zu einer bestimmten Position)
-* Löschen eines oder mehrerer Caches
-* Auslesen der als gefunden markierten Caches und Löschen dieser Caches mitsamt der Log-Information, nachdem diese auf der Fieldnote-Seite von geocaching.com geloggt wurden
+* Löschen eines oder mehrerer Caches, z.B. aller als gefunden markieren Caches
+* Loggen der gefundenen Caches auf der Fieldnotes-/Draftsseite von geocaching.com
 
 
 # Testen des Programms (nur für Entwickler)
