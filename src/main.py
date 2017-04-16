@@ -2,8 +2,8 @@
 import os
 import webbrowser
 
-from gps_content import GPS_content # class for all stuff from gps-device 
-import user_io                      # user input and output
+from gps_content import GPS_content 
+import user_io                      
 
 def show_main_menu(gps):    
     """start main menu

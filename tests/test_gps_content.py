@@ -3,19 +3,19 @@ import mock
 import sys
 import shutil
 import os
-sys.path.append('../src/') # path to source file (geotooly.py)
+sys.path.append('../src/') # path to source file (gps_content.py)
 from StringIO import StringIO
 
 import ownfunctions
 import geocache
-import main as geotooly
+import gps_content
 
 saved_stdout = sys.stdout # save standard output
 
 class TestInitNoLogfile(unittest.TestCase):
 
     def setUp(self):
-        self.x = geotooly.GPS_content(r"examples\no_logfile")
+        self.x = gps_content.GPS_content(r"examples\no_logfile")
 
     def test_geocaches(self):
         number_of_geocaches = len(self.x.geocaches)
@@ -37,7 +37,7 @@ class TestInitNoLogfile(unittest.TestCase):
 class TestInitOnlyFound(unittest.TestCase):
         
     def setUp(self):
-        self.x = geotooly.GPS_content(r"examples\only_found")
+        self.x = gps_content.GPS_content(r"examples\only_found")
 
     def test_geocaches(self):
         number_of_geocaches = len(self.x.geocaches)
@@ -56,7 +56,7 @@ class TestInitOnlyFound(unittest.TestCase):
 class TestInitOnlyNotFound(unittest.TestCase):
 
     def setUp(self):
-        self.x = geotooly.GPS_content(r"examples\only_notfound")
+        self.x = gps_content.GPS_content(r"examples\only_notfound")
 
     def test_geocaches(self):
         number_of_geocaches = len(self.x.geocaches)
@@ -75,7 +75,7 @@ class TestInitOnlyNotFound(unittest.TestCase):
 class TestInitNotOnlyFound(unittest.TestCase):
 
     def setUp(self):
-        self.x = geotooly.GPS_content(r"examples\not_only_found")
+        self.x = gps_content.GPS_content(r"examples\not_only_found")
 
     def test_geocaches(self):
         number_of_geocaches = len(self.x.geocaches)
@@ -94,7 +94,7 @@ class TestInitNotOnlyFound(unittest.TestCase):
 class TestInitFoundNotOnGPS(unittest.TestCase):
 
     def setUp(self):
-        self.x = geotooly.GPS_content(r"examples\found_not_on_gps")
+        self.x = gps_content.GPS_content(r"examples\found_not_on_gps")
 
     def test_geocaches(self):
         number_of_geocaches = len(self.x.geocaches)
@@ -113,7 +113,7 @@ class TestInitFoundNotOnGPS(unittest.TestCase):
 class TestInitNotFoundNotOnGPS(unittest.TestCase):
 
     def setUp(self):
-        self.x = geotooly.GPS_content(r"examples\not_found_not_on_gps")
+        self.x = gps_content.GPS_content(r"examples\not_found_not_on_gps")
 
     def test_geocaches(self):
         number_of_geocaches = len(self.x.geocaches)
@@ -132,7 +132,7 @@ class TestInitNotFoundNotOnGPS(unittest.TestCase):
 class TestInitErrorInGPX(unittest.TestCase):
 
     def setUp(self):
-        self.x = geotooly.GPS_content(r"examples\error_in_gpx")
+        self.x = gps_content.GPS_content(r"examples\error_in_gpx")
 
     def test_geocaches(self):
         number_of_geocaches = len(self.x.geocaches)
@@ -151,7 +151,7 @@ class TestInitErrorInGPX(unittest.TestCase):
 class TestGetLoggedAndFoundCachesOnlyFound(unittest.TestCase):
 
     def setUp(self):
-        self.x = geotooly.GPS_content(r"examples\only_found")
+        self.x = gps_content.GPS_content(r"examples\only_found")
         
     def test_logged_caches(self):
         logged_caches = self.x._get_logged_and_found_caches()[0]
@@ -167,7 +167,7 @@ class TestGetLoggedAndFoundCachesOnlyFound(unittest.TestCase):
 class TestGetLoggedAndFoundCachesNotOnlyFound(unittest.TestCase):
 
     def setUp(self):
-        self.x = geotooly.GPS_content(r"examples\not_only_found")
+        self.x = gps_content.GPS_content(r"examples\not_only_found")
         
     def test_logged_caches(self):
         logged_caches = self.x._get_logged_and_found_caches()[0]
@@ -183,7 +183,7 @@ class TestGetLoggedAndFoundCachesNotOnlyFound(unittest.TestCase):
 class TestGetLoggedAndFoundCachesOnlyNotFound(unittest.TestCase):
 
     def setUp(self):
-        self.x = geotooly.GPS_content(r"examples\only_notfound")
+        self.x = gps_content.GPS_content(r"examples\only_notfound")
         
     def test_logged_caches(self):
         logged_caches = self.x._get_logged_and_found_caches()[0]
@@ -197,7 +197,7 @@ class TestGetLoggedAndFoundCachesOnlyNotFound(unittest.TestCase):
 class TestGetLoggedAndFoundCachesFoundNotOnGPS(unittest.TestCase):
 
     def setUp(self):
-        self.x = geotooly.GPS_content(r"examples\found_not_on_gps")
+        self.x = gps_content.GPS_content(r"examples\found_not_on_gps")
         
     def test_logged_caches(self):
         logged_caches = self.x._get_logged_and_found_caches()[0]
@@ -211,7 +211,7 @@ class TestGetLoggedAndFoundCachesFoundNotOnGPS(unittest.TestCase):
 class TestGetLoggedAndFoundCachesNotFoundNotOnGPS(unittest.TestCase):
 
     def setUp(self):
-        self.x = geotooly.GPS_content(r"examples\not_found_not_on_gps")
+        self.x = gps_content.GPS_content(r"examples\not_found_not_on_gps")
         
     def test_logged_caches(self):
         logged_caches = self.x._get_logged_and_found_caches()[0]
@@ -222,10 +222,10 @@ class TestGetLoggedAndFoundCachesNotFoundNotOnGPS(unittest.TestCase):
         self.assertEqual(len(found_caches),1)
         self.assertEqual(found_caches[0].gccode, "GC5G5F5")
         
-class TestSortCachesUndAnzeigen(unittest.TestCase):
+class TestSortAndShowCaches(unittest.TestCase):
 
     def setUp(self):
-        self.x = geotooly.GPS_content(r"examples\no_logfile")
+        self.x = gps_content.GPS_content(r"examples\no_logfile")
         
     def test_gccode_up(self):
         with mock.patch('__builtin__.raw_input', side_effect=['1', '1']):
@@ -263,7 +263,7 @@ class TestSortCachesUndAnzeigen(unittest.TestCase):
                 sorted.append(g.gccode)
             self.assertEqual(sorted, expected)
             
-    def test_typ_up(self):
+    def test_type_up(self):
         with mock.patch('__builtin__.raw_input', side_effect=['3', '1']):
             expected = ["GC1XRPM","GC5N23T","GC6RNTX","GC33QGC","GC6K86W","GCJJ20"]
             self.x.sort_and_show_caches()
@@ -272,7 +272,7 @@ class TestSortCachesUndAnzeigen(unittest.TestCase):
                 sorted.append(g.gccode)
             self.assertEqual(sorted, expected)
             
-    def test_typ_down(self):
+    def test_type_down(self):
         with mock.patch('__builtin__.raw_input', side_effect=['3', '2']):
             expected = ["GCJJ20","GC33QGC","GC6K86W","GC5N23T","GC6RNTX","GC1XRPM"]
             self.x.sort_and_show_caches()
@@ -389,14 +389,14 @@ class TestSortCachesUndAnzeigen(unittest.TestCase):
                 sorted.append(g.gccode)
             self.assertEqual(sorted, expected)            
             
-class TestAlleAnzeigen(unittest.TestCase):
+class TestShowAll(unittest.TestCase):
 
-    def test_nix_anzeigen(self):
-        x = geotooly.GPS_content(r"examples\empty")
+    def test_show_nothing(self):
+        x = gps_content.GPS_content(r"examples\empty")
         self.assertEqual(x.show_all(), "Keine Caches auf dem Geraet.") 
 
-    def test_anzeigen(self):
-        x = geotooly.GPS_content(r"examples\no_logfile")
+    def test_show_caches(self):
+        x = gps_content.GPS_content(r"examples\no_logfile")
         expected = u"GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  | 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
         expected = expected + u"GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | True  | 11 Sep 2016 | Tesoro Ameghino\n"
         expected = expected + u"GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | False | 05 Mar 2017 | 67 - MedTrix - {}\n".format(u"\u001a"+u"\u001a"+u"\u001a"+u"\u001a"+u"\u001a")
@@ -405,14 +405,14 @@ class TestAlleAnzeigen(unittest.TestCase):
         expected = expected + u"GCJJ20  | N 49°47.688, E 009°55.816 | Unknown Type      | D 1.0 | T 1.0 | other   | True  | 29 Oct 2016 | Wuerzburger webcam\n"
         self.assertEqual(x.show_all(), expected)    
 
-class TestAlleAnzeigenDist(unittest.TestCase): 
+class TestShowAllDist(unittest.TestCase): 
 
-    def test_nix_anzeigen(self):
-        x = geotooly.GPS_content(r"examples\empty")
+    def test_show_nothing(self):
+        x = gps_content.GPS_content(r"examples\empty")
         self.assertEqual(x.show_all(), "Keine Caches auf dem Geraet.") 
 
-    def test_anzeigen(self):
-        x = geotooly.GPS_content(r"examples\no_logfile")
+    def test_show_caches(self):
+        x = gps_content.GPS_content(r"examples\no_logfile")
         for gc in x.geocaches:
             gc.distance = ownfunctions.calculate_distance(gc.coordinates, [49.8414697,9.8579699])
         expected = u"    6.5km | GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  | 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
@@ -426,7 +426,7 @@ class TestAlleAnzeigenDist(unittest.TestCase):
 class TestShowOne(unittest.TestCase): 
 
     def setUp(self):
-        self.x = geotooly.GPS_content(r"examples\no_logfile")
+        self.x = gps_content.GPS_content(r"examples\no_logfile")
 
     def test_not_existing_cache(self):
         with mock.patch('__builtin__.raw_input', return_value= "GC12345"):
@@ -443,20 +443,20 @@ class TestShowOne(unittest.TestCase):
             self.assertEqual(len(self.x.geocaches), 5)
         shutil.move(r"examples\temp\GC1XRPM.gpx", r"examples\no_logfile\GPX\GC1XRPM.gpx") # move deleted file back to GPX folder
             
-    def test_nicht_delete(self):
+    def test_not_delete(self):
         with mock.patch('__builtin__.raw_input', side_effect=["GC1XRPM","1","n"]):
             self.x.show_one()
             self.assertEqual(len(self.x.geocaches), 6)
             
-class TestGCAuswahlAnzeigen(unittest.TestCase):
+class TestShowGCSelection(unittest.TestCase):
 
     def setUp(self):
-        self.x = geotooly.GPS_content(r"examples\no_logfile")
+        self.x = gps_content.GPS_content(r"examples\no_logfile")
         
-    def test_nix_anzeigen(self):
+    def test_show_nothing(self):
         self.assertEqual(self.x.show_gc_selection([]), "")
         
-    def test_auswahl_anzeigen(self):
+    def test_show_selection(self):
         selection = self.x.geocaches[3:5]
         expected = u"GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | True  | 04 Aug 2016 | Saaletalblick\n"
         expected = expected + u"GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   | True  | 08 Oct 2016 | Hochschule für Musik 1\n"
@@ -466,17 +466,17 @@ class TestGCAuswahlAnzeigen(unittest.TestCase):
         selection = ["13",6]
         self.assertRaises(TypeError, self.x.show_gc_selection, selection)
         
-class TestGCAuswahlAnzeigenDist(unittest.TestCase):
+class TestShowGCSelectionDist(unittest.TestCase):
 
     def setUp(self):
-        self.x = geotooly.GPS_content(r"examples\no_logfile")
+        self.x = gps_content.GPS_content(r"examples\no_logfile")
         for gc in self.x.geocaches:
             gc.distance = ownfunctions.calculate_distance(gc.coordinates, [49.8414697,9.8579699])
         
-    def test_nix_anzeigen(self):
+    def test_show_nothing(self):
         self.assertEqual(self.x.show_gc_selection_dist([]), "")
         
-    def test_auswahl_anzeigen(self):
+    def test_show_selection(self):
         selection = self.x.geocaches[3:5]
         expected = u"   58.2km | GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | True  | 04 Aug 2016 | Saaletalblick\n"
         expected = expected + u"    7.9km | GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   | True  | 08 Oct 2016 | Hochschule für Musik 1\n"
@@ -489,7 +489,7 @@ class TestGCAuswahlAnzeigenDist(unittest.TestCase):
 class TestSearch(unittest.TestCase):
 
     def setUp(self):
-        self.x = geotooly.GPS_content(r"examples\no_logfile")
+        self.x = gps_content.GPS_content(r"examples\no_logfile")
 
     def test_name(self):
         with mock.patch('__builtin__.raw_input', side_effect = ["1","A"]): 
@@ -501,12 +501,12 @@ class TestSearch(unittest.TestCase):
             expected = [self.x.geocaches[0], self.x.geocaches[1], self.x.geocaches[2], self.x.geocaches[5]]
             self.assertEqual(self.x.search(), expected)     
 
-    def test_cachetyp(self):   
+    def test_cachetype(self):   
         with mock.patch('__builtin__.raw_input', side_effect = ["3","Mystery Cache"]): 
             expected = [self.x.geocaches[2], self.x.geocaches[4]]
             self.assertEqual(self.x.search(), expected)
 
-    def test_cachetyp_invalid(self):   
+    def test_cachetype_invalid(self):   
         with mock.patch('__builtin__.raw_input', side_effect = ["3","Mystery"]): 
             self.assertEqual(self.x.search(), [])  
 
@@ -611,20 +611,20 @@ class TestSearch(unittest.TestCase):
         with mock.patch('__builtin__.raw_input', side_effect = ["10","https://www.google.de/maps/place/97209+Veitsh%C3%B6chheim/@49.8414697,9.8579699,13z/data=!3m1!4b1!4m5!3m4!1s0x47a2915cbab1bfe3:0xdbe76ec582bb3aa5!8m2!3d49.8312701!4d9.8803666", "10.3, 7.4"]): 
             self.assertEqual(self.x.search(), [])   
 
-class TestGefundeneAnzeigenNoFoundCaches(unittest.TestCase):  
+class TestShowFoundsNoFoundCaches(unittest.TestCase):  
 
     def setUp(self):
-        self.x = geotooly.GPS_content(r"examples\no_logfile")  
+        self.x = gps_content.GPS_content(r"examples\no_logfile")  
         
     def test_gives_error(self):
         self.assertRaises(ValueError, self.x.show_founds)
         
-class TestGefundeneAnzeigenOnlyFound(unittest.TestCase):  
+class TestShowFoundsOnlyFound(unittest.TestCase):  
 
     def setUp(self):
-        self.x = geotooly.GPS_content(r"examples\only_found")  
+        self.x = gps_content.GPS_content(r"examples\only_found")  
         
-    def test_anzeigen(self):
+    def test_show_caches(self):
         with mock.patch('__builtin__.raw_input', return_value = "3"):
             out = StringIO()
             sys.stdout = out            
@@ -655,20 +655,20 @@ class TestGefundeneAnzeigenOnlyFound(unittest.TestCase):
         shutil.move(r"examples\temp\geocache_visits.txt", r"examples\only_found\geocache_visits.txt")
         shutil.move(r"examples\temp\geocache_logs.xml", r"examples\only_found\geocache_logs.xml")
         
-class TestGefundeneAnzeigenOnlyNotFound(unittest.TestCase):  
+class TestShowFoundsOnlyNotFound(unittest.TestCase):  
 
     def setUp(self):
-        self.x = geotooly.GPS_content(r"examples\only_notfound")  
+        self.x = gps_content.GPS_content(r"examples\only_notfound")  
         
     def test_gives_error(self):
         self.assertRaises(ValueError, self.x.show_founds)
         
-class TestGefundeneAnzeigenNotOnlyFound(unittest.TestCase):  
+class TestShowFoundsNotOnlyFound(unittest.TestCase):  
 
     def setUp(self):
-        self.x = geotooly.GPS_content(r"examples\not_only_found")  
+        self.x = gps_content.GPS_content(r"examples\not_only_found")  
         
-    def test_anzeigen(self):
+    def test_show_caches(self):
         with mock.patch('__builtin__.raw_input', return_value = "3"):
             out = StringIO()
             sys.stdout = out                                                    
@@ -699,12 +699,12 @@ class TestGefundeneAnzeigenNotOnlyFound(unittest.TestCase):
         shutil.move(r"examples\temp\geocache_visits.txt", r"examples\not_only_found\geocache_visits.txt")
         shutil.move(r"examples\temp\geocache_logs.xml", r"examples\not_only_found\geocache_logs.xml")
         
-class TestGefundeneAnzeigenFoundNotOnGPS(unittest.TestCase):  
+class TestShowFoundsFoundNotOnGPS(unittest.TestCase):  
 
     def setUp(self):
-        self.x = geotooly.GPS_content(r"examples\found_not_on_gps")  
+        self.x = gps_content.GPS_content(r"examples\found_not_on_gps")  
         
-    def test_anzeigen(self):
+    def test_show_caches(self):
         with mock.patch('__builtin__.raw_input', return_value = "3"):
             out = StringIO()
             sys.stdout = out                                                    
@@ -732,18 +732,18 @@ class TestGefundeneAnzeigenFoundNotOnGPS(unittest.TestCase):
         shutil.move(r"examples\temp\geocache_visits.txt", r"examples\found_not_on_gps\geocache_visits.txt")
         shutil.move(r"examples\temp\geocache_logs.xml", r"examples\found_not_on_gps\geocache_logs.xml")
         
-class TestLoeschen(unittest.TestCase):  
+class TestDelete(unittest.TestCase):  
 
     def setUp(self):
-        self.x = geotooly.GPS_content(r"examples\no_logfile") 
+        self.x = gps_content.GPS_content(r"examples\no_logfile") 
         
-    def test_nicht_delete(self):
+    def test_not_delete(self):
         cache = geocache.Geocache(r"examples\no_logfile\GPX\GC5N23T.gpx")
         with mock.patch('__builtin__.raw_input', return_value = "anything_except_for_y"):
             self.x.delete([cache])
             self.assertEqual(len(self.x.geocaches), 6)
         
-    def test_einen_delete(self):
+    def test_delete_one(self):
         cache = geocache.Geocache(r"examples\no_logfile\GPX\GC5N23T.gpx")
         shutil.copy2(r"examples\no_logfile\GPX\GC5N23T.gpx", r"examples\temp\GC5N23T.gpx")      # copy file that is to be removed
         with mock.patch('__builtin__.raw_input', return_value = "y"):
@@ -752,7 +752,7 @@ class TestLoeschen(unittest.TestCase):
             self.assertFalse(os.path.isfile(r"examples\no_logfile\GPX\GC5N23T.gpx"))
         shutil.move(r"examples\temp\GC5N23T.gpx", r"examples\no_logfile\GPX\GC5N23T.gpx")       # move deleted file back
         
-    def test_mehrere_delete(self):
+    def test_delete_more_than_one(self):
         cache1 = geocache.Geocache(r"examples\no_logfile\GPX\GC5N23T.gpx")
         cache2 = geocache.Geocache(r"examples\no_logfile\GPX\GC1XRPM.gpx")
         shutil.copy2(r"examples\no_logfile\GPX\GC5N23T.gpx", r"examples\temp\GC5N23T.gpx")      # copy files that are to be removed
@@ -765,7 +765,7 @@ class TestLoeschen(unittest.TestCase):
         shutil.move(r"examples\temp\GC5N23T.gpx", r"examples\no_logfile\GPX\GC5N23T.gpx")       # move deleted files back
         shutil.move(r"examples\temp\GC1XRPM.gpx", r"examples\no_logfile\GPX\GC1XRPM.gpx")
         
-    def test_bullshit_cacheliste_gives_error(self):
+    def test_bullshit_cachelist_gives_error(self):
         with mock.patch('__builtin__.raw_input', return_value = "y"):
             self.assertRaises(AttributeError, self.x.delete, [42, "hallo"]) 
  
@@ -784,19 +784,19 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesOnlyNotFound))
     suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesFoundNotOnGPS))
     suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesNotFoundNotOnGPS))
-    suite.addTest(unittest.makeSuite(TestSortCachesUndAnzeigen))
-    suite.addTest(unittest.makeSuite(TestAlleAnzeigen))
-    suite.addTest(unittest.makeSuite(TestAlleAnzeigenDist))
+    suite.addTest(unittest.makeSuite(TestSortAndShowCaches))
+    suite.addTest(unittest.makeSuite(TestShowAll))
+    suite.addTest(unittest.makeSuite(TestShowAllDist))
     suite.addTest(unittest.makeSuite(TestShowOne))
-    suite.addTest(unittest.makeSuite(TestGCAuswahlAnzeigen))
-    suite.addTest(unittest.makeSuite(TestGCAuswahlAnzeigenDist))
+    suite.addTest(unittest.makeSuite(TestShowGCSelection))
+    suite.addTest(unittest.makeSuite(TestShowGCSelectionDist))
     suite.addTest(unittest.makeSuite(TestSearch))
-    suite.addTest(unittest.makeSuite(TestGefundeneAnzeigenNoFoundCaches))
-    suite.addTest(unittest.makeSuite(TestGefundeneAnzeigenOnlyFound))
-    suite.addTest(unittest.makeSuite(TestGefundeneAnzeigenOnlyNotFound))
-    suite.addTest(unittest.makeSuite(TestGefundeneAnzeigenNotOnlyFound))
-    suite.addTest(unittest.makeSuite(TestGefundeneAnzeigenFoundNotOnGPS))
-    suite.addTest(unittest.makeSuite(TestLoeschen))
+    suite.addTest(unittest.makeSuite(TestShowFoundsNoFoundCaches))
+    suite.addTest(unittest.makeSuite(TestShowFoundsOnlyFound))
+    suite.addTest(unittest.makeSuite(TestShowFoundsOnlyNotFound))
+    suite.addTest(unittest.makeSuite(TestShowFoundsNotOnlyFound))
+    suite.addTest(unittest.makeSuite(TestShowFoundsFoundNotOnGPS))
+    suite.addTest(unittest.makeSuite(TestDelete))
     return suite
 
 def main(v):

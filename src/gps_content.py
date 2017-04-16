@@ -3,10 +3,11 @@ import glob
 import webbrowser
 import subprocess
 
-from geocache import TYPE_LIST, SIZE_LIST   # constants from geocache.py 
-from geocache import Geocache   # class Geocache
-import user_io      # user input and output
-import ownfunctions # own file with different functions
+from geocache import TYPE_LIST, SIZE_LIST  
+from geocache import Geocache   
+import user_io      
+import ownfunctions 
+
 
 class GPS_content(object):
     """
