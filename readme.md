@@ -12,7 +12,7 @@ die gpx-Dateien in einem Unterordner mit Namen "GPX". (Dies sollte bei Garmin-Ge
 
 # Download und Start des Programms
 * Falls Python nicht bereits auf dem System vorhanden: Download von Python 2.7, z.B. [hier](https://www.python.org/downloads/)
-* Download und Entpacken des Archivs "geoHelper_v1.1.1-beta.zip" auf [Release Page](https://github.com/S0S-90/geocachingTooly/releases) 
+* Download und Entpacken des Archivs "geoHelper_v2.0.zip" auf [Release Page](https://github.com/S0S-90/geocachingTooly/releases) 
 * Doppelklick auf "winstarter.bat"
 * [Alternativ kann das Programm "main.py" auch direkt (aus der Konsole) geöffnet werden. Dazu muss jedoch vorher die Codierung der Konsole auf Codepage 1252 eingestellt werden.
 So sollte das Programm auch auf Nicht-Windows-Rechnern laufen, was allerdings nicht getestet wurde.]
@@ -21,9 +21,9 @@ So sollte das Programm auch auf Nicht-Windows-Rechnern laufen, was allerdings ni
 # Funktionen
 * Anzeigen aller Caches auf dem GPS-Gerät mit den wichtigsten Informationen (GC-Code, Koordinaten, Cachetyp, D- und T-Wertung, Größe, Verfügbarkeit, Download-Datum, Name) 
 * Sortieren der Caches nach einer bestimmten Eigenschaft (GC-Code, Name, Cachetyp, D- und T-Wertung, Groesse, Download-Datum, Verfügbarkeit)
-* Berechnung der Entfernung der Caches zu einer bestimmten Position und Sortieren der Caches nach dieser Entfernung, wobei das Einlesen der Position entweder über 
-Eingabe der Koordinaten im auf geocaching.com üblichen Format (Grad und Minuten) oder aus einer Url (Google-Maps oder geocaching.com/map) erfolgt
-* Öffnen von https://www.google.de/maps bzw. https://www.geocaching.com/map, um z.B. ein direktes Kopieren der Url für die Abstandsberechnung zu ermöglichen 
+* Berechnung der Entfernung der Caches zu einer bestimmten Position und Sortieren der Caches nach dieser Entfernung. Das Einlesen der Position erfolgt dabei entweder über 
+Eingabe der Koordinaten im auf geocaching.com üblichen Format (Grad und Minuten) oder aus einer Url (Google-Maps oder geocaching.com/map), wobei diese Internetseiten auch aus dem 
+Programm heraus geöffnet werden können.
 * Anzeigen der vollständigen Beschreibung eines Caches sowie Möglichkeit, direkt zur aktuellen Version der Beschreibung im Browser zu wechseln - wird von dort aus eine neue Version der 
 GPX-Datei heruntergeladen, kann diese mittels "Geocaches aktualisieren" in das Program eingebunden werden, ohne es neu zu starten
 * Anzeigen der Position eines Caches auf https://www.google.de/maps oder https://www.geocaching.com/map
