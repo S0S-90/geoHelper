@@ -24,17 +24,17 @@ def show_main_menu(found_exists):
     print "\nWas moechtest du als naechstes tun?"
     print "1: Geocaches aktualisieren"
     print "2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen"
-    print "3: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen"
+    print "3: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen (INTERNET!!!)"
     print "4: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)"
     print "5: Geocaches durchsuchen"
     if found_exists:
         print "6: Alle gefundenen Caches anzeigen"
-        print "7: https://www.geocaching.com/map aufrufen"
-        print "8: https://www.google.de/maps aufrufen"
+        print "7: https://www.geocaching.com/map aufrufen (INTERNET!!!)"
+        print "8: https://www.google.de/maps aufrufen (INTERNET!!!)"
         print "9: Programm verlassen"
     else:
-        print "6: https://www.geocaching.com/map aufrufen"
-        print "7: https://www.google.de/maps aufrufen"
+        print "6: https://www.geocaching.com/map aufrufen (INTERNET!!!)"
+        print "7: https://www.google.de/maps aufrufen (INTERNET!!!)"
         print "8: Programm verlassen"
     
 def main_menu(found_exists):
@@ -184,7 +184,7 @@ def actions_with_founds():
     returns the next action as a string"""
     
     print "\nWas moechtest du als naechstes tun?"
-    print "1: Gefundene Caches auf geocaching.com loggen (ueber den Upload von drafts / fieldnotes)"
+    print "1: Gefundene Caches auf geocaching.com loggen (ueber den Upload von drafts / fieldnotes, INTERNET!!!)"
     print "2: Alle gefundenen Caches loeschen"
     print "3: zurueck"
     input = raw_input(">> ")
@@ -211,10 +211,10 @@ def show_one():
     
     print "\nWas moechtest du als naechstes tun?"
     print "1: diesen Cache loeschen"
-    print "2: diesen Cache auf geocaching.com oeffnen"
+    print "2: diesen Cache auf geocaching.com oeffnen (INTERNET!!!)"
     print "3: Abstand dieses Caches zu einer bestimmten Position berechnen"
-    print "4: Position des Caches auf der Karte https://www.geocaching.com/map anzeigen"
-    print "5: Position des Caches auf der Karte https://www.google.de/maps anzeigen"
+    print "4: Position des Caches auf der Karte https://www.geocaching.com/map anzeigen (INTERNET!!!)"
+    print "5: Position des Caches auf der Karte https://www.google.de/maps anzeigen (INTERNET!!!)"
     print "6: zurueck"
     input = raw_input(">> ")
     if input == "1":
