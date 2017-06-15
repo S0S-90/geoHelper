@@ -48,8 +48,9 @@ class MyHTMLParser(HTMLParser):
         
 def find_cp1252():
     """parses website about codepage 1252 and gives back a list with unicode descriptions"""
-    
-    x = urllib.urlopen("http://www.cp1252.com/").read() # read website
+
+    with open("../src/cp1252.htm") as codingfile:   # read website www.cp1252.com (downloaded on 15.06.2017)
+        x = codingfile.read()
     
     parser = MyHTMLParser()        # parse website
     parser.define_attributes()
