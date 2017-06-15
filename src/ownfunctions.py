@@ -134,9 +134,9 @@ def coords_minutes_to_decimal(coordstring):
     if type(coordstring) != unicode and type(coordstring) != str:
         raise TypeError("Wrong input type: {}".format(type(coordstring)))
     if len(coordstring) != 25:
-        raise ValueError("Bad Input,")
+        raise ValueError("Bad Input.")
     if coordstring[4] != u"°" or coordstring[18] != u"°" or coordstring[7] != u"." or coordstring[21] != u".":
-        raise ValueError("Bad Input,")
+        raise ValueError("Bad Input.")
     north_degree = int(coordstring[2:4])
     east_degree = int(coordstring[15:18])
     north_minutes = float(coordstring[5:11])

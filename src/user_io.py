@@ -232,7 +232,7 @@ def coordinates_input():
     """asks for coordinates, returns input as a string"""
     
     print u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX oder URL (google maps oder geocaching.com/map)"
-    koords = raw_input(">> ")
+    koords = raw_input(">> ").decode(CODING)
     return koords
         
 def ask_for_path():

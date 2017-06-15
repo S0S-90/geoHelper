@@ -600,8 +600,8 @@ class TestShowOne(unittest.TestCase):
 class TestCoordinatesInput(unittest.TestCase):
     
     def test_return(self):
-        with mock.patch('__builtin__.raw_input', return_value= "X XX°XX.XXX, X XXX°XX.XXX"): 
-            self.assertEqual(user_io.coordinates_input(), "X XX°XX.XXX, X XXX°XX.XXX")
+        with mock.patch('__builtin__.raw_input', return_value= "X XX\xb0XX.XXX, X XXX\xb0XX.XXX"): 
+            self.assertEqual(user_io.coordinates_input(), u"X XX°XX.XXX, X XXX°XX.XXX")
             
     def test_output(self):
         with mock.patch('__builtin__.raw_input', return_value= "any_nonsense"):
