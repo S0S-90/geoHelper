@@ -164,8 +164,9 @@ def actions_after_search():
     print "\nWas moechtest du als naechstes tun?"
     print "1: Alle Suchergebnisse erneut anzeigen (bei evtl. Loeschen nicht aktualisiert)"
     print "2: Alle Suchergebnisse loeschen"
-    print "3: Beschreibung fuer eines der Suchergebnisse anzeigen"
-    print "4: zurueck"
+    print "3: Alle Suchergebnisse auf Karte zeigen (INTERNET!!!)"
+    print "4: Beschreibung fuer eines der Suchergebnisse anzeigen"
+    print "5: zurueck"
     input = raw_input(">> ")
     
     if input == "1":
@@ -173,8 +174,10 @@ def actions_after_search():
     elif input == "2":
         return "delete"
     elif input == "3":
-        return "show_one"
+        return "show_on_map"
     elif input == "4":
+        return "show_one"
+    elif input == "5":
         return "back"
     else:
         print "Ungueltige Eingabe"

@@ -59,7 +59,7 @@ class GPS_content(object):
     
     actions_after_search(search_results): performs different actions with search results
     
-    show_all_on_map(): "provides the possiblitly to show all caches on a map (uses webservice 'www.mapcustomizer.com')
+    show_all_on_map(cachelist): "provides the possiblitly to show all caches in cachelist on a map (uses webservice 'www.mapcustomizer.com')
 
     """
 
@@ -379,6 +379,8 @@ class GPS_content(object):
                     user_io.general_output(self.show_gc_selection(search_results))
                 elif task == "delete":
                     self.delete(search_results)
+                elif task == "show_on_map":
+                    self.show_all_on_map(search_results)
                 elif task == "show_one":
                     self.show_one()
                 elif task == "back":
@@ -424,12 +426,12 @@ class GPS_content(object):
             self.geocaches = [c for c in self.geocaches if c not in removelist]
         return delete
         
-    def show_all_on_map(self):
-        """provides the possiblitly to show all caches on a map (uses webservice 'www.mapcustomizer.com')"""
+    def show_all_on_map(self, cachelist):
+        """provides the possiblitly to show all caches in cachelist on a map (uses webservice 'www.mapcustomizer.com')"""
     
         editor = user_io.show_all_on_map_start()
         with open("mapinfo.txt","w") as mapinfo:
-            for i,g in enumerate(self.geocaches):
+            for i,g in enumerate(cachelist):
                 if g.type == "Traditional Cache":
                     color = "green"
                 elif g.type == "Multi-cache":

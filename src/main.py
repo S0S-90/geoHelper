@@ -17,7 +17,7 @@ def show_main_menu(gps):
         elif task == "show_all":
             gps.sort_and_show_caches()
         elif task == "show_all_on_map":
-            gps.show_all_on_map()
+            gps.show_all_on_map(gps.geocaches)
         elif task == "show_one":
             gps.show_one()
         elif task == "search":
