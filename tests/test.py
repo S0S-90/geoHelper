@@ -23,5 +23,5 @@ print "\nFinished testing. Summary:"
 print "{} tests in ownfunctions.py, {} OK, {} failed and {} errors".format(a[0], passed(a), a[1], a[2])
 print "{} tests in geocache.py, {} OK, {} failed and {} errors".format(b[0], passed(b), b[1], b[2])
 print "{} tests in user_io.py, {} OK, {} failed and {} errors".format(c[0], passed(c), c[1], c[2])
-print "{} tests in main.py, {} OK, {} failed and {} errors".format(d[0], passed(d), d[1], d[2])
+print "{} tests in gps_content.py, {} OK, {} failed and {} errors".format(d[0], passed(d), d[1], d[2])
 print "Total: {} tests, {} OK, {} failed and {} errors".format(a[0]+b[0]+c[0]+d[0], passed(a)+passed(b)+passed(c)+passed(d), a[1]+b[1]+c[1]+d[1], a[2]+b[2]+c[2]+d[2])

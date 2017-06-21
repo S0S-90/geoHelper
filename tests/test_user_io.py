@@ -108,11 +108,11 @@ class TestShowMainMenu(unittest.TestCase):
         expected_output = "Was moechtest du als naechstes tun?\n"
         expected_output = expected_output + "1: Geocaches aktualisieren\n"
         expected_output = expected_output + "2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen\n"
-        expected_output = expected_output + "3: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen\n"
+        expected_output = expected_output + "3: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen (INTERNET!!!)\n"
         expected_output = expected_output + "4: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)\n"
         expected_output = expected_output + "5: Geocaches durchsuchen\n" 
-        expected_output = expected_output + "6: https://www.geocaching.com/map aufrufen\n"
-        expected_output = expected_output + "7: https://www.google.de/maps aufrufen\n"
+        expected_output = expected_output + "6: https://www.geocaching.com/map aufrufen (INTERNET!!!)\n"
+        expected_output = expected_output + "7: https://www.google.de/maps aufrufen (INTERNET!!!)\n"
         expected_output = expected_output + "8: Programm verlassen"
         self.assertEqual(output, expected_output)
         
@@ -124,12 +124,12 @@ class TestShowMainMenu(unittest.TestCase):
         expected_output = "Was moechtest du als naechstes tun?\n"
         expected_output = expected_output + "1: Geocaches aktualisieren\n"
         expected_output = expected_output + "2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen\n"
-        expected_output = expected_output + "3: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen\n"
+        expected_output = expected_output + "3: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen (INTERNET!!!)\n"
         expected_output = expected_output + "4: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)\n"
         expected_output = expected_output + "5: Geocaches durchsuchen\n" 
         expected_output = expected_output + "6: Alle gefundenen Caches anzeigen\n"
-        expected_output = expected_output + "7: https://www.geocaching.com/map aufrufen\n"
-        expected_output = expected_output + "8: https://www.google.de/maps aufrufen\n"
+        expected_output = expected_output + "7: https://www.geocaching.com/map aufrufen (INTERNET!!!)\n"
+        expected_output = expected_output + "8: https://www.google.de/maps aufrufen (INTERNET!!!)\n"
         expected_output = expected_output + "9: Programm verlassen"
         self.assertEqual(output, expected_output)
         
@@ -532,7 +532,7 @@ class TestActionsWithFounds(unittest.TestCase):
             user_io.actions_with_founds()
             output = out.getvalue().strip()  
             expected_output = "Was moechtest du als naechstes tun?\n"
-            expected_output = expected_output + "1: Gefundene Caches auf geocaching.com loggen (ueber den Upload von drafts / fieldnotes)\n" 
+            expected_output = expected_output + "1: Gefundene Caches auf geocaching.com loggen (ueber den Upload von drafts / fieldnotes, INTERNET!!!)\n" 
             expected_output = expected_output + "2: Alle gefundenen Caches loeschen\n"
             expected_output = expected_output + "3: zurueck"
             self.assertEqual(output, expected_output)
@@ -590,10 +590,10 @@ class TestShowOne(unittest.TestCase):
             output = out.getvalue().strip()  
             expected_output = "Was moechtest du als naechstes tun?\n"
             expected_output = expected_output + "1: diesen Cache loeschen\n" 
-            expected_output = expected_output + "2: diesen Cache auf geocaching.com oeffnen\n"
+            expected_output = expected_output + "2: diesen Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
             expected_output = expected_output + "3: Abstand dieses Caches zu einer bestimmten Position berechnen\n"
-            expected_output = expected_output + "4: Position des Caches auf der Karte https://www.geocaching.com/map anzeigen\n"
-            expected_output = expected_output + "5: Position des Caches auf der Karte https://www.google.de/maps anzeigen\n"
+            expected_output = expected_output + "4: Position des Caches auf der Karte https://www.geocaching.com/map anzeigen (INTERNET!!!)\n"
+            expected_output = expected_output + "5: Position des Caches auf der Karte https://www.google.de/maps anzeigen (INTERNET!!!)\n"
             expected_output = expected_output + "6: zurueck"
             self.assertEqual(output, expected_output)
 
