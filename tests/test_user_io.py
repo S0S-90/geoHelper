@@ -470,10 +470,14 @@ class TestActionsAfterSearch(unittest.TestCase):
             
     def test_3(self):
         with mock.patch('__builtin__.raw_input', return_value= "3"):
-            self.assertEqual(user_io.actions_after_search(), "show_one")
+            self.assertEqual(user_io.actions_after_search(), "show_on_map")
             
     def test_4(self):
         with mock.patch('__builtin__.raw_input', return_value= "4"):
+            self.assertEqual(user_io.actions_after_search(), "show_one")
+            
+    def test_5(self):
+        with mock.patch('__builtin__.raw_input', return_value= "5"):
             self.assertEqual(user_io.actions_after_search(), "back")
             
     def test_other(self):
@@ -489,8 +493,9 @@ class TestActionsAfterSearch(unittest.TestCase):
             expected_output = "Was moechtest du als naechstes tun?\n"
             expected_output = expected_output + "1: Alle Suchergebnisse erneut anzeigen (bei evtl. Loeschen nicht aktualisiert)\n" 
             expected_output = expected_output + "2: Alle Suchergebnisse loeschen\n"
-            expected_output = expected_output + "3: Beschreibung fuer eines der Suchergebnisse anzeigen\n"
-            expected_output = expected_output + "4: zurueck"
+            expected_output = expected_output + "3: Alle Suchergebnisse auf Karte zeigen (INTERNET!!!)\n"
+            expected_output = expected_output + "4: Beschreibung fuer eines der Suchergebnisse anzeigen\n"
+            expected_output = expected_output + "5: zurueck"
             self.assertEqual(output, expected_output)
             
     def test_output_invalid_input(self):
@@ -502,8 +507,9 @@ class TestActionsAfterSearch(unittest.TestCase):
             expected_output = "Was moechtest du als naechstes tun?\n"
             expected_output = expected_output + "1: Alle Suchergebnisse erneut anzeigen (bei evtl. Loeschen nicht aktualisiert)\n" 
             expected_output = expected_output + "2: Alle Suchergebnisse loeschen\n"
-            expected_output = expected_output + "3: Beschreibung fuer eines der Suchergebnisse anzeigen\n"
-            expected_output = expected_output + "4: zurueck\n"
+            expected_output = expected_output + "3: Alle Suchergebnisse auf Karte zeigen (INTERNET!!!)\n"
+            expected_output = expected_output + "4: Beschreibung fuer eines der Suchergebnisse anzeigen\n"
+            expected_output = expected_output + "5: zurueck\n"
             expected_output = expected_output + "Ungueltige Eingabe"
             self.assertEqual(output, expected_output)
             
