@@ -14,6 +14,7 @@ b = test_geocache.main(verbosity)
 c = test_user_io.main(verbosity)
 d = test_gps_content.main(verbosity)
 
+
 def passed(test_list):
     """find number of passed tests from a list [testsRuns, testFailures, testErrors]"""
     return test_list[0] - (test_list[1] + test_list[2])

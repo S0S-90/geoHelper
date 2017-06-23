@@ -3,14 +3,14 @@ import mock
 import sys
 import shutil
 import os
-sys.path.append('../src/') # path to source file (gps_content.py)
 from StringIO import StringIO
 
 import ownfunctions
 import geocache
 import gps_content
 
-saved_stdout = sys.stdout # save standard output
+saved_stdout = sys.stdout  # save standard output
+
 
 class TestInitNoLogfile(unittest.TestCase):
 
@@ -33,7 +33,8 @@ class TestInitNoLogfile(unittest.TestCase):
         
     def test_logged_and_found_caches_fails(self):
         self.assertRaises(IOError, self.x._get_logged_and_found_caches)
-        
+
+
 class TestInitOnlyFound(unittest.TestCase):
         
     def setUp(self):
@@ -798,6 +799,7 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestShowFoundsFoundNotOnGPS))
     suite.addTest(unittest.makeSuite(TestDelete))
     return suite
+
 
 def main(v):
     sys.stdout = saved_stdout  # print output to display

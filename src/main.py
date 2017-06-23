@@ -5,15 +5,16 @@ import webbrowser
 from gps_content import GPS_content 
 import user_io                      
 
-def show_main_menu(gps):    
+
+def show_main_menu(gps):
     """start main menu
     input: path to gps-device"""
 
     while True:                                        
         task = user_io.main_menu(gps.found_exists)
         if task == "update":
-            new = GPS_content(PATH)
-            show_main_menu(new)
+            new_content = GPS_content(PATH)
+            show_main_menu(new_content)
         elif task == "show_all":
             gps.sort_and_show_caches()
         elif task == "show_all_on_map":
