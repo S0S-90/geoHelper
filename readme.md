@@ -27,7 +27,7 @@ Programm heraus geöffnet werden können.
 * Anzeigen der vollständigen Beschreibung eines Caches sowie Möglichkeit, direkt zur aktuellen Version der Beschreibung im Browser zu wechseln - wird von dort aus eine neue Version der 
 GPX-Datei heruntergeladen, kann diese mittels "Geocaches aktualisieren" in das Program eingebunden werden, ohne es neu zu starten
 * Anzeigen der Position eines Caches auf https://www.google.de/maps oder https://www.geocaching.com/map
-* Anzeigen aller Caches auf der Karte https://www.mapcustomizer.com
+* Anzeigen aller Caches oder einer Auswahl auf der Karte https://www.mapcustomizer.com
 * Durchsuchen der Caches (Name, Beschreibung, Cachetyp, D- und T-Wertung, Größe, Download-Datum, Verfügbarkeit, Atttribute, Abstand zu einer bestimmten Position)
 * Löschen eines oder mehrerer Caches, z.B. aller als gefunden markieren Caches
 * Loggen der gefundenen Caches auf der Fieldnotes-/Draftsseite von geocaching.com
