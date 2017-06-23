@@ -1,4 +1,7 @@
-﻿import os
+﻿#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import os
 import time
 import datetime
 import xml.etree.ElementTree as ElementTree
@@ -116,16 +119,16 @@ class Geocache(object):
         
         geocache_tree = ElementTree.parse(filename_path)    # read .gpx-Datei 
         
-        name = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}name").text # read name
+        name = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}name").text  # read name
         self.name = ownfunctions.replace_signs(name) 
         
-        difficulty = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}difficulty").text # read difficulty
+        difficulty = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}difficulty").text  # read difficulty
         self.difficulty = float(difficulty)
         
         terrain = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}terrain").text  # read terrain
         self.terrain = float(terrain)
         
-        self.size_string = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}container").text # read size
+        self.size_string = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}container").text  # read size
         if self.size_string not in SIZE_LIST:
             self.size_string = "other"
         self.size = SIZE_LIST.index(self.size_string)
@@ -137,7 +140,7 @@ class Geocache(object):
             
         self.description = self._read_description(geocache_tree)                               # read description
 
-        hint = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}encoded_hints").text # read hint
+        hint = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}encoded_hints").text  # read hint
         self.hint = ownfunctions.replace_signs(hint)
         
         owner = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}placed_by").text    # read owner
@@ -146,8 +149,9 @@ class Geocache(object):
         self.url = geocache_tree.find(".//{http://www.topografix.com/GPX/1/0}url").text         # read url
         
         wpt = geocache_tree.find(".//{http://www.topografix.com/GPX/1/0}wpt")                       # read coordinates
-        self.coordinates = [float(wpt.get("lat")), float(wpt.get("lon"))]                           # list of floats [lat, lon]
-        self.coordinates_string = ownfunctions.coords_decimal_to_minutes(self.coordinates)          # string 'X XX°XX.XXX, X XXX°XX.XXX'       
+        self.coordinates = [float(wpt.get("lat")), float(wpt.get("lon"))]                    # list of floats [lat, lon]
+        coord_str = ownfunctions.coords_decimal_to_minutes(self.coordinates)
+        self.coordinates_string = coord_str  # string 'X XX°XX.XXX, X XXX°XX.XXX'
         
         attributes = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}text").text     # read attributes
         attributes = attributes.split(",")
@@ -155,9 +159,9 @@ class Geocache(object):
         for a in attributes:
             self.attributes.append(ownfunctions.remove_spaces(a))
         
-        self.logs = self._read_logs(geocache_tree)                                           # read logs        
+        self.logs = self._read_logs(geocache_tree)                                           # read logs
            
-        cache = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}cache")             # read if available or not
+        cache = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}cache")         # read if available or not
         available = cache.get("available")
         if available == "True":
             self.available = True
@@ -171,40 +175,42 @@ class Geocache(object):
         self.downloaddate = datetime.date(int(downloaddate[-1]), month, int(downloaddate[2]))
         
         self.distance = 0     # initialise for later use
-        
-    def _read_logs(self, geocache_tree):
+
+    @staticmethod
+    def _read_logs(geocache_tree):
         """reads logs from xml-file, part of __init__"""
-    
+
         log_dates_raw = geocache_tree.findall(".//{http://www.groundspeak.com/cache/1/0}date")
         log_dates = []
-        for i,ld in enumerate(log_dates_raw):
+        for i, ld in enumerate(log_dates_raw):
             if i > 0:  # attributes are also saved as logs but not taken into account here
                 log_dates.append(ld.text[:10])
-                
+
         log_types_raw = geocache_tree.findall(".//{http://www.groundspeak.com/cache/1/0}type")
         log_types = []
-        for i,lt in enumerate(log_types_raw):
+        for i, lt in enumerate(log_types_raw):
             if i > 1:  # index 0 corresponds to cachetyp (Tradi, Multi,...), index 1 to the attributes
                 log_types.append(lt.text)
-        
+
         finder_raw = geocache_tree.findall(".//{http://www.groundspeak.com/cache/1/0}finder")
         finder = []
-        for i,fd in enumerate(finder_raw):
+        for i, fd in enumerate(finder_raw):
             if i > 0:  # index 0 corresponding to attributes
                 next_fd = ownfunctions.replace_signs(fd.text)
                 finder.append(next_fd)
-          
-        logs = [] 
-        log_number = len(log_dates)        
+
+        logs = []
+        log_number = len(log_dates)
         if len(log_dates) == len(log_types) == len(finder):
             for i in range(log_number):
                 logs.append([log_dates[i], log_types[i], finder[i]])
         else:
             print "\nWARNING! Error in gpx-file. Reading logs correctly not possible."
-        
+
         return logs
-        
-    def _read_description(self, geocache_tree):
+
+    @staticmethod
+    def _read_description(geocache_tree):
         """reads description from xml-file, part of __init__"""
         
         description_short = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}short_description").text 
@@ -218,16 +224,17 @@ class Geocache(object):
         else:
             description_long = ""
         return description_short + "\n\n" + description_long
-        
-    def _read_type(self, lt):
+
+    @staticmethod
+    def _read_type(lt):
         """converts cachetypes from xml-file to those from TYPE_LIST, part of __init__"""
         if lt in TYPE_LIST:
-            type = lt
+            cachetype = lt
         elif lt == "Cache In Trash Out Event" or lt == "Mega-Event Cache" or lt == "Giga-Event Cache":
-            type = "Event Cache"
+            cachetype = "Event Cache"
         else:
-            type = "Unknown Type"
-        return type
+            cachetype = "Unknown Type"
+        return cachetype
         
     def __str__(self):
         return self.gccode
@@ -240,16 +247,30 @@ class Geocache(object):
             
     def shortinfo(self):                                  
         """returns one-line information about the cache"""
-        return u"{} | {} | {} | D {} | T {} | {} | {} | {} | {}".format(self.gccode.ljust(7), self.coordinates_string, self.type.ljust(17), self.difficulty, self.terrain, self.size_string.ljust(7), str(self.available).ljust(5), self.downloaddate_string, self.name)
+
+        a = self.gccode.ljust(7)
+        b = self.coordinates_string
+        c = self.type.ljust(17)
+        d = self.difficulty
+        e = self.terrain
+        f = self.size_string.ljust(7)
+        g = str(self.available).ljust(5)
+        h = self.downloaddate_string
+        i = self.name
+        return u"{} | {} | {} | D {} | T {} | {} | {} | {} | {}".format(a, b, c, d, e, f, g, h, i)
 
     def longinfo(self): 
         """returns detailed information about the cache""" 
         
-        z1 = u"\n{} : {}".format(self.gccode,self.name)
+        z1 = u"\n{} : {}".format(self.gccode, self.name)
         z2 = "\n"
         for i in range(len(z1)):
             z2 = z2 + "-"
-        z3 = u"\n{}: {}, {}: {}, {}: {}, {}: {}".format(STR_D, self.difficulty, STR_T, self.terrain, STR_SIZE, self.size_string, STR_TYPE, self.longtype)
+        d = self.difficulty
+        t = self.terrain
+        sizestr = self.size_string
+        lt = self.longtype
+        z3 = u"\n{}: {}, {}: {}, {}: {}, {}: {}".format(STR_D, d, STR_T, t, STR_SIZE, sizestr, STR_TYPE, lt)
         z4 = u"\n{}: {}".format(STR_COORDS, self.coordinates_string)
         z5 = u"\n{}: {}".format(STR_OWNER, self.owner)
         z6 = u"\n{}: ".format(STR_ATTR)
@@ -264,4 +285,3 @@ class Geocache(object):
         for l in self.logs:
             z11 = z11 + u"{}: {} by {}\n".format(l[0], l[1], l[2])
         return z1 + z2 + z3 + z4 + z5 + z6 + z7 + z8 + z9 + z10 + z11
-        
