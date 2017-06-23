@@ -5,8 +5,6 @@ import shutil
 import os
 from StringIO import StringIO
 
-blub
-
 import ownfunctions
 import geocache
 import gps_content
