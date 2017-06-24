@@ -2,7 +2,7 @@
 import os
 import webbrowser
 
-from gps_content import GPS_content 
+from gpscontent import GPSContent
 import user_io                      
 
 
@@ -13,7 +13,7 @@ def show_main_menu(gps):
     while True:                                        
         task = user_io.main_menu(gps.found_exists)
         if task == "update":
-            new_content = GPS_content(PATH)
+            new_content = GPSContent(PATH)
             show_main_menu(new_content)
         elif task == "show_all":
             gps.sort_and_show_caches()
@@ -36,7 +36,7 @@ def show_main_menu(gps):
 if __name__ == "__main__":
     PATH = user_io.ask_for_path()   # path to gps-device
     if os.path.exists(PATH):
-        new = GPS_content(PATH)
+        new = GPSContent(PATH)
         show_main_menu(new)
     else:
         user_io.general_output("\nERROR: {}: '{}'".format(user_io.GPS_NOT_FOUND, PATH))

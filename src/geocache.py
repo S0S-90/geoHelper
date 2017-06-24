@@ -1,6 +1,10 @@
 ﻿#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+"""This file contains the class Geocache (for a single geocache)."""
+
+from __future__ import print_function
+
 import os
 import time
 import datetime
@@ -9,7 +13,8 @@ import xml.etree.ElementTree as ElementTree
 import ownfunctions  
 
 SIZE_LIST = ["other", "micro", "small", "regular", "large"]
-TYPE_LIST = ["Traditional Cache", "Multi-cache", "EarthCache", "Letterbox Hybrid", "Event Cache", "Wherigo Cache", "Mystery Cache", "Geocaching HQ", "Unknown Type"]
+TYPE_LIST = ["Traditional Cache", "Multi-cache", "EarthCache", "Letterbox Hybrid", "Event Cache", "Wherigo Cache",
+             "Mystery Cache", "Geocaching HQ", "Unknown Type"]
 
 
 # stringcollection for German language
@@ -205,7 +210,7 @@ class Geocache(object):
             for i in range(log_number):
                 logs.append([log_dates[i], log_types[i], finder[i]])
         else:
-            print "\nWARNING! Error in gpx-file. Reading logs correctly not possible."
+            print("\nWARNING! Error in gpx-file. Reading logs correctly not possible.")
 
         return logs
 
@@ -265,7 +270,7 @@ class Geocache(object):
         z1 = u"\n{} : {}".format(self.gccode, self.name)
         z2 = "\n"
         for i in range(len(z1)):
-            z2 = z2 + "-"
+            z2 += "-"
         d = self.difficulty
         t = self.terrain
         sizestr = self.size_string
@@ -283,5 +288,5 @@ class Geocache(object):
         z10 = u"\n{}: {}".format(STR_HINT, self.hint)
         z11 = u"\n\n"
         for l in self.logs:
-            z11 = z11 + u"{}: {} by {}\n".format(l[0], l[1], l[2])
+            z11 += u"{}: {} by {}\n".format(l[0], l[1], l[2])
         return z1 + z2 + z3 + z4 + z5 + z6 + z7 + z8 + z9 + z10 + z11

@@ -1,3 +1,8 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+"""This file contains the class GPSContent (for everything that is saved on the GPS device)."""
+
 import os
 import glob
 import webbrowser
@@ -9,7 +14,7 @@ import user_io
 import ownfunctions 
 
 
-class GPS_content(object):
+class GPSContent(object):
     """
     An object of this class contains all relevant information from the gps-device (or from another user-defined place)
     
@@ -32,7 +37,7 @@ class GPS_content(object):
         list of all geocaches marked as found (if found_exists)
         
     warning: bool
-        is True, if there are other caches beside the found ones in logfile (e.g. as not found, needs maintainance, ...) 
+        is True, if there are other caches beside the found ones in logfile (e.g. as not found, needs maintainance, ...)
     
     
     Methods:
@@ -43,9 +48,11 @@ class GPS_content(object):
     
     show_all_dist(): returns a string with most important infos (+ distances) for each cache, each cache in one line
     
-    show_gc_selection(cachelist): returns a string with most important information of all caches in cachelist, each cache in one line
+    show_gc_selection(cachelist): returns a string with most important information of all caches in cachelist,
+                                  each cache in one line
     
-    show_gc_selection_dist(cachelist): returns a string with most important information (+ distances) of all caches in cachelist, each cache in one line
+    show_gc_selection_dist(cachelist): returns a string with most important information (+ distances) of all caches in
+                                       cachelist, each cache in one line
     
     sort_and_show_caches(): sorts all caches by criterion that is defined by the user and shows them"
     
@@ -59,11 +66,11 @@ class GPS_content(object):
     
     actions_after_search(search_results): performs different actions with search results
     
-    show_all_on_map(cachelist): "provides the possiblitly to show all caches in cachelist on a map (uses webservice 'www.mapcustomizer.com')
+    show_all_on_map(cachelist): provides the possiblitly to show all caches in cachelist on a map
+                                (uses webservice 'www.mapcustomizer.com')
 
     """
 
-    
     def __init__(self, path):
         """reads geocaches and logfile from gps-device"""
         
@@ -74,11 +81,13 @@ class GPS_content(object):
         
         self.geocaches = []               # read all caches from GC*.gpx-files in path\GPX and save in list 'geocaches'
         gpx_path = os.path.join(self.path, "GPX")
-        for file in glob.glob(os.path.join(gpx_path,"GC*.gpx")):
+        for gpxfile in glob.glob(os.path.join(gpx_path, "GC*.gpx")):
+            # noinspection PyBroadException
+            # (broad exception necessary because ParseError unknown)
             try:
-                self.geocaches.append(Geocache(file))
+                self.geocaches.append(Geocache(gpxfile))
             except:
-                user_io.general_output("{}: {}".format(user_io.WARNING_BROKEN_FILE, os.path.basename(file)))
+                user_io.general_output("{}: {}".format(user_io.WARNING_BROKEN_FILE, os.path.basename(gpxfile)))
         user_io.general_output("\n{} {}".format(len(self.geocaches), user_io.GEOCACHES_ON_DEVICE))
             
         for g in self.geocaches:      # read existing attributes from geocaches
@@ -86,18 +95,20 @@ class GPS_content(object):
                 if a not in self.existing_attributes and a != "No attributes specified by the author":
                     self.existing_attributes.append(a)
         self.existing_attributes.sort()
-              
-        if os.path.isfile(os.path.join(self.path, "geocache_visits.txt")):    # save all found caches from logfile in found_caches (if logfile is present) 
+
+        # save all found caches from logfile in found_caches (if logfile is present)
+        if os.path.isfile(os.path.join(self.path, "geocache_visits.txt")):
             [logged_caches, self.found_caches] = self._get_logged_and_found_caches()
             if len(self.found_caches) > 0:
                 self.found_exists = True
-            if len(self.found_caches) < len(logged_caches): # warning, if caches in logfile that are not marked as found but as something different
-                self.warning = True
+            if len(self.found_caches) < len(logged_caches):
+                self.warning = True  # warning, if caches in logfile that are marked as something different (not found)
             else:
                 self.warning = False
 
     def _get_logged_and_found_caches(self):
-        """reads logged and found caches from logfile 'geocache_visits.txt' (ignores those that are not saved on device as gpx-files), part of __init__
+        """reads logged and found caches from logfile 'geocache_visits.txt'
+        (ignores those that are not saved on device as gpx-files), part of __init__
         
         return: list of two elements which are also lists
             first element: logged caches (not as Geocache-objects but as list [gc-code, date-and-time, logtype])
@@ -120,16 +131,18 @@ class GPS_content(object):
         for lc in logged_caches:
             if lc[-1] == "Found it":
                 try:
-                    found_caches.append(Geocache(os.path.join(self.path,"GPX",lc[0]+".gpx")))
+                    found_caches.append(Geocache(os.path.join(self.path, "GPX", lc[0]+".gpx")))
                     logged_caches_new.append(lc)
                 except IOError:
-                    user_io.general_output("\nWARNUNG! Der Geocache {} befindet sich nicht auf dem Geraet. Er wird daher im Folgenden nicht mehr beruecksichtigt.".format(lc[0])) 
+                    user_io.general_output("\nWARNUNG! Der Geocache {} befindet sich nicht auf dem Geraet. \
+                    Er wird daher im Folgenden nicht mehr beruecksichtigt.".format(lc[0]))
             else:
                 try:
-                    Geocache(os.path.join(self.path,"GPX",lc[0]+".gpx"))
+                    Geocache(os.path.join(self.path, "GPX", lc[0]+".gpx"))
                     logged_caches_new.append(lc)
                 except IOError:
-                    user_io.general_output("\nWARNUNG! Der Geocache {} befindet sich nicht auf dem Geraet. Er wird daher im Folgenden nicht mehr beruecksichtigt.".format(lc[0])) 
+                    user_io.general_output("\nWARNUNG! Der Geocache {} befindet sich nicht auf dem Geraet. \
+                    Er wird daher im Folgenden nicht mehr beruecksichtigt.".format(lc[0]))
         return [logged_caches_new, found_caches]
 
     def sort_and_show_caches(self):
@@ -143,16 +156,16 @@ class GPS_content(object):
             if coords:             # if reading coordinates successful
                 for g in self.geocaches:
                     g.distance = ownfunctions.calculate_distance(g.coordinates, coords)  # calculate distance
-                self.geocaches = sorted(self.geocaches, key = lambda geocache: getattr(geocache, criterion), reverse = rev)
+                self.geocaches = sorted(self.geocaches, key=lambda geocache: getattr(geocache, criterion), reverse=rev)
                 user_io.general_output(self.show_all_dist())
             else:
                 user_io.general_output(user_io.INVALID_INPUT)
             
         elif criterion == "name":    # criterions for which capitalization doesn't matter
-            self.geocaches = sorted(self.geocaches, key = lambda geocache: getattr(geocache, criterion).lower(), reverse = rev)
+            self.geocaches = sorted(self.geocaches, key=lambda geocache: getattr(geocache, criterion).lower(), reverse=rev)
             user_io.general_output(self.show_all())
         else:                    # criterions for which capitalization matters
-            self.geocaches = sorted(self.geocaches, key = lambda geocache: getattr(geocache, criterion), reverse = rev)
+            self.geocaches = sorted(self.geocaches, key=lambda geocache: getattr(geocache, criterion), reverse=rev)
             user_io.general_output(self.show_all())
         
     def show_all(self):
@@ -168,8 +181,8 @@ class GPS_content(object):
         """returns a string with most important infos (+ distances) for each cache, each cache in one line"""
         text = ""
         for c in self.geocaches:
-            newline = u"{:7}km | {}\n".format(round(c.distance,1), c.shortinfo())
-            text = text + newline
+            newline = u"{:7}km | {}\n".format(round(c.distance, 1), c.shortinfo())
+            text += newline
         if len(self.geocaches) == 0:
             return user_io.NO_CACHES_ON_DEVICE
         return text
@@ -196,13 +209,15 @@ class GPS_content(object):
                 elif task == "gc.com":
                     webbrowser.open_new_tab(cache.url)
                 elif task == "dist":
-                    koords_str = user_io.coordinates_input()
-                    koords = ownfunctions.coords_string_to_decimal(coords_str)
-                    if koords:
-                        d = ownfunctions.calculate_distance(coords,cache.coordinates)
-                        user_io.general_output("Abstand: {} Kilometer".format(round(d,1)))
+                    coords_str = user_io.coordinates_input()
+                    coords = ownfunctions.coords_string_to_decimal(coords_str)
+                    if coords:
+                        d = ownfunctions.calculate_distance(coords, cache.coordinates)
+                        user_io.general_output("Abstand: {} Kilometer".format(round(d, 1)))
                 elif task == "gc-map":
-                    url = "https://www.geocaching.com/map/#?ll={},{}&z=16".format(cache.coordinates[0], cache.coordinates[1])
+                    latitude = cache.coordinates[0]
+                    longitude = cache.coordinates[1]
+                    url = "https://www.geocaching.com/map/#?ll={},{}&z=16".format(latitude, longitude)
                     webbrowser.open_new_tab(url)
                 elif task == "googlemaps":
                     coords_sec = ownfunctions.coords_minutes_to_seconds(cache.coordinates_string)
@@ -211,7 +226,8 @@ class GPS_content(object):
                 else:
                     break
         
-    def show_gc_selection(self, cachelist):
+    @staticmethod
+    def show_gc_selection(cachelist):
         """returns a string with most important information of all caches in cachelist, each cache in one line
         
         input: list of caches (as Geocache-objects) that are found on gps-device
@@ -224,8 +240,10 @@ class GPS_content(object):
             text = text + c.shortinfo() + "\n"
         return text
         
-    def show_gc_selection_dist(self, cachelist):
-        """returns a string with most important information (+ distances) of all caches in cachelist, each cache in one line
+    @staticmethod
+    def show_gc_selection_dist(cachelist):
+        """returns a string with most important information (+ distances) of all caches in cachelist,
+        each cache in one line
         
         input: list of caches (as Geocache-objects) that are found on gps-device
         return: string with informations about these caches"""
@@ -234,8 +252,8 @@ class GPS_content(object):
         for c in cachelist:
             if type(c) != Geocache:
                 raise TypeError("An Element of the selection is not a Geocache!")
-            newline = u"{:7}km | {}\n".format(round(c.distance,1), c.shortinfo())
-            text = text + newline
+            newline = u"{:7}km | {}\n".format(round(c.distance, 1), c.shortinfo())
+            text += newline
         return text
         
     def search(self):
@@ -250,55 +268,56 @@ class GPS_content(object):
                     search_results.append(c)
         elif criterion == "difficulty" or criterion == "terrain":  # search for difficulty or terrain value
             input_str = user_io.general_input("{}: ".format(user_io.MIN_MAX_SEPERATED_BY_KOMMA)) 
-            input = input_str.split(",")
-            if len(input) != 2:
+            inp = input_str.split(",")
+            if len(inp) != 2:
                 user_io.general_output(user_io.INVALID_INPUT) 
             else:
                 try:
-                    min = float(input[0])
-                    max = float(input[1])
+                    mini = float(inp[0])
+                    maxi = float(inp[1])
                 except ValueError:
                     user_io.general_output(user_io.INVALID_INPUT)
                 else:
-                    if min <= max and min >= 1 and min <=5 and max >=1 and max <=5: # all values need to be between 1 and 5
+                    if maxi >= mini >= 1.0 and mini <= 5.0 and 1.0 <= maxi <= 5.0:  # all values between 1 and 5
                         for c in self.geocaches:
-                            if getattr(c, criterion) >= min and getattr(c, criterion) <= max:
+                            if mini <= getattr(c, criterion) <= maxi:
                                 search_results.append(c)
                     else:
                         user_io.general_output(user_io.INVALID_INPUT)
         elif criterion == "size":                                           # search by size
-            input_str = user_io.general_input("{}. {}: other, micro, small, regular, large\n>>".format(user_io.MIN_MAX_SEPERATED_BY_KOMMA, user_io.POSSIBLE_SIZES))
-            input = input_str.split(",")
-            if len(input) != 2:
+            input_str = user_io.general_input("{}. {}: other, micro, small, regular, large\n>>".
+                                              format(user_io.MIN_MAX_SEPERATED_BY_KOMMA, user_io.POSSIBLE_SIZES))
+            inp = input_str.split(",")
+            if len(inp) != 2:
                 user_io.general_output(user_io.INVALID_INPUT)
             else:
                 try:
-                    if input[1][0] == " ":
-                        max_str = input[1][1:]
+                    if inp[1][0] == " ":
+                        max_str = inp[1][1:]
                     else:
-                        max_str = input[1]
-                    min = SIZE_LIST.index(input[0])
-                    max = SIZE_LIST.index(max_str)
+                        max_str = inp[1]
+                    mini = SIZE_LIST.index(inp[0])
+                    maxi = SIZE_LIST.index(max_str)
                 except ValueError:
                     user_io.general_output(user_io.INVALID_INPUT)
                 else:
-                    if max < min:
+                    if maxi < mini:
                         user_io.general_output(user_io.INVALID_INPUT)
                     else:
                         for c in self.geocaches:
-                            if c.size >= min and c.size <= max:
+                            if mini <= c.size <= maxi:
                                 search_results.append(c)
         elif criterion == "downloaddate":                               # search by downloaddate
             input_str = user_io.general_input("{}\n>>".format(user_io.DATE_SEPERATED_BY_KOMMA))
-            input = input_str.split(",")
-            if len(input) != 2:
+            inp = input_str.split(",")
+            if len(inp) != 2:
                 user_io.general_output(user_io.INVALID_INPUT)
             else:
-                first = input[0]
-                if input[1][0] == " ":
-                    last = input[1][1:]
+                first = inp[0]
+                if inp[1][0] == " ":
+                    last = inp[1][1:]
                 else:
-                    last = input[1]
+                    last = inp[1]
                 try:
                     first_date = ownfunctions.string_to_date(first)
                     last_date = ownfunctions.string_to_date(last)
@@ -309,52 +328,52 @@ class GPS_content(object):
                         user_io.general_output(user_io.INVALID_INPUT)
                     else:
                         for c in self.geocaches:
-                            if c.downloaddate >= first_date and c.downloaddate <= last_date:
+                            if first_date <= c.downloaddate <= last_date:
                                 search_results.append(c) 
         elif criterion == "available":                # search by availibility
             input_str = user_io.general_input(user_io.CACHES_AVAILABLE_OR_NOT)
             if input_str == "n":
                 for c in self.geocaches:
-                    if c.available == False:
+                    if not c.available:
                         search_results.append(c)
             else:      # if invalid input: show available caches
                 for c in self.geocaches:
-                    if c.available == True:
+                    if c.available:
                         search_results.append(c)
         elif criterion == "type":                    # search by cachetype
-            input = user_io.search_type()
-            if input not in TYPE_LIST:
+            inp = user_io.search_type()
+            if inp not in TYPE_LIST:
                 user_io.general_output(user_io.INVALID_INPUT)
             else:
                 for c in self.geocaches:
-                    if c.type == input:
+                    if c.type == inp:
                         search_results.append(c)
         elif criterion == "attribute":              # search by attribute
-            input = user_io.search_attribute(self.existing_attributes)
-            if input not in self.existing_attributes:
+            inp = user_io.search_attribute(self.existing_attributes)
+            if inp not in self.existing_attributes:
                 user_io.general_output(user_io.INVALID_INPUT)
             else:
                 for c in self.geocaches:
-                    if input in c.attributes:
+                    if inp in c.attributes:
                         search_results.append(c)
         elif criterion == "distance":                # search by distance to a given point
             coords_str = user_io.coordinates_input()
             coords = ownfunctions.coords_string_to_decimal(coords_str)
             if coords:
                 input_str = user_io.general_input(user_io.DIST_SEPERATED_BY_KOMMA) 
-                input = input_str.split(",")
-                if len(input) != 2:
+                inp = input_str.split(",")
+                if len(inp) != 2:
                     user_io.general_output(user_io.INVALID_INPUT) 
                 else:
                     try:
-                        min = float(input[0])
-                        max = float(input[1])
+                        mini = float(inp[0])
+                        maxi = float(inp[1])
                     except ValueError:
                         user_io.general_output(user_io.INVALID_INPUT)
                     else:
                         for c in self.geocaches:
-                            c.distance = ownfunctions.calculate_distance(coords,c.coordinates)
-                            if c.distance >= min and c.distance <= max:
+                            c.distance = ownfunctions.calculate_distance(coords, c.coordinates)
+                            if mini <= c.distance <= maxi:
                                 search_results.append(c)
             else:
                 user_io.general_output(user_io.INVALID_INPUT)
@@ -402,8 +421,8 @@ class GPS_content(object):
                 delete = self.delete(self.found_caches)
                 if delete:
                     self.found_exists = False
-                    os.remove(os.path.join(self.path,"geocache_visits.txt"))
-                    os.remove(os.path.join(self.path,"geocache_logs.xml"))
+                    os.remove(os.path.join(self.path, "geocache_visits.txt"))
+                    os.remove(os.path.join(self.path, "geocache_logs.xml"))
                     break
             elif task == "exit":
                 break
@@ -426,12 +445,13 @@ class GPS_content(object):
             self.geocaches = [c for c in self.geocaches if c not in removelist]
         return delete
         
-    def show_all_on_map(self, cachelist):
-        """provides the possiblitly to show all caches in cachelist on a map (uses webservice 'www.mapcustomizer.com')"""
+    @staticmethod
+    def show_all_on_map(cachelist):
+        """shows all caches in cachelist on a map (uses webservice 'www.mapcustomizer.com')"""
     
         editor = user_io.show_all_on_map_start()
-        with open("mapinfo.txt","w") as mapinfo:
-            for i,g in enumerate(cachelist):
+        with open("mapinfo.txt", "w") as mapinfo:
+            for i, g in enumerate(cachelist):
                 if g.type == "Traditional Cache":
                     color = "green"
                 elif g.type == "Multi-cache":
@@ -446,10 +466,9 @@ class GPS_content(object):
                     color = "blue"
                 else:                        # cache of unknown type
                     color = "pink"
-                mapinfo.write("{},{} {{{}}} <{}>\n".format(g.coordinates[0], g.coordinates[1], g.name.encode(user_io.CODING), color))
-        subprocess.Popen([editor,"mapinfo.txt"]) 
+                mapinfo.write("{},{} {{{}}} <{}>\n".
+                              format(g.coordinates[0], g.coordinates[1], g.name.encode(user_io.CODING), color))
+        subprocess.Popen([editor, "mapinfo.txt"])
         webbrowser.open_new_tab("https://www.mapcustomizer.com/#bulkEntryModal") 
         user_io.show_all_on_map_end()
-        os.remove("mapinfo.txt")        
-            
- 
+        os.remove("mapinfo.txt")
