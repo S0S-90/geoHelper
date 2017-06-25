@@ -5,7 +5,8 @@
 
 import math
 import datetime
-from HTMLParser import HTMLParser
+# noinspection PyCompatibility
+from HTMLParser import HTMLParser  # not existent in python 3
 import unicodedata
 
 import user_io
@@ -74,6 +75,8 @@ def find_cp1252():
 ALLOWED_SIGNS = find_cp1252()  # define allowed signs (codepage 1252) once 
 
 
+# noinspection PyCompatibility
+# not compatible with python 3 because of function unicode()
 def replace_signs(string):
     """replaces signs in inputstring that cannot represented correctly on screen (not in ALLOWED_SIGNS)
     returns the new string without the 'forbidden' signs"""
