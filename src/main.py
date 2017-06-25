@@ -1,4 +1,9 @@
-﻿import sys
+﻿#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+"""This file opens the main menu."""
+
+import sys
 import os
 import webbrowser
 
