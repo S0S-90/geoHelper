@@ -268,7 +268,7 @@ def show_one():
 def coordinates_input():
     """asks for coordinates, returns input as a string"""
     
-    print (u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX oder URL (google maps oder geocaching.com/map)")
+    print (u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX oder URL (google maps oder geocaching.com/map))")
     # noinspection PyCompatibility
     coords = raw_input(">> ").decode(CODING)  # in python 3 input is raw_input by standard
     return coords

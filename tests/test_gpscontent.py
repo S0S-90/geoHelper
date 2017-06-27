@@ -430,8 +430,10 @@ class TestSortAndShowCaches(unittest.TestCase):
             self.assertEqual(sorted_caches, expected)
 
     def test_distance_down(self):
-        with mock.patch('__builtin__.raw_input', side_effect=['9', '2',
-                                                              'https://www.google.de/maps/place/97209+Veitsh%C3%B6chheim/@49.8414697,9.8579699,13z/data=!3m1!4b1!4m5!3m4!1s0x47a2915cbab1bfe3:0xdbe76ec582bb3aa5!8m2!3d49.8312701!4d9.8803666']):
+        url = 'https://www.google.de/maps/place/97209+Veitsh%C3%B6chheim/@49.8414697,9.8579699,13z/data=!3m1!4b1!4m5!'
+        url += '3m4!1s0x47a2915cbab1bfe3:0xdbe76ec582bb3aa5!8m2!3d49.8312701!4d9.8803666'
+
+        with mock.patch('__builtin__.raw_input', side_effect=['9', '2', url]):
             expected = ["GC33QGC", "GC6K86W", "GC6RNTX", "GCJJ20", "GC1XRPM", "GC5N23T"]
             self.x.sort_and_show_caches()
             sorted_caches = []
@@ -447,13 +449,19 @@ class TestShowAll(unittest.TestCase):
 
     def test_show_caches(self):
         x = gpscontent.GPSContent(r"examples\no_logfile")
-        expected = u"GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  | 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
-        expected = expected + u"GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | True  | 11 Sep 2016 | Tesoro Ameghino\n"
-        expected = expected + u"GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | False | 05 Mar 2017 | 67 - MedTrix - {}\n".format(
-            u"\u001a" + u"\u001a" + u"\u001a" + u"\u001a" + u"\u001a")
-        expected = expected + u"GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | True  | 04 Aug 2016 | Saaletalblick\n"
-        expected = expected + u"GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   | True  | 08 Oct 2016 | Hochschule für Musik 1\n"
-        expected = expected + u"GCJJ20  | N 49°47.688, E 009°55.816 | Unknown Type      | D 1.0 | T 1.0 | other   | True  | 29 Oct 2016 | Wuerzburger webcam\n"
+        expected = u"GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  | "
+        expected += u"06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
+        expected += u"GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
+        expected += u"True  | 11 Sep 2016 | Tesoro Ameghino\n"
+        expected += u"GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | "
+        expected += u"False | 05 Mar 2017 | 67 - MedTrix - {}\n".format(u"\u001a" + u"\u001a" + u"\u001a" +
+                                                                        u"\u001a" + u"\u001a")
+        expected += u"GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | "
+        expected += u"True  | 04 Aug 2016 | Saaletalblick\n"
+        expected += u"GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   | "
+        expected += u"True  | 08 Oct 2016 | Hochschule für Musik 1\n"
+        expected += u"GCJJ20  | N 49°47.688, E 009°55.816 | Unknown Type      | D 1.0 | T 1.0 | other   | "
+        expected += u"True  | 29 Oct 2016 | Wuerzburger webcam\n"
         self.assertEqual(x.show_all(), expected)
 
 
@@ -466,13 +474,19 @@ class TestShowAllDist(unittest.TestCase):
         x = gpscontent.GPSContent(r"examples\no_logfile")
         for gc in x.geocaches:
             gc.distance = ownfunctions.calculate_distance(gc.coordinates, [49.8414697, 9.8579699])
-        expected = u"    6.5km | GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  | 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
-        expected = expected + u"12746.3km | GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | True  | 11 Sep 2016 | Tesoro Ameghino\n"
-        expected = expected + u"    5.4km | GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | False | 05 Mar 2017 | 67 - MedTrix - {}\n".format(
-            u"\u001a" + u"\u001a" + u"\u001a" + u"\u001a" + u"\u001a")
-        expected = expected + u"   58.2km | GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | True  | 04 Aug 2016 | Saaletalblick\n"
-        expected = expected + u"    7.9km | GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   | True  | 08 Oct 2016 | Hochschule für Musik 1\n"
-        expected = expected + u"    7.3km | GCJJ20  | N 49°47.688, E 009°55.816 | Unknown Type      | D 1.0 | T 1.0 | other   | True  | 29 Oct 2016 | Wuerzburger webcam\n"
+        expected = u"    6.5km | GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | "
+        expected += u"True  | 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
+        expected += u"12746.3km | GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
+        expected += u"True  | 11 Sep 2016 | Tesoro Ameghino\n"
+        expected += u"    5.4km | GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | "
+        expected += u"False | 05 Mar 2017 | 67 - MedTrix - {}\n".format(u"\u001a" + u"\u001a" + u"\u001a" +
+                                                                        u"\u001a" + u"\u001a")
+        expected += u"   58.2km | GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   "
+        expected += u"| True  | 04 Aug 2016 | Saaletalblick\n"
+        expected += u"    7.9km | GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   "
+        expected += u"| True  | 08 Oct 2016 | Hochschule für Musik 1\n"
+        expected += u"    7.3km | GCJJ20  | N 49°47.688, E 009°55.816 | Unknown Type      | D 1.0 | T 1.0 | other   "
+        expected += u"| True  | 29 Oct 2016 | Wuerzburger webcam\n"
         self.assertEqual(x.show_all_dist(), expected)
 
 
@@ -512,8 +526,10 @@ class TestShowGCSelection(unittest.TestCase):
 
     def test_show_selection(self):
         selection = self.x.geocaches[3:5]
-        expected = u"GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | True  | 04 Aug 2016 | Saaletalblick\n"
-        expected = expected + u"GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   | True  | 08 Oct 2016 | Hochschule für Musik 1\n"
+        expected = u"GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | True  | "
+        expected += u"04 Aug 2016 | Saaletalblick\n"
+        expected += u"GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   | True  | "
+        expected += u"08 Oct 2016 | Hochschule für Musik 1\n"
         self.assertEqual(self.x.show_gc_selection(selection), expected)
 
     def test_bullshitlist(self):
@@ -532,8 +548,10 @@ class TestShowGCSelectionDist(unittest.TestCase):
 
     def test_show_selection(self):
         selection = self.x.geocaches[3:5]
-        expected = u"   58.2km | GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | True  | 04 Aug 2016 | Saaletalblick\n"
-        expected = expected + u"    7.9km | GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   | True  | 08 Oct 2016 | Hochschule für Musik 1\n"
+        expected = u"   58.2km | GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | "
+        expected += u"True  | 04 Aug 2016 | Saaletalblick\n"
+        expected += u"    7.9km | GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   "
+        expected += u"| True  | 08 Oct 2016 | Hochschule für Musik 1\n"
         self.assertEqual(self.x.show_gc_selection_dist(selection), expected)
 
     def test_bullshitlist(self):
@@ -648,35 +666,40 @@ class TestSearch(unittest.TestCase):
             self.assertEqual(self.x.search(), [])
 
     def test_distance(self):
-        with mock.patch('__builtin__.raw_input', side_effect=["10",
-                                                              "https://www.google.de/maps/place/97209+Veitsh%C3%B6chheim/@49.8414697,9.8579699,13z/data=!3m1!4b1!4m5!3m4!1s0x47a2915cbab1bfe3:0xdbe76ec582bb3aa5!8m2!3d49.8312701!4d9.8803666",
-                                                              "6.4, 7.4"]):
+        url = "https://www.google.de/maps/place/97209+Veitsh%C3%B6chheim/@49.8414697,9.8579699,13z/data=!3m1!4b1!4m5!3m4"
+        url += "!1s0x47a2915cbab1bfe3:0xdbe76ec582bb3aa5!8m2!3d49.8312701!4d9.8803666"
+
+        with mock.patch('__builtin__.raw_input', side_effect=["10", url, "6.4, 7.4"]):
             expected = [self.x.geocaches[0], self.x.geocaches[5]]
             self.assertEqual(self.x.search(), expected)
 
     def test_distance_without_space(self):
-        with mock.patch('__builtin__.raw_input', side_effect=["10",
-                                                              "https://www.google.de/maps/place/97209+Veitsh%C3%B6chheim/@49.8414697,9.8579699,13z/data=!3m1!4b1!4m5!3m4!1s0x47a2915cbab1bfe3:0xdbe76ec582bb3aa5!8m2!3d49.8312701!4d9.8803666",
-                                                              "6.4,7.4"]):
+        url = "https://www.google.de/maps/place/97209+Veitsh%C3%B6chheim/@49.8414697,9.8579699,13z/data=!3m1!4b1!4m5!3m4"
+        url += "!1s0x47a2915cbab1bfe3:0xdbe76ec582bb3aa5!8m2!3d49.8312701!4d9.8803666"
+
+        with mock.patch('__builtin__.raw_input', side_effect=["10", url, "6.4,7.4"]):
             expected = [self.x.geocaches[0], self.x.geocaches[5]]
             self.assertEqual(self.x.search(), expected)
 
     def test_distance_error(self):
-        with mock.patch('__builtin__.raw_input', side_effect=["10",
-                                                              "https://www.gooe/maps/place/97209+Veitsh%C3%B6chheim/@49.8414697,9.8579699,13z/data=!3m1!4b1!4m5!3m4!1s0x47a2915cbab1bfe3:0xdbe76ec582bb3aa5!8m2!3d49.8312701!4d9.8803666",
-                                                              "6.4,7.4"]):
+        url = "https://www.gooe/maps/place/97209+Veitsh%C3%B6chheim/@49.8414697,9.8579699,13z/data=!3m1!4b1!4m5!3m4!"
+        url += "1s0x47a2915cbab1bfe3:0xdbe76ec582bb3aa5!8m2!3d49.8312701!4d9.8803666"
+
+        with mock.patch('__builtin__.raw_input', side_effect=["10", url, "6.4,7.4"]):
             self.assertEqual(self.x.search(), [])
 
     def test_distance_error2(self):
-        with mock.patch('__builtin__.raw_input', side_effect=["10",
-                                                              "https://www.google.de/maps/place/97209+Veitsh%C3%B6chheim/@49.8414697,9.8579699,13z/data=!3m1!4b1!4m5!3m4!1s0x47a2915cbab1bfe3:0xdbe76ec582bb3aa5!8m2!3d49.8312701!4d9.8803666",
-                                                              "hh, 7.4"]):
+        url = "https://www.google.de/maps/place/97209+Veitsh%C3%B6chheim/@49.8414697,9.8579699,13z/data=!3m1!4b1!4m5!"
+        url += "3m4!1s0x47a2915cbab1bfe3:0xdbe76ec582bb3aa5!8m2!3d49.8312701!4d9.8803666"
+
+        with mock.patch('__builtin__.raw_input', side_effect=["10", url, "hh, 7.4"]):
             self.assertEqual(self.x.search(), [])
 
     def test_distance_error3(self):
-        with mock.patch('__builtin__.raw_input', side_effect=["10",
-                                                              "https://www.google.de/maps/place/97209+Veitsh%C3%B6chheim/@49.8414697,9.8579699,13z/data=!3m1!4b1!4m5!3m4!1s0x47a2915cbab1bfe3:0xdbe76ec582bb3aa5!8m2!3d49.8312701!4d9.8803666",
-                                                              "10.3, 7.4"]):
+        url = "https://www.google.de/maps/place/97209+Veitsh%C3%B6chheim/@49.8414697,9.8579699,13z/data=!3m1!4b1!4m5!"
+        url += "3m4!1s0x47a2915cbab1bfe3:0xdbe76ec582bb3aa5!8m2!3d49.8312701!4d9.8803666"
+
+        with mock.patch('__builtin__.raw_input', side_effect=["10", url, "10.3, 7.4"]):
             self.assertEqual(self.x.search(), [])
 
 
@@ -698,12 +721,15 @@ class TestShowFoundsOnlyFound(unittest.TestCase):
             sys.stdout = out
             self.x.show_founds()
             output = out.getvalue().strip()
-            expected = u"GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  | 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
-            expected = expected + u"GC5G5F5 | N 49°47.955, E 009°58.566 | Traditional Cache | D 1.5 | T 4.0 | small   | True  | 08 Oct 2016 | Urban Buildering\n\n"
-            expected = expected + "\nWas moechtest du als naechstes tun?\n"
-            expected = expected + "1: Gefundene Caches auf geocaching.com loggen (ueber den Upload von drafts / fieldnotes, INTERNET!!!)\n"
-            expected = expected + "2: Alle gefundenen Caches loeschen\n"
-            expected = expected + "3: zurueck"
+            expected = u"GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  "
+            expected += u"| 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
+            expected += u"GC5G5F5 | N 49°47.955, E 009°58.566 | Traditional Cache | D 1.5 | T 4.0 | small   | True  "
+            expected += u"| 08 Oct 2016 | Urban Buildering\n\n"
+            expected += "\nWas moechtest du als naechstes tun?\n"
+            expected += "1: Gefundene Caches auf geocaching.com loggen "
+            expected += "(ueber den Upload von drafts / fieldnotes, INTERNET!!!)\n"
+            expected += "2: Alle gefundenen Caches loeschen\n"
+            expected += "3: zurueck"
             self.assertEqual(output, expected)
 
     def test_delete(self):
@@ -743,12 +769,15 @@ class TestShowFoundsNotOnlyFound(unittest.TestCase):
             sys.stdout = out
             self.x.show_founds()
             output = out.getvalue().strip()
-            expected = u"GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  | 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
-            expected = expected + u"GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | True  | 09 Jan 2017 | 67 - MedTrix - \u001a\u001a\u001a\u001a\u001a\n\n"
-            expected = expected + "\nWas moechtest du als naechstes tun?\n"
-            expected = expected + "1: Gefundene Caches auf geocaching.com loggen (ueber den Upload von drafts / fieldnotes, INTERNET!!!)\n"
-            expected = expected + "2: Alle gefundenen Caches loeschen\n"
-            expected = expected + "3: zurueck"
+            expected = u"GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  "
+            expected += u"| 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
+            expected += u"GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | True  "
+            expected += u"| 09 Jan 2017 | 67 - MedTrix - \u001a\u001a\u001a\u001a\u001a\n\n"
+            expected += "\nWas moechtest du als naechstes tun?\n"
+            expected += "1: Gefundene Caches auf geocaching.com loggen "
+            expected += "(ueber den Upload von drafts / fieldnotes, INTERNET!!!)\n"
+            expected += "2: Alle gefundenen Caches loeschen\n"
+            expected += "3: zurueck"
             self.assertEqual(output, expected)
 
     def test_delete(self):
@@ -780,11 +809,13 @@ class TestShowFoundsFoundNotOnGPS(unittest.TestCase):
             sys.stdout = out
             self.x.show_founds()
             output = out.getvalue().strip()
-            expected = u"GC5G5F5 | N 49°47.955, E 009°58.566 | Traditional Cache | D 1.5 | T 4.0 | small   | True  | 08 Oct 2016 | Urban Buildering\n\n"
-            expected = expected + "\nWas moechtest du als naechstes tun?\n"
-            expected = expected + "1: Gefundene Caches auf geocaching.com loggen (ueber den Upload von drafts / fieldnotes, INTERNET!!!)\n"
-            expected = expected + "2: Alle gefundenen Caches loeschen\n"
-            expected = expected + "3: zurueck"
+            expected = u"GC5G5F5 | N 49°47.955, E 009°58.566 | Traditional Cache | D 1.5 | T 4.0 | small   | True  "
+            expected += u"| 08 Oct 2016 | Urban Buildering\n\n"
+            expected += "\nWas moechtest du als naechstes tun?\n"
+            expected += "1: Gefundene Caches auf geocaching.com loggen "
+            expected += "(ueber den Upload von drafts / fieldnotes, INTERNET!!!)\n"
+            expected += "2: Alle gefundenen Caches loeschen\n"
+            expected += "3: zurueck"
             self.assertEqual(output, expected)
 
     def test_delete(self):
@@ -844,6 +875,7 @@ class TestDelete(unittest.TestCase):
 
 
 def create_testsuite():
+    """creates a testsuite with out of all tests in this file"""
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestInitNoLogfile))
     suite.addTest(unittest.makeSuite(TestInitOnlyFound))
