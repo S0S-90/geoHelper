@@ -10,11 +10,10 @@ import shutil
 import os
 # noinspection PyCompatibility
 from StringIO import StringIO  # module not existent in python 3
+import test_frame
 import ownfunctions
 import geocache
 import gpscontent
-
-saved_stdout = sys.stdout  # save standard output
 
 
 class TestInitNoLogfile(unittest.TestCase):
@@ -261,7 +260,7 @@ class TestGetLoggedAndFoundCachesNotFoundNotOnGPS(unittest.TestCase):
 
     def test_logged_caches(self):
         logged_caches = self.x._get_logged_and_found_caches()[0]
-        expected = [["GC5G5F5", "2016-09-03T09:40Z", "unattempted"]]
+        expected = [["GC5G5F5", "2016-09-03T09:40Z", "Found it"]]
         self.assertEqual(logged_caches, expected)
 
     def test_found_caches(self):
@@ -875,14 +874,8 @@ def create_testsuite():
 
 
 def main(v):
-    sys.stdout = saved_stdout  # print output to display
-    print "\nTesting gpscontent.py"
-    out = StringIO()
-    sys.stdout = out  # don't print output
-    testsuite = create_testsuite()
-    x = unittest.TextTestRunner(verbosity=v).run(testsuite)
-    sys.stdout = saved_stdout  # print output to display
-    return x.testsRun, len(x.failures), len(x.errors)
+    """runs the testsuite"""
+    return test_frame.run(v, create_testsuite, "gpscontent.py")
 
 
 if __name__ == '__main__':

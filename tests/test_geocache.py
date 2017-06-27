@@ -7,65 +7,62 @@ from __future__ import print_function
 
 import unittest
 import datetime
-import sys
-import geocache 
-
-saved_stdout = sys.stdout  # save standard output
+import test_frame
+import geocache
 
 
 class TestSaaletalblick(unittest.TestCase):
-
     def setUp(self):
         self.gc = geocache.Geocache("examples/GC6K86W.gpx")
-        
+
     def test_gccode(self):
         self.assertEqual(self.gc.gccode, "GC6K86W")
-        
+
     def test_name(self):
         self.assertEqual(self.gc.name, "Saaletalblick")
-        
+
     def test_difficulty(self):
         self.assertEqual(self.gc.difficulty, 2)
-        
+
     def test_terrain(self):
         self.assertEqual(self.gc.terrain, 2)
-        
+
     def test_size(self):
         self.assertEqual(self.gc.size, 1)
-        
+
     def test_size_string(self):
         self.assertEqual(self.gc.size_string, "micro")
-        
+
     def test_type(self):
         self.assertEqual(self.gc.type, "Traditional Cache")
-        
+
     def test_longtype(self):
         self.assertEqual(self.gc.longtype, "Traditional Cache")
-        
+
     def test_description(self):
         expected = u"\n\nNach einem kleinen Spaziergang und dem Finden des Döschens werdet ihr mit einem tollen Blick "
         expected += u"ins Saaletal und auf die Saalewiesen belohnt! FTF: Jobi Voma STF: JoLoClMa TTF: Mone216\n\n\t\t\t"
         self.assertEqual(self.gc.description, expected)
-    
+
     def test_hint(self):
         self.assertEqual(self.gc.hint, "Und ab durch die Hecke!")
-        
+
     def test_owner(self):
         self.assertEqual(self.gc.owner, "bigkruemel")
-        
+
     def test_url(self):
         self.assertEqual(self.gc.url, "https://www.geocaching.com/geocache/GC6K86W_saaletalblick")
-        
+
     def test_coordinates(self):
         self.assertEqual(self.gc.coordinates, [50.318883, 10.1936])
-        
+
     def test_coordinates_string(self):
         self.assertEqual(self.gc.coordinates_string, u"N 50°19.133, E 010°11.616")
-        
+
     def test_attributes(self):
         self.assertEqual(self.gc.attributes, ["no camping", "no parking available", "not wheelchair accessible",
                                               "kid friendly", "hike shorter than 1km", "stroller accessible"])
-    
+
     def test_logs(self):
         expected_logs = [['2016-07-16', 'Found it', 'Ziaepf'], ['2016-07-10', "Didn't find it", 'NES-GN 310362'],
                          ['2016-06-20', 'Found it', 'HerbieWo'], ['2016-06-15', 'Found it', "Fantastic'4"],
@@ -73,23 +70,23 @@ class TestSaaletalblick(unittest.TestCase):
                          ['2016-06-10', 'Found it', 'Mone216'], ['2016-06-08', 'Found it', 'JoLoClMa'],
                          ['2016-06-08', 'Found it', 'Jobi Voma'], ['2016-06-07', 'Publish Listing', 'Sabbelwasser']]
         self.assertEqual(self.gc.logs, expected_logs)
-        
+
     def test_available(self):
         self.assertEqual(self.gc.available, True)
-        
+
     def test_downloaddate(self):
         expected_date = datetime.date(2016, 8, 4)
         self.assertEqual(self.gc.downloaddate, expected_date)
-        
+
     def test_downloaddate_string(self):
         self.assertEqual(self.gc.downloaddate_string, "04 Aug 2016")
-        
+
     def test_shortinfo(self):
         x = self.gc.shortinfo()
         expected = u"GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | True  "
         expected += u"| 04 Aug 2016 | Saaletalblick"
         self.assertEqual(x, expected)
-        
+
     def test_longinfo(self):
         x = self.gc.longinfo()
         z1 = u"\nGC6K86W : Saaletalblick"
@@ -113,7 +110,7 @@ class TestSaaletalblick(unittest.TestCase):
         z17 = u"2016-06-11: Found it by melimouse\n"
         z18 = u"2016-06-10: Found it by Mone216\n"
         z19 = u"2016-06-08: Found it by JoLoClMa\n"
-        z20 = u"2016-06-08: Found it by Jobi Voma\n" 
+        z20 = u"2016-06-08: Found it by Jobi Voma\n"
         z21 = u"2016-06-07: Publish Listing by Sabbelwasser\n"
         expected = z1 + z2 + z3 + z4 + z5 + z6 + z7 + z8 + z9 + z10
         expected += z11 + z12 + z13 + z14 + z15 + z16 + z17 + z18 + z19 + z20 + z21
@@ -121,57 +118,56 @@ class TestSaaletalblick(unittest.TestCase):
 
 
 class TestMaerchenstuhl(unittest.TestCase):
-
     def setUp(self):
         self.gc = geocache.Geocache("examples/GC1XRPM.gpx")
-        
+
     def test_gccode(self):
         self.assertEqual(self.gc.gccode, "GC1XRPM")
-        
+
     def test_name(self):
         self.assertEqual(self.gc.name, u"Im Auftrag ihrer Majestät – Der Märchenstuhl")
-        
+
     def test_difficulty(self):
         self.assertEqual(self.gc.difficulty, 2.5)
-        
+
     def test_terrain(self):
         self.assertEqual(self.gc.terrain, 3.5)
-        
+
     def test_size(self):
         self.assertEqual(self.gc.size, 1)
-        
+
     def test_size_string(self):
         self.assertEqual(self.gc.size_string, "micro")
-        
+
     def test_type(self):
         self.assertEqual(self.gc.type, "Multi-cache")
-        
+
     def test_longtype(self):
         self.assertEqual(self.gc.longtype, "Multi-cache")
-        
+
     def test_hint(self):
         self.assertEqual(self.gc.hint, "Stage 1: Nicht Holz")
-        
+
     def test_owner(self):
         self.assertEqual(self.gc.owner, "team-pandora")
-        
+
     def test_url(self):
         url = "https://www.geocaching.com/geocache/GC1XRPM_im-auftrag-ihrer-majestat-der-marchenstuhl"
         self.assertEqual(self.gc.url, url)
-        
+
     def test_coordinates(self):
         self.assertEqual(self.gc.coordinates, [49.809317, 9.93365])
-        
+
     def test_available(self):
         self.assertEqual(self.gc.available, True)
-        
+
     def test_downloaddate(self):
         expected_date = datetime.date(2016, 9, 6)
         self.assertEqual(self.gc.downloaddate, expected_date)
-        
+
     def test_downloaddate_string(self):
         self.assertEqual(self.gc.downloaddate_string, "06 Sep 2016")
-        
+
     def test_shortinfo(self):
         x = self.gc.shortinfo()
         expected = u"GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  "
@@ -180,60 +176,59 @@ class TestMaerchenstuhl(unittest.TestCase):
 
 
 class TestTesoroAmeghino(unittest.TestCase):
-
     def setUp(self):
         self.gc = geocache.Geocache("examples/GC33QGC.gpx")
-        
+
     def test_gccode(self):
         self.assertEqual(self.gc.gccode, "GC33QGC")
-        
+
     def test_name(self):
         self.assertEqual(self.gc.name, u"Tesoro Ameghino")
-        
+
     def test_difficulty(self):
         self.assertEqual(self.gc.difficulty, 2)
-        
+
     def test_terrain(self):
         self.assertEqual(self.gc.terrain, 3)
-        
+
     def test_size(self):
         self.assertEqual(self.gc.size, 2)
-        
+
     def test_size_string(self):
         self.assertEqual(self.gc.size_string, "small")
-        
+
     def test_type(self):
         self.assertEqual(self.gc.type, "Traditional Cache")
-        
+
     def test_longtype(self):
         self.assertEqual(self.gc.longtype, "Traditional Cache")
-        
+
     def test_hint(self):
         hint = "En la entrada de una cueva, bajo piedras. Cerca del camino\nNear the way in a cave entrance, under rocks"
         self.assertEqual(self.gc.hint, hint)
-        
+
     def test_owner(self):
         self.assertEqual(self.gc.owner, u"kariher y familia")
-        
+
     def test_url(self):
         self.assertEqual(self.gc.url, "https://www.geocaching.com/geocache/GC33QGC_tesoro-ameghino")
-        
+
     def test_coordinates(self):
         self.assertEqual(self.gc.coordinates, [-43.695433, -66.4515])
-        
+
     def test_coordinates_string(self):
         self.assertEqual(self.gc.coordinates_string, u"S 43°41.726, W 066°27.090")
-        
+
     def test_available(self):
         self.assertEqual(self.gc.available, True)
-        
+
     def test_downloaddate(self):
         expected_date = datetime.date(2016, 9, 11)
         self.assertEqual(self.gc.downloaddate, expected_date)
-        
+
     def test_downloaddate_string(self):
         self.assertEqual(self.gc.downloaddate_string, "11 Sep 2016")
-        
+
     def test_shortinfo(self):
         x = self.gc.shortinfo()
         expected = u"GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | True  "
@@ -242,114 +237,112 @@ class TestTesoroAmeghino(unittest.TestCase):
 
 
 class TestMusikhochschule(unittest.TestCase):
-
     def setUp(self):
         self.gc = geocache.Geocache("examples/GC6RNTX.gpx")
-        
+
     def test_gccode(self):
         self.assertEqual(self.gc.gccode, "GC6RNTX")
-        
+
     def test_name(self):
         self.assertEqual(self.gc.name, u"Hochschule für Musik 1")
-        
+
     def test_difficulty(self):
         self.assertEqual(self.gc.difficulty, 2)
-        
+
     def test_terrain(self):
         self.assertEqual(self.gc.terrain, 1.5)
-        
+
     def test_size(self):
         self.assertEqual(self.gc.size, 1)
-        
+
     def test_size_string(self):
         self.assertEqual(self.gc.size_string, "micro")
-        
+
     def test_type(self):
         self.assertEqual(self.gc.type, "Mystery Cache")
-        
+
     def test_longtype(self):
         self.assertEqual(self.gc.longtype, "Mystery Cache")
-        
+
     def test_hint(self):
         self.assertEqual(self.gc.hint, "Licht!")
-        
+
     def test_owner(self):
         self.assertEqual(self.gc.owner, u"Müllipützchen")
-        
+
     def test_url(self):
         self.assertEqual(self.gc.url, "https://www.geocaching.com/geocache/GC6RNTX_hochschule-fur-musik-1")
-        
+
     def test_coordinates(self):
         self.assertEqual(self.gc.coordinates, [49.794497, 9.94094])
-        
+
     def test_available(self):
         self.assertEqual(self.gc.available, True)
-        
+
     def test_downloaddate(self):
         expected_date = datetime.date(2016, 10, 8)
         self.assertEqual(self.gc.downloaddate, expected_date)
-        
+
     def test_downloaddate_string(self):
         self.assertEqual(self.gc.downloaddate_string, "08 Oct 2016")
 
 
 class TestWuerzburgerWebcam(unittest.TestCase):
-
     def setUp(self):
         self.gc = geocache.Geocache("examples/GCJJ20.gpx")
-        
+
     def test_gccode(self):
         self.assertEqual(self.gc.gccode, "GCJJ20")
-        
+
     def test_name(self):
         self.assertEqual(self.gc.name, "Wuerzburger webcam")
-        
+
     def test_difficulty(self):
         self.assertEqual(self.gc.difficulty, 1)
-        
+
     def test_terrain(self):
         self.assertEqual(self.gc.terrain, 1)
-        
+
     def test_size(self):
         self.assertEqual(self.gc.size, 0)
-        
+
     def test_size_string(self):
         self.assertEqual(self.gc.size_string, "other")
-        
+
     def test_type(self):
         self.assertEqual(self.gc.type, "Unknown Type")
-        
+
     def test_longtype(self):
         self.assertEqual(self.gc.longtype, "Webcam Cache")
-        
+
     def test_hint(self):
         self.assertEqual(self.gc.hint, "No hints available.")
-        
+
     def test_owner(self):
         self.assertEqual(self.gc.owner, "Kea (Buddl&Joddl)")
-        
+
     def test_url(self):
         self.assertEqual(self.gc.url, "https://www.geocaching.com/geocache/GCJJ20_wuerzburger-webcam")
-        
+
     def test_coordinates(self):
         self.assertEqual(self.gc.coordinates, [49.7948, 9.930267])
-        
+
     def test_available(self):
         self.assertEqual(self.gc.available, True)
-        
+
     def test_downloaddate(self):
         expected_date = datetime.date(2016, 10, 29)
         self.assertEqual(self.gc.downloaddate, expected_date)
-        
+
     def test_downloaddate_string(self):
         self.assertEqual(self.gc.downloaddate_string, "29 Oct 2016")
-        
+
     def test_shortinfo(self):
         x = self.gc.shortinfo()
         expected = u"GCJJ20  | N 49°47.688, E 009°55.816 | Unknown Type      | D 1.0 | T 1.0 | other   | True  "
         expected += u"| 29 Oct 2016 | Wuerzburger webcam"
         self.assertEqual(x, expected)
-        
+
     def test_longinfo(self):
         x = self.gc.longinfo()
         z1 = u"\nGCJJ20 : Wuerzburger webcam"
@@ -371,34 +364,33 @@ class TestWuerzburgerWebcam(unittest.TestCase):
 
 
 class TestMedrixErnos(unittest.TestCase):
-
     def setUp(self):
         self.gc = geocache.Geocache("examples/GC5N23T.gpx")
-        
+
     def test_gccode(self):
         self.assertEqual(self.gc.gccode, "GC5N23T")
-        
+
     def test_name(self):
         self.assertEqual(self.gc.name, u"67 - MedTrix - \u001a\u001a\u001a\u001a\u001a")
-        
+
     def test_difficulty(self):
         self.assertEqual(self.gc.difficulty, 3)
-        
+
     def test_terrain(self):
         self.assertEqual(self.gc.terrain, 4)
-        
+
     def test_size(self):
         self.assertEqual(self.gc.size, 1)
-        
+
     def test_size_string(self):
         self.assertEqual(self.gc.size_string, "micro")
-        
+
     def test_type(self):
         self.assertEqual(self.gc.type, "Mystery Cache")
-        
+
     def test_longtype(self):
         self.assertEqual(self.gc.longtype, "Mystery Cache")
-        
+
     def test_description(self):
         description = u'\n\n<h2 style="font-style:italic;">... unerwartet....plötzlich.... mit einem Hammerschlag.... '
         description += u'JETZT ist sie da: ....<span style="color:#FF0000;">MedTrix</span><span class="marker">, '
@@ -437,48 +429,47 @@ class TestMedrixErnos(unittest.TestCase):
     def test_hint(self):
         hint = "Indoor: die Zahlen in Klammern sind die Anzahl der Buchstaben\nOutdoor: oben :-) Mit Leiter"
         self.assertEqual(self.gc.hint, hint)
-        
+
     def test_owner(self):
         self.assertEqual(self.gc.owner, ":-)Biene@85")
-        
+
     def test_url(self):
         self.assertEqual(self.gc.url, "https://www.geocaching.com/geocache/GC5N23T_67-medtrix")
-        
+
     def test_coordinates(self):
         self.assertEqual(self.gc.coordinates, [49.80761666666667, 9.912116666666666])
-        
+
     def test_logs(self):
         expected_logs = [['2016-07-03', 'Found it', ':-)Mitchsa & firefly70'], ['2016-04-03', "Found it", 'Hackstock']]
         self.assertEqual(self.gc.logs, expected_logs)
-        
+
     def test_available(self):
         self.assertEqual(self.gc.available, True)
-        
+
     def test_downloaddate(self):
         expected_date = datetime.date(2017, 1, 9)
         self.assertEqual(self.gc.downloaddate, expected_date)
-        
+
     def test_downloaddate_string(self):
         self.assertEqual(self.gc.downloaddate_string, "09 Jan 2017")
 
 
 class TestInvalidInput(unittest.TestCase):
-        
     def test_wrong_type(self):
         self.assertRaises(TypeError, geocache.Geocache, [4, 2])
-        
+
     def test_not_existing_file(self):
         self.assertRaises(IOError, geocache.Geocache, "examples/dfgjlg.gpx")
-        
+
     def test_broken_file(self):
-        exception = False             # has to be that complicated because ParseError unknown 
+        exception = False  # has to be that complicated because ParseError unknown
         # noinspection PyBroadException
         try:
             geocache.Geocache("examples/GC6V4PN.gpx")
-        except:   # broad exception because ParseError unknown
+        except:  # broad exception because ParseError unknown
             exception = True
         self.assertTrue(exception)
-        
+
     def test_missing_attributes(self):
         self.assertRaises(AttributeError, geocache.Geocache, "examples/GC6V793.gpx")
 
@@ -498,11 +489,8 @@ def create_testsuite():
 
 def main(v):
     """runs the testsuite"""
-    sys.stdout = saved_stdout  # print output to display
-    print("\nTesting geocache.py")
-    testsuite = create_testsuite()
-    x = unittest.TextTestRunner(verbosity=v).run(testsuite) 
-    return x.testsRun, len(x.failures), len(x.errors)
+    return test_frame.run(v, create_testsuite, "geocache.py")
+
 
 if __name__ == '__main__':
     main(2)
