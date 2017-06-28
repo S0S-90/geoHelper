@@ -26,6 +26,8 @@ def show_main_menu(gps):
             gps.show_all_on_map(gps.geocaches)
         elif task == "show_one":
             gps.show_one()
+        elif task == "show_one_gc.com":
+            gps.show_one_gccom()
         elif task == "search":
             results = gps.search()
             gps.actions_after_search(results)

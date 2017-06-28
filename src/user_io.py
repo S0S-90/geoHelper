@@ -38,16 +38,17 @@ def show_main_menu(found_exists):
     print ("2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen")
     print ("3: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen (INTERNET!!!)")
     print ("4: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)")
-    print ("5: Geocaches durchsuchen")
+    print ("5: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)")
+    print ("6: Geocaches durchsuchen")
     if found_exists:
-        print ("6: Alle gefundenen Caches anzeigen")
+        print ("7: Alle gefundenen Caches anzeigen")
+        print ("8: https://www.geocaching.com/map aufrufen (INTERNET!!!)")
+        print ("9: https://www.google.de/maps aufrufen (INTERNET!!!)")
+        print ("10: Programm verlassen")
+    else:
         print ("7: https://www.geocaching.com/map aufrufen (INTERNET!!!)")
         print ("8: https://www.google.de/maps aufrufen (INTERNET!!!)")
         print ("9: Programm verlassen")
-    else:
-        print ("6: https://www.geocaching.com/map aufrufen (INTERNET!!!)")
-        print ("7: https://www.google.de/maps aufrufen (INTERNET!!!)")
-        print ("8: Programm verlassen")
 
 
 def main_menu(found_exists):
@@ -67,20 +68,22 @@ def main_menu(found_exists):
     elif inp == "4":
         return "show_one"
     elif inp == "5":
+        return "show_one_gc.com"
+    elif inp == "6":
         return "search"
-    elif inp == "6" and found_exists:
-        return "show_founds"
     elif inp == "7" and found_exists:
-        return "gc-maps"
+        return "show_founds"
     elif inp == "8" and found_exists:
-        return "google-maps"
-    elif inp == "9" and found_exists:
-        return "exit"
-    elif inp == "6" and not found_exists:
         return "gc-maps"
-    elif inp == "7" and not found_exists:
+    elif inp == "9" and found_exists:
         return "google-maps"
+    elif inp == "10" and found_exists:
+        return "exit"
+    elif inp == "7" and not found_exists:
+        return "gc-maps"
     elif inp == "8" and not found_exists:
+        return "google-maps"
+    elif inp == "9" and not found_exists:
         return "exit"
     else:
         print ("Ungueltige Eingabe!")
@@ -192,7 +195,8 @@ def actions_after_search():
     print ("2: Alle Suchergebnisse loeschen")
     print ("3: Alle Suchergebnisse auf Karte zeigen (INTERNET!!!)")
     print ("4: Beschreibung fuer eines der Suchergebnisse anzeigen")
-    print ("5: zurueck")
+    print ("5: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)")
+    print ("6: zurueck")
     # noinspection PyCompatibility
     inp = raw_input(">> ")  # in python 3 input is raw_input by standard
     
@@ -205,6 +209,8 @@ def actions_after_search():
     elif inp == "4":
         return "show_one"
     elif inp == "5":
+        return "show_one_gc.com"
+    elif inp == "6":
         return "back"
     else:
         print ("Ungueltige Eingabe")

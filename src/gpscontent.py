@@ -186,19 +186,26 @@ class GPSContent(object):
         if len(self.geocaches) == 0:
             return user_io.NO_CACHES_ON_DEVICE
         return text
-        
-    def show_one(self):
-        """shows detailed information about one cache and performs another actions with it if desired"""
-        
+
+    def read_cache(self):
+        """asks the user for the gc-code and returns the cache if existent on gps,
+        otherwise returns None"""
         gc = user_io.general_input(user_io.INPUT_GCCODE)
         cache = None
         for c in self.geocaches:
             if gc == c.gccode:
                 cache = c
-                break        
+                break
         if not cache:
             user_io.general_output(user_io.GC_DOES_NOT_EXIST)
         else:
+            return cache
+        
+    def show_one(self):
+        """shows detailed information about one cache and performs another actions with it if desired"""
+        
+        cache = self.read_cache()
+        if cache:
             user_io.general_output(cache.longinfo())
         
             while True:
@@ -225,7 +232,14 @@ class GPSContent(object):
                     webbrowser.open_new_tab(url)
                 else:
                     break
-        
+
+    def show_one_gccom(self):
+        """opens one cache on geocaching.com"""
+
+        cache = self.read_cache()
+        if cache:
+            webbrowser.open_new_tab(cache.url)
+
     @staticmethod
     def show_gc_selection(cachelist):
         """returns a string with most important information of all caches in cachelist, each cache in one line
@@ -402,6 +416,8 @@ class GPSContent(object):
                     self.show_all_on_map(search_results)
                 elif task == "show_one":
                     self.show_one()
+                elif task == "show_one_gc.com":
+                    self.show_one_gccom()
                 elif task == "back":
                     break
         
