@@ -116,10 +116,11 @@ class TestShowMainMenu(unittest.TestCase):
         expected_output += "2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen\n"
         expected_output += "3: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen (INTERNET!!!)\n"
         expected_output += "4: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)\n"
-        expected_output += "5: Geocaches durchsuchen\n" 
-        expected_output += "6: https://www.geocaching.com/map aufrufen (INTERNET!!!)\n"
-        expected_output += "7: https://www.google.de/maps aufrufen (INTERNET!!!)\n"
-        expected_output += "8: Programm verlassen"
+        expected_output += "5: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
+        expected_output += "6: Geocaches durchsuchen\n"
+        expected_output += "7: https://www.geocaching.com/map aufrufen (INTERNET!!!)\n"
+        expected_output += "8: https://www.google.de/maps aufrufen (INTERNET!!!)\n"
+        expected_output += "9: Programm verlassen"
         self.assertEqual(output, expected_output)
         
     def test_foundexists(self):
@@ -132,11 +133,12 @@ class TestShowMainMenu(unittest.TestCase):
         expected_output += "2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen\n"
         expected_output += "3: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen (INTERNET!!!)\n"
         expected_output += "4: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)\n"
-        expected_output += "5: Geocaches durchsuchen\n" 
-        expected_output += "6: Alle gefundenen Caches anzeigen\n"
-        expected_output += "7: https://www.geocaching.com/map aufrufen (INTERNET!!!)\n"
-        expected_output += "8: https://www.google.de/maps aufrufen (INTERNET!!!)\n"
-        expected_output += "9: Programm verlassen"
+        expected_output += "5: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
+        expected_output += "6: Geocaches durchsuchen\n"
+        expected_output += "7: Alle gefundenen Caches anzeigen\n"
+        expected_output += "8: https://www.geocaching.com/map aufrufen (INTERNET!!!)\n"
+        expected_output += "9: https://www.google.de/maps aufrufen (INTERNET!!!)\n"
+        expected_output += "10: Programm verlassen"
         self.assertEqual(output, expected_output)
    
         
@@ -157,25 +159,29 @@ class TestMainMenu(unittest.TestCase):
     def test_4_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="4"):
             self.assertEqual(user_io.main_menu(False), 'show_one')
-        
+
     def test_5_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="5"):
-            self.assertEqual(user_io.main_menu(False), 'search')
+            self.assertEqual(user_io.main_menu(False), 'show_one_gc.com')
         
     def test_6_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="6"):
-            self.assertEqual(user_io.main_menu(False), 'gc-maps')
+            self.assertEqual(user_io.main_menu(False), 'search')
         
     def test_7_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="7"):
-            self.assertEqual(user_io.main_menu(False), 'google-maps')
+            self.assertEqual(user_io.main_menu(False), 'gc-maps')
         
     def test_8_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="8"):
-            self.assertEqual(user_io.main_menu(False), 'exit')
+            self.assertEqual(user_io.main_menu(False), 'google-maps')
         
     def test_9_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="9"):
+            self.assertEqual(user_io.main_menu(False), 'exit')
+        
+    def test_10_nofoundexists(self):
+        with mock.patch('__builtin__.raw_input', return_value="10"):
             self.assertEqual(user_io.main_menu(False), None)
         
     def test_1_foundexists(self):
@@ -193,25 +199,29 @@ class TestMainMenu(unittest.TestCase):
     def test_4_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="4"):
             self.assertEqual(user_io.main_menu(True), 'show_one')
-        
+
     def test_5_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="5"):
-            self.assertEqual(user_io.main_menu(True), 'search')
+            self.assertEqual(user_io.main_menu(True), 'show_one_gc.com')
         
     def test_6_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="6"):
-            self.assertEqual(user_io.main_menu(True), 'show_founds')
+            self.assertEqual(user_io.main_menu(True), 'search')
         
     def test_7_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="7"):
-            self.assertEqual(user_io.main_menu(True), 'gc-maps')
+            self.assertEqual(user_io.main_menu(True), 'show_founds')
         
     def test_8_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="8"):
-            self.assertEqual(user_io.main_menu(True), 'google-maps')
+            self.assertEqual(user_io.main_menu(True), 'gc-maps')
         
     def test_9_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="9"):
+            self.assertEqual(user_io.main_menu(True), 'google-maps')
+        
+    def test_10_foundexists(self):
+        with mock.patch('__builtin__.raw_input', return_value="10"):
             self.assertEqual(user_io.main_menu(True), 'exit')
         
         
@@ -491,6 +501,10 @@ class TestActionsAfterSearch(unittest.TestCase):
             
     def test_5(self):
         with mock.patch('__builtin__.raw_input', return_value="5"):
+            self.assertEqual(user_io.actions_after_search(), "show_one_gc.com")
+
+    def test_6(self):
+        with mock.patch('__builtin__.raw_input', return_value="6"):
             self.assertEqual(user_io.actions_after_search(), "back")
             
     def test_other(self):
@@ -508,7 +522,8 @@ class TestActionsAfterSearch(unittest.TestCase):
             expected_output += "2: Alle Suchergebnisse loeschen\n"
             expected_output += "3: Alle Suchergebnisse auf Karte zeigen (INTERNET!!!)\n"
             expected_output += "4: Beschreibung fuer eines der Suchergebnisse anzeigen\n"
-            expected_output += "5: zurueck"
+            expected_output += "5: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
+            expected_output += "6: zurueck"
             self.assertEqual(output, expected_output)
             
     def test_output_invalid_input(self):
@@ -522,7 +537,8 @@ class TestActionsAfterSearch(unittest.TestCase):
             expected_output += "2: Alle Suchergebnisse loeschen\n"
             expected_output += "3: Alle Suchergebnisse auf Karte zeigen (INTERNET!!!)\n"
             expected_output += "4: Beschreibung fuer eines der Suchergebnisse anzeigen\n"
-            expected_output += "5: zurueck\n"
+            expected_output += "5: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
+            expected_output += "6: zurueck\n"
             expected_output += "Ungueltige Eingabe"
             self.assertEqual(output, expected_output)
        

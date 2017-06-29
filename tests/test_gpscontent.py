@@ -490,6 +490,26 @@ class TestShowAllDist(unittest.TestCase):
         self.assertEqual(x.show_all_dist(), expected)
 
 
+class TestReadCache(unittest.TestCase):
+
+    def setUp(self):
+        self.x = gpscontent.GPSContent(r"examples\no_logfile")
+
+    def test_cache(self):
+        with mock.patch('__builtin__.raw_input', return_value="GC5N23T"):
+            gc_return = self.x.read_cache()
+            gc = geocache.Geocache(r"examples\no_logfile\GPX\GC5N23T.gpx")
+            self.assertEqual(gc_return, gc)
+
+    def test_not_existing_cache(self):
+        with mock.patch('__builtin__.raw_input', return_value="GC12345"):
+            out = StringIO()
+            sys.stdout = out
+            self.x.show_one()
+            output = out.getvalue().strip()
+            self.assertEqual(output, "Dieser GC-Code existiert nicht.")
+
+
 class TestShowOne(unittest.TestCase):
     def setUp(self):
         self.x = gpscontent.GPSContent(r"examples\no_logfile")
@@ -892,6 +912,7 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestSortAndShowCaches))
     suite.addTest(unittest.makeSuite(TestShowAll))
     suite.addTest(unittest.makeSuite(TestShowAllDist))
+    suite.addTest(unittest.makeSuite(TestReadCache))
     suite.addTest(unittest.makeSuite(TestShowOne))
     suite.addTest(unittest.makeSuite(TestShowGCSelection))
     suite.addTest(unittest.makeSuite(TestShowGCSelectionDist))
