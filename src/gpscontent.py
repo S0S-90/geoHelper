@@ -7,9 +7,10 @@ import os
 import glob
 import webbrowser
 import subprocess
+import xml.etree.ElementTree as ElementTree
 
 from geocache import TYPE_LIST, SIZE_LIST  
-from geocache import Geocache   
+from geocache import Geocache, Waypoint
 import user_io      
 import ownfunctions 
 
@@ -72,12 +73,12 @@ class GPSContent(object):
     """
 
     def __init__(self, path):
-        """reads geocaches and logfile from gps-device"""
+        """reads geocaches, waypoints and logfile from gps-device"""
         
         self.path = path              
         self.found_exists = False     
         self.warning = False          
-        self.existing_attributes = [] 
+        self.existing_attributes = []
         
         self.geocaches = []               # read all caches from GC*.gpx-files in path\GPX and save in list 'geocaches'
         gpx_path = os.path.join(self.path, "GPX")
@@ -88,7 +89,15 @@ class GPSContent(object):
                 self.geocaches.append(Geocache(gpxfile))
             except:
                 user_io.general_output("{}: {}".format(user_io.WARNING_BROKEN_FILE, os.path.basename(gpxfile)))
-        user_io.general_output("\n{} {}".format(len(self.geocaches), user_io.GEOCACHES_ON_DEVICE))
+
+        self.waypoints = []  # read all caches from GC*.gpx-files in path\GPX and save in list 'waypoints'
+        for wptfile in glob.glob(os.path.join(gpx_path, "Wegpunkte_*.gpx")):
+            # noinspection PyBroadException
+            # (broad exception necessary because ParseError unknown)
+            try:
+                self.waypoints += self._read_waypoints(wptfile)
+            except:
+                user_io.general_output("{}: {}".format(user_io.WARNING_BROKEN_FILE, os.path.basename(wptfile)))
             
         for g in self.geocaches:      # read existing attributes from geocaches
             for a in g.attributes:
@@ -105,6 +114,33 @@ class GPSContent(object):
                 self.warning = True  # warning, if caches in logfile that are marked as something different (not found)
             else:
                 self.warning = False
+
+        user_io.general_output("\n{} {} {} {} {}".format(len(self.geocaches), user_io.GEOCACHES, user_io.AND,
+                                                         len(self.waypoints), user_io.WAYPOINTS_ON_DEVICE))
+
+    @staticmethod
+    def _read_waypoints(wptfile):
+        """read waypoints from waypoint-gpx-file and return list of waypoints, part of __init__"""
+
+        wpt_tree = ElementTree.parse(wptfile)  # read .gpx-Datei
+
+        names_raw = wpt_tree.findall(".//{http://www.topografix.com/GPX/1/1}name")  # find name of every waypoint
+        namelist = []
+        for n in names_raw:
+            namelist.append(n.text)
+
+        coords_raw = wpt_tree.findall(".//{http://www.topografix.com/GPX/1/1}wpt")  # find coordinates for every waypoint
+        coordlist = []
+        for c in coords_raw:
+            coords = [float(c.get("lat")), float(c.get("lon"))]
+            coordlist.append(coords)
+
+        waypoints = []
+        if len(namelist) == len(coordlist):
+            for i, name in enumerate(namelist):
+                waypoints.append(Waypoint(name, coordlist[i]))
+
+        return waypoints
 
     def _get_logged_and_found_caches(self):
         """reads logged and found caches from logfile 'geocache_visits.txt'

@@ -104,6 +104,15 @@ def replace_signs(string):
     return newstring
 
 
+def show_xml(xml_tree):
+    """shows tags, attributes and test of xml-tree (only for information)"""
+    for x in xml_tree.iter():
+        t = ""
+        if x.text:
+            t = x.text.encode("utf-8")
+        print (x.tag, x.attrib, t)
+
+
 def coords_decimal_to_minutes(coordlist):
     """converts decimal coordinates (e.g. from gpx-file) to degrees and minutes (e.g. like on geocaching.com)
     

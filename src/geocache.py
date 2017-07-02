@@ -1,7 +1,8 @@
 ﻿#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-"""This file contains the class Geocache (for a single geocache)."""
+"""This file contains the classes Geocache (for a single geocache) and
+Waypoint (for a waypoint, consisting only of name and coordinates."""
 
 from __future__ import print_function
 
@@ -122,7 +123,7 @@ class Geocache(object):
         self.filename_path = filename_path
         self.gccode = os.path.splitext(os.path.basename(filename_path))[0]  # gc-code
         
-        geocache_tree = ElementTree.parse(filename_path)    # read .gpx-Datei 
+        geocache_tree = ElementTree.parse(filename_path)    # read .gpx-Datei
         
         name = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}name").text  # read name
         self.name = ownfunctions.replace_signs(name) 
@@ -290,3 +291,16 @@ class Geocache(object):
         for l in self.logs:
             z11 += u"{}: {} by {}\n".format(l[0], l[1], l[2])
         return z1 + z2 + z3 + z4 + z5 + z6 + z7 + z8 + z9 + z10 + z11
+
+
+class Waypoint(object):
+    """still to do"""
+
+    def __init__(self, name, coordinates):
+        self.name = name
+        self.coordinates = coordinates
+
+    def info(self):
+        """has to be changed (coordstring)"""
+        return u"{}, {}".format(self.name, self.coordinates)
+
