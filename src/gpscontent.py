@@ -138,7 +138,9 @@ class GPSContent(object):
         waypoints = []
         if len(namelist) == len(coordlist):
             for i, name in enumerate(namelist):
-                waypoints.append(Waypoint(name, coordlist[i]))
+                w = Waypoint(name, coordlist[i])
+                # TODO: see if waypoint belongs to a geocache
+                waypoints.append(w)
 
         return waypoints
 

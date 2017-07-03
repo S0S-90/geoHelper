@@ -294,13 +294,37 @@ class Geocache(object):
 
 
 class Waypoint(object):
-    """still to do"""
+    """
+    An object of this class contains all information about a waypoint
+
+
+    Attributes:
+    -----------
+    name: string
+        name of the waypoint
+
+    coordinates: list
+        coordinates in decimal degree, first element of the list: latitude, second element: longitude
+
+    coordinates_string: string
+        coordinates as degree and minutes
+
+
+    Methods:
+    ---------
+    __init__(name, coordinates): creates the object out of name and coordinates as list [lat, lon]
+
+    info(): returns information about the waypoint
+    """
 
     def __init__(self, name, coordinates):
+        """creates the object out of name and coordinates as list [lat, lon]"""
+
         self.name = name
         self.coordinates = coordinates
+        coord_str = ownfunctions.coords_decimal_to_minutes(self.coordinates)
+        self.coordinates_string = coord_str  # string 'X XX°XX.XXX, X XXX°XX.XXX'
 
     def info(self):
-        """has to be changed (coordstring)"""
-        return u"{}, {}".format(self.name, self.coordinates)
-
+        """returns information about the waypoint"""
+        return u"        | {} | {}".format(self.coordinates_string, self.name)
