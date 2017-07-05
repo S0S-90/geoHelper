@@ -102,6 +102,9 @@ class Geocache(object):
         
     downloaddate_string: string
         date when the gpx-file was downloaded from geocaching.com as string
+
+    waypoints: list
+        list of waypoints that belong to cache (empty if no waypoints)
     
     
     Methods:
@@ -181,6 +184,7 @@ class Geocache(object):
         self.downloaddate = datetime.date(int(downloaddate[-1]), month, int(downloaddate[2]))
         
         self.distance = 0     # initialise for later use
+        self.waypoints = []
 
     @staticmethod
     def _read_logs(geocache_tree):
@@ -250,6 +254,10 @@ class Geocache(object):
         
     def __ne__(self, other):
         return self.gccode != other
+
+    def add_waypoint(self, waypoint):
+        """TODO"""
+        self.waypoints.append(waypoint)
             
     def shortinfo(self):                                  
         """returns one-line information about the cache"""
@@ -263,7 +271,9 @@ class Geocache(object):
         g = str(self.available).ljust(5)
         h = self.downloaddate_string
         i = self.name
-        return u"{} | {} | {} | D {} | T {} | {} | {} | {} | {}".format(a, b, c, d, e, f, g, h, i)
+        result = u"{} | {} | {} | D {} | T {} | {} | {} | {} | {}".format(a, b, c, d, e, f, g, h, i)
+        for w in self.waypoints:
+            result += u"\n"+w.info()
 
     def longinfo(self): 
         """returns detailed information about the cache""" 

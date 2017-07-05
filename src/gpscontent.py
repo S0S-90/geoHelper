@@ -118,8 +118,7 @@ class GPSContent(object):
         user_io.general_output("\n{} {} {} {} {}".format(len(self.geocaches), user_io.GEOCACHES, user_io.AND,
                                                          len(self.waypoints), user_io.WAYPOINTS_ON_DEVICE))
 
-    @staticmethod
-    def _read_waypoints(wptfile):
+    def _read_waypoints(self, wptfile):
         """read waypoints from waypoint-gpx-file and return list of waypoints, part of __init__"""
 
         wpt_tree = ElementTree.parse(wptfile)  # read .gpx-Datei
@@ -139,8 +138,17 @@ class GPSContent(object):
         if len(namelist) == len(coordlist):
             for i, name in enumerate(namelist):
                 w = Waypoint(name, coordlist[i])
-                # TODO: see if waypoint belongs to a geocache
-                waypoints.append(w)
+                last_word = w.name.split()[-1]
+                cache = None
+                if last_word.startswith("(GC") and last_word.endswith(")"):
+                    gc = last_word[1:-1]
+                    for c in self.geocaches:
+                        if gc == c.gccode:
+                            cache = c
+                            break
+                    cache.add_waypoint(w)
+                if cache is None:
+                    waypoints.append(w)
 
         return waypoints
 
