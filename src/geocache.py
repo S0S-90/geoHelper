@@ -273,7 +273,7 @@ class Geocache(object):
         i = self.name
         result = u"{} | {} | {} | D {} | T {} | {} | {} | {} | {}".format(a, b, c, d, e, f, g, h, i)
         for w in self.waypoints:
-            result += u"\n"+w.info()
+            result += u"\n" + w.info()
         return result
 
     def longinfo(self): 

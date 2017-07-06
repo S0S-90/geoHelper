@@ -135,20 +135,22 @@ class GPSContent(object):
             coordlist.append(coords)
 
         waypoints = []
-        if len(namelist) == len(coordlist):
-            for i, name in enumerate(namelist):
-                w = Waypoint(name, coordlist[i])
+        if len(namelist) == len(coordlist):     # as many names as coordinates (else file is broken)
+            for i, name in enumerate(namelist):  # for every waypoint (defined by name)
+                w = Waypoint(name, coordlist[i])  # create waypoint out of name and coordinates
                 last_word = w.name.split()[-1]
                 cache = None
-                if last_word.startswith("(GC") and last_word.endswith(")"):
+                if last_word.startswith("(GC") and last_word.endswith(")"):  # decide if waypoint belongs to cache
                     gc = last_word[1:-1]
                     for c in self.geocaches:
                         if gc == c.gccode:
                             cache = c
                             break
-                    cache.add_waypoint(w)
+                    cache.add_waypoint(w)   # if yes add waypoint to cache
                 if cache is None:
-                    waypoints.append(w)
+                    waypoints.append(w)   # if not add waypoint to gps
+        else:
+            user_io.general_output(user_io.WARNING_BROKEN_FILE)
 
         return waypoints
 
