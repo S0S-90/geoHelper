@@ -139,15 +139,16 @@ class GPSContent(object):
             for i, name in enumerate(namelist):  # for every waypoint (defined by name)
                 w = Waypoint(name, coordlist[i])  # create waypoint out of name and coordinates
                 last_word = w.name.split()[-1]
-                cache = None
+                belongs_to_cache = False
                 if last_word.startswith("(GC") and last_word.endswith(")"):  # decide if waypoint belongs to cache
                     gc = last_word[1:-1]
                     for c in self.geocaches:
                         if gc == c.gccode:
-                            cache = c
+                            belongs_to_cache = True
+                            w.find_shown_name_and_distance(c)
+                            c.add_waypoint(w)  # if yes add waypoint to cache
                             break
-                    cache.add_waypoint(w)   # if yes add waypoint to cache
-                if cache is None:
+                if not belongs_to_cache:
                     waypoints.append(w)   # if not add waypoint to gps
         else:
             user_io.general_output(user_io.WARNING_BROKEN_FILE)
@@ -229,7 +230,7 @@ class GPSContent(object):
         """returns a string with most important infos (+ distances) for each cache, each cache in one line"""
         text = ""
         for c in self.geocaches:
-            newline = u"{:7}km | {}\n".format(round(c.distance, 1), c.shortinfo())
+            newline = u"{:7}km | {}\n".format(round(c.distance, 1), c.shortinfo(12))
             text += newline
         if len(self.geocaches) == 0:
             return user_io.NO_CACHES_ON_DEVICE
@@ -257,7 +258,7 @@ class GPSContent(object):
             user_io.general_output(cache.longinfo())
         
             while True:
-                task = user_io.show_one()
+                task = user_io.show_one(cache.waypoints)
                 if task == "delete":
                     self.delete([cache])
                     break
@@ -278,6 +279,9 @@ class GPSContent(object):
                     coords_sec = ownfunctions.coords_minutes_to_seconds(cache.coordinates_string)
                     url = u"https://www.google.de/maps/place/{}".format(coords_sec)
                     webbrowser.open_new_tab(url)
+                elif task == "mapcustomizer":
+                    # TODO
+                    user_io.general_output("not implemented yet")
                 else:
                     break
 
@@ -314,7 +318,7 @@ class GPSContent(object):
         for c in cachelist:
             if type(c) != Geocache:
                 raise TypeError("An Element of the selection is not a Geocache!")
-            newline = u"{:7}km | {}\n".format(round(c.distance, 1), c.shortinfo())
+            newline = u"{:7}km | {}\n".format(round(c.distance, 1), c.shortinfo(12))
             text += newline
         return text
         
@@ -508,12 +512,10 @@ class GPSContent(object):
                         removelist.append(c1)
             self.geocaches = [c for c in self.geocaches if c not in removelist]
         return delete
-        
+
     @staticmethod
-    def show_all_on_map(cachelist):
-        """shows all caches in cachelist on a map (uses webservice 'www.mapcustomizer.com')"""
-    
-        editor = user_io.show_all_on_map_start()
+    def create_mapinfo(cachelist):
+        """creates a textfile from a list of caches that is used to configure the map on 'www.mapcustomizer.com'"""
         with open("mapinfo.txt", "w") as mapinfo:
             for i, g in enumerate(cachelist):
                 if g.type == "Traditional Cache":
@@ -532,7 +534,31 @@ class GPSContent(object):
                     color = "pink"
                 mapinfo.write("{},{} {{{}}} <{}>\n".
                               format(g.coordinates[0], g.coordinates[1], g.name.encode(user_io.CODING), color))
+
+    def show_all_on_map(self, cachelist):
+        """shows all caches in cachelist on a map (uses webservice 'www.mapcustomizer.com')"""
+    
+        editor = user_io.show_all_on_map_start()
+        self.create_mapinfo(cachelist)
         subprocess.Popen([editor, "mapinfo.txt"])
         webbrowser.open_new_tab("https://www.mapcustomizer.com/#bulkEntryModal") 
         user_io.show_all_on_map_end()
         os.remove("mapinfo.txt")
+
+    def show_waypoints(self):
+        """shows all free waypoints and asks if they should be assigned to geocaches"""
+
+        if not self.waypoints:
+            user_io.general_output(user_io.NO_WAYPOINTS_ON_DEVICE)
+        else:
+            for w in self.waypoints:    # show waypoints
+                user_io.general_output(w.info())
+            inp = user_io.assign_waypoints()    # assign waypoints
+            if inp:
+                self.assign_waypoints()
+
+    @staticmethod
+    def assign_waypoints():
+        """bla"""
+        # TODO
+        user_io.general_output("Not implemented yet.")

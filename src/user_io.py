@@ -36,19 +36,20 @@ def show_main_menu(found_exists):
     print ("\nWas moechtest du als naechstes tun?")
     print ("1: Geocaches aktualisieren")
     print ("2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen")
-    print ("3: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen (INTERNET!!!)")
-    print ("4: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)")
-    print ("5: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)")
-    print ("6: Geocaches durchsuchen")
+    print ("3: Alle Wegpunkte anzeigen und zu Geocaches zuordnen")
+    print ("4: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen (INTERNET!!!)")
+    print ("5: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)")
+    print ("6: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)")
+    print ("7: Geocaches durchsuchen")
     if found_exists:
-        print ("7: Alle gefundenen Caches anzeigen")
+        print ("8: Alle gefundenen Caches anzeigen")
+        print ("9: https://www.geocaching.com/map aufrufen (INTERNET!!!)")
+        print ("10: https://www.google.de/maps aufrufen (INTERNET!!!)")
+        print ("11: Programm verlassen")
+    else:
         print ("8: https://www.geocaching.com/map aufrufen (INTERNET!!!)")
         print ("9: https://www.google.de/maps aufrufen (INTERNET!!!)")
         print ("10: Programm verlassen")
-    else:
-        print ("7: https://www.geocaching.com/map aufrufen (INTERNET!!!)")
-        print ("8: https://www.google.de/maps aufrufen (INTERNET!!!)")
-        print ("9: Programm verlassen")
 
 
 def main_menu(found_exists):
@@ -64,26 +65,28 @@ def main_menu(found_exists):
     elif inp == "2":
         return "show_all"
     elif inp == "3":
-        return "show_all_on_map"
+        return "show_waypoints"
     elif inp == "4":
-        return "show_one"
+        return "show_all_on_map"
     elif inp == "5":
-        return "show_one_gc.com"
+        return "show_one"
     elif inp == "6":
+        return "show_one_gc.com"
+    elif inp == "7":
         return "search"
-    elif inp == "7" and found_exists:
-        return "show_founds"
     elif inp == "8" and found_exists:
-        return "gc-maps"
+        return "show_founds"
     elif inp == "9" and found_exists:
-        return "google-maps"
-    elif inp == "10" and found_exists:
-        return "exit"
-    elif inp == "7" and not found_exists:
         return "gc-maps"
-    elif inp == "8" and not found_exists:
+    elif inp == "10" and found_exists:
         return "google-maps"
+    elif inp == "11" and found_exists:
+        return "exit"
+    elif inp == "8" and not found_exists:
+        return "gc-maps"
     elif inp == "9" and not found_exists:
+        return "google-maps"
+    elif inp == "10" and not found_exists:
         return "exit"
     else:
         print ("Ungueltige Eingabe!")
@@ -246,7 +249,18 @@ def confirm_deletion():
         return False
 
 
-def show_one():
+def assign_waypoints():
+    """asks if waypoints should be assigned"""
+
+    # noinspection PyCompatibility
+    inp = raw_input("\nWillst die Wegpunkte zu Geocaches zuordnen? (y/n) ")  # in python 3 only raw_input
+    if inp == "y":
+        return True
+    else:
+        return False
+
+
+def show_one(waypoints):
     """asks after showing one cache what to do next
     returns the next action as a string"""
     
@@ -256,7 +270,11 @@ def show_one():
     print ("3: Abstand dieses Caches zu einer bestimmten Position berechnen")
     print ("4: Position des Caches auf der Karte https://www.geocaching.com/map anzeigen (INTERNET!!!)")
     print ("5: Position des Caches auf der Karte https://www.google.de/maps anzeigen (INTERNET!!!)")
-    print ("6: zurueck")
+    if waypoints:
+        print ("6: diesen Cache mit allen Wegpunkten auf Karte zeigen (INTERNET!!!)")
+        print ("7: zurueck")
+    else:
+        print ("6: zurueck")
     # noinspection PyCompatibility
     inp = raw_input(">> ")  # in python 3 input is raw_input by standard
     if inp == "1":
@@ -269,6 +287,8 @@ def show_one():
         return "gc-map"
     elif inp == "5":
         return "googlemaps"
+    elif inp == "6" and waypoints:
+        return "mapcustomizer"
 
 
 def coordinates_input():
@@ -336,6 +356,7 @@ WARNING_BROKEN_FILE = "Achtung! Kaputte Datei"
 GEOCACHES = "Geocaches"
 AND = "und"
 WAYPOINTS_ON_DEVICE = "Wegpunkte auf dem Geraet."
+NO_WAYPOINTS_ON_DEVICE = "Keine Wegpunkte auf dem Geraet."
 NO_CACHES_ON_DEVICE = "Keine Caches auf dem Geraet."
 INPUT_GCCODE = "Gib den GC-Code ein: "
 GC_DOES_NOT_EXIST = "Dieser GC-Code existiert nicht."

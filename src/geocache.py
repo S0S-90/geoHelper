@@ -111,8 +111,9 @@ class Geocache(object):
     ---------
     __init__(filename_path): Create a Geocache-object out of the gpx-file (complete name with path)
     
-    shortinfo(): unicode
-        one-line information about the cache 
+    shortinfo(space=0): unicode
+        one-line information about the cache and the waypoints
+        set space to 12 if cache is shown with distance
         
     longinfo(): 
         detailed information about the cache
@@ -259,8 +260,10 @@ class Geocache(object):
         """TODO"""
         self.waypoints.append(waypoint)
             
-    def shortinfo(self):                                  
-        """returns one-line information about the cache"""
+    def shortinfo(self, space=0):
+        """returns one-line information about the cache
+        space = number of spaces before waypoint lines
+        (space = 0 if cache is shown without distance, space = 12 if it's shown with distance)"""
 
         a = self.gccode.ljust(7)
         b = self.coordinates_string
@@ -273,7 +276,7 @@ class Geocache(object):
         i = self.name
         result = u"{} | {} | {} | D {} | T {} | {} | {} | {} | {}".format(a, b, c, d, e, f, g, h, i)
         for w in self.waypoints:
-            result += u"\n" + w.info()
+            result += u"\n" + space*" " + w.info()
         return result
 
     def longinfo(self): 
@@ -314,16 +317,27 @@ class Waypoint(object):
     name: string
         name of the waypoint
 
+    name_shown: string
+        name of the waypoint that is shown
+        i.e. without the gccode of the cache if waypoint belongs to a geocache
+
     coordinates: list
         coordinates in decimal degree, first element of the list: latitude, second element: longitude
 
     coordinates_string: string
         coordinates as degree and minutes
 
+    distance: float
+        distance of the coordinates of the cache if waypoint belongs to a cache
+        else None
+
 
     Methods:
     ---------
     __init__(name, coordinates): creates the object out of name and coordinates as list [lat, lon]
+
+    find_shown_name_and_distance(geocache): is performed if waypoint belongs to a geocache,
+                                            calculates shown_name and distance
 
     info(): returns information about the waypoint
     """
@@ -332,10 +346,23 @@ class Waypoint(object):
         """creates the object out of name and coordinates as list [lat, lon]"""
 
         self.name = name
+        self.shown_name = name  # for waypoints not belonging to a geocache
         self.coordinates = coordinates
         coord_str = ownfunctions.coords_decimal_to_minutes(self.coordinates)
         self.coordinates_string = coord_str  # string 'X XX°XX.XXX, X XXX°XX.XXX'
+        self.distance = None  # initialize for later use
+
+    def find_shown_name_and_distance(self, geocache):
+        """calculates the shown name and the distance to the 'main coordinates'
+        if waypoint belongs to a geocache"""
+
+        namelist = self.name.split()
+        self.shown_name = " ".join(namelist[:-1])
+        self.distance = ownfunctions.calculate_distance(self.coordinates, geocache.coordinates)
 
     def info(self):
         """returns information about the waypoint"""
-        return u"        | {} | {}".format(self.coordinates_string, self.name)
+        result = u"        | {} | {}".format(self.coordinates_string, self.shown_name)
+        if self.distance:
+            result += u" ({}km)".format(round(self.distance, 1))
+        return result

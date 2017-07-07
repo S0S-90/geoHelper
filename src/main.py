@@ -22,6 +22,8 @@ def show_main_menu(gps):
             show_main_menu(new_content)
         elif task == "show_all":
             gps.sort_and_show_caches()
+        elif task == "show_waypoints":
+            gps.show_waypoints()
         elif task == "show_all_on_map":
             gps.show_all_on_map(gps.geocaches)
         elif task == "show_one":
