@@ -115,8 +115,11 @@ class GPSContent(object):
             else:
                 self.warning = False
 
-        user_io.general_output("\n{} {} {} {} {}".format(len(self.geocaches), user_io.GEOCACHES, user_io.AND,
-                                                         len(self.waypoints), user_io.WAYPOINTS_ON_DEVICE))
+        if self.waypoints:
+            user_io.general_output("\n{} {} {} {} {} {}".format(len(self.geocaches), user_io.GEOCACHES, user_io.AND,
+                                                                len(self.waypoints), user_io.WAYPOINTS, user_io.ON_DEVICE))
+        else:
+            user_io.general_output("\n{} {} {}".format(len(self.geocaches), user_io.GEOCACHES, user_io.ON_DEVICE))
 
     def _read_waypoints(self, wptfile):
         """read waypoints from waypoint-gpx-file and return list of waypoints, part of __init__"""
