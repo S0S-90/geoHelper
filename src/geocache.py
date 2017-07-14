@@ -30,6 +30,7 @@ STR_ACT = "Cache ist aktiv"
 STR_DATE = "Stand"
 STR_LINK = "Link"
 STR_HINT = "Hinweis"
+STR_WAYPOINTS = "Wegpunkte"
 
 
 class Geocache(object):
@@ -292,6 +293,11 @@ class Geocache(object):
         lt = self.longtype
         z3 = u"\n{}: {}, {}: {}, {}: {}, {}: {}".format(STR_D, d, STR_T, t, STR_SIZE, sizestr, STR_TYPE, lt)
         z4 = u"\n{}: {}".format(STR_COORDS, self.coordinates_string)
+        if self.waypoints:
+            z4 += u", {}: ".format(STR_WAYPOINTS)
+            for w in self.waypoints:
+                z4 += u"{} ({}), ".format(w.shown_name, w.coordinates_string)
+            z4 = z4[:-2]
         z5 = u"\n{}: {}".format(STR_OWNER, self.owner)
         z6 = u"\n{}: ".format(STR_ATTR)
         for a in self.attributes:
