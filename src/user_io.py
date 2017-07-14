@@ -67,7 +67,7 @@ def main_menu(found_exists):
     elif inp == "3":
         return "show_waypoints"
     elif inp == "4":
-        return "show_all_on_map"
+        return "show_on_map"
     elif inp == "5":
         return "show_one"
     elif inp == "6":
@@ -314,22 +314,37 @@ def ask_for_path():
         return inp
 
 
-def show_all_on_map_start():
-    """explains how the task 'show_all_on_map' works and asks for path to texteditor
+def ask_for_waypoints():
+    """asks if waypoints should be shown on map"""
+
+    # noinspection PyCompatibility
+    inp = raw_input("\nSollen auch Wegpunkte auf der Karte angezeigt werden? (y/n) ")  # in python 3 only raw_input
+    if inp == "y":
+        return True
+    else:
+        return False
+
+
+def show_on_map_start(one, free_waypoints):
+    """explains how the task 'show_on_map' works and asks for path to texteditor
     returns path to texteditor or - if no path is specified - the standard EDITORNAME"""
 
     print ("\nNach dem Klicken werden sich mehrere Fenster oeffnen. "
            "Eines davon ist der Editor, das andere die Seite mapcustomizer.com in deinem Browser.")
-    print ("Um die Caches auf der Karte anzuzeigen, kopiere den vollstaendigen Inhalt der Textdatei "
+    print ("Um den Cache / die Caches auf der Karte anzuzeigen, kopiere den vollstaendigen Inhalt der Textdatei "
            "aus deinem Editor in das Feld 'Bulk Entry' im Browser.")
-    print ("Die Caches werden in folgenden Farben angezeigt:")
-    print ("Gruen: Traditional Cache")
-    print ("Rot: Multi-cache")
-    print ("Blau: Mystery Cache")
-    print ("Braun: EarthCache")
-    print ("Grau: Letterbox, Geocaching HQ")
-    print ("Gelb: Event Cache, Wherigo Cache")
-    print ("Pink: unbekannter Typ")
+    if not one:        # if more than one geocache
+        print ("Die Caches werden in folgenden Farben angezeigt:")
+        print ("Gruen: Traditional Cache")
+        print ("Rot: Multi-cache")
+        print ("Blau: Mystery Cache")
+        print ("Braun: EarthCache")
+        print ("Grau: Letterbox, Geocaching HQ")
+        z = "Gelb: Event Cache, Wherigo Cache"
+        if free_waypoints:
+            z += ", Wegpunkte"
+        print (z)
+        print ("Pink: unbekannter Typ")
     print ("Gib nun den Pfad zu deinem Editor an: (bei Benutzung von Windows sollte das unnoetig sein)")
     # noinspection PyCompatibility
     inp = raw_input(">> ")  # in python 3 input is raw_input by standard
@@ -339,8 +354,8 @@ def show_all_on_map_start():
         return inp
 
 
-def show_all_on_map_end():
-    """asks for another input before leaving task 'show_all_on_map'"""
+def show_on_map_end():
+    """asks for another input before leaving task 'show_on_map'"""
     
     print ("Schliesse den Editor und druecke Enter.")
     # noinspection PyCompatibility

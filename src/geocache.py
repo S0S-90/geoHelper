@@ -323,7 +323,7 @@ class Waypoint(object):
     name: string
         name of the waypoint
 
-    name_shown: string
+    shown_name: string
         name of the waypoint that is shown
         i.e. without the gccode of the cache if waypoint belongs to a geocache
 

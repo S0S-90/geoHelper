@@ -67,7 +67,7 @@ class GPSContent(object):
     
     actions_after_search(search_results): performs different actions with search results
     
-    show_all_on_map(cachelist): provides the possiblitly to show all caches in cachelist on a map
+    show_on_map(cachelist, one=False): provides the possiblitly to show all caches in cachelist on a map
                                 (uses webservice 'www.mapcustomizer.com')
 
     """
@@ -280,8 +280,7 @@ class GPSContent(object):
                     url = u"https://www.google.de/maps/place/{}".format(coords_sec)
                     webbrowser.open_new_tab(url)
                 elif task == "mapcustomizer":
-                    # TODO
-                    user_io.general_output("not implemented yet")
+                    self.show_on_map(cache)
                 else:
                     break
 
@@ -465,7 +464,7 @@ class GPSContent(object):
                 elif task == "delete":
                     self.delete(search_results)
                 elif task == "show_on_map":
-                    self.show_all_on_map(search_results)
+                    self.show_on_map(search_results)
                 elif task == "show_one":
                     self.show_one()
                 elif task == "show_one_gc.com":
@@ -513,9 +512,9 @@ class GPSContent(object):
             self.geocaches = [c for c in self.geocaches if c not in removelist]
         return delete
 
-    @staticmethod
-    def create_mapinfo(cachelist):
-        """creates a textfile from a list of caches that is used to configure the map on 'www.mapcustomizer.com'"""
+    def _create_mapinfo_several(self, cachelist, show_waypoints, free_waypoints):
+        """creates a textfile from a list of caches that is used to configure the map on 'www.mapcustomizer.com'
+        part of show_on_map"""
         with open("mapinfo.txt", "w") as mapinfo:
             for i, g in enumerate(cachelist):
                 if g.type == "Traditional Cache":
@@ -532,17 +531,73 @@ class GPSContent(object):
                     color = "blue"
                 else:                        # cache of unknown type
                     color = "pink"
+                name = g.name.encode(user_io.CODING)
+                if g.waypoints and show_waypoints:  # if waypoints: add gccode to name
+                    name = "{} ({})".format(name, g.gccode)
                 mapinfo.write("{},{} {{{}}} <{}>\n".
-                              format(g.coordinates[0], g.coordinates[1], g.name.encode(user_io.CODING), color))
+                              format(g.coordinates[0], g.coordinates[1], name, color))
+                if show_waypoints:         # waypoints belonging to cache
+                    for w in g.waypoints:
+                        mapinfo.write("{},{} {{{}}} <{}>\n".
+                                      format(w.coordinates[0], w.coordinates[1], w.name.encode(user_io.CODING), color))
 
-    def show_all_on_map(self, cachelist):
+            if free_waypoints:             # free waypoints
+                for w in self.waypoints:
+                    mapinfo.write("{},{} {{{}}} <{}>\n".
+                                  format(w.coordinates[0], w.coordinates[1], w.name.encode(user_io.CODING), "yellow"))
+
+    @staticmethod
+    def _create_mapinfo_one(cache):
+        """creates a textfile from a cache with waypoints that is used to configure the map on 'www.mapcustomizer.com'
+        part of show_on_map"""
+
+        with open("mapinfo.txt", "w") as mapinfo:
+            if cache.type == "Traditional Cache":      # cache itself
+                color = "green"
+            elif cache.type == "Multi-cache":
+                color = "default"
+            elif cache.type == "EarthCache":
+                color = "tan"
+            elif cache.type == "Letterbox Hybrid" or cache.type == "Geocaching HQ":
+                color = "gray"
+            elif cache.type == "Event Cache" or cache.type == "Wherigo Cache":
+                color = "yellow"
+            elif cache.type == "Mystery Cache":
+                color = "blue"
+            else:  # cache of unknown type
+                color = "pink"
+
+            mapinfo.write("{},{} {{{}}} <{}>\n".
+                          format(cache.coordinates[0], cache.coordinates[1], cache.name.encode(user_io.CODING), color))
+
+            for w in cache.waypoints:              # waypoints
+                if color == "yellow":
+                    color_w = "grey"
+                else:
+                    color_w = "yellow"
+                mapinfo.write("{},{} {{{}}} <{}>\n".
+                              format(w.coordinates[0], w.coordinates[1], w.shown_name.encode(user_io.CODING), color_w))
+
+    def show_on_map(self, cachelist, all_caches=False):
         """shows all caches in cachelist on a map (uses webservice 'www.mapcustomizer.com')"""
-    
-        editor = user_io.show_all_on_map_start()
-        self.create_mapinfo(cachelist)
+
+        one = True
+        if type(cachelist) == list:     # one is True if one cache, False if several caches
+            one = False
+        show_waypoints = False    # determines if waypoints are shown
+        if not one:
+            show_waypoints = user_io.ask_for_waypoints()
+        free_waypoints = False
+        if show_waypoints and all_caches:     # free waypoints are shown (only for all caches, not a selection)
+            free_waypoints = True
+        editor = user_io.show_on_map_start(one, free_waypoints)
+        if one:
+            self._create_mapinfo_one(cachelist)
+        else:
+            self._create_mapinfo_several(cachelist, show_waypoints, free_waypoints)
         subprocess.Popen([editor, "mapinfo.txt"])
         webbrowser.open_new_tab("https://www.mapcustomizer.com/#bulkEntryModal") 
-        user_io.show_all_on_map_end()
+        user_io.show_on_map_end()
         os.remove("mapinfo.txt")
 
     def show_waypoints(self):
