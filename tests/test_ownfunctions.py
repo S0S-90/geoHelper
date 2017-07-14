@@ -6,6 +6,10 @@
 import unittest
 import datetime
 import test_frame
+import sys
+# noinspection PyCompatibility
+from StringIO import StringIO  # module not existent in python 3
+import xml.etree.ElementTree as ElementTree
 
 import ownfunctions
 
@@ -127,6 +131,33 @@ class TestReplaceSigns(unittest.TestCase):
     def test_unknown_sign(self):
         x = ownfunctions.replace_signs(u"Flag Turkey: {}".format(u"\u262a"))
         self.assertEqual(x, u"Flag Turkey: {}".format(u"\u001a"))
+
+
+class TestShowXML(unittest.TestCase):
+
+    def test(self):
+        tree = ElementTree.parse(r"examples\xml_test.gpx")
+        out = StringIO()
+        sys.stdout = out
+        ownfunctions.show_xml(tree)
+        output = out.getvalue().strip()
+        expected_output = "{http://www.topografix.com/GPX/1/1}gpx {'{http://www.w3.org/2001/XMLSchema-instance}" \
+                          "schemaLocation': 'http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" \
+                          " http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlschemas/Gpx" \
+                          "Extensionsv3.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://www8.garmin.com" \
+                          "/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1" \
+                          " http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd', 'version': '1.1', 'creator':" \
+                          " 'eTrex 10'} \n{http://www.topografix.com/GPX/1/1}metadata {} \n{http://www.topografix.com/" \
+                          "GPX/1/1}link {'href': 'http://www.garmin.com'} \n{http://www.topografix.com/GPX/1/1}text {} " \
+                          "Garmin International\n{http://www.topografix.com/GPX/1/1}time {} 2016-09-10T13:36:17Z\n{http:" \
+                          "//www.topografix.com/GPX/1/1}wpt {'lat': '49.794845', 'lon': '9.944192'} \n{http://www." \
+                          "topografix.com/GPX/1/1}ele {} 187.175018\n{http://www.topografix.com/GPX/1/1}time {} " \
+                          "2016-09-10T13:36:17Z\n{http://www.topografix.com/GPX/1/1}name {} ELEFANT\n{http://www." \
+                          "topografix.com/GPX/1/1}sym {} Flag, Blue\n{http://www.topografix.com/GPX/1/1}wpt {'lat': " \
+                          "'49.793617', 'lon': '9.943833'} \n{http://www.topografix.com/GPX/1/1}ele {} 187.503296\n" \
+                          "{http://www.topografix.com/GPX/1/1}time {} 2016-09-10T14:24:16Z\n{http://www.topografix.com" \
+                          "/GPX/1/1}name {} ELEFANT FINAL\n{http://www.topografix.com/GPX/1/1}sym {} Flag, Blue"
+        self.assertEqual(output, expected_output)
 
 
 class TestCoordsDecimalToMinutes(unittest.TestCase):
@@ -470,6 +501,7 @@ def create_testsuite():
     """creates a testsuite with out of all tests in this file"""
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestReplaceSigns))
+    suite.addTest(unittest.makeSuite(TestShowXML))
     suite.addTest(unittest.makeSuite(TestCoordsDecimalToMinutes))
     suite.addTest(unittest.makeSuite(TestCoordsMinutesToDecimal))
     suite.addTest(unittest.makeSuite(TestCoordsMinutesToSeconds))

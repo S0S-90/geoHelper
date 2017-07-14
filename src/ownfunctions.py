@@ -110,7 +110,7 @@ def show_xml(xml_tree):
         t = ""
         if x.text:
             t = x.text.encode("utf-8")
-        user_io.general_output(x.tag + x.attrib + t)
+        user_io.general_output("{} {} {}".format(x.tag, str(x.attrib), t))
 
 
 def coords_decimal_to_minutes(coordlist):
