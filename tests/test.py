@@ -21,7 +21,7 @@ else:                      # if no argument -> verbosity 1
 
 start_time = time.clock()
 
-a = test_ownfunctions.main(verbosity)
+a = test_ownfunctions.main(verbosity)   # perform tests
 b = test_geocache.main(verbosity)
 c = test_user_io.main(verbosity)
 d = test_gpscontent.main(verbosity)
