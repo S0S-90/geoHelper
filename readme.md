@@ -34,13 +34,13 @@ GPX-Datei heruntergeladen, kann diese mittels "Geocaches aktualisieren" in das P
 
 
 # Testen des Programms (nur für Entwickler)
-* Zusätzlich zur Python-Standardinstallation muss das Package mock installiert werden. Für die Installation über pip in den Ordner C:\Python27\Scripts gehen, eine Konsole öffnen 
+* Zusätzlich zur Python-Standardinstallation muss das Package mock installiert werden. Für die Installation über pip in den Ordner C:\Python27\Scripts gehen, eine Konsole öffnen
 und "pip install mock" eingeben.
 * Die Beispieldateien aus "examples.rar" in einen Ordner "tests/examples" entpacken. (Sie werden für die Tests der Klassen benötigt.)
-* In Konsole "test.py" (im Ordner tests) ausführen. Die Verbosity gibt an, wie viele Informationen während dem Durchlaufen der Tests ausgegeben werden. Aus Gründen der Übersichtlichkeit 
-wird empfohlen, hier 1 einzugeben.
+* In Konsole "test.py" (im Ordner tests) ausführen. Als Argument kann die Verbosity eingegeben werden, d.h. wie viele Informationen während der Testdurchläufe ausgegeben werden.
+Die Standardeinstellung ist 1 (niedrigste Verbosity).
 * Anstatt mittels "test.py" alle Tests gleichzeitig auszuführen, kann auch nur eine einzelne Quelldatei getestet werden, indem die entsprechende "test_*.py"-Datei ausgeführt wird.
-Auf diese Weise werden die Tests immer mit einer Verbosity von 2 ausgeführt. Dies wird empfohlen, wenn es beim Laufen von "test.py" zu Fehlern kommt.
+Auch hier kann die Verbosity durch Eingabe eines Arguments bestimmt werden.
 
 
 
