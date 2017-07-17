@@ -114,13 +114,14 @@ class TestShowMainMenu(unittest.TestCase):
         expected_output = "Was moechtest du als naechstes tun?\n"
         expected_output += "1: Geocaches aktualisieren\n"
         expected_output += "2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen\n"
-        expected_output += "3: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen (INTERNET!!!)\n"
-        expected_output += "4: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)\n"
-        expected_output += "5: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
-        expected_output += "6: Geocaches durchsuchen\n"
-        expected_output += "7: https://www.geocaching.com/map aufrufen (INTERNET!!!)\n"
-        expected_output += "8: https://www.google.de/maps aufrufen (INTERNET!!!)\n"
-        expected_output += "9: Programm verlassen"
+        expected_output += "3: Alle Wegpunkte anzeigen und zu Geocaches zuordnen\n"
+        expected_output += "4: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen (INTERNET!!!)\n"
+        expected_output += "5: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)\n"
+        expected_output += "6: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
+        expected_output += "7: Geocaches durchsuchen\n"
+        expected_output += "8: https://www.geocaching.com/map aufrufen (INTERNET!!!)\n"
+        expected_output += "9: https://www.google.de/maps aufrufen (INTERNET!!!)\n"
+        expected_output += "10: Programm verlassen"
         self.assertEqual(output, expected_output)
         
     def test_foundexists(self):
@@ -131,14 +132,15 @@ class TestShowMainMenu(unittest.TestCase):
         expected_output = "Was moechtest du als naechstes tun?\n"
         expected_output += "1: Geocaches aktualisieren\n"
         expected_output += "2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen\n"
-        expected_output += "3: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen (INTERNET!!!)\n"
-        expected_output += "4: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)\n"
-        expected_output += "5: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
-        expected_output += "6: Geocaches durchsuchen\n"
-        expected_output += "7: Alle gefundenen Caches anzeigen\n"
-        expected_output += "8: https://www.geocaching.com/map aufrufen (INTERNET!!!)\n"
-        expected_output += "9: https://www.google.de/maps aufrufen (INTERNET!!!)\n"
-        expected_output += "10: Programm verlassen"
+        expected_output += "3: Alle Wegpunkte anzeigen und zu Geocaches zuordnen\n"
+        expected_output += "4: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen (INTERNET!!!)\n"
+        expected_output += "5: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)\n"
+        expected_output += "6: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
+        expected_output += "7: Geocaches durchsuchen\n"
+        expected_output += "8: Alle gefundenen Caches anzeigen\n"
+        expected_output += "9: https://www.geocaching.com/map aufrufen (INTERNET!!!)\n"
+        expected_output += "10: https://www.google.de/maps aufrufen (INTERNET!!!)\n"
+        expected_output += "11: Programm verlassen"
         self.assertEqual(output, expected_output)
    
         
@@ -154,34 +156,38 @@ class TestMainMenu(unittest.TestCase):
         
     def test_3_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="3"):
-            self.assertEqual(user_io.main_menu(False), 'show_all_on_map')
-            
+            self.assertEqual(user_io.main_menu(False), 'show_waypoints')
+
     def test_4_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="4"):
-            self.assertEqual(user_io.main_menu(False), 'show_one')
-
+            self.assertEqual(user_io.main_menu(False), 'show_on_map')
+            
     def test_5_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="5"):
-            self.assertEqual(user_io.main_menu(False), 'show_one_gc.com')
-        
+            self.assertEqual(user_io.main_menu(False), 'show_one')
+
     def test_6_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="6"):
-            self.assertEqual(user_io.main_menu(False), 'search')
+            self.assertEqual(user_io.main_menu(False), 'show_one_gc.com')
         
     def test_7_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="7"):
-            self.assertEqual(user_io.main_menu(False), 'gc-maps')
+            self.assertEqual(user_io.main_menu(False), 'search')
         
     def test_8_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="8"):
-            self.assertEqual(user_io.main_menu(False), 'google-maps')
+            self.assertEqual(user_io.main_menu(False), 'gc-maps')
         
     def test_9_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="9"):
-            self.assertEqual(user_io.main_menu(False), 'exit')
+            self.assertEqual(user_io.main_menu(False), 'google-maps')
         
     def test_10_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="10"):
+            self.assertEqual(user_io.main_menu(False), 'exit')
+        
+    def test_11_nofoundexists(self):
+        with mock.patch('__builtin__.raw_input', return_value="11"):
             self.assertEqual(user_io.main_menu(False), None)
         
     def test_1_foundexists(self):
@@ -191,37 +197,41 @@ class TestMainMenu(unittest.TestCase):
     def test_2_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="2"):
             self.assertEqual(user_io.main_menu(True), 'show_all')
-        
+
     def test_3_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="3"):
-            self.assertEqual(user_io.main_menu(True), 'show_all_on_map')
-            
+            self.assertEqual(user_io.main_menu(False), 'show_waypoints')
+        
     def test_4_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="4"):
-            self.assertEqual(user_io.main_menu(True), 'show_one')
-
+            self.assertEqual(user_io.main_menu(True), 'show_on_map')
+            
     def test_5_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="5"):
-            self.assertEqual(user_io.main_menu(True), 'show_one_gc.com')
-        
+            self.assertEqual(user_io.main_menu(True), 'show_one')
+
     def test_6_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="6"):
-            self.assertEqual(user_io.main_menu(True), 'search')
+            self.assertEqual(user_io.main_menu(True), 'show_one_gc.com')
         
     def test_7_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="7"):
-            self.assertEqual(user_io.main_menu(True), 'show_founds')
+            self.assertEqual(user_io.main_menu(True), 'search')
         
     def test_8_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="8"):
-            self.assertEqual(user_io.main_menu(True), 'gc-maps')
+            self.assertEqual(user_io.main_menu(True), 'show_founds')
         
     def test_9_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="9"):
-            self.assertEqual(user_io.main_menu(True), 'google-maps')
+            self.assertEqual(user_io.main_menu(True), 'gc-maps')
         
     def test_10_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="10"):
+            self.assertEqual(user_io.main_menu(True), 'google-maps')
+        
+    def test_11_foundexists(self):
+        with mock.patch('__builtin__.raw_input', return_value="11"):
             self.assertEqual(user_io.main_menu(True), 'exit')
         
         
@@ -590,41 +600,56 @@ class TestConfirmDeletion(unittest.TestCase):
             self.assertEqual(user_io.confirm_deletion(), False)
 
 
+class TestAssignWaypoints(unittest.TestCase):
+
+    def test_yes(self):
+        with mock.patch('__builtin__.raw_input', return_value="y"):
+            self.assertEqual(user_io.assign_waypoints(), True)
+
+    def test_no(self):
+        with mock.patch('__builtin__.raw_input', return_value="n"):
+            self.assertEqual(user_io.assign_waypoints(), False)
+
+    def test_nonsense(self):
+        with mock.patch('__builtin__.raw_input', return_value="any_nonsense"):
+            self.assertEqual(user_io.assign_waypoints(), False)
+
+
 class TestShowOne(unittest.TestCase):
 
-    def test_1(self):
+    def test_1_no_waypoints(self):
         with mock.patch('__builtin__.raw_input', return_value="1"):
-            self.assertEqual(user_io.show_one(), "delete")
+            self.assertEqual(user_io.show_one(False), "delete")
             
-    def test_2(self):
+    def test_2_no_waypoints(self):
         with mock.patch('__builtin__.raw_input', return_value="2"):
-            self.assertEqual(user_io.show_one(), "gc.com")
+            self.assertEqual(user_io.show_one(False), "gc.com")
             
-    def test_3(self):
+    def test_3_no_waypoints(self):
         with mock.patch('__builtin__.raw_input', return_value="3"):
-            self.assertEqual(user_io.show_one(), "dist")
+            self.assertEqual(user_io.show_one(False), "dist")
             
-    def test_4(self):
+    def test_4_no_waypoints(self):
         with mock.patch('__builtin__.raw_input', return_value="4"):
-            self.assertEqual(user_io.show_one(), "gc-map")
+            self.assertEqual(user_io.show_one(False), "gc-map")
             
-    def test_5(self):
+    def test_5_no_waypoints(self):
         with mock.patch('__builtin__.raw_input', return_value="5"):
-            self.assertEqual(user_io.show_one(), "googlemaps")
+            self.assertEqual(user_io.show_one(False), "googlemaps")
             
-    def test_6(self):
+    def test_6_no_waypoints(self):
         with mock.patch('__builtin__.raw_input', return_value="6"):
-            self.assertEqual(user_io.show_one(), None)
+            self.assertEqual(user_io.show_one(False), None)
             
-    def test_other(self):
+    def test_other_no_waypoints(self):
         with mock.patch('__builtin__.raw_input', return_value="0"):
-            self.assertEqual(user_io.show_one(), None)
+            self.assertEqual(user_io.show_one(False), None)
             
-    def test_output(self):
+    def test_output_no_waypoints(self):
         with mock.patch('__builtin__.raw_input', return_value="bla"):
             out = StringIO()
             sys.stdout = out                 
-            user_io.show_one()
+            user_io.show_one(False)
             output = out.getvalue().strip()  
             expected_output = "Was moechtest du als naechstes tun?\n"
             expected_output += "1: diesen Cache loeschen\n" 
@@ -634,6 +659,55 @@ class TestShowOne(unittest.TestCase):
             expected_output += "https://www.geocaching.com/map anzeigen (INTERNET!!!)\n"
             expected_output += "5: Position des Caches auf der Karte https://www.google.de/maps anzeigen (INTERNET!!!)\n"
             expected_output += "6: zurueck"
+            self.assertEqual(output, expected_output)
+
+    def test_1_waypoints(self):
+        with mock.patch('__builtin__.raw_input', return_value="1"):
+            self.assertEqual(user_io.show_one(True), "delete")
+
+    def test_2_waypoints(self):
+        with mock.patch('__builtin__.raw_input', return_value="2"):
+            self.assertEqual(user_io.show_one(True), "gc.com")
+
+    def test_3_waypoints(self):
+        with mock.patch('__builtin__.raw_input', return_value="3"):
+            self.assertEqual(user_io.show_one(True), "dist")
+
+    def test_4_waypoints(self):
+        with mock.patch('__builtin__.raw_input', return_value="4"):
+            self.assertEqual(user_io.show_one(True), "gc-map")
+
+    def test_5_waypoints(self):
+        with mock.patch('__builtin__.raw_input', return_value="5"):
+            self.assertEqual(user_io.show_one(True), "googlemaps")
+
+    def test_6_waypoints(self):
+        with mock.patch('__builtin__.raw_input', return_value="6"):
+            self.assertEqual(user_io.show_one(True), "mapcustomizer")
+
+    def test_7_waypoints(self):
+        with mock.patch('__builtin__.raw_input', return_value="7"):
+            self.assertEqual(user_io.show_one(True), None)
+
+    def test_other_waypoints(self):
+        with mock.patch('__builtin__.raw_input', return_value="0"):
+            self.assertEqual(user_io.show_one(True), None)
+
+    def test_output_waypoints(self):
+        with mock.patch('__builtin__.raw_input', return_value="bla"):
+            out = StringIO()
+            sys.stdout = out
+            user_io.show_one(True)
+            output = out.getvalue().strip()
+            expected_output = "Was moechtest du als naechstes tun?\n"
+            expected_output += "1: diesen Cache loeschen\n"
+            expected_output += "2: diesen Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
+            expected_output += "3: Abstand dieses Caches zu einer bestimmten Position berechnen\n"
+            expected_output += "4: Position des Caches auf der Karte "
+            expected_output += "https://www.geocaching.com/map anzeigen (INTERNET!!!)\n"
+            expected_output += "5: Position des Caches auf der Karte https://www.google.de/maps anzeigen (INTERNET!!!)\n"
+            expected_output += "6: diesen Cache mit allen Wegpunkten auf Karte zeigen (INTERNET!!!)\n"
+            expected_output += "7: zurueck"
             self.assertEqual(output, expected_output)
 
 
@@ -675,17 +749,33 @@ class TestAskForPath(unittest.TestCase):
             self.assertEqual(user_io.ask_for_path(), r"F:\Garmin")
 
 
-class TestShowAllOnMapStart(unittest.TestCase):
+class TestAskForWaypoints(unittest.TestCase):
 
-    def test_output(self):
+    def test_yes(self):
+        with mock.patch('__builtin__.raw_input', return_value="y"):
+            self.assertEqual(user_io.ask_for_waypoints(), True)
+
+    def test_no(self):
+        with mock.patch('__builtin__.raw_input', return_value="n"):
+            self.assertEqual(user_io.ask_for_waypoints(), False)
+
+    def test_nonsense(self):
+        with mock.patch('__builtin__.raw_input', return_value="any_nonsense"):
+            self.assertEqual(user_io.ask_for_waypoints(), False)
+
+
+class TestShowOnMapStart(unittest.TestCase):
+
+    def test_output_no_waypoints(self):
         with mock.patch('__builtin__.raw_input', return_value="any_nonsense"):
             out = StringIO()
             sys.stdout = out
-            user_io.show_all_on_map_start()
+            user_io.show_on_map_start(False, False)
             output = out.getvalue().strip()
             expected_output = "Nach dem Klicken werden sich mehrere Fenster oeffnen. Eines davon ist der Editor, "
             expected_output += "das andere die Seite mapcustomizer.com in deinem Browser.\n"
-            expected_output += "Um die Caches auf der Karte anzuzeigen, kopiere den vollstaendigen Inhalt der Textdatei "
+            expected_output += "Um den Cache / die Caches auf der Karte anzuzeigen, kopiere den vollstaendigen Inhalt " \
+                               "der Textdatei "
             expected_output += "aus deinem Editor in das Feld 'Bulk Entry' im Browser.\n"
             expected_output += "Die Caches werden in folgenden Farben angezeigt:\n"
             expected_output += "Gruen: Traditional Cache\n"
@@ -696,24 +786,71 @@ class TestShowAllOnMapStart(unittest.TestCase):
             expected_output += "Gelb: Event Cache, Wherigo Cache\n"
             expected_output += "Pink: unbekannter Typ\n"
             expected_output += "Gib nun den Pfad zu deinem Editor an: (bei Benutzung von Windows sollte das unnoetig sein)"
-            self.assertEqual(output, expected_output) 
+            self.assertEqual(output, expected_output)
+
+    def test_output_all_waypoints(self):
+        with mock.patch('__builtin__.raw_input', return_value="any_nonsense"):
+            out = StringIO()
+            sys.stdout = out
+            user_io.show_on_map_start(False, True)
+            output = out.getvalue().strip()
+            expected_output = "Nach dem Klicken werden sich mehrere Fenster oeffnen. Eines davon ist der Editor, "
+            expected_output += "das andere die Seite mapcustomizer.com in deinem Browser.\n"
+            expected_output += "Um den Cache / die Caches auf der Karte anzuzeigen, kopiere den vollstaendigen Inhalt "
+            expected_output += "der Textdatei aus deinem Editor in das Feld 'Bulk Entry' im Browser.\n"
+            expected_output += "Die Caches werden in folgenden Farben angezeigt:\n"
+            expected_output += "Gruen: Traditional Cache\n"
+            expected_output += "Rot: Multi-cache\n"
+            expected_output += "Blau: Mystery Cache\n"
+            expected_output += "Braun: EarthCache\n"
+            expected_output += "Grau: Letterbox, Geocaching HQ\n"
+            expected_output += "Gelb: Event Cache, Wherigo Cache, Wegpunkte\n"
+            expected_output += "Pink: unbekannter Typ\n"
+            expected_output += "Gib nun den Pfad zu deinem Editor an: (bei Benutzung von Windows sollte das unnoetig sein)"
+            self.assertEqual(output, expected_output)
+
+    def test_output_one_waypoints(self):
+        with mock.patch('__builtin__.raw_input', return_value="any_nonsense"):
+            out = StringIO()
+            sys.stdout = out
+            user_io.show_on_map_start(True, True)
+            output = out.getvalue().strip()
+            expected_output = "Nach dem Klicken werden sich mehrere Fenster oeffnen. Eines davon ist der Editor, "
+            expected_output += "das andere die Seite mapcustomizer.com in deinem Browser.\n"
+            expected_output += "Um den Cache / die Caches auf der Karte anzuzeigen, kopiere den vollstaendigen Inhalt "
+            expected_output += "der Textdatei aus deinem Editor in das Feld 'Bulk Entry' im Browser.\n"
+            expected_output += "Gib nun den Pfad zu deinem Editor an: (bei Benutzung von Windows sollte das unnoetig sein)"
+            self.assertEqual(output, expected_output)
+
+    def test_output_one_no_waypoints(self):      # makes no difference because it is nonsense
+        with mock.patch('__builtin__.raw_input', return_value="any_nonsense"):
+            out = StringIO()
+            sys.stdout = out
+            user_io.show_on_map_start(True, False)
+            output = out.getvalue().strip()
+            expected_output = "Nach dem Klicken werden sich mehrere Fenster oeffnen. Eines davon ist der Editor, "
+            expected_output += "das andere die Seite mapcustomizer.com in deinem Browser.\n"
+            expected_output += "Um den Cache / die Caches auf der Karte anzuzeigen, kopiere den vollstaendigen Inhalt "
+            expected_output += "der Textdatei aus deinem Editor in das Feld 'Bulk Entry' im Browser.\n"
+            expected_output += "Gib nun den Pfad zu deinem Editor an: (bei Benutzung von Windows sollte das unnoetig sein)"
+            self.assertEqual(output, expected_output)
             
     def test_return(self):
         with mock.patch('__builtin__.raw_input', return_value="any_editor"): 
-            self.assertEqual(user_io.show_all_on_map_start(), "any_editor")
+            self.assertEqual(user_io.show_on_map_start(False, True), "any_editor")
             
     def test_default_return(self):
         with mock.patch('__builtin__.raw_input', return_value=""): 
-            self.assertEqual(user_io.show_all_on_map_start(), "notepad.exe")
+            self.assertEqual(user_io.show_on_map_start(True, False), "notepad.exe")
 
 
-class TestShowAllOnMapEnd(unittest.TestCase):
+class TestShowOnMapEnd(unittest.TestCase):
 
     def test_output(self):
         with mock.patch('__builtin__.raw_input', return_value="any_nonsense"):
             out = StringIO()
             sys.stdout = out
-            user_io.show_all_on_map_end()
+            user_io.show_on_map_end()
             output = out.getvalue().strip()
             expected_output = "Schliesse den Editor und druecke Enter."
             self.assertEqual(output, expected_output) 
@@ -734,11 +871,13 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestActionsAfterSearch))
     suite.addTest(unittest.makeSuite(TestActionsWithFounds))
     suite.addTest(unittest.makeSuite(TestConfirmDeletion))
+    suite.addTest(unittest.makeSuite(TestAssignWaypoints))
     suite.addTest(unittest.makeSuite(TestShowOne))
     suite.addTest(unittest.makeSuite(TestCoordinatesInput))
     suite.addTest(unittest.makeSuite(TestAskForPath))
-    suite.addTest(unittest.makeSuite(TestShowAllOnMapStart))
-    suite.addTest(unittest.makeSuite(TestShowAllOnMapEnd))
+    suite.addTest(unittest.makeSuite(TestAskForWaypoints))
+    suite.addTest(unittest.makeSuite(TestShowOnMapStart))
+    suite.addTest(unittest.makeSuite(TestShowOnMapEnd))
     return suite
 
 

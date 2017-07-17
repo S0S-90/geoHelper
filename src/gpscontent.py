@@ -261,7 +261,10 @@ class GPSContent(object):
             user_io.general_output(cache.longinfo())
         
             while True:
-                task = user_io.show_one(cache.waypoints)
+                wpt = False   # no waypoints exist
+                if cache.waypoints:
+                    wpt = True   # waypoints exist
+                task = user_io.show_one(wpt)
                 if task == "delete":
                     self.delete([cache])
                     break

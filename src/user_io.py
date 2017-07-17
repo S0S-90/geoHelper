@@ -262,6 +262,8 @@ def assign_waypoints():
 
 def show_one(waypoints):
     """asks after showing one cache what to do next
+    waypoints = True, if shown cache has waypoints, False if not
+
     returns the next action as a string"""
     
     print ("\nWas moechtest du als naechstes tun?")
@@ -327,7 +329,12 @@ def ask_for_waypoints():
 
 def show_on_map_start(one, free_waypoints):
     """explains how the task 'show_on_map' works and asks for path to texteditor
-    returns path to texteditor or - if no path is specified - the standard EDITORNAME"""
+    returns path to texteditor or - if no path is specified - the standard EDITORNAME
+
+    one = True if only one geocache (with waypoints), False if several geocaches
+    free_waypoints = True if free waypoints are shown (i.e. waypoints that don't belong to a cache)
+                     only if all caches are shown and waypoints should be shown
+    """
 
     print ("\nNach dem Klicken werden sich mehrere Fenster oeffnen. "
            "Eines davon ist der Editor, das andere die Seite mapcustomizer.com in deinem Browser.")
