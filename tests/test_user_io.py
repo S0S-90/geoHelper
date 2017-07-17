@@ -747,4 +747,8 @@ def main(v):
     return test_frame.run(v, create_testsuite, "user_io.py")
 
 if __name__ == '__main__':
-    main(2)
+    if len(sys.argv) > 1:  # if script is run with argument
+        verbosity = int(sys.argv[1])
+    else:  # if no argument -> verbosity 1
+        verbosity = 1
+    main(verbosity)

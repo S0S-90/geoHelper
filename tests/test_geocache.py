@@ -7,6 +7,7 @@ from __future__ import print_function
 
 import unittest
 import datetime
+import sys
 import test_frame
 import geocache
 
@@ -493,4 +494,8 @@ def main(v):
 
 
 if __name__ == '__main__':
-    main(2)
+    if len(sys.argv) > 1:  # if script is run with argument
+        verbosity = int(sys.argv[1])
+    else:  # if no argument -> verbosity 1
+        verbosity = 1
+    main(verbosity)
