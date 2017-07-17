@@ -13,7 +13,10 @@ import test_gpscontent
 
 saved_stdout = sys.stdout  # save standard output
 
-verbosity = input("Verbosity (1 oder 2): ")
+if len(sys.argv) > 1:      # if script is run with argument
+    verbosity = int(sys.argv[1])
+else:                      # if no argument -> verbosity 1
+    verbosity = 1
 
 a = test_ownfunctions.main(verbosity)
 b = test_geocache.main(verbosity)
