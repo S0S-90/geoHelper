@@ -111,6 +111,8 @@ class Geocache(object):
     Methods:
     ---------
     __init__(filename_path): Create a Geocache-object out of the gpx-file (complete name with path)
+
+    add_waypoint(self, waypoint): adds a waypoint to the cache
     
     shortinfo(space=0): unicode
         one-line information about the cache and the waypoints
@@ -258,8 +260,12 @@ class Geocache(object):
         return self.gccode != other
 
     def add_waypoint(self, waypoint):
-        """TODO"""
-        self.waypoints.append(waypoint)
+        """adds a waypoint to the cache"""
+
+        if type(waypoint) == Waypoint:
+            self.waypoints.append(waypoint)
+        else:
+            raise TypeError("Waypoint can't be added because it is not of waypoint type")
             
     def shortinfo(self, space=0):
         """returns one-line information about the cache
