@@ -48,4 +48,7 @@ if __name__ == "__main__":
             show_main_menu(new)
             break
         else:
-            user_io.general_output("\nERROR: {}: '{}'".format(user_io.GPS_NOT_FOUND, PATH))
+            inp = user_io.general_input("\nERROR: {}: '{}'. {}".format(user_io.GPS_NOT_FOUND,
+                                                                       PATH, user_io.LEAVE_PROGRAMME))
+            if inp == "y":
+                break
