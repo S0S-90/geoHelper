@@ -392,3 +392,4 @@ DIST_SEPERATED_BY_KOMMA = "Minimale und maximale Distanz in Kilometern (mit Komm
 NO_CACHES_FOUND = "keine Geocaches gefunden"
 WARNING_LOG_INFO = "WARNUNG! Bei Fortfahren werden auch Log-Informationen ueber Caches geloescht,  \
                    die nicht gefunden wurden."
+LEAVE_PROGRAMME = "Willst du das Programm verlassen? (y, n) "
