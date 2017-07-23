@@ -160,6 +160,45 @@ class TestShowXML(unittest.TestCase):
         self.assertEqual(output, expected_output)
 
 
+class TestValidateCoordinates(unittest.TestCase):
+
+    def test_north_east(self):
+        ownfunctions.validate_coordinates([52.520817, 13.40945])
+
+    def test_south_west(self):
+        ownfunctions.validate_coordinates([-52.520817, -13.40945])
+
+    def test_equator(self):
+        ownfunctions.validate_coordinates([0, 13.40945])
+
+    def test_zero_meridian(self):
+        ownfunctions.validate_coordinates([52.520817, 0])
+
+    def test_north_bigger_than_90(self):
+        self.assertRaises(ValueError, ownfunctions.validate_coordinates, [92.520817, 13.40945])
+
+    def test_east_bigger_than_180(self):
+        self.assertRaises(ValueError, ownfunctions.validate_coordinates, [52.520817, 200.40945])
+
+    def test_north_smaller_than_minus90(self):
+        self.assertRaises(ValueError, ownfunctions.validate_coordinates, [-92.520817, 13.40945])
+
+    def test_east_smaller_than_minus180(self):
+        self.assertRaises(ValueError, ownfunctions.validate_coordinates, [52.520817, -200.40945])
+
+    def test_one_coord_is_shit(self):
+        self.assertRaises(TypeError, ownfunctions.validate_coordinates, [52.520817, "bla"])
+
+    def test_other_coord_is_shit(self):
+        self.assertRaises(TypeError, ownfunctions.validate_coordinates, ["bla", 13.40945])
+
+    def test_string_instead_of_list(self):
+        self.assertRaises(TypeError, ownfunctions.validate_coordinates, "12")
+
+    def test_list_of_wrong_length(self):
+        self.assertRaises(TypeError, ownfunctions.validate_coordinates, [52.520817, 13.40945, 42.42])
+
+
 class TestCoordsDecimalToMinutes(unittest.TestCase):
     def test_north_east(self):
         x = ownfunctions.coords_decimal_to_minutes([52.520817, 13.40945])
@@ -502,6 +541,7 @@ def create_testsuite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestReplaceSigns))
     suite.addTest(unittest.makeSuite(TestShowXML))
+    suite.addTest(unittest.makeSuite(TestValidateCoordinates))
     suite.addTest(unittest.makeSuite(TestCoordsDecimalToMinutes))
     suite.addTest(unittest.makeSuite(TestCoordsMinutesToDecimal))
     suite.addTest(unittest.makeSuite(TestCoordsMinutesToSeconds))

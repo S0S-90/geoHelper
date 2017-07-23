@@ -113,12 +113,9 @@ def show_xml(xml_tree):
         user_io.general_output("{} {} {}".format(x.tag, str(x.attrib), t))
 
 
-def coords_decimal_to_minutes(coordlist):
-    """converts decimal coordinates (e.g. from gpx-file) to degrees and minutes (e.g. like on geocaching.com)
-    
-    input: list of floats [lat, lon]
-    return: string 'X XX°XX.XXX, X XXX°XX.XXX'
-    """
+def validate_coordinates(coordlist):
+    """run this on a pair of coordinates [lon, lat]
+    function throws an error of the coordinates are not valid"""
 
     if type(coordlist) != list or len(coordlist) != 2:
         raise TypeError("Bad input.")
@@ -129,6 +126,18 @@ def coords_decimal_to_minutes(coordlist):
         raise TypeError("One of the coordinates is not a number.")
     if north > 90 or east > 180 or north < -90 or east < -180:
         raise ValueError("These coordinates do not exist on earth.")
+
+
+def coords_decimal_to_minutes(coordlist):
+    """converts decimal coordinates (e.g. from gpx-file) to degrees and minutes (e.g. like on geocaching.com)
+    
+    input: list of floats [lat, lon]
+    return: string 'X XX°XX.XXX, X XXX°XX.XXX'
+    """
+
+    validate_coordinates(coordlist)
+    north = coordlist[0]
+    east = coordlist[1]
     north_degree = int(north)
     east_degree = int(east)
     north_minutes = round(60 * (north - north_degree), 3)

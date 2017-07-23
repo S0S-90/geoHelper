@@ -354,11 +354,23 @@ class Waypoint(object):
     info(): returns information about the waypoint
     """
 
+    ALLOWED_SIGNS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
+                     "U", "V", "W", "X", "Y", "Z", "Ä", "Ö", "Ü", "ß", "!", "#", "$", '"', "?", "*", "/", "(", ")", "-",
+                     "+", "&", "'", ";", ":", ",", ".", "=", "@", "%", "<", ">", "0", "1", "2", "3", "4", "5", "6", "7",
+                     "8", "9"]
+
     def __init__(self, name, coordinates):
         """creates the object out of name and coordinates as list [lat, lon]"""
 
-        self.name = name
-        self.shown_name = name  # for waypoints not belonging to a geocache
+        if type(name) != str:
+            raise TypeError("waypoint name is of wrong type")
+        self.name = name.upper()
+        for c in self.name:
+            if c not in self.ALLOWED_SIGNS:
+                raise ValueError("GARMIN does not allow '{}' in a waypoint name.".format(c))
+        self.shown_name = self.name  # for waypoints not belonging to a geocache
+
+        ownfunctions.validate_coordinates(coordinates)  # throws an error if coordinates not valid
         self.coordinates = coordinates
         coord_str = ownfunctions.coords_decimal_to_minutes(self.coordinates)
         self.coordinates_string = coord_str  # string 'X XX°XX.XXX, X XXX°XX.XXX'

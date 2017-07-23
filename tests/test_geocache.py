@@ -485,6 +485,56 @@ class TestWaypointInit(unittest.TestCase):
         self.assertEqual(w.coordinates_string, u"N 49°48.457, E 009°54.727")
         self.assertIsNone(w.distance)
 
+    def test_lowercase_letters_in_name(self):
+        w = geocache.Waypoint("nAmE", [49.80761666666667, 9.912116666666666])
+        self.assertEqual(w.name, "NAME")
+        self.assertEqual(w.shown_name, "NAME")
+
+    def test_strange_signs_in_name(self):
+        self.assertRaises(ValueError, geocache.Waypoint, "abc§def", [49.80761666666667, 9.912116666666666])
+
+    def test_name_is_not_a_string(self):
+        self.assertRaises(TypeError, geocache.Waypoint, 42, [49.80761666666667, 9.912116666666666])
+
+    def test_coordinates_south_west(self):
+        w = geocache.Waypoint("NAME", [-52.520817, -13.40945])
+        self.assertEqual(w.coordinates, [-52.520817, -13.40945])
+        self.assertEqual(w.coordinates_string, u"S 52°31.249, W 013°24.567")
+
+    def test_coordinates_equator(self):
+        w = geocache.Waypoint("NAME", [0, 13.40945])
+        self.assertEqual(w.coordinates, [0, 13.40945])
+        self.assertEqual(w.coordinates_string, u"N 00°00.000, E 013°24.567")
+
+    def test_coordinates_zero_meridian(self):
+        w = geocache.Waypoint("NAME", [52.520817, 0])
+        self.assertEqual(w.coordinates, [52.520817, 0])
+        self.assertEqual(w.coordinates_string, u"N 52°31.249, E 000°00.000")
+
+    def test_coordinates_north_bigger_than_90(self):
+        self.assertRaises(ValueError, geocache.Waypoint, "NAME", [92.520817, 13.40945])
+
+    def test_coordinates_east_bigger_than_180(self):
+        self.assertRaises(ValueError, geocache.Waypoint, "NAME", [52.520817, 200.40945])
+
+    def test_coordinates_north_smaller_than_minus90(self):
+        self.assertRaises(ValueError, geocache.Waypoint, "NAME", [-92.520817, 13.40945])
+
+    def test_coordinates_east_smaller_than_minus180(self):
+        self.assertRaises(ValueError, geocache.Waypoint, "NAME", [52.520817, -200.40945])
+
+    def test_coordinates_one_coord_is_shit(self):
+        self.assertRaises(TypeError, geocache.Waypoint, "NAME", [52.520817, "bla"])
+
+    def test_coordinates_string_instead_of_list(self):
+        self.assertRaises(TypeError, geocache.Waypoint, "NAME", "12")
+
+    def test_coordinates_list_of_wrong_length(self):
+        self.assertRaises(TypeError, geocache.Waypoint, "NAME", [52.520817, 13.40945, 42.42])
+
+    def test_wrong_number_of_arguments(self):
+        self.assertRaises(TypeError, geocache.Waypoint, "NAME", [52.520817, 0], "bla")
+
 
 def create_testsuite():
     """creates a testsuite with out of all tests in this file"""
