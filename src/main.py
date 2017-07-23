@@ -41,9 +41,11 @@ def show_main_menu(gps):
             sys.exit()
          
 if __name__ == "__main__":
-    PATH = user_io.ask_for_path()   # path to gps-device
-    if os.path.exists(PATH):
-        new = GPSContent(PATH)
-        show_main_menu(new)
-    else:
-        user_io.general_output("\nERROR: {}: '{}'".format(user_io.GPS_NOT_FOUND, PATH))
+    while True:
+        PATH = user_io.ask_for_path()   # path to gps-device
+        if os.path.exists(PATH):
+            new = GPSContent(PATH)
+            show_main_menu(new)
+            break
+        else:
+            user_io.general_output("\nERROR: {}: '{}'".format(user_io.GPS_NOT_FOUND, PATH))
