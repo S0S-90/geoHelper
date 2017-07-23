@@ -475,6 +475,17 @@ class TestInvalidInput(unittest.TestCase):
         self.assertRaises(AttributeError, geocache.Geocache, "examples/GC6V793.gpx")
 
 
+class TestWaypointInit(unittest.TestCase):
+
+    def test_normal(self):
+        w = geocache.Waypoint("NAME", [49.80761666666667, 9.912116666666666])
+        self.assertEqual(w.name, "NAME")
+        self.assertEqual(w.shown_name, "NAME")
+        self.assertEqual(w.coordinates, [49.80761666666667, 9.912116666666666])
+        self.assertEqual(w.coordinates_string, u"N 49°48.457, E 009°54.727")
+        self.assertIsNone(w.distance)
+
+
 def create_testsuite():
     """creates a testsuite with out of all tests in this file"""
     suite = unittest.TestSuite()
@@ -485,6 +496,7 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestWuerzburgerWebcam))
     suite.addTest(unittest.makeSuite(TestMedrixErnos))
     suite.addTest(unittest.makeSuite(TestInvalidInput))
+    suite.addTest(unittest.makeSuite(TestWaypointInit))
     return suite
 
 
