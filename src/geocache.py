@@ -355,14 +355,14 @@ class Waypoint(object):
     """
 
     ALLOWED_SIGNS = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T",
-                     "U", "V", "W", "X", "Y", "Z", "Ä", "Ö", "Ü", "ß", "!", "#", "$", '"', "?", "*", "/", "(", ")", "-",
-                     "+", "&", "'", ";", ":", ",", ".", "=", "@", "%", "<", ">", "0", "1", "2", "3", "4", "5", "6", "7",
-                     "8", "9"]
+                     "U", "V", "W", "X", "Y", "Z", u"Ä", u"Ö", u"Ü", u"ß", "!", "#", "$", '"', "?", "*", "/", "(", ")",
+                     "-", "+", "&", "'", ";", ":", ",", ".", "=", "@", "%", "<", ">", "0", "1", "2", "3", "4", "5", "6",
+                     "7", "8", "9", " "]
 
     def __init__(self, name, coordinates):
         """creates the object out of name and coordinates as list [lat, lon]"""
 
-        if type(name) != str:
+        if type(name) != str and type(name) != unicode:
             raise TypeError("waypoint name is of wrong type")
         self.name = name.upper()
         for c in self.name:
