@@ -1,4 +1,4 @@
-﻿#!/usr/bin/python
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 """tests for geocache.py"""
@@ -7,13 +7,15 @@ from __future__ import print_function
 
 import unittest
 import datetime
+import os
 import test_frame
+os.chdir("..\src")
 import geocache
 
 
 class TestSaaletalblick(unittest.TestCase):
     def setUp(self):
-        self.gc = geocache.Geocache("examples/GC6K86W.gpx")
+        self.gc = geocache.Geocache("../tests/examples/GC6K86W.gpx")
 
     def test_gccode(self):
         self.assertEqual(self.gc.gccode, "GC6K86W")
@@ -119,7 +121,7 @@ class TestSaaletalblick(unittest.TestCase):
 
 class TestMaerchenstuhl(unittest.TestCase):
     def setUp(self):
-        self.gc = geocache.Geocache("examples/GC1XRPM.gpx")
+        self.gc = geocache.Geocache("../tests/examples/GC1XRPM.gpx")
 
     def test_gccode(self):
         self.assertEqual(self.gc.gccode, "GC1XRPM")
@@ -177,7 +179,7 @@ class TestMaerchenstuhl(unittest.TestCase):
 
 class TestTesoroAmeghino(unittest.TestCase):
     def setUp(self):
-        self.gc = geocache.Geocache("examples/GC33QGC.gpx")
+        self.gc = geocache.Geocache("../tests/examples/GC33QGC.gpx")
 
     def test_gccode(self):
         self.assertEqual(self.gc.gccode, "GC33QGC")
@@ -238,7 +240,7 @@ class TestTesoroAmeghino(unittest.TestCase):
 
 class TestMusikhochschule(unittest.TestCase):
     def setUp(self):
-        self.gc = geocache.Geocache("examples/GC6RNTX.gpx")
+        self.gc = geocache.Geocache("../tests/examples/GC6RNTX.gpx")
 
     def test_gccode(self):
         self.assertEqual(self.gc.gccode, "GC6RNTX")
@@ -289,7 +291,7 @@ class TestMusikhochschule(unittest.TestCase):
 
 class TestWuerzburgerWebcam(unittest.TestCase):
     def setUp(self):
-        self.gc = geocache.Geocache("examples/GCJJ20.gpx")
+        self.gc = geocache.Geocache("../tests/examples/GCJJ20.gpx")
 
     def test_gccode(self):
         self.assertEqual(self.gc.gccode, "GCJJ20")
@@ -365,7 +367,7 @@ class TestWuerzburgerWebcam(unittest.TestCase):
 
 class TestMedrixErnos(unittest.TestCase):
     def setUp(self):
-        self.gc = geocache.Geocache("examples/GC5N23T.gpx")
+        self.gc = geocache.Geocache("../tests/examples/GC5N23T.gpx")
 
     def test_gccode(self):
         self.assertEqual(self.gc.gccode, "GC5N23T")
@@ -459,19 +461,19 @@ class TestInvalidInput(unittest.TestCase):
         self.assertRaises(TypeError, geocache.Geocache, [4, 2])
 
     def test_not_existing_file(self):
-        self.assertRaises(IOError, geocache.Geocache, "examples/dfgjlg.gpx")
+        self.assertRaises(IOError, geocache.Geocache, "../tests/examples/dfgjlg.gpx")
 
     def test_broken_file(self):
         exception = False  # has to be that complicated because ParseError unknown
         # noinspection PyBroadException
         try:
-            geocache.Geocache("examples/GC6V4PN.gpx")
+            geocache.Geocache("../tests/examples/GC6V4PN.gpx")
         except:  # broad exception because ParseError unknown
             exception = True
         self.assertTrue(exception)
 
     def test_missing_attributes(self):
-        self.assertRaises(AttributeError, geocache.Geocache, "examples/GC6V793.gpx")
+        self.assertRaises(AttributeError, geocache.Geocache, "../tests/examples/GC6V793.gpx")
 
 
 def create_testsuite():

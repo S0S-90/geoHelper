@@ -1,4 +1,4 @@
-﻿#!/usr/bin/python
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 """tests for ownfunctions.py"""
@@ -6,11 +6,14 @@
 import unittest
 import datetime
 import test_frame
+import os
 
+os.chdir("..\src")
 import ownfunctions
 
 
 class TestReplaceSigns(unittest.TestCase):
+       
     def test_find_cp1252(self):
         x = ownfunctions.find_cp1252()
         expected_result = ['NULL', 'START OF HEADING', 'START OF TEXT', 'END OF TEXT', 'END OF TRANSMISSION', 'ENQUIRY',

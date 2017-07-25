@@ -1,15 +1,19 @@
-﻿#!/usr/bin/python
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 """main file for testing"""
 
 from __future__ import print_function
 import sys
+import os
 
+os.chdir("../src")
 import test_ownfunctions
+os.chdir("../tests")
 import test_geocache
 import test_user_io
 import test_gpscontent
+
 
 saved_stdout = sys.stdout  # save standard output
 
