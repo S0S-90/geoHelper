@@ -10,7 +10,7 @@ import sys
 from StringIO import StringIO  # module not existent in python 3
 import test_frame
 import user_io
-    
+
     
 class TestGeneralOutput(unittest.TestCase):
 

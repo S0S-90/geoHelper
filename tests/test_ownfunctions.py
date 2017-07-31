@@ -1,21 +1,22 @@
-﻿#!/usr/bin/python
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 """tests for ownfunctions.py"""
 
 import unittest
 import datetime
-import test_frame
 import sys
 # noinspection PyCompatibility
 from StringIO import StringIO  # module not existent in python 3
 import xml.etree.ElementTree as ElementTree
-
+import test_frame
 import ownfunctions
 
 
 class TestReplaceSigns(unittest.TestCase):
+
     def test_find_cp1252(self):
+        test_frame.changepath("../src")
         x = ownfunctions.find_cp1252()
         expected_result = ['NULL', 'START OF HEADING', 'START OF TEXT', 'END OF TEXT', 'END OF TRANSMISSION', 'ENQUIRY',
                            'ACKNOWLEDGE', 'BELL', 'BACKSPACE', 'HORIZONTAL TABULATION', 'LINE FEED',
@@ -136,7 +137,7 @@ class TestReplaceSigns(unittest.TestCase):
 class TestShowXML(unittest.TestCase):
 
     def test(self):
-        tree = ElementTree.parse(r"examples\xml_test.gpx")
+        tree = ElementTree.parse(r"..\tests\examples\xml_test.gpx")
         out = StringIO()
         sys.stdout = out
         ownfunctions.show_xml(tree)

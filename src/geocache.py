@@ -366,7 +366,8 @@ class Waypoint(object):
             raise TypeError("waypoint name is of wrong type")
         self.name = name.upper()
         for c in self.name:
-            if c not in self.ALLOWED_SIGNS:
+            # noinspection PyCompatibility
+            if unicode(c) not in self.ALLOWED_SIGNS:  # not compatible with python 3 because of function unicode()
                 raise ValueError("GARMIN does not allow '{}' in a waypoint name.".format(c))
         self.shown_name = self.name  # for waypoints not belonging to a geocache
 

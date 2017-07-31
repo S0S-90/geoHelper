@@ -18,7 +18,8 @@ import gpscontent
 
 class TestInitNoLogfile(unittest.TestCase):
     def setUp(self):
-        self.x = gpscontent.GPSContent(r"examples\no_logfile")
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
 
     def test_geocaches(self):
         number_of_geocaches = len(self.x.geocaches)
@@ -46,7 +47,8 @@ class TestInitNoLogfile(unittest.TestCase):
 
 class TestInitOnlyFound(unittest.TestCase):
     def setUp(self):
-        self.x = gpscontent.GPSContent(r"examples\only_found")
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\only_found")
 
     def test_geocaches(self):
         number_of_geocaches = len(self.x.geocaches)
@@ -71,7 +73,8 @@ class TestInitOnlyFound(unittest.TestCase):
 
 class TestInitOnlyNotFound(unittest.TestCase):
     def setUp(self):
-        self.x = gpscontent.GPSContent(r"examples\only_notfound")
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\only_notfound")
 
     def test_geocaches(self):
         number_of_geocaches = len(self.x.geocaches)
@@ -96,7 +99,8 @@ class TestInitOnlyNotFound(unittest.TestCase):
 
 class TestInitNotOnlyFound(unittest.TestCase):
     def setUp(self):
-        self.x = gpscontent.GPSContent(r"examples\not_only_found")
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\not_only_found")
 
     def test_geocaches(self):
         number_of_geocaches = len(self.x.geocaches)
@@ -121,7 +125,8 @@ class TestInitNotOnlyFound(unittest.TestCase):
 
 class TestInitFoundNotOnGPS(unittest.TestCase):
     def setUp(self):
-        self.x = gpscontent.GPSContent(r"examples\found_not_on_gps")
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\found_not_on_gps")
 
     def test_geocaches(self):
         number_of_geocaches = len(self.x.geocaches)
@@ -145,7 +150,8 @@ class TestInitFoundNotOnGPS(unittest.TestCase):
 
 class TestInitNotFoundNotOnGPS(unittest.TestCase):
     def setUp(self):
-        self.x = gpscontent.GPSContent(r"examples\not_found_not_on_gps")
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\not_found_not_on_gps")
 
     def test_geocaches(self):
         number_of_geocaches = len(self.x.geocaches)
@@ -169,7 +175,8 @@ class TestInitNotFoundNotOnGPS(unittest.TestCase):
 
 class TestInitErrorInGPX(unittest.TestCase):
     def setUp(self):
-        self.x = gpscontent.GPSContent(r"examples\error_in_gpx")
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\error_in_gpx")
 
     def test_geocaches(self):
         number_of_geocaches = len(self.x.geocaches)
@@ -194,7 +201,8 @@ class TestInitErrorInGPX(unittest.TestCase):
 
 class TestGetLoggedAndFoundCachesOnlyFound(unittest.TestCase):
     def setUp(self):
-        self.x = gpscontent.GPSContent(r"examples\only_found")
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\only_found")
 
     def test_logged_caches(self):
         logged_caches = self.x._get_logged_and_found_caches()[0]
@@ -210,7 +218,8 @@ class TestGetLoggedAndFoundCachesOnlyFound(unittest.TestCase):
 
 class TestGetLoggedAndFoundCachesNotOnlyFound(unittest.TestCase):
     def setUp(self):
-        self.x = gpscontent.GPSContent(r"examples\not_only_found")
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\not_only_found")
 
     def test_logged_caches(self):
         logged_caches = self.x._get_logged_and_found_caches()[0]
@@ -227,7 +236,8 @@ class TestGetLoggedAndFoundCachesNotOnlyFound(unittest.TestCase):
 
 class TestGetLoggedAndFoundCachesOnlyNotFound(unittest.TestCase):
     def setUp(self):
-        self.x = gpscontent.GPSContent(r"examples\only_notfound")
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\only_notfound")
 
     def test_logged_caches(self):
         logged_caches = self.x._get_logged_and_found_caches()[0]
@@ -241,7 +251,8 @@ class TestGetLoggedAndFoundCachesOnlyNotFound(unittest.TestCase):
 
 class TestGetLoggedAndFoundCachesFoundNotOnGPS(unittest.TestCase):
     def setUp(self):
-        self.x = gpscontent.GPSContent(r"examples\found_not_on_gps")
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\found_not_on_gps")
 
     def test_logged_caches(self):
         logged_caches = self.x._get_logged_and_found_caches()[0]
@@ -256,7 +267,8 @@ class TestGetLoggedAndFoundCachesFoundNotOnGPS(unittest.TestCase):
 
 class TestGetLoggedAndFoundCachesNotFoundNotOnGPS(unittest.TestCase):
     def setUp(self):
-        self.x = gpscontent.GPSContent(r"examples\not_found_not_on_gps")
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\not_found_not_on_gps")
 
     def test_logged_caches(self):
         logged_caches = self.x._get_logged_and_found_caches()[0]
@@ -271,7 +283,8 @@ class TestGetLoggedAndFoundCachesNotFoundNotOnGPS(unittest.TestCase):
 
 class TestSortAndShowCaches(unittest.TestCase):
     def setUp(self):
-        self.x = gpscontent.GPSContent(r"examples\no_logfile")
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
 
     def test_gccode_up(self):
         with mock.patch('__builtin__.raw_input', side_effect=['1', '1']):
@@ -444,11 +457,11 @@ class TestSortAndShowCaches(unittest.TestCase):
 
 class TestShowAll(unittest.TestCase):
     def test_show_nothing(self):
-        x = gpscontent.GPSContent(r"examples\empty")
+        x = gpscontent.GPSContent(r"..\tests\examples\empty")
         self.assertEqual(x.show_all(), "Keine Caches auf dem Geraet.")
 
     def test_show_caches(self):
-        x = gpscontent.GPSContent(r"examples\no_logfile")
+        x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
         expected = u"GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  | "
         expected += u"06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
         expected += u"GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
@@ -467,11 +480,11 @@ class TestShowAll(unittest.TestCase):
 
 class TestShowAllDist(unittest.TestCase):
     def test_show_nothing(self):
-        x = gpscontent.GPSContent(r"examples\empty")
+        x = gpscontent.GPSContent(r"..\tests\examples\empty")
         self.assertEqual(x.show_all(), "Keine Caches auf dem Geraet.")
 
     def test_show_caches(self):
-        x = gpscontent.GPSContent(r"examples\no_logfile")
+        x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
         for gc in x.geocaches:
             gc.distance = ownfunctions.calculate_distance(gc.coordinates, [49.8414697, 9.8579699])
         expected = u"    6.5km | GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | "
@@ -493,12 +506,13 @@ class TestShowAllDist(unittest.TestCase):
 class TestReadCache(unittest.TestCase):
 
     def setUp(self):
-        self.x = gpscontent.GPSContent(r"examples\no_logfile")
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
 
     def test_cache(self):
         with mock.patch('__builtin__.raw_input', return_value="GC5N23T"):
             gc_return = self.x.read_cache()
-            gc = geocache.Geocache(r"examples\no_logfile\GPX\GC5N23T.gpx")
+            gc = geocache.Geocache(r"..\tests\examples\no_logfile\GPX\GC5N23T.gpx")
             self.assertEqual(gc_return, gc)
 
     def test_not_existing_cache(self):
@@ -512,7 +526,8 @@ class TestReadCache(unittest.TestCase):
 
 class TestShowOne(unittest.TestCase):
     def setUp(self):
-        self.x = gpscontent.GPSContent(r"examples\no_logfile")
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
 
     def test_not_existing_cache(self):
         with mock.patch('__builtin__.raw_input', return_value="GC12345"):
@@ -523,13 +538,13 @@ class TestShowOne(unittest.TestCase):
             self.assertEqual(output, "Dieser GC-Code existiert nicht.")
 
     def test_delete(self):
-        shutil.copy2(r"examples\no_logfile\GPX\GC1XRPM.gpx",
-                     r"examples\temp\GC1XRPM.gpx")  # copy file that is to be removed
+        shutil.copy2(r"..\tests\examples\no_logfile\GPX\GC1XRPM.gpx",
+                     r"..\tests\examples\temp\GC1XRPM.gpx")  # copy file that is to be removed
         with mock.patch('__builtin__.raw_input', side_effect=["GC1XRPM", "1", "y"]):
             self.x.show_one()
             self.assertEqual(len(self.x.geocaches), 5)
-        shutil.move(r"examples\temp\GC1XRPM.gpx",
-                    r"examples\no_logfile\GPX\GC1XRPM.gpx")  # move deleted file back to GPX folder
+        shutil.move(r"..\tests\examples\temp\GC1XRPM.gpx",
+                    r"..\tests\examples\no_logfile\GPX\GC1XRPM.gpx")  # move deleted file back to GPX folder
 
     def test_not_delete(self):
         with mock.patch('__builtin__.raw_input', side_effect=["GC1XRPM", "1", "n"]):
@@ -538,8 +553,10 @@ class TestShowOne(unittest.TestCase):
 
 
 class TestShowGCSelection(unittest.TestCase):
+
     def setUp(self):
-        self.x = gpscontent.GPSContent(r"examples\no_logfile")
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
 
     def test_show_nothing(self):
         self.assertEqual(self.x.show_gc_selection([]), "")
@@ -558,8 +575,10 @@ class TestShowGCSelection(unittest.TestCase):
 
 
 class TestShowGCSelectionDist(unittest.TestCase):
+
     def setUp(self):
-        self.x = gpscontent.GPSContent(r"examples\no_logfile")
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
         for gc in self.x.geocaches:
             gc.distance = ownfunctions.calculate_distance(gc.coordinates, [49.8414697, 9.8579699])
 
@@ -580,8 +599,10 @@ class TestShowGCSelectionDist(unittest.TestCase):
 
 
 class TestSearch(unittest.TestCase):
+
     def setUp(self):
-        self.x = gpscontent.GPSContent(r"examples\no_logfile")
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
 
     def test_name(self):
         with mock.patch('__builtin__.raw_input', side_effect=["1", "A"]):
@@ -724,16 +745,20 @@ class TestSearch(unittest.TestCase):
 
 
 class TestShowFoundsNoFoundCaches(unittest.TestCase):
+
     def setUp(self):
-        self.x = gpscontent.GPSContent(r"examples\no_logfile")
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
 
     def test_gives_error(self):
         self.assertRaises(ValueError, self.x.show_founds)
 
 
 class TestShowFoundsOnlyFound(unittest.TestCase):
+
     def setUp(self):
-        self.x = gpscontent.GPSContent(r"examples\only_found")
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\only_found")
 
     def test_show_caches(self):
         with mock.patch('__builtin__.raw_input', return_value="3"):
@@ -753,35 +778,40 @@ class TestShowFoundsOnlyFound(unittest.TestCase):
             self.assertEqual(output, expected)
 
     def test_delete(self):
-        shutil.copy2(r"examples\only_found\GPX\GC1XRPM.gpx",
-                     r"examples\temp\GC1XRPM.gpx")  # copy files that are to be removed
-        shutil.copy2(r"examples\only_found\GPX\GC5G5F5.gpx", r"examples\temp\GC5G5F5.gpx")
-        shutil.copy2(r"examples\only_found\geocache_visits.txt", r"examples\temp\geocache_visits.txt")
-        shutil.copy2(r"examples\only_found\geocache_logs.xml", r"examples\temp\geocache_logs.xml")
+        shutil.copy2(r"..\tests\examples\only_found\GPX\GC1XRPM.gpx",
+                     r"..\tests\examples\temp\GC1XRPM.gpx")  # copy files that are to be removed
+        shutil.copy2(r"..\tests\examples\only_found\GPX\GC5G5F5.gpx", r"..\tests\examples\temp\GC5G5F5.gpx")
+        shutil.copy2(r"..\tests\examples\only_found\geocache_visits.txt", r"..\tests\examples\temp\geocache_visits.txt")
+        shutil.copy2(r"..\tests\examples\only_found\geocache_logs.xml", r"..\tests\examples\temp\geocache_logs.xml")
 
         with mock.patch('__builtin__.raw_input', side_effect=["2", "y"]):
             self.x.show_founds()
             self.assertEqual(len(self.x.geocaches), 5)  # less geocaches
-            self.assertFalse(os.path.isfile(r"examples\only_found\geocache_visits.txt"))  # logfiles deleted
-            self.assertFalse(os.path.isfile(r"examples\only_found\geocache_logs.xml"))
+            self.assertFalse(os.path.isfile(r"..\tests\examples\only_found\geocache_visits.txt"))  # logfiles deleted
+            self.assertFalse(os.path.isfile(r"..\tests\examples\only_found\geocache_logs.xml"))
 
-        shutil.move(r"examples\temp\GC1XRPM.gpx", r"examples\only_found\GPX\GC1XRPM.gpx")  # move deleted files back
-        shutil.move(r"examples\temp\GC5G5F5.gpx", r"examples\only_found\GPX\GC5G5F5.gpx")
-        shutil.move(r"examples\temp\geocache_visits.txt", r"examples\only_found\geocache_visits.txt")
-        shutil.move(r"examples\temp\geocache_logs.xml", r"examples\only_found\geocache_logs.xml")
+        # move deleted files back
+        shutil.move(r"..\tests\examples\temp\GC1XRPM.gpx", r"..\tests\examples\only_found\GPX\GC1XRPM.gpx")
+        shutil.move(r"..\tests\examples\temp\GC5G5F5.gpx", r"..\tests\examples\only_found\GPX\GC5G5F5.gpx")
+        shutil.move(r"..\tests\examples\temp\geocache_visits.txt", r"..\tests\examples\only_found\geocache_visits.txt")
+        shutil.move(r"..\tests\examples\temp\geocache_logs.xml", r"..\tests\examples\only_found\geocache_logs.xml")
 
 
 class TestShowFoundsOnlyNotFound(unittest.TestCase):
+
     def setUp(self):
-        self.x = gpscontent.GPSContent(r"examples\only_notfound")
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\only_notfound")
 
     def test_gives_error(self):
         self.assertRaises(ValueError, self.x.show_founds)
 
 
 class TestShowFoundsNotOnlyFound(unittest.TestCase):
+
     def setUp(self):
-        self.x = gpscontent.GPSContent(r"examples\not_only_found")
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\not_only_found")
 
     def test_show_caches(self):
         with mock.patch('__builtin__.raw_input', return_value="3"):
@@ -801,27 +831,31 @@ class TestShowFoundsNotOnlyFound(unittest.TestCase):
             self.assertEqual(output, expected)
 
     def test_delete(self):
-        shutil.copy2(r"examples\not_only_found\GPX\GC1XRPM.gpx",
-                     r"examples\temp\GC1XRPM.gpx")  # copy files that are to be removed
-        shutil.copy2(r"examples\not_only_found\GPX\GC5N23T.gpx", r"examples\temp\GC5N23T.gpx")
-        shutil.copy2(r"examples\not_only_found\geocache_visits.txt", r"examples\temp\geocache_visits.txt")
-        shutil.copy2(r"examples\not_only_found\geocache_logs.xml", r"examples\temp\geocache_logs.xml")
+        shutil.copy2(r"..\tests\examples\not_only_found\GPX\GC1XRPM.gpx",
+                     r"..\tests\examples\temp\GC1XRPM.gpx")  # copy files that are to be removed
+        shutil.copy2(r"..\tests\examples\not_only_found\GPX\GC5N23T.gpx", r"..\tests\examples\temp\GC5N23T.gpx")
+        shutil.copy2(r"..\tests\examples\not_only_found\geocache_visits.txt",
+                     r"..\tests\examples\temp\geocache_visits.txt")
+        shutil.copy2(r"..\tests\examples\not_only_found\geocache_logs.xml", r"..\tests\examples\temp\geocache_logs.xml")
 
         with mock.patch('__builtin__.raw_input', side_effect=["2", "y"]):
             self.x.show_founds()
             self.assertEqual(len(self.x.geocaches), 5)  # less geocaches
-            self.assertFalse(os.path.isfile(r"examples\not_only_found\geocache_visits.txt"))  # logfiles deleted
-            self.assertFalse(os.path.isfile(r"examples\not_only_found\geocache_logs.xml"))
+            self.assertFalse(os.path.isfile(r"..\tests\examples\not_only_found\geocache_visits.txt"))  # logfiles deleted
+            self.assertFalse(os.path.isfile(r"..\tests\examples\not_only_found\geocache_logs.xml"))
 
-        shutil.move(r"examples\temp\GC1XRPM.gpx", r"examples\not_only_found\GPX\GC1XRPM.gpx")  # move deleted files back
-        shutil.move(r"examples\temp\GC5N23T.gpx", r"examples\not_only_found\GPX\GC5N23T.gpx")
-        shutil.move(r"examples\temp\geocache_visits.txt", r"examples\not_only_found\geocache_visits.txt")
-        shutil.move(r"examples\temp\geocache_logs.xml", r"examples\not_only_found\geocache_logs.xml")
+        # move deleted files back
+        shutil.move(r"..\tests\examples\temp\GC1XRPM.gpx", r"..\tests\examples\not_only_found\GPX\GC1XRPM.gpx")
+        shutil.move(r"..\tests\examples\temp\GC5N23T.gpx", r"..\tests\examples\not_only_found\GPX\GC5N23T.gpx")
+        shutil.move(r"..\tests\examples\temp\geocache_visits.txt", r"..\tests\examples\not_only_found\geocache_visits.txt")
+        shutil.move(r"..\tests\examples\temp\geocache_logs.xml", r"..\tests\examples\not_only_found\geocache_logs.xml")
 
 
 class TestShowFoundsFoundNotOnGPS(unittest.TestCase):
+
     def setUp(self):
-        self.x = gpscontent.GPSContent(r"examples\found_not_on_gps")
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\found_not_on_gps")
 
     def test_show_caches(self):
         with mock.patch('__builtin__.raw_input', return_value="3"):
@@ -839,55 +873,62 @@ class TestShowFoundsFoundNotOnGPS(unittest.TestCase):
             self.assertEqual(output, expected)
 
     def test_delete(self):
-        shutil.copy2(r"examples\found_not_on_gps\GPX\GC5G5F5.gpx",
-                     r"examples\temp\GC5G5F5.gpx")  # copy files that are to be removed
-        shutil.copy2(r"examples\found_not_on_gps\geocache_visits.txt", r"examples\temp\geocache_visits.txt")
-        shutil.copy2(r"examples\found_not_on_gps\geocache_logs.xml", r"examples\temp\geocache_logs.xml")
+        shutil.copy2(r"..\tests\examples\found_not_on_gps\GPX\GC5G5F5.gpx",
+                     r"..\tests\examples\temp\GC5G5F5.gpx")  # copy files that are to be removed
+        shutil.copy2(r"..\tests\examples\found_not_on_gps\geocache_visits.txt",
+                     r"..\tests\examples\temp\geocache_visits.txt")
+        shutil.copy2(r"..\tests\examples\found_not_on_gps\geocache_logs.xml", r"..\tests\examples\temp\geocache_logs.xml")
 
         with mock.patch('__builtin__.raw_input', side_effect=["2", "y"]):
             self.x.show_founds()
             self.assertEqual(len(self.x.geocaches), 5)  # less geocaches
-            self.assertFalse(os.path.isfile(r"examples\found_not_on_gps\geocache_visits.txt"))  # logfiles deleted
-            self.assertFalse(os.path.isfile(r"examples\found_not_on_gps\geocache_logs.xml"))
+            self.assertFalse(os.path.isfile(r"..\tests\examples\found_not_on_gps\geocache_visits.txt"))  # logfiles deleted
+            self.assertFalse(os.path.isfile(r"..\tests\examples\found_not_on_gps\geocache_logs.xml"))
 
-        shutil.move(r"examples\temp\GC5G5F5.gpx", r"examples\found_not_on_gps\GPX\GC5G5F5.gpx")  # move deleted files back
-        shutil.move(r"examples\temp\geocache_visits.txt", r"examples\found_not_on_gps\geocache_visits.txt")
-        shutil.move(r"examples\temp\geocache_logs.xml", r"examples\found_not_on_gps\geocache_logs.xml")
+        # move deleted files back
+        shutil.move(r"..\tests\examples\temp\GC5G5F5.gpx", r"..\tests\examples\found_not_on_gps\GPX\GC5G5F5.gpx")
+        shutil.move(r"..\tests\examples\temp\geocache_visits.txt",
+                    r"..\tests\examples\found_not_on_gps\geocache_visits.txt")
+        shutil.move(r"..\tests\examples\temp\geocache_logs.xml", r"..\tests\examples\found_not_on_gps\geocache_logs.xml")
 
 
 class TestDelete(unittest.TestCase):
+
     def setUp(self):
-        self.x = gpscontent.GPSContent(r"examples\no_logfile")
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
 
     def test_not_delete(self):
-        cache = geocache.Geocache(r"examples\no_logfile\GPX\GC5N23T.gpx")
+        cache = geocache.Geocache(r"..\tests\examples\no_logfile\GPX\GC5N23T.gpx")
         with mock.patch('__builtin__.raw_input', return_value="anything_except_for_y"):
             self.x.delete([cache])
             self.assertEqual(len(self.x.geocaches), 6)
 
     def test_delete_one(self):
-        cache = geocache.Geocache(r"examples\no_logfile\GPX\GC5N23T.gpx")
-        shutil.copy2(r"examples\no_logfile\GPX\GC5N23T.gpx",
-                     r"examples\temp\GC5N23T.gpx")  # copy file that is to be removed
+        cache = geocache.Geocache(r"..\tests\examples\no_logfile\GPX\GC5N23T.gpx")
+        shutil.copy2(r"..\tests\examples\no_logfile\GPX\GC5N23T.gpx",
+                     r"..\tests\examples\temp\GC5N23T.gpx")  # copy file that is to be removed
         with mock.patch('__builtin__.raw_input', return_value="y"):
             self.x.delete([cache])
             self.assertEqual(len(self.x.geocaches), 5)
-            self.assertFalse(os.path.isfile(r"examples\no_logfile\GPX\GC5N23T.gpx"))
-        shutil.move(r"examples\temp\GC5N23T.gpx", r"examples\no_logfile\GPX\GC5N23T.gpx")  # move deleted file back
+            self.assertFalse(os.path.isfile(r"..\tests\examples\no_logfile\GPX\GC5N23T.gpx"))
+        # move deleted file back
+        shutil.move(r"..\tests\examples\temp\GC5N23T.gpx", r"..\tests\examples\no_logfile\GPX\GC5N23T.gpx")
 
     def test_delete_more_than_one(self):
-        cache1 = geocache.Geocache(r"examples\no_logfile\GPX\GC5N23T.gpx")
-        cache2 = geocache.Geocache(r"examples\no_logfile\GPX\GC1XRPM.gpx")
-        shutil.copy2(r"examples\no_logfile\GPX\GC5N23T.gpx",
-                     r"examples\temp\GC5N23T.gpx")  # copy files that are to be removed
-        shutil.copy2(r"examples\no_logfile\GPX\GC1XRPM.gpx", r"examples\temp\GC1XRPM.gpx")
+        cache1 = geocache.Geocache(r"..\tests\examples\no_logfile\GPX\GC5N23T.gpx")
+        cache2 = geocache.Geocache(r"..\tests\examples\no_logfile\GPX\GC1XRPM.gpx")
+        shutil.copy2(r"..\tests\examples\no_logfile\GPX\GC5N23T.gpx",
+                     r"..\tests\examples\temp\GC5N23T.gpx")  # copy files that are to be removed
+        shutil.copy2(r"..\tests\examples\no_logfile\GPX\GC1XRPM.gpx", r"..\tests\examples\temp\GC1XRPM.gpx")
         with mock.patch('__builtin__.raw_input', return_value="y"):
             self.x.delete([cache1, cache2])
             self.assertEqual(len(self.x.geocaches), 4)
-            self.assertFalse(os.path.isfile(r"examples\no_logfile\GPX\GC5N23T.gpx"))
-            self.assertFalse(os.path.isfile(r"examples\no_logfile\GPX\GC1XRPM.gpx"))
-        shutil.move(r"examples\temp\GC5N23T.gpx", r"examples\no_logfile\GPX\GC5N23T.gpx")  # move deleted files back
-        shutil.move(r"examples\temp\GC1XRPM.gpx", r"examples\no_logfile\GPX\GC1XRPM.gpx")
+            self.assertFalse(os.path.isfile(r"..\tests\examples\no_logfile\GPX\GC5N23T.gpx"))
+            self.assertFalse(os.path.isfile(r"..\tests\examples\no_logfile\GPX\GC1XRPM.gpx"))
+        # move deleted files back
+        shutil.move(r"..\tests\examples\temp\GC5N23T.gpx", r"..\tests\examples\no_logfile\GPX\GC5N23T.gpx")
+        shutil.move(r"..\tests\examples\temp\GC1XRPM.gpx", r"..\tests\examples\no_logfile\GPX\GC1XRPM.gpx")
 
     def test_bullshit_cachelist_gives_error(self):
         with mock.patch('__builtin__.raw_input', return_value="y"):
