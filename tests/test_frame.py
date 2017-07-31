@@ -1,13 +1,15 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-"""import the path to the source files"""
+"""provide general features for running tests, e.g. change the path to the sources folder"""
 
 import unittest
 # noinspection PyCompatibility
 from StringIO import StringIO  # module not existent in python 3
+import os
 import sys
-sys.path.append('../src/')
+sys.path.append('../src')  # for importing modules
+os.chdir('../src')  # switching path for using modules
 
 saved_stdout = sys.stdout  # save standard output
 
@@ -24,3 +26,8 @@ def run(v, testsuite_creating_function, filename):
     testsuite = testsuite_creating_function()
     x = unittest.TextTestRunner(verbosity=v).run(testsuite)
     return x.testsRun, len(x.failures), len(x.errors)
+
+
+def changepath(newpath):
+    """adds newpath to path"""
+    os.chdir(newpath)

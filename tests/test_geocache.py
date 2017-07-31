@@ -7,14 +7,14 @@ from __future__ import print_function
 
 import unittest
 import datetime
-import os
 import test_frame
-os.chdir("..\src")
 import geocache
 
 
 class TestSaaletalblick(unittest.TestCase):
+
     def setUp(self):
+        """creates a geocache object for the tests"""
         self.gc = geocache.Geocache("../tests/examples/GC6K86W.gpx")
 
     def test_gccode(self):
@@ -121,6 +121,7 @@ class TestSaaletalblick(unittest.TestCase):
 
 class TestMaerchenstuhl(unittest.TestCase):
     def setUp(self):
+        """creates a geocache object for the tests"""
         self.gc = geocache.Geocache("../tests/examples/GC1XRPM.gpx")
 
     def test_gccode(self):
@@ -179,6 +180,7 @@ class TestMaerchenstuhl(unittest.TestCase):
 
 class TestTesoroAmeghino(unittest.TestCase):
     def setUp(self):
+        """creates a geocache object for the tests"""
         self.gc = geocache.Geocache("../tests/examples/GC33QGC.gpx")
 
     def test_gccode(self):
@@ -240,6 +242,7 @@ class TestTesoroAmeghino(unittest.TestCase):
 
 class TestMusikhochschule(unittest.TestCase):
     def setUp(self):
+        """creates a geocache object for the tests"""
         self.gc = geocache.Geocache("../tests/examples/GC6RNTX.gpx")
 
     def test_gccode(self):
@@ -291,6 +294,7 @@ class TestMusikhochschule(unittest.TestCase):
 
 class TestWuerzburgerWebcam(unittest.TestCase):
     def setUp(self):
+        """creates a geocache object for the tests"""
         self.gc = geocache.Geocache("../tests/examples/GCJJ20.gpx")
 
     def test_gccode(self):
@@ -367,6 +371,7 @@ class TestWuerzburgerWebcam(unittest.TestCase):
 
 class TestMedrixErnos(unittest.TestCase):
     def setUp(self):
+        """creates a geocache object for the tests"""
         self.gc = geocache.Geocache("../tests/examples/GC5N23T.gpx")
 
     def test_gccode(self):

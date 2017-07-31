@@ -6,15 +6,13 @@
 import unittest
 import datetime
 import test_frame
-import os
-
-os.chdir("..\src")
 import ownfunctions
 
 
 class TestReplaceSigns(unittest.TestCase):
-       
+
     def test_find_cp1252(self):
+        test_frame.changepath("../src")
         x = ownfunctions.find_cp1252()
         expected_result = ['NULL', 'START OF HEADING', 'START OF TEXT', 'END OF TEXT', 'END OF TRANSMISSION', 'ENQUIRY',
                            'ACKNOWLEDGE', 'BELL', 'BACKSPACE', 'HORIZONTAL TABULATION', 'LINE FEED',
