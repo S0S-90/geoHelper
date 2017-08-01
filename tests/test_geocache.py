@@ -543,6 +543,54 @@ class TestWaypointInit(unittest.TestCase):
         self.assertRaises(TypeError, geocache.Waypoint, "NAME", [52.520817, 0], "bla")
 
 
+class TestWaypointFindShownNameAndDistance(unittest.TestCase):
+
+    def test_everything_fine(self):
+        g = geocache.Geocache("../tests/examples/GC6K86W.gpx")
+        w = geocache.Waypoint("name (GC6K86W)", [49.80761666666667, 9.912116666666666])
+        w.find_shown_name_and_distance(g)
+        self.assertEqual(w.shown_name, "NAME")
+        self.assertEqual(w.distance, 60.26787767312747)
+
+    def test_wrong_geocache(self):
+        g = geocache.Geocache("../tests/examples/GC6K86W.gpx")
+        w = geocache.Waypoint("name (GC6K77W)", [49.80761666666667, 9.912116666666666])
+        self.assertRaises(TypeError, w.find_shown_name_and_distance, g)
+
+    def test_first_bracket_is_missing(self):
+        g = geocache.Geocache("../tests/examples/GC6K86W.gpx")
+        w = geocache.Waypoint("name GC6K86W)", [49.80761666666667, 9.912116666666666])
+        self.assertRaises(TypeError, w.find_shown_name_and_distance, g)
+
+    def test_second_bracket_is_missing(self):
+        g = geocache.Geocache("../tests/examples/GC6K86W.gpx")
+        w = geocache.Waypoint("name (GC6K86)", [49.80761666666667, 9.912116666666666])
+        self.assertRaises(TypeError, w.find_shown_name_and_distance, g)
+
+    def test_gc_is_wrong(self):
+        g = geocache.Geocache("../tests/examples/GC6K86W.gpx")
+        w = geocache.Waypoint("name (G6K86)", [49.80761666666667, 9.912116666666666])
+        self.assertRaises(TypeError, w.find_shown_name_and_distance, g)
+
+    def test_everything_is_wrong(self):
+        g = geocache.Geocache("../tests/examples/GC6K86W.gpx")
+        w = geocache.Waypoint("name", [49.80761666666667, 9.912116666666666])
+        self.assertRaises(TypeError, w.find_shown_name_and_distance, g)
+
+
+class TestWaypointInfo(unittest.TestCase):
+
+    def test_without_geocache(self):
+        w = geocache.Waypoint("name (GC6K86W)", [49.80761666666667, 9.912116666666666])
+        self.assertEqual(w.info(), u"        | N 49°48.457, E 009°54.727 | NAME (GC6K86W)")
+
+    def test_with_geocache(self):
+        w = geocache.Waypoint("name (GC6K86W)", [49.80761666666667, 9.912116666666666])
+        g = geocache.Geocache("../tests/examples/GC6K86W.gpx")
+        w.find_shown_name_and_distance(g)
+        self.assertEqual(w.info(), u"        | N 49°48.457, E 009°54.727 | NAME (60.3km)")
+
+
 def create_testsuite():
     """creates a testsuite with out of all tests in this file"""
     suite = unittest.TestSuite()
@@ -554,6 +602,8 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestMedrixErnos))
     suite.addTest(unittest.makeSuite(TestInvalidInput))
     suite.addTest(unittest.makeSuite(TestWaypointInit))
+    suite.addTest(unittest.makeSuite(TestWaypointFindShownNameAndDistance))
+    suite.addTest(unittest.makeSuite(TestWaypointInfo))
     return suite
 
 

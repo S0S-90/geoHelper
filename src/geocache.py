@@ -382,6 +382,8 @@ class Waypoint(object):
         if waypoint belongs to a geocache"""
 
         namelist = self.name.split()
+        if not (namelist[-1].startswith("(GC") and namelist[-1].endswith(")")) or namelist[-1][1:-1] != geocache.gccode:
+            raise TypeError("This waypoint does not belong to the geocache.")
         self.shown_name = " ".join(namelist[:-1])
         self.distance = ownfunctions.calculate_distance(self.coordinates, geocache.coordinates)
 
