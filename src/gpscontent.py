@@ -148,7 +148,6 @@ class GPSContent(object):
                     for c in self.geocaches:
                         if gc == c.gccode:
                             belongs_to_cache = True
-                            w.find_shown_name_and_distance(c)
                             c.add_waypoint(w)  # if yes add waypoint to cache
                             break
                 if not belongs_to_cache:

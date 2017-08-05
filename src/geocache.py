@@ -263,6 +263,7 @@ class Geocache(object):
         """adds a waypoint to the cache"""
 
         if type(waypoint) == Waypoint:
+            waypoint.find_shown_name_and_distance(self)
             self.waypoints.append(waypoint)
         else:
             raise TypeError("Waypoint can't be added because it is not of waypoint type")

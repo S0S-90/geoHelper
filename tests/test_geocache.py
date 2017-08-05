@@ -120,7 +120,145 @@ class TestSaaletalblick(unittest.TestCase):
         self.assertEqual(x, expected)
 
 
+class TestGeocacheWaypoints(unittest.TestCase):
+
+    def setUp(self):
+        """creates a geocache object for the tests"""
+        self.gc = geocache.Geocache("../tests/examples/GC6K86W.gpx")
+        self.w = geocache.Waypoint("name (GC6K86W)", [50.328883, 10.1536])
+        self.w.find_shown_name_and_distance(self.gc)
+        self.w2 = geocache.Waypoint("waypoint2 (GC6K86W)", [50.325883, 10.1546])
+        self.w2.find_shown_name_and_distance(self.gc)
+        self.gc.add_waypoint(self.w)
+        self.gc.add_waypoint(self.w2)
+
+    def test_gccode(self):
+        self.assertEqual(self.gc.gccode, "GC6K86W")
+
+    def test_name(self):
+        self.assertEqual(self.gc.name, "Saaletalblick")
+
+    def test_difficulty(self):
+        self.assertEqual(self.gc.difficulty, 2)
+
+    def test_terrain(self):
+        self.assertEqual(self.gc.terrain, 2)
+
+    def test_size(self):
+        self.assertEqual(self.gc.size, 1)
+
+    def test_size_string(self):
+        self.assertEqual(self.gc.size_string, "micro")
+
+    def test_type(self):
+        self.assertEqual(self.gc.type, "Traditional Cache")
+
+    def test_longtype(self):
+        self.assertEqual(self.gc.longtype, "Traditional Cache")
+
+    def test_description(self):
+        expected = u"\n\nNach einem kleinen Spaziergang und dem Finden des Döschens werdet ihr mit einem tollen Blick "
+        expected += u"ins Saaletal und auf die Saalewiesen belohnt! FTF: Jobi Voma STF: JoLoClMa TTF: Mone216\n\n\t\t\t"
+        self.assertEqual(self.gc.description, expected)
+
+    def test_hint(self):
+        self.assertEqual(self.gc.hint, "Und ab durch die Hecke!")
+
+    def test_owner(self):
+        self.assertEqual(self.gc.owner, "bigkruemel")
+
+    def test_url(self):
+        self.assertEqual(self.gc.url, "https://www.geocaching.com/geocache/GC6K86W_saaletalblick")
+
+    def test_coordinates(self):
+        self.assertEqual(self.gc.coordinates, [50.318883, 10.1936])
+
+    def test_coordinates_string(self):
+        self.assertEqual(self.gc.coordinates_string, u"N 50°19.133, E 010°11.616")
+
+    def test_attributes(self):
+        self.assertEqual(self.gc.attributes, ["no camping", "no parking available", "not wheelchair accessible",
+                                              "kid friendly", "hike shorter than 1km", "stroller accessible"])
+
+    def test_logs(self):
+        expected_logs = [['2016-07-16', 'Found it', 'Ziaepf'], ['2016-07-10', "Didn't find it", 'NES-GN 310362'],
+                         ['2016-06-20', 'Found it', 'HerbieWo'], ['2016-06-15', 'Found it', "Fantastic'4"],
+                         ['2016-06-11', 'Found it', 'vicmouse'], ['2016-06-11', 'Found it', 'melimouse'],
+                         ['2016-06-10', 'Found it', 'Mone216'], ['2016-06-08', 'Found it', 'JoLoClMa'],
+                         ['2016-06-08', 'Found it', 'Jobi Voma'], ['2016-06-07', 'Publish Listing', 'Sabbelwasser']]
+        self.assertEqual(self.gc.logs, expected_logs)
+
+    def test_available(self):
+        self.assertEqual(self.gc.available, True)
+
+    def test_downloaddate(self):
+        expected_date = datetime.date(2016, 8, 4)
+        self.assertEqual(self.gc.downloaddate, expected_date)
+
+    def test_downloaddate_string(self):
+        self.assertEqual(self.gc.downloaddate_string, "04 Aug 2016")
+
+    def test_waypoints(self):
+        self.assertEqual(self.gc.waypoints, [self.w, self.w2])
+
+    def test_add_waypoint(self):
+        w_neu = geocache.Waypoint("neu (GC6K86W)", [50.418883, 10.2])
+        self.gc.add_waypoint(w_neu)
+        self.assertEqual(w_neu.shown_name, "NEU")
+        self.assertEqual(self.gc.waypoints, [self.w, self.w2, w_neu])
+
+    def test_add_waypoint_not_a_waypoint(self):
+        self.assertRaises(TypeError, self.gc.add_waypoint, "w_neu")
+
+    def test_shortinfo(self):
+        x = self.gc.shortinfo()
+        expected = u"GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | True  "
+        expected += u"| 04 Aug 2016 | Saaletalblick"
+        expected += u"\n        | N 50°19.733, E 010°09.216 | NAME (3.0km)"
+        expected += u"\n        | N 50°19.553, E 010°09.276 | WAYPOINT2 (2.9km)"
+        self.assertEqual(x, expected)
+
+    def test_shortinfo_spaces(self):
+        x = self.gc.shortinfo(5)
+        expected = u"GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | True  "
+        expected += u"| 04 Aug 2016 | Saaletalblick"
+        expected += u"\n             | N 50°19.733, E 010°09.216 | NAME (3.0km)"
+        expected += u"\n             | N 50°19.553, E 010°09.276 | WAYPOINT2 (2.9km)"
+        self.assertEqual(x, expected)
+
+    def test_longinfo(self):
+        x = self.gc.longinfo()
+        z1 = u"\nGC6K86W : Saaletalblick"
+        z2 = "\n------------------------"
+        z3 = u"\nSchwierigkeit: 2.0, Gelaende: 2.0, Groesse: micro, Typ: Traditional Cache"
+        z4 = u"\nKoordinaten: N 50°19.133, E 010°11.616, "
+        z4 += u"Wegpunkte: NAME (N 50°19.733, E 010°09.216), WAYPOINT2 (N 50°19.553, E 010°09.276)"
+        z5 = u"\nOwner: bigkruemel"
+        z6 = u"\nAttribute: no camping, no parking available, not wheelchair accessible, kid friendly, "
+        z6 += u"hike shorter than 1km, stroller accessible"
+        z7 = u"\nCache ist aktiv: True, Stand: 04 Aug 2016"
+        z8 = u"\nLink: https://www.geocaching.com/geocache/GC6K86W_saaletalblick"
+        z9 = u"\n\n\n\nNach einem kleinen Spaziergang und dem Finden des Döschens werdet ihr mit einem tollen Blick ins "
+        z9 += u"Saaletal und auf die Saalewiesen belohnt! FTF: Jobi Voma STF: JoLoClMa TTF: Mone216\n\n\t\t\t"
+        z10 = u"\nHinweis: Und ab durch die Hecke!"
+        z11 = u"\n\n"
+        z12 = u"2016-07-16: Found it by Ziaepf\n"
+        z13 = u"2016-07-10: Didn't find it by NES-GN 310362\n"
+        z14 = u"2016-06-20: Found it by HerbieWo\n"
+        z15 = u"2016-06-15: Found it by Fantastic'4\n"
+        z16 = u"2016-06-11: Found it by vicmouse\n"
+        z17 = u"2016-06-11: Found it by melimouse\n"
+        z18 = u"2016-06-10: Found it by Mone216\n"
+        z19 = u"2016-06-08: Found it by JoLoClMa\n"
+        z20 = u"2016-06-08: Found it by Jobi Voma\n"
+        z21 = u"2016-06-07: Publish Listing by Sabbelwasser\n"
+        expected = z1 + z2 + z3 + z4 + z5 + z6 + z7 + z8 + z9 + z10
+        expected += z11 + z12 + z13 + z14 + z15 + z16 + z17 + z18 + z19 + z20 + z21
+        self.assertEqual(x, expected)
+
+
 class TestMaerchenstuhl(unittest.TestCase):
+
     def setUp(self):
         """creates a geocache object for the tests"""
         self.gc = geocache.Geocache("../tests/examples/GC1XRPM.gpx")
@@ -180,6 +318,7 @@ class TestMaerchenstuhl(unittest.TestCase):
 
 
 class TestTesoroAmeghino(unittest.TestCase):
+
     def setUp(self):
         """creates a geocache object for the tests"""
         self.gc = geocache.Geocache("../tests/examples/GC33QGC.gpx")
@@ -595,6 +734,7 @@ def create_testsuite():
     """creates a testsuite with out of all tests in this file"""
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestSaaletalblick))
+    suite.addTest(unittest.makeSuite(TestGeocacheWaypoints))
     suite.addTest(unittest.makeSuite(TestMaerchenstuhl))
     suite.addTest(unittest.makeSuite(TestTesoroAmeghino))
     suite.addTest(unittest.makeSuite(TestMusikhochschule))
