@@ -44,6 +44,47 @@ class TestInitNoLogfile(unittest.TestCase):
     def test_logged_and_found_caches_fails(self):
         self.assertRaises(IOError, self.x._get_logged_and_found_caches)
 
+    def test_waypoints(self):
+        self.assertEqual(self.x.waypoints, [])
+
+
+class TestInitWaypoints(unittest.TestCase):
+    def setUp(self):
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
+
+    def test_geocaches(self):
+        number_of_geocaches = len(self.x.geocaches)
+        self.assertEqual(number_of_geocaches, 6)
+
+    def test_attributes(self):
+        expected_output = ['available 24-7', 'available in winter', 'bikes allowed', 'dangerous area',
+                           'difficult climbing', 'dogs allowed', 'flashlight required', 'hike shorter than 1km',
+                           'kid friendly', 'needs maintenance', 'no camping', 'no kids', 'no parking available',
+                           'not stroller accessible', 'not wheelchair accessible', 'parking available',
+                           'picnic tables available', 'public transit available', 'restrooms available',
+                           'special tool required', 'stealth required', 'stroller accessible', 'takes less than 1 hour',
+                           'teamwork required', 'thorns!', 'ticks!', 'tree climbing required', 'wheelchair accessible']
+        self.assertEqual(self.x.existing_attributes, expected_output)
+
+    def test_found_exists(self):
+        self.assertEqual(self.x.found_exists, False)
+
+    def test_warning(self):
+        self.assertEqual(self.x.warning, False)
+
+    def test_logged_and_found_caches_fails(self):
+        self.assertRaises(IOError, self.x._get_logged_and_found_caches)
+
+    def test_waypoints(self):
+        self.assertEqual(len(self.x.waypoints), 2)
+
+    def test_waypoint_in_cache(self):
+        for gc in self.x.geocaches:
+            if gc.gccode == "sGC1XRPM":
+                self.assertEqual(len(gc.waypoints), 1)
+                self.assertEqual(gc.waypoints[0].name, "MÄRCHENSTUHL")
+
 
 class TestInitOnlyFound(unittest.TestCase):
     def setUp(self):
@@ -69,6 +110,9 @@ class TestInitOnlyFound(unittest.TestCase):
 
     def test_warning(self):
         self.assertEqual(self.x.warning, False)
+
+    def test_waypoints(self):
+        self.assertEqual(self.x.waypoints, [])
 
 
 class TestInitOnlyNotFound(unittest.TestCase):
@@ -96,6 +140,9 @@ class TestInitOnlyNotFound(unittest.TestCase):
     def test_warning(self):
         self.assertEqual(self.x.warning, True)
 
+    def test_waypoints(self):
+        self.assertEqual(self.x.waypoints, [])
+
 
 class TestInitNotOnlyFound(unittest.TestCase):
     def setUp(self):
@@ -122,6 +169,9 @@ class TestInitNotOnlyFound(unittest.TestCase):
     def test_warning(self):
         self.assertEqual(self.x.warning, True)
 
+    def test_waypoints(self):
+        self.assertEqual(self.x.waypoints, [])
+
 
 class TestInitFoundNotOnGPS(unittest.TestCase):
     def setUp(self):
@@ -146,6 +196,9 @@ class TestInitFoundNotOnGPS(unittest.TestCase):
 
     def test_warning(self):
         self.assertEqual(self.x.warning, False)
+
+    def test_waypoints(self):
+        self.assertEqual(self.x.waypoints, [])
 
 
 class TestInitNotFoundNotOnGPS(unittest.TestCase):
@@ -172,6 +225,9 @@ class TestInitNotFoundNotOnGPS(unittest.TestCase):
     def test_warning(self):
         self.assertEqual(self.x.warning, False)
 
+    def test_waypoints(self):
+        self.assertEqual(self.x.waypoints, [])
+
 
 class TestInitErrorInGPX(unittest.TestCase):
     def setUp(self):
@@ -197,6 +253,9 @@ class TestInitErrorInGPX(unittest.TestCase):
 
     def test_warning(self):
         self.assertEqual(self.x.warning, False)
+
+    def test_waypoints(self):
+        self.assertEqual(self.x.waypoints, [])
 
 
 class TestGetLoggedAndFoundCachesOnlyFound(unittest.TestCase):
@@ -279,6 +338,26 @@ class TestGetLoggedAndFoundCachesNotFoundNotOnGPS(unittest.TestCase):
         found_caches = self.x._get_logged_and_found_caches()[1]
         self.assertEqual(len(found_caches), 1)
         self.assertEqual(found_caches[0].gccode, "GC5G5F5")
+
+
+class TestReadWaypoints(unittest.TestCase):
+
+    def setUp(self):
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
+
+    def test_readfile(self):
+        wpts = self.x._read_waypoints(r"..\tests\examples\no_logfile_waypoints\GPX\Wegpunkte_14-JAN-17.gpx")
+        self.assertEqual(len(wpts), 1)  # reads only the waypoint that does not belong to a cache
+
+    def test_broken_wptfile(self):
+        exception = False  # has to be that complicated because ParseError unknown
+        # noinspection PyBroadException
+        try:
+            self.x._read_waypoints(r"..\tests\examples\no_logfile_waypoints\GPX\Wegpunkte_08-OKT-16.gpx")
+        except:  # broad exception because ParseError unknown
+            exception = True
+        self.assertTrue(exception)
 
 
 class TestSortAndShowCaches(unittest.TestCase):
@@ -477,6 +556,24 @@ class TestShowAll(unittest.TestCase):
         expected += u"True  | 29 Oct 2016 | Wuerzburger webcam\n"
         self.assertEqual(x.show_all(), expected)
 
+    def test_show_caches_with_waypoints(self):
+        x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
+        expected = u"GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  | "
+        expected += u"06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
+        expected += u"        | N 49°47.546, E 009°55.934 | MÄRCHENSTUHL 2 (1.9km)\n"
+        expected += u"GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
+        expected += u"True  | 11 Sep 2016 | Tesoro Ameghino\n"
+        expected += u"GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | "
+        expected += u"False | 05 Mar 2017 | 67 - MedTrix - {}\n".format(u"\u001a" + u"\u001a" + u"\u001a" +
+                                                                        u"\u001a" + u"\u001a")
+        expected += u"GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | "
+        expected += u"True  | 04 Aug 2016 | Saaletalblick\n"
+        expected += u"GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   | "
+        expected += u"True  | 08 Oct 2016 | Hochschule für Musik 1\n"
+        expected += u"GCJJ20  | N 49°47.688, E 009°55.816 | Unknown Type      | D 1.0 | T 1.0 | other   | "
+        expected += u"True  | 29 Oct 2016 | Wuerzburger webcam\n"
+        self.assertEqual(x.show_all(), expected)
+
 
 class TestShowAllDist(unittest.TestCase):
     def test_show_nothing(self):
@@ -489,6 +586,26 @@ class TestShowAllDist(unittest.TestCase):
             gc.distance = ownfunctions.calculate_distance(gc.coordinates, [49.8414697, 9.8579699])
         expected = u"    6.5km | GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | "
         expected += u"True  | 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
+        expected += u"12746.3km | GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
+        expected += u"True  | 11 Sep 2016 | Tesoro Ameghino\n"
+        expected += u"    5.4km | GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | "
+        expected += u"False | 05 Mar 2017 | 67 - MedTrix - {}\n".format(u"\u001a" + u"\u001a" + u"\u001a" +
+                                                                        u"\u001a" + u"\u001a")
+        expected += u"   58.2km | GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   "
+        expected += u"| True  | 04 Aug 2016 | Saaletalblick\n"
+        expected += u"    7.9km | GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   "
+        expected += u"| True  | 08 Oct 2016 | Hochschule für Musik 1\n"
+        expected += u"    7.3km | GCJJ20  | N 49°47.688, E 009°55.816 | Unknown Type      | D 1.0 | T 1.0 | other   "
+        expected += u"| True  | 29 Oct 2016 | Wuerzburger webcam\n"
+        self.assertEqual(x.show_all_dist(), expected)
+
+    def test_show_caches_with_waypoints(self):
+        x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
+        for gc in x.geocaches:
+            gc.distance = ownfunctions.calculate_distance(gc.coordinates, [49.8414697, 9.8579699])
+        expected = u"    6.5km | GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | "
+        expected += u"True  | 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
+        expected += u"                    | N 49°47.546, E 009°55.934 | MÄRCHENSTUHL 2 (1.9km)\n"
         expected += u"12746.3km | GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
         expected += u"True  | 11 Sep 2016 | Tesoro Ameghino\n"
         expected += u"    5.4km | GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | "
@@ -556,7 +673,7 @@ class TestShowGCSelection(unittest.TestCase):
 
     def setUp(self):
         """creates a gpscontent object for the tests"""
-        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
 
     def test_show_nothing(self):
         self.assertEqual(self.x.show_gc_selection([]), "")
@@ -569,6 +686,15 @@ class TestShowGCSelection(unittest.TestCase):
         expected += u"08 Oct 2016 | Hochschule für Musik 1\n"
         self.assertEqual(self.x.show_gc_selection(selection), expected)
 
+    def test_show_selection_waypoint(self):
+        selection = self.x.geocaches[:2]
+        expected = u"GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | "
+        expected += u"True  | 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
+        expected += u"        | N 49°47.546, E 009°55.934 | MÄRCHENSTUHL 2 (1.9km)\n"
+        expected += u"GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
+        expected += u"True  | 11 Sep 2016 | Tesoro Ameghino\n"
+        self.assertEqual(self.x.show_gc_selection(selection), expected)
+
     def test_bullshitlist(self):
         selection = ["13", 6]
         self.assertRaises(TypeError, self.x.show_gc_selection, selection)
@@ -578,7 +704,7 @@ class TestShowGCSelectionDist(unittest.TestCase):
 
     def setUp(self):
         """creates a gpscontent object for the tests"""
-        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
         for gc in self.x.geocaches:
             gc.distance = ownfunctions.calculate_distance(gc.coordinates, [49.8414697, 9.8579699])
 
@@ -591,6 +717,15 @@ class TestShowGCSelectionDist(unittest.TestCase):
         expected += u"True  | 04 Aug 2016 | Saaletalblick\n"
         expected += u"    7.9km | GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   "
         expected += u"| True  | 08 Oct 2016 | Hochschule für Musik 1\n"
+        self.assertEqual(self.x.show_gc_selection_dist(selection), expected)
+
+    def test_show_selection_waypoints(self):
+        selection = self.x.geocaches[:2]
+        expected = u"    6.5km | GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | "
+        expected += u"True  | 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
+        expected += u"                    | N 49°47.546, E 009°55.934 | MÄRCHENSTUHL 2 (1.9km)\n"
+        expected += u"12746.3km | GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
+        expected += u"True  | 11 Sep 2016 | Tesoro Ameghino\n"
         self.assertEqual(self.x.show_gc_selection_dist(selection), expected)
 
     def test_bullshitlist(self):
@@ -939,6 +1074,7 @@ def create_testsuite():
     """creates a testsuite with out of all tests in this file"""
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestInitNoLogfile))
+    suite.addTest(unittest.makeSuite(TestInitWaypoints))
     suite.addTest(unittest.makeSuite(TestInitOnlyFound))
     suite.addTest(unittest.makeSuite(TestInitOnlyNotFound))
     suite.addTest(unittest.makeSuite(TestInitNotOnlyFound))
@@ -950,6 +1086,7 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesOnlyNotFound))
     suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesFoundNotOnGPS))
     suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesNotFoundNotOnGPS))
+    suite.addTest(unittest.makeSuite(TestReadWaypoints))
     suite.addTest(unittest.makeSuite(TestSortAndShowCaches))
     suite.addTest(unittest.makeSuite(TestShowAll))
     suite.addTest(unittest.makeSuite(TestShowAllDist))
