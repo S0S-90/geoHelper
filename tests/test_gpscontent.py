@@ -644,7 +644,7 @@ class TestReadCache(unittest.TestCase):
 class TestShowOne(unittest.TestCase):
     def setUp(self):
         """creates a gpscontent object for the tests"""
-        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
 
     def test_not_existing_cache(self):
         with mock.patch('__builtin__.raw_input', return_value="GC12345"):
@@ -655,18 +655,28 @@ class TestShowOne(unittest.TestCase):
             self.assertEqual(output, "Dieser GC-Code existiert nicht.")
 
     def test_delete(self):
-        shutil.copy2(r"..\tests\examples\no_logfile\GPX\GC1XRPM.gpx",
+        shutil.copy2(r"..\tests\examples\no_logfile_waypoints\GPX\GC5N23T.gpx",
+                     r"..\tests\examples\temp\GC5N23T.gpx")  # copy file that is to be removed
+        with mock.patch('__builtin__.raw_input', side_effect=["GC5N23T", "1", "y"]):
+            self.x.show_one()
+            self.assertEqual(len(self.x.geocaches), 5)
+        shutil.move(r"..\tests\examples\temp\GC5N23T.gpx",
+                    r"..\tests\examples\no_logfile_waypoints\GPX\GC5N23T.gpx")  # move deleted file back to GPX folder
+
+    def test_not_delete(self):
+        with mock.patch('__builtin__.raw_input', side_effect=["GC5N23T", "1", "n"]):
+            self.x.show_one()
+            self.assertEqual(len(self.x.geocaches), 6)
+
+    def test_delete_with_wpt(self):
+        shutil.copy2(r"..\tests\examples\no_logfile_waypoints\GPX\GC1XRPM.gpx",
                      r"..\tests\examples\temp\GC1XRPM.gpx")  # copy file that is to be removed
         with mock.patch('__builtin__.raw_input', side_effect=["GC1XRPM", "1", "y"]):
             self.x.show_one()
             self.assertEqual(len(self.x.geocaches), 5)
+            # TODO: test if waypoint is deleted from GPS, too
         shutil.move(r"..\tests\examples\temp\GC1XRPM.gpx",
-                    r"..\tests\examples\no_logfile\GPX\GC1XRPM.gpx")  # move deleted file back to GPX folder
-
-    def test_not_delete(self):
-        with mock.patch('__builtin__.raw_input', side_effect=["GC1XRPM", "1", "n"]):
-            self.x.show_one()
-            self.assertEqual(len(self.x.geocaches), 6)
+                    r"..\tests\examples\no_logfile_waypoints\GPX\GC1XRPM.gpx")  # move deleted file back to GPX folder
 
 
 class TestShowGCSelection(unittest.TestCase):
@@ -1070,6 +1080,29 @@ class TestDelete(unittest.TestCase):
             self.assertRaises(AttributeError, self.x.delete, [42, "hallo"])
 
 
+class TestShowWaypoints(unittest.TestCase):
+
+    def test_no_waypoints(self):
+        x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
+        out = StringIO()
+        sys.stdout = out
+        x.show_waypoints()
+        output = out.getvalue().strip()
+        expected = "Keine Wegpunkte auf dem Geraet."
+        self.assertEqual(output, expected)
+
+    def test_waypoints(self):
+        with mock.patch('__builtin__.raw_input', return_value=["n"]):
+            x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
+            out = StringIO()
+            sys.stdout = out
+            x.show_waypoints()
+            output = out.getvalue()
+            expected = u"        | N 49°45.609, E 009°59.454 | BLICK ZUM RANDERSACKERER KÄPPE\n"
+            expected += u"        | N 49\xb047.459, E 009\xb055.938 | DOM FINAL (GC1QNWT)\n"
+            self.assertEqual(output, expected)
+
+
 def create_testsuite():
     """creates a testsuite with out of all tests in this file"""
     suite = unittest.TestSuite()
@@ -1101,6 +1134,7 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestShowFoundsNotOnlyFound))
     suite.addTest(unittest.makeSuite(TestShowFoundsFoundNotOnGPS))
     suite.addTest(unittest.makeSuite(TestDelete))
+    suite.addTest(unittest.makeSuite(TestShowWaypoints))
     return suite
 
 
