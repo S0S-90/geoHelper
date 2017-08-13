@@ -1118,7 +1118,7 @@ class TestCreateMapinfoOne(unittest.TestCase):
         for g in self.x.geocaches:
             if g.gccode == "GC1XRPM":
                 self.x._create_mapinfo_one(g)
-        with open("mapinfo.txt","rb") as mapinfo:
+        with open("mapinfo.txt", "rb") as mapinfo:
             output = mapinfo.read().decode("cp1252")
         os.remove("mapinfo.txt")
         expected = u"49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
@@ -1130,7 +1130,7 @@ class TestCreateMapinfoOne(unittest.TestCase):
         w = geocache.Waypoint("wpt (GC78K5W)", [49.792433, 9.932233])
         gc.add_waypoint(w)
         self.x._create_mapinfo_one(gc)
-        with open("mapinfo.txt","rb") as mapinfo:
+        with open("mapinfo.txt", "rb") as mapinfo:
             output = mapinfo.read().decode("cp1252")
         os.remove("mapinfo.txt")
         expected = u"49.795567,9.905717 {Cachertreffen Würzburg, die 54ste} <yellow>\r\n"
