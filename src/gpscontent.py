@@ -519,7 +519,12 @@ class GPSContent(object):
 
     def _create_mapinfo_several(self, cachelist, show_waypoints, free_waypoints):
         """creates a textfile from a list of caches that is used to configure the map on 'www.mapcustomizer.com'
-        part of show_on_map"""
+        part of show_on_map
+        input:
+        cachelist: list of caches that are to be shown
+        show_waypoints: determines if waypoints are shown on map, too
+        free_waypoints: show also waypoints that don't belong to a cache (normally set to true if cachelist contains all
+        caches on gpx-device and waypoints should be shown)"""
         with open("mapinfo.txt", "w") as mapinfo:
             for i, g in enumerate(cachelist):
                 if g.type == "Traditional Cache":

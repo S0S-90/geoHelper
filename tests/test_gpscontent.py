@@ -1146,7 +1146,59 @@ class TestCreateMapinfoOne(unittest.TestCase):
         expected = u"49.795567,9.905717 {Cachertreffen Würzburg, die 54ste} <yellow>\r\n"
         self.assertEqual(output, expected)
 
-    # TODO: other colors
+
+class TestCreateMapinfoSeveral(unittest.TestCase):
+
+    def setUp(self):
+        """creates a gpscontent object and a cachelist for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
+        self.cachelist = []
+        for gc in self.x.geocaches:
+            if gc.gccode == "GC1XRPM" or gc.gccode == "GC5N23T":
+                self.cachelist.append(gc)
+
+    def test_without_waypoints(self):
+        self.x._create_mapinfo_several(self.cachelist, False, False)
+        with open("mapinfo.txt", "rb") as mapinfo:
+            output = mapinfo.read().decode("cp1252")
+        os.remove("mapinfo.txt")
+        expected = u"49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
+        expected += u"49.8076166667,9.91211666667 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+        self.assertEqual(output, expected)
+
+    def test_with_waypoints(self):
+        self.x._create_mapinfo_several(self.cachelist, True, False)
+        with open("mapinfo.txt", "rb") as mapinfo:
+            output = mapinfo.read().decode("cp1252")
+        os.remove("mapinfo.txt")
+        expected = u"49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl (GC1XRPM)} <default>\r\n"
+        expected += u"49.792433,9.932233 {MÄRCHENSTUHL 2 (GC1XRPM)} <default>\r\n"
+        expected += u"49.8076166667,9.91211666667 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+        self.assertEqual(output, expected)
+
+    def test_with_all_waypoints(self):
+        self.x._create_mapinfo_several(self.cachelist, True, True)
+        with open("mapinfo.txt", "rb") as mapinfo:
+            output = mapinfo.read().decode("cp1252")
+        os.remove("mapinfo.txt")
+        expected = u"49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl (GC1XRPM)} <default>\r\n"
+        expected += u"49.792433,9.932233 {MÄRCHENSTUHL 2 (GC1XRPM)} <default>\r\n"
+        expected += u"49.8076166667,9.91211666667 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+        expected += u"49.76015,9.9909 {BLICK ZUM RANDERSACKERER KÄPPE} <yellow>\r\n"
+        expected += u"49.790983,9.9323 {DOM FINAL (GC1QNWT)} <yellow>\r\n"
+        self.assertEqual(output, expected)
+
+    def test_only_free_waypoints(self):  # normally should not happen
+        self.maxDiff = None
+        self.x._create_mapinfo_several(self.cachelist, False, True)
+        with open("mapinfo.txt", "rb") as mapinfo:
+            output = mapinfo.read().decode("cp1252")
+        os.remove("mapinfo.txt")
+        expected = u"49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
+        expected += u"49.8076166667,9.91211666667 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+        expected += u"49.76015,9.9909 {BLICK ZUM RANDERSACKERER KÄPPE} <yellow>\r\n"
+        expected += u"49.790983,9.9323 {DOM FINAL (GC1QNWT)} <yellow>\r\n"
+        self.assertEqual(output, expected)
 
 
 def create_testsuite():
@@ -1183,6 +1235,7 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestShowWaypoints))
     suite.addTest(unittest.makeSuite(TestAssignWaypoints))
     suite.addTest(unittest.makeSuite(TestCreateMapinfoOne))
+    suite.addTest(unittest.makeSuite(TestCreateMapinfoSeveral))
     return suite
 
 
