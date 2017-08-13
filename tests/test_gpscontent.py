@@ -637,8 +637,8 @@ class TestReadCache(unittest.TestCase):
             out = StringIO()
             sys.stdout = out
             self.x.show_one()
-            output = out.getvalue().strip()
-            self.assertEqual(output, "Dieser GC-Code existiert nicht.")
+            output = out.getvalue()
+            self.assertEqual(output, "Dieser GC-Code existiert nicht.\n")
 
 
 class TestShowOne(unittest.TestCase):
@@ -651,8 +651,8 @@ class TestShowOne(unittest.TestCase):
             out = StringIO()
             sys.stdout = out
             self.x.show_one()
-            output = out.getvalue().strip()
-            self.assertEqual(output, "Dieser GC-Code existiert nicht.")
+            output = out.getvalue()
+            self.assertEqual(output, "Dieser GC-Code existiert nicht.\n")
 
     def test_delete(self):
         shutil.copy2(r"..\tests\examples\no_logfile_waypoints\GPX\GC5N23T.gpx",
@@ -910,7 +910,7 @@ class TestShowFoundsOnlyFound(unittest.TestCase):
             out = StringIO()
             sys.stdout = out
             self.x.show_founds()
-            output = out.getvalue().strip()
+            output = out.getvalue()
             expected = u"GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  "
             expected += u"| 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
             expected += u"GC5G5F5 | N 49°47.955, E 009°58.566 | Traditional Cache | D 1.5 | T 4.0 | small   | True  "
@@ -919,7 +919,7 @@ class TestShowFoundsOnlyFound(unittest.TestCase):
             expected += "1: Gefundene Caches auf geocaching.com loggen "
             expected += "(ueber den Upload von drafts / fieldnotes, INTERNET!!!)\n"
             expected += "2: Alle gefundenen Caches loeschen\n"
-            expected += "3: zurueck"
+            expected += "3: zurueck\n"
             self.assertEqual(output, expected)
 
     def test_delete(self):
@@ -963,7 +963,7 @@ class TestShowFoundsNotOnlyFound(unittest.TestCase):
             out = StringIO()
             sys.stdout = out
             self.x.show_founds()
-            output = out.getvalue().strip()
+            output = out.getvalue()
             expected = u"GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  "
             expected += u"| 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
             expected += u"GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | True  "
@@ -972,7 +972,7 @@ class TestShowFoundsNotOnlyFound(unittest.TestCase):
             expected += "1: Gefundene Caches auf geocaching.com loggen "
             expected += "(ueber den Upload von drafts / fieldnotes, INTERNET!!!)\n"
             expected += "2: Alle gefundenen Caches loeschen\n"
-            expected += "3: zurueck"
+            expected += "3: zurueck\n"
             self.assertEqual(output, expected)
 
     def test_delete(self):
@@ -1007,14 +1007,14 @@ class TestShowFoundsFoundNotOnGPS(unittest.TestCase):
             out = StringIO()
             sys.stdout = out
             self.x.show_founds()
-            output = out.getvalue().strip()
+            output = out.getvalue()
             expected = u"GC5G5F5 | N 49°47.955, E 009°58.566 | Traditional Cache | D 1.5 | T 4.0 | small   | True  "
             expected += u"| 08 Oct 2016 | Urban Buildering\n\n"
             expected += "\nWas moechtest du als naechstes tun?\n"
             expected += "1: Gefundene Caches auf geocaching.com loggen "
             expected += "(ueber den Upload von drafts / fieldnotes, INTERNET!!!)\n"
             expected += "2: Alle gefundenen Caches loeschen\n"
-            expected += "3: zurueck"
+            expected += "3: zurueck\n"
             self.assertEqual(output, expected)
 
     def test_delete(self):
@@ -1087,8 +1087,8 @@ class TestShowWaypoints(unittest.TestCase):
         out = StringIO()
         sys.stdout = out
         x.show_waypoints()
-        output = out.getvalue().strip()
-        expected = "Keine Wegpunkte auf dem Geraet."
+        output = out.getvalue()
+        expected = "Keine Wegpunkte auf dem Geraet.\n"
         self.assertEqual(output, expected)
 
     def test_waypoints(self):

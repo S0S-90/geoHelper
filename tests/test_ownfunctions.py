@@ -141,7 +141,7 @@ class TestShowXML(unittest.TestCase):
         out = StringIO()
         sys.stdout = out
         ownfunctions.show_xml(tree)
-        output = out.getvalue().strip()
+        output = out.getvalue()
         expected_output = "{http://www.topografix.com/GPX/1/1}gpx {'{http://www.w3.org/2001/XMLSchema-instance}" \
                           "schemaLocation': 'http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" \
                           " http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlschemas/Gpx" \
@@ -157,7 +157,7 @@ class TestShowXML(unittest.TestCase):
                           "topografix.com/GPX/1/1}sym {} Flag, Blue\n{http://www.topografix.com/GPX/1/1}wpt {'lat': " \
                           "'49.793617', 'lon': '9.943833'} \n{http://www.topografix.com/GPX/1/1}ele {} 187.503296\n" \
                           "{http://www.topografix.com/GPX/1/1}time {} 2016-09-10T14:24:16Z\n{http://www.topografix.com" \
-                          "/GPX/1/1}name {} ELEFANT FINAL\n{http://www.topografix.com/GPX/1/1}sym {} Flag, Blue"
+                          "/GPX/1/1}name {} ELEFANT FINAL\n{http://www.topografix.com/GPX/1/1}sym {} Flag, Blue\n"
         self.assertEqual(output, expected_output)
 
 

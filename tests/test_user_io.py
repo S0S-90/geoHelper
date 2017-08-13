@@ -18,36 +18,36 @@ class TestGeneralOutput(unittest.TestCase):
         out = StringIO()
         sys.stdout = out                  # capture print output in out
         user_io.general_output("hello")   # fill out
-        output = out.getvalue().strip()   # save value of out in output
-        self.assertEqual(output, "hello")
+        output = out.getvalue()   # save value of out in output
+        self.assertEqual(output, "hello\n")
         
     def test_textwithcapitalsandnumbers(self):
         out = StringIO()
         sys.stdout = out                  # capture print output in out
         user_io.general_output("hEllo2")  # fill out
-        output = out.getvalue().strip()   # save value of out in output
-        self.assertEqual(output, "hEllo2")
+        output = out.getvalue()   # save value of out in output
+        self.assertEqual(output, "hEllo2\n")
         
     def test_umlauts(self):
         out = StringIO()
         sys.stdout = out                                       # capture print output in out
         user_io.general_output(u"m{}rchen".format(u"\u00E4"))  # fill out
-        output = out.getvalue().strip()                        # save value of out in output
-        self.assertEqual(output, u"m{}rchen".format(u"\u00E4"))
+        output = out.getvalue()                        # save value of out in output
+        self.assertEqual(output, u"m{}rchen\n".format(u"\u00E4"))
         
     def test_replacable_signs(self):
         out = StringIO()
         sys.stdout = out                                        # capture print output in out
         user_io.general_output(u"hello {}".format(u"\u263a"))   # fill out
-        output = out.getvalue().strip()                         # save value of out in output
-        self.assertEqual(output, "hello :-)")
+        output = out.getvalue()                         # save value of out in output
+        self.assertEqual(output, "hello :-)\n")
         
     def test_unknown_signs(self):
         out = StringIO()
         sys.stdout = out                                                    # capture print output in out
         user_io.general_output(u"Flag Turkey: {}".format(u"\u262a"))        # fill out
-        output = out.getvalue().strip()                                     # save value of out in output
-        self.assertEqual(output, u"Flag Turkey: {}".format(u"\u001a"))
+        output = out.getvalue()                                     # save value of out in output
+        self.assertEqual(output, u"Flag Turkey: {}\n".format(u"\u001a"))
   
         
 class TestGeneralInput(unittest.TestCase):   
@@ -110,38 +110,38 @@ class TestShowMainMenu(unittest.TestCase):
         out = StringIO()
         sys.stdout = out                  # capture print output in out
         user_io.show_main_menu(False)     # fill out
-        output = out.getvalue().strip()   # save value of out in output
-        expected_output = "Was moechtest du als naechstes tun?\n"
-        expected_output += "1: Geocaches aktualisieren\n"
-        expected_output += "2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen\n"
-        expected_output += "3: Alle Wegpunkte anzeigen und zu Geocaches zuordnen\n"
-        expected_output += "4: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen (INTERNET!!!)\n"
-        expected_output += "5: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)\n"
-        expected_output += "6: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
-        expected_output += "7: Geocaches durchsuchen\n"
-        expected_output += "8: https://www.geocaching.com/map aufrufen (INTERNET!!!)\n"
-        expected_output += "9: https://www.google.de/maps aufrufen (INTERNET!!!)\n"
-        expected_output += "10: Programm verlassen"
-        self.assertEqual(output, expected_output)
+        output = out.getvalue()   # save value of out in output
+        expected = "\nWas moechtest du als naechstes tun?\n"
+        expected += "1: Geocaches aktualisieren\n"
+        expected += "2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen\n"
+        expected += "3: Alle Wegpunkte anzeigen und zu Geocaches zuordnen\n"
+        expected += "4: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen (INTERNET!!!)\n"
+        expected += "5: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)\n"
+        expected += "6: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
+        expected += "7: Geocaches durchsuchen\n"
+        expected += "8: https://www.geocaching.com/map aufrufen (INTERNET!!!)\n"
+        expected += "9: https://www.google.de/maps aufrufen (INTERNET!!!)\n"
+        expected += "10: Programm verlassen\n"
+        self.assertEqual(output, expected)
         
     def test_foundexists(self):
         out = StringIO()
         sys.stdout = out                  # capture print output in out
         user_io.show_main_menu(True)      # fill out
-        output = out.getvalue().strip()   # save value of out in output
-        expected_output = "Was moechtest du als naechstes tun?\n"
-        expected_output += "1: Geocaches aktualisieren\n"
-        expected_output += "2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen\n"
-        expected_output += "3: Alle Wegpunkte anzeigen und zu Geocaches zuordnen\n"
-        expected_output += "4: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen (INTERNET!!!)\n"
-        expected_output += "5: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)\n"
-        expected_output += "6: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
-        expected_output += "7: Geocaches durchsuchen\n"
-        expected_output += "8: Alle gefundenen Caches anzeigen\n"
-        expected_output += "9: https://www.geocaching.com/map aufrufen (INTERNET!!!)\n"
-        expected_output += "10: https://www.google.de/maps aufrufen (INTERNET!!!)\n"
-        expected_output += "11: Programm verlassen"
-        self.assertEqual(output, expected_output)
+        output = out.getvalue()   # save value of out in output
+        expected = "\nWas moechtest du als naechstes tun?\n"
+        expected += "1: Geocaches aktualisieren\n"
+        expected += "2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen\n"
+        expected += "3: Alle Wegpunkte anzeigen und zu Geocaches zuordnen\n"
+        expected += "4: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen (INTERNET!!!)\n"
+        expected += "5: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)\n"
+        expected += "6: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
+        expected += "7: Geocaches durchsuchen\n"
+        expected += "8: Alle gefundenen Caches anzeigen\n"
+        expected += "9: https://www.geocaching.com/map aufrufen (INTERNET!!!)\n"
+        expected += "10: https://www.google.de/maps aufrufen (INTERNET!!!)\n"
+        expected += "11: Programm verlassen\n"
+        self.assertEqual(output, expected)
    
         
 class TestMainMenu(unittest.TestCase):
@@ -326,43 +326,43 @@ class TestSortCaches(unittest.TestCase):
             out = StringIO()
             sys.stdout = out                   
             user_io.sort_caches()
-            output = out.getvalue().strip() 
-            expected_output = "Wonach sollen die Geocaches sortiert werden?\n"
-            expected_output += "1: GC-Code\n"
-            expected_output += "2: Name\n"
-            expected_output += "3: Cache-Typ\n"
-            expected_output += "4: D-Wertung\n"
-            expected_output += "5: T-Wertung\n"
-            expected_output += "6: Groesse\n"
-            expected_output += "7: Download-Datum\n"
-            expected_output += "8: Verfuegbarkeit\n"
-            expected_output += "9: Abstand von einer bestimmten Position (Koordinaten erforderlich)\n"   
-            expected_output += "In welche Richtung sollen die Caches sortiert werden?\n"
-            expected_output += "1: aufsteigend\n"
-            expected_output += "2: absteigend"            
-            self.assertEqual(output, expected_output)
+            output = out.getvalue()
+            expected = "\nWonach sollen die Geocaches sortiert werden?\n"
+            expected += "1: GC-Code\n"
+            expected += "2: Name\n"
+            expected += "3: Cache-Typ\n"
+            expected += "4: D-Wertung\n"
+            expected += "5: T-Wertung\n"
+            expected += "6: Groesse\n"
+            expected += "7: Download-Datum\n"
+            expected += "8: Verfuegbarkeit\n"
+            expected += "9: Abstand von einer bestimmten Position (Koordinaten erforderlich)\n"   
+            expected += "In welche Richtung sollen die Caches sortiert werden?\n"
+            expected += "1: aufsteigend\n"
+            expected += "2: absteigend\n"
+            self.assertEqual(output, expected)
             
     def test_output_criterion_invalid(self):
         with mock.patch('__builtin__.raw_input', side_effect=['0', '2']):
             out = StringIO()
             sys.stdout = out                   
             user_io.sort_caches()
-            output = out.getvalue().strip() 
-            expected_output = "Wonach sollen die Geocaches sortiert werden?\n"
-            expected_output += "1: GC-Code\n"
-            expected_output += "2: Name\n"
-            expected_output += "3: Cache-Typ\n"
-            expected_output += "4: D-Wertung\n"
-            expected_output += "5: T-Wertung\n"
-            expected_output += "6: Groesse\n"
-            expected_output += "7: Download-Datum\n"
-            expected_output += "8: Verfuegbarkeit\n"
-            expected_output += "9: Abstand von einer bestimmten Position (Koordinaten erforderlich)\n"   
-            expected_output += "Ungueltige Eingabe: Sortierung erfolgt nach GC-Code\n" 
-            expected_output += "In welche Richtung sollen die Caches sortiert werden?\n"
-            expected_output += "1: aufsteigend\n"
-            expected_output += "2: absteigend"             
-            self.assertEqual(output, expected_output)
+            output = out.getvalue()
+            expected = "\nWonach sollen die Geocaches sortiert werden?\n"
+            expected += "1: GC-Code\n"
+            expected += "2: Name\n"
+            expected += "3: Cache-Typ\n"
+            expected += "4: D-Wertung\n"
+            expected += "5: T-Wertung\n"
+            expected += "6: Groesse\n"
+            expected += "7: Download-Datum\n"
+            expected += "8: Verfuegbarkeit\n"
+            expected += "9: Abstand von einer bestimmten Position (Koordinaten erforderlich)\n"   
+            expected += "Ungueltige Eingabe: Sortierung erfolgt nach GC-Code\n" 
+            expected += "In welche Richtung sollen die Caches sortiert werden?\n"
+            expected += "1: aufsteigend\n"
+            expected += "2: absteigend\n"
+            self.assertEqual(output, expected)
  
                   
 class TestSearch(unittest.TestCase):
@@ -420,39 +420,39 @@ class TestSearch(unittest.TestCase):
             out = StringIO()
             sys.stdout = out                   
             user_io.search()
-            output = out.getvalue().strip() 
-            expected_output = "Wonach willst du suchen?\n"
-            expected_output += "1: Name\n"
-            expected_output += "2: Beschreibung\n"
-            expected_output += "3: Cache-Typ\n"
-            expected_output += "4: D-Wertung\n"
-            expected_output += "5: T-Wertung\n"
-            expected_output += "6: Groesse\n"
-            expected_output += "7: Download-Datum\n"
-            expected_output += "8: Verfuegbarkeit\n"
-            expected_output += "9: Attribut\n"
-            expected_output += "10: Abstand von einer bestimmten Position (Koordinaten erforderlich)"    
-            self.assertEqual(output, expected_output)
+            output = out.getvalue()
+            expected = "\nWonach willst du suchen?\n"
+            expected += "1: Name\n"
+            expected += "2: Beschreibung\n"
+            expected += "3: Cache-Typ\n"
+            expected += "4: D-Wertung\n"
+            expected += "5: T-Wertung\n"
+            expected += "6: Groesse\n"
+            expected += "7: Download-Datum\n"
+            expected += "8: Verfuegbarkeit\n"
+            expected += "9: Attribut\n"
+            expected += "10: Abstand von einer bestimmten Position (Koordinaten erforderlich)\n"
+            self.assertEqual(output, expected)
             
     def test_output_invalid(self):
         with mock.patch('__builtin__.raw_input', return_value="bla"):
             out = StringIO()
             sys.stdout = out                   
             user_io.search()
-            output = out.getvalue().strip() 
-            expected_output = "Wonach willst du suchen?\n"
-            expected_output += "1: Name\n"
-            expected_output += "2: Beschreibung\n"
-            expected_output += "3: Cache-Typ\n"
-            expected_output += "4: D-Wertung\n"
-            expected_output += "5: T-Wertung\n"
-            expected_output += "6: Groesse\n"
-            expected_output += "7: Download-Datum\n"
-            expected_output += "8: Verfuegbarkeit\n"
-            expected_output += "9: Attribut\n"
-            expected_output += "10: Abstand von einer bestimmten Position (Koordinaten erforderlich)\n"  
-            expected_output += "Ungueltige Eingabe"            
-            self.assertEqual(output, expected_output)
+            output = out.getvalue()
+            expected = "\nWonach willst du suchen?\n"
+            expected += "1: Name\n"
+            expected += "2: Beschreibung\n"
+            expected += "3: Cache-Typ\n"
+            expected += "4: D-Wertung\n"
+            expected += "5: T-Wertung\n"
+            expected += "6: Groesse\n"
+            expected += "7: Download-Datum\n"
+            expected += "8: Verfuegbarkeit\n"
+            expected += "9: Attribut\n"
+            expected += "10: Abstand von einer bestimmten Position (Koordinaten erforderlich)\n"  
+            expected += "Ungueltige Eingabe\n"
+            self.assertEqual(output, expected)
       
             
 class TestSearchType(unittest.TestCase):
@@ -466,12 +466,12 @@ class TestSearchType(unittest.TestCase):
             out = StringIO()
             sys.stdout = out                 
             user_io.search_type()
-            output = out.getvalue().strip()  
-            expected_output = "Gib den Cachetyp ein, nach dem du suchen willst.\n"
-            expected_output += "Moegliche Typen: Traditional Cache, Multi-cache, Mystery Cache, EarthCache, "
-            expected_output += "Letterbox Hybrid, Event Cache, Wherigo Cache, Geocaching HQ, Unknown Type\n"
-            expected_output += "Achtung! Gross- und Kleinschreibung beachten!"
-            self.assertEqual(output, expected_output)
+            output = out.getvalue()
+            expected = "Gib den Cachetyp ein, nach dem du suchen willst.\n"
+            expected += "Moegliche Typen: Traditional Cache, Multi-cache, Mystery Cache, EarthCache, "
+            expected += "Letterbox Hybrid, Event Cache, Wherigo Cache, Geocaching HQ, Unknown Type\n"
+            expected += "Achtung! Gross- und Kleinschreibung beachten!\n"
+            self.assertEqual(output, expected)
             
             
 class TestSearchAttribute(unittest.TestCase):
@@ -485,10 +485,10 @@ class TestSearchAttribute(unittest.TestCase):
             out = StringIO()
             sys.stdout = out                 
             user_io.search_attribute(["attr1", "attr2"])
-            output = out.getvalue().strip()  
-            expected_output = "Gib das Attribut ein, nach dem du suchen willst.\n"
-            expected_output += "Moegliche Attribute: attr1, attr2" 
-            self.assertEqual(output, expected_output)
+            output = out.getvalue()
+            expected = "Gib das Attribut ein, nach dem du suchen willst.\n"
+            expected += "Moegliche Attribute: attr1, attr2\n"
+            self.assertEqual(output, expected)
  
             
 class TestActionsAfterSearch(unittest.TestCase):
@@ -526,31 +526,31 @@ class TestActionsAfterSearch(unittest.TestCase):
             out = StringIO()
             sys.stdout = out                 
             user_io.actions_after_search()
-            output = out.getvalue().strip()  
-            expected_output = "Was moechtest du als naechstes tun?\n"
-            expected_output += "1: Alle Suchergebnisse erneut anzeigen (bei evtl. Loeschen nicht aktualisiert)\n" 
-            expected_output += "2: Alle Suchergebnisse loeschen\n"
-            expected_output += "3: Alle Suchergebnisse auf Karte zeigen (INTERNET!!!)\n"
-            expected_output += "4: Beschreibung fuer eines der Suchergebnisse anzeigen\n"
-            expected_output += "5: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
-            expected_output += "6: zurueck"
-            self.assertEqual(output, expected_output)
+            output = out.getvalue()
+            expected = "\nWas moechtest du als naechstes tun?\n"
+            expected += "1: Alle Suchergebnisse erneut anzeigen (bei evtl. Loeschen nicht aktualisiert)\n" 
+            expected += "2: Alle Suchergebnisse loeschen\n"
+            expected += "3: Alle Suchergebnisse auf Karte zeigen (INTERNET!!!)\n"
+            expected += "4: Beschreibung fuer eines der Suchergebnisse anzeigen\n"
+            expected += "5: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
+            expected += "6: zurueck\n"
+            self.assertEqual(output, expected)
             
     def test_output_invalid_input(self):
         with mock.patch('__builtin__.raw_input', return_value="bla"):
             out = StringIO()
             sys.stdout = out                 
             user_io.actions_after_search()
-            output = out.getvalue().strip()  
-            expected_output = "Was moechtest du als naechstes tun?\n"
-            expected_output += "1: Alle Suchergebnisse erneut anzeigen (bei evtl. Loeschen nicht aktualisiert)\n" 
-            expected_output += "2: Alle Suchergebnisse loeschen\n"
-            expected_output += "3: Alle Suchergebnisse auf Karte zeigen (INTERNET!!!)\n"
-            expected_output += "4: Beschreibung fuer eines der Suchergebnisse anzeigen\n"
-            expected_output += "5: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
-            expected_output += "6: zurueck\n"
-            expected_output += "Ungueltige Eingabe"
-            self.assertEqual(output, expected_output)
+            output = out.getvalue()
+            expected = "\nWas moechtest du als naechstes tun?\n"
+            expected += "1: Alle Suchergebnisse erneut anzeigen (bei evtl. Loeschen nicht aktualisiert)\n" 
+            expected += "2: Alle Suchergebnisse loeschen\n"
+            expected += "3: Alle Suchergebnisse auf Karte zeigen (INTERNET!!!)\n"
+            expected += "4: Beschreibung fuer eines der Suchergebnisse anzeigen\n"
+            expected += "5: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
+            expected += "6: zurueck\n"
+            expected += "Ungueltige Eingabe\n"
+            self.assertEqual(output, expected)
        
             
 class TestActionsWithFounds(unittest.TestCase):
@@ -576,13 +576,13 @@ class TestActionsWithFounds(unittest.TestCase):
             out = StringIO()
             sys.stdout = out                 
             user_io.actions_with_founds()
-            output = out.getvalue().strip()  
-            expected_output = "Was moechtest du als naechstes tun?\n"
-            expected_output += "1: Gefundene Caches auf geocaching.com loggen "
-            expected_output += "(ueber den Upload von drafts / fieldnotes, INTERNET!!!)\n"
-            expected_output += "2: Alle gefundenen Caches loeschen\n"
-            expected_output += "3: zurueck"
-            self.assertEqual(output, expected_output)
+            output = out.getvalue()
+            expected = "\nWas moechtest du als naechstes tun?\n"
+            expected += "1: Gefundene Caches auf geocaching.com loggen "
+            expected += "(ueber den Upload von drafts / fieldnotes, INTERNET!!!)\n"
+            expected += "2: Alle gefundenen Caches loeschen\n"
+            expected += "3: zurueck\n"
+            self.assertEqual(output, expected)
             
             
 class TestConfirmDeletion(unittest.TestCase):
@@ -650,16 +650,16 @@ class TestShowOne(unittest.TestCase):
             out = StringIO()
             sys.stdout = out                 
             user_io.show_one(False)
-            output = out.getvalue().strip()  
-            expected_output = "Was moechtest du als naechstes tun?\n"
-            expected_output += "1: diesen Cache loeschen\n" 
-            expected_output += "2: diesen Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
-            expected_output += "3: Abstand dieses Caches zu einer bestimmten Position berechnen\n"
-            expected_output += "4: Position des Caches auf der Karte "
-            expected_output += "https://www.geocaching.com/map anzeigen (INTERNET!!!)\n"
-            expected_output += "5: Position des Caches auf der Karte https://www.google.de/maps anzeigen (INTERNET!!!)\n"
-            expected_output += "6: zurueck"
-            self.assertEqual(output, expected_output)
+            output = out.getvalue()
+            expected = "\nWas moechtest du als naechstes tun?\n"
+            expected += "1: diesen Cache loeschen\n" 
+            expected += "2: diesen Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
+            expected += "3: Abstand dieses Caches zu einer bestimmten Position berechnen\n"
+            expected += "4: Position des Caches auf der Karte "
+            expected += "https://www.geocaching.com/map anzeigen (INTERNET!!!)\n"
+            expected += "5: Position des Caches auf der Karte https://www.google.de/maps anzeigen (INTERNET!!!)\n"
+            expected += "6: zurueck\n"
+            self.assertEqual(output, expected)
 
     def test_1_waypoints(self):
         with mock.patch('__builtin__.raw_input', return_value="1"):
@@ -698,17 +698,17 @@ class TestShowOne(unittest.TestCase):
             out = StringIO()
             sys.stdout = out
             user_io.show_one(True)
-            output = out.getvalue().strip()
-            expected_output = "Was moechtest du als naechstes tun?\n"
-            expected_output += "1: diesen Cache loeschen\n"
-            expected_output += "2: diesen Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
-            expected_output += "3: Abstand dieses Caches zu einer bestimmten Position berechnen\n"
-            expected_output += "4: Position des Caches auf der Karte "
-            expected_output += "https://www.geocaching.com/map anzeigen (INTERNET!!!)\n"
-            expected_output += "5: Position des Caches auf der Karte https://www.google.de/maps anzeigen (INTERNET!!!)\n"
-            expected_output += "6: diesen Cache mit allen Wegpunkten auf Karte zeigen (INTERNET!!!)\n"
-            expected_output += "7: zurueck"
-            self.assertEqual(output, expected_output)
+            output = out.getvalue()
+            expected = "\nWas moechtest du als naechstes tun?\n"
+            expected += "1: diesen Cache loeschen\n"
+            expected += "2: diesen Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
+            expected += "3: Abstand dieses Caches zu einer bestimmten Position berechnen\n"
+            expected += "4: Position des Caches auf der Karte "
+            expected += "https://www.geocaching.com/map anzeigen (INTERNET!!!)\n"
+            expected += "5: Position des Caches auf der Karte https://www.google.de/maps anzeigen (INTERNET!!!)\n"
+            expected += "6: diesen Cache mit allen Wegpunkten auf Karte zeigen (INTERNET!!!)\n"
+            expected += "7: zurueck\n"
+            self.assertEqual(output, expected)
 
 
 class TestCoordinatesInput(unittest.TestCase):
@@ -722,10 +722,10 @@ class TestCoordinatesInput(unittest.TestCase):
             out = StringIO()
             sys.stdout = out                 
             user_io.coordinates_input()
-            output = out.getvalue().strip()  
-            expected_output = u"Gib die Koordinaten ein "
-            expected_output += u"(Format: X XX°XX.XXX, X XXX°XX.XXX oder URL (google maps oder geocaching.com/map))"
-            self.assertEqual(output, expected_output)     
+            output = out.getvalue()
+            expected = u"Gib die Koordinaten ein "
+            expected += u"(Format: X XX°XX.XXX, X XXX°XX.XXX oder URL (google maps oder geocaching.com/map))\n"
+            self.assertEqual(output, expected)     
 
 
 class TestAskForPath(unittest.TestCase): 
@@ -735,10 +735,10 @@ class TestAskForPath(unittest.TestCase):
             out = StringIO()
             sys.stdout = out                 
             user_io.ask_for_path()
-            output = out.getvalue().strip()  
-            expected_output = "Gib den Pfad zum GPS-Geraet ein (NICHT zum Unterordner 'GPX').\n"
-            expected_output += "Falls Standardpfad 'F:\Garmin' uebernommen werden soll: keine Eingabe"
-            self.assertEqual(output, expected_output) 
+            output = out.getvalue()
+            expected = "\nGib den Pfad zum GPS-Geraet ein (NICHT zum Unterordner 'GPX').\n"
+            expected += "Falls Standardpfad 'F:\Garmin' uebernommen werden soll: keine Eingabe\n"
+            self.assertEqual(output, expected) 
 
     def test_return(self):
         with mock.patch('__builtin__.raw_input', return_value="any_path"): 
@@ -771,69 +771,69 @@ class TestShowOnMapStart(unittest.TestCase):
             out = StringIO()
             sys.stdout = out
             user_io.show_on_map_start(False, False)
-            output = out.getvalue().strip()
-            expected_output = "Nach dem Klicken werden sich mehrere Fenster oeffnen. Eines davon ist der Editor, "
-            expected_output += "das andere die Seite mapcustomizer.com in deinem Browser.\n"
-            expected_output += "Um den Cache / die Caches auf der Karte anzuzeigen, kopiere den vollstaendigen Inhalt " \
-                               "der Textdatei "
-            expected_output += "aus deinem Editor in das Feld 'Bulk Entry' im Browser.\n"
-            expected_output += "Die Caches werden in folgenden Farben angezeigt:\n"
-            expected_output += "Gruen: Traditional Cache\n"
-            expected_output += "Rot: Multi-cache\n"
-            expected_output += "Blau: Mystery Cache\n"
-            expected_output += "Braun: EarthCache\n"
-            expected_output += "Grau: Letterbox, Geocaching HQ\n"
-            expected_output += "Gelb: Event Cache, Wherigo Cache\n"
-            expected_output += "Pink: unbekannter Typ\n"
-            expected_output += "Gib nun den Pfad zu deinem Editor an: (bei Benutzung von Windows sollte das unnoetig sein)"
-            self.assertEqual(output, expected_output)
+            output = out.getvalue()
+            expected = "\nNach dem Klicken werden sich mehrere Fenster oeffnen. Eines davon ist der Editor, "
+            expected += "das andere die Seite mapcustomizer.com in deinem Browser.\n"
+            expected += "Um den Cache / die Caches auf der Karte anzuzeigen, " \
+                        "kopiere den vollstaendigen Inhalt der Textdatei "
+            expected += "aus deinem Editor in das Feld 'Bulk Entry' im Browser.\n"
+            expected += "Die Caches werden in folgenden Farben angezeigt:\n"
+            expected += "Gruen: Traditional Cache\n"
+            expected += "Rot: Multi-cache\n"
+            expected += "Blau: Mystery Cache\n"
+            expected += "Braun: EarthCache\n"
+            expected += "Grau: Letterbox, Geocaching HQ\n"
+            expected += "Gelb: Event Cache, Wherigo Cache\n"
+            expected += "Pink: unbekannter Typ\n"
+            expected += "Gib nun den Pfad zu deinem Editor an: (bei Benutzung von Windows sollte das unnoetig sein)\n"
+            self.assertEqual(output, expected)
 
     def test_output_all_waypoints(self):
         with mock.patch('__builtin__.raw_input', return_value="any_nonsense"):
             out = StringIO()
             sys.stdout = out
             user_io.show_on_map_start(False, True)
-            output = out.getvalue().strip()
-            expected_output = "Nach dem Klicken werden sich mehrere Fenster oeffnen. Eines davon ist der Editor, "
-            expected_output += "das andere die Seite mapcustomizer.com in deinem Browser.\n"
-            expected_output += "Um den Cache / die Caches auf der Karte anzuzeigen, kopiere den vollstaendigen Inhalt "
-            expected_output += "der Textdatei aus deinem Editor in das Feld 'Bulk Entry' im Browser.\n"
-            expected_output += "Die Caches werden in folgenden Farben angezeigt:\n"
-            expected_output += "Gruen: Traditional Cache\n"
-            expected_output += "Rot: Multi-cache\n"
-            expected_output += "Blau: Mystery Cache\n"
-            expected_output += "Braun: EarthCache\n"
-            expected_output += "Grau: Letterbox, Geocaching HQ\n"
-            expected_output += "Gelb: Event Cache, Wherigo Cache, Wegpunkte\n"
-            expected_output += "Pink: unbekannter Typ\n"
-            expected_output += "Gib nun den Pfad zu deinem Editor an: (bei Benutzung von Windows sollte das unnoetig sein)"
-            self.assertEqual(output, expected_output)
+            output = out.getvalue()
+            expected = "\nNach dem Klicken werden sich mehrere Fenster oeffnen. Eines davon ist der Editor, "
+            expected += "das andere die Seite mapcustomizer.com in deinem Browser.\n"
+            expected += "Um den Cache / die Caches auf der Karte anzuzeigen, kopiere den vollstaendigen Inhalt "
+            expected += "der Textdatei aus deinem Editor in das Feld 'Bulk Entry' im Browser.\n"
+            expected += "Die Caches werden in folgenden Farben angezeigt:\n"
+            expected += "Gruen: Traditional Cache\n"
+            expected += "Rot: Multi-cache\n"
+            expected += "Blau: Mystery Cache\n"
+            expected += "Braun: EarthCache\n"
+            expected += "Grau: Letterbox, Geocaching HQ\n"
+            expected += "Gelb: Event Cache, Wherigo Cache, Wegpunkte\n"
+            expected += "Pink: unbekannter Typ\n"
+            expected += "Gib nun den Pfad zu deinem Editor an: (bei Benutzung von Windows sollte das unnoetig sein)\n"
+            self.assertEqual(output, expected)
 
     def test_output_one_waypoints(self):
         with mock.patch('__builtin__.raw_input', return_value="any_nonsense"):
             out = StringIO()
             sys.stdout = out
             user_io.show_on_map_start(True, True)
-            output = out.getvalue().strip()
-            expected_output = "Nach dem Klicken werden sich mehrere Fenster oeffnen. Eines davon ist der Editor, "
-            expected_output += "das andere die Seite mapcustomizer.com in deinem Browser.\n"
-            expected_output += "Um den Cache / die Caches auf der Karte anzuzeigen, kopiere den vollstaendigen Inhalt "
-            expected_output += "der Textdatei aus deinem Editor in das Feld 'Bulk Entry' im Browser.\n"
-            expected_output += "Gib nun den Pfad zu deinem Editor an: (bei Benutzung von Windows sollte das unnoetig sein)"
-            self.assertEqual(output, expected_output)
+            output = out.getvalue()
+            expected = "\nNach dem Klicken werden sich mehrere Fenster oeffnen. Eines davon ist der Editor, "
+            expected += "das andere die Seite mapcustomizer.com in deinem Browser.\n"
+            expected += "Um den Cache / die Caches auf der Karte anzuzeigen, kopiere den vollstaendigen Inhalt "
+            expected += "der Textdatei aus deinem Editor in das Feld 'Bulk Entry' im Browser.\n"
+            expected += "Gib nun den Pfad zu deinem Editor an: (bei Benutzung von Windows sollte das unnoetig sein)\n"
+            self.assertEqual(output, expected)
 
     def test_output_one_no_waypoints(self):      # makes no difference because it is nonsense
         with mock.patch('__builtin__.raw_input', return_value="any_nonsense"):
             out = StringIO()
             sys.stdout = out
             user_io.show_on_map_start(True, False)
-            output = out.getvalue().strip()
-            expected_output = "Nach dem Klicken werden sich mehrere Fenster oeffnen. Eines davon ist der Editor, "
-            expected_output += "das andere die Seite mapcustomizer.com in deinem Browser.\n"
-            expected_output += "Um den Cache / die Caches auf der Karte anzuzeigen, kopiere den vollstaendigen Inhalt "
-            expected_output += "der Textdatei aus deinem Editor in das Feld 'Bulk Entry' im Browser.\n"
-            expected_output += "Gib nun den Pfad zu deinem Editor an: (bei Benutzung von Windows sollte das unnoetig sein)"
-            self.assertEqual(output, expected_output)
+            output = out.getvalue()
+            expected = "\nNach dem Klicken werden sich mehrere Fenster oeffnen. Eines davon ist der Editor, "
+            expected += "das andere die Seite mapcustomizer.com in deinem Browser.\n"
+            expected += "Um den Cache / die Caches auf der Karte anzuzeigen, kopiere den vollstaendigen Inhalt "
+            expected += "der Textdatei aus deinem Editor in das Feld 'Bulk Entry' im Browser.\n"
+            expected += "Gib nun den Pfad zu deinem Editor an: (bei Benutzung von Windows sollte das unnoetig sein)\n"
+            self.assertEqual(output, expected)
             
     def test_return(self):
         with mock.patch('__builtin__.raw_input', return_value="any_editor"): 
@@ -851,9 +851,9 @@ class TestShowOnMapEnd(unittest.TestCase):
             out = StringIO()
             sys.stdout = out
             user_io.show_on_map_end()
-            output = out.getvalue().strip()
-            expected_output = "Schliesse den Editor und druecke Enter."
-            self.assertEqual(output, expected_output) 
+            output = out.getvalue()
+            expected = "Schliesse den Editor und druecke Enter.\n"
+            self.assertEqual(output, expected) 
 
 
 def create_testsuite():
