@@ -1103,6 +1103,52 @@ class TestShowWaypoints(unittest.TestCase):
             self.assertEqual(output, expected)
 
 
+class TestAssignWaypoints(unittest.TestCase):
+    # TODO
+    pass
+
+
+class TestCreateMapinfoOne(unittest.TestCase):
+
+    def setUp(self):
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
+
+    def test_cache_with_waypoints(self):
+        for g in self.x.geocaches:
+            if g.gccode == "GC1XRPM":
+                self.x._create_mapinfo_one(g)
+        with open("mapinfo.txt","rb") as mapinfo:
+            output = mapinfo.read().decode("cp1252")
+        os.remove("mapinfo.txt")
+        expected = u"49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
+        expected += u"49.792433,9.932233 {MÄRCHENSTUHL 2} <yellow>\r\n"
+        self.assertEqual(output, expected)
+
+    def test_yellowcache_with_waypoints(self):
+        gc = geocache.Geocache(r"..\tests\examples\GC78K5W.gpx")
+        w = geocache.Waypoint("wpt (GC78K5W)", [49.792433, 9.932233])
+        gc.add_waypoint(w)
+        self.x._create_mapinfo_one(gc)
+        with open("mapinfo.txt","rb") as mapinfo:
+            output = mapinfo.read().decode("cp1252")
+        os.remove("mapinfo.txt")
+        expected = u"49.795567,9.905717 {Cachertreffen Würzburg, die 54ste} <yellow>\r\n"
+        expected += u"49.792433,9.932233 {WPT} <grey>\r\n"
+        self.assertEqual(output, expected)
+
+    def test_without_waypoints(self):
+        gc = geocache.Geocache(r"..\tests\examples\GC78K5W.gpx")
+        self.x._create_mapinfo_one(gc)
+        with open("mapinfo.txt", "rb") as mapinfo:
+            output = mapinfo.read().decode("cp1252")
+        os.remove("mapinfo.txt")
+        expected = u"49.795567,9.905717 {Cachertreffen Würzburg, die 54ste} <yellow>\r\n"
+        self.assertEqual(output, expected)
+
+    # TODO: other colors
+
+
 def create_testsuite():
     """creates a testsuite with out of all tests in this file"""
     suite = unittest.TestSuite()
@@ -1135,6 +1181,8 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestShowFoundsFoundNotOnGPS))
     suite.addTest(unittest.makeSuite(TestDelete))
     suite.addTest(unittest.makeSuite(TestShowWaypoints))
+    suite.addTest(unittest.makeSuite(TestAssignWaypoints))
+    suite.addTest(unittest.makeSuite(TestCreateMapinfoOne))
     return suite
 
 
