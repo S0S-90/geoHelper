@@ -70,6 +70,12 @@ class GPSContent(object):
     show_on_map(cachelist, one=False): provides the possiblitly to show all caches in cachelist on a map
                                 (uses webservice 'www.mapcustomizer.com')
 
+    find_suggestions(waypoint): finds suggestions to which cache the given waypoint should be assigned
+                                (based on name similarity)
+
+    assign_waypoints(): lets the user choose for every waypoint if the waypoint should be assigned to a geocache
+                        (and to which) or if it should be deleted
+
     """
 
     def __init__(self, path):
@@ -622,8 +628,52 @@ class GPSContent(object):
             if inp:
                 self.assign_waypoints()
 
-    @staticmethod
-    def assign_waypoints():
-        """bla"""
-        # TODO
-        user_io.general_output("Not implemented yet.")
+    def find_suggestions(self, waypoint):
+        """finds suggestions to which cache the given waypoint should be assigned"""
+
+        suggestions = []
+        namelist = waypoint.name.split(" ")
+        if namelist[-1] == "FINAL" or ownfunctions.string_is_int(namelist[-1]):
+            namelist = namelist[:-1]   # if last word is "FINAL" oder a number: discard
+        for g in self.geocaches:
+            for word in namelist:
+                if word in g.name.upper():
+                    suggestions.append(g)
+                    break
+        return suggestions
+
+    def assign_waypoints(self):
+        """lets the user choose for every waypoint if the waypoint should be assigned to a geocache (and to which)
+        or if it should be deleted"""
+
+        waypoints_new = []
+        for w in self.waypoints:
+            user_io.general_output(u"\n{}: {}".format(user_io.CURRENT_WAYPOINT, w.name))
+            suggestions = self.find_suggestions(w)
+            inp = user_io.choose_cache(suggestions)
+            if type(inp) == Geocache:   # assign waypoint accordning to suggestion
+                w.name = u"{} ({})".format(w.name, inp.gccode)
+                inp.add_waypoint(w)
+                # TODO: write file with new waypoint_name
+            elif inp == "other":    # assign waypoint to other geocache
+                inp = user_io.general_input("Gib den GC-Code ein: ").upper()
+                adding = False
+                for g in self.geocaches:
+                    if g.gccode == inp:   # successfull assigning waypoint to cache
+                        w.name = u"{} ({})".format(w.name, inp)
+                        g.add_waypoint(w)
+                        adding = True
+                        # TODO: write file with new waypoint_name
+                        break
+                if not adding:   # not successfull assigning waypoint to cache
+                    waypoints_new.append(w)
+                    user_io.general_output("Ungueltiger GC-Code. Wegpunkt wird uebersprungen.")
+            elif inp == "delete":    # delete waypoint
+                if user_io.confirm_deletion_wpt():
+                    pass
+                    # TODO: write file without this waypoint
+                else:
+                    waypoints_new.append(w)
+            else:
+                waypoints_new.append(w)
+        self.waypoints = waypoints_new

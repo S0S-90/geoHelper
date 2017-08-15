@@ -378,3 +378,13 @@ def remove_spaces(string):
         else:
             newstring = newstring + a
     return newstring
+
+
+def string_is_int(string):
+    """returns true if string can be converted into int
+    returns false if string cannot be converted into int"""
+    try:
+        int(string)
+    except ValueError:
+        return False
+    return True

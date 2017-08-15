@@ -249,6 +249,18 @@ def confirm_deletion():
         return False
 
 
+def confirm_deletion_wpt():
+    """asks before deleting caches if they should really be deleted
+    returns True for yes and False for no"""
+
+    # noinspection PyCompatibility
+    inp = raw_input("\nWillst du den ausgewaehlten Wegpunkt wirklich loeschen? (y/n) ")  # in python 3 only raw_input
+    if inp == "y":
+        return True
+    else:
+        return False
+
+
 def assign_waypoints():
     """asks if waypoints should be assigned"""
 
@@ -258,6 +270,32 @@ def assign_waypoints():
         return True
     else:
         return False
+
+
+def choose_cache(suggestions):
+    """asks to which of a list of suggested caches the waypoint should be assigned
+    return either the chosen cache or the string 'other'"""
+
+    print ("Zu welchem der folgenden Caches moechtest du den Wegpunkt zuordnen?")
+    for i, s in enumerate(suggestions):
+        print (u"{}: {} ({})".format(i+1, s.name, s.gccode))
+    print ("{}: anderer Geocache".format(len(suggestions)+1))
+    print ("{}: Wegpunkt loeschen".format(len(suggestions)+2))
+    print ("{}: nichts tun".format(len(suggestions)+3))
+    # noinspection PyCompatibility
+    inp = raw_input(">> ")  # in python 3 only raw_input
+    try:
+        sug = suggestions[int(inp)-1]
+    except IndexError:
+        if int(inp) == len(suggestions)+1:
+            sug = "other"
+        elif int(inp) == len(suggestions)+2:
+            sug = "delete"
+        else:
+            sug = "continue"
+    except ValueError:
+        sug = "continue"
+    return sug
 
 
 def show_one(waypoints):
@@ -367,7 +405,7 @@ def show_on_map_end():
     print ("Schliesse den Editor und druecke Enter.")
     # noinspection PyCompatibility
     raw_input(">> ")  # in python 3 input is raw_input by standard
- 
+
  
 # string for main.py
 GPS_NOT_FOUND = "GPS-Geraet nicht unter folgender Pfadangabe zu finden"
@@ -381,6 +419,7 @@ AND = "und"
 ON_DEVICE = "auf dem Geraet."
 NO_WAYPOINTS_ON_DEVICE = "Keine Wegpunkte auf dem Geraet."
 NO_CACHES_ON_DEVICE = "Keine Caches auf dem Geraet."
+CURRENT_WAYPOINT = "Aktueller Wegpunkt"
 INPUT_GCCODE = "Gib den GC-Code ein: "
 GC_DOES_NOT_EXIST = "Dieser GC-Code existiert nicht."
 SEARCH_FOR = "Suche nach... "
