@@ -644,7 +644,7 @@ class GPSContent(object):
 
     @staticmethod
     def _replace_waypoint_name(waypointfiles, waypoint):
-        """replaces the name of the waypoint waypointfiles by the name + gccode of assigned geocache
+        """replaces the name of the waypoint in waypointfiles by the name + gccode of assigned geocache
         (part of assign_waypoints)
 
         input:
@@ -663,7 +663,7 @@ class GPSContent(object):
 
     @staticmethod
     def _delete_waypoint_from_files(waypointfiles, waypoint):
-        """replaces the name of the waypoint waypointfiles by the name + gccode of assigned geocache
+        """deletes waypoint from waypointfiles
         (part of assign_waypoints)
 
         input:
@@ -675,21 +675,34 @@ class GPSContent(object):
         wptfiles_new = []
         for cont in waypointfiles:
             new_cont = ""
-            cont_list = cont.split("</wpt><wpt ")
-            for i, cache in enumerate(cont_list):
-                if len(cont_list) == 1:
-                    pass  # TODO: only one waypoint in file
-                elif i == 0:  # first waypoint in file
-                    x = cache.find(u"<name>{}</name>".format(waypoint.shown_name).encode("utf-8"))
-                    if x != -1:   # waypoint present in current string
-                        new_cont += cache[:948]
+            cont_list = cont.split("</wpt><wpt ")  # split in single waypoints
+            for i, wpt_cont in enumerate(cont_list):
+                if len(cont_list) == 1:  # only one waypoint in file
+                    x = wpt_cont.find(u"<name>{}</name>".format(waypoint.shown_name).encode("utf-8"))
+                    if x != -1:  # waypoint present in current string
+                        new_cont = ""   # delete everything
                     else:    # waypoint not present in current string
-                        new_cont += cache
+                        new_cont += wpt_cont
+                elif i == 0:  # first waypoint in file
+                    x = wpt_cont.find(u"<name>{}</name>".format(waypoint.shown_name).encode("utf-8"))
+                    if x != -1:   # waypoint present in current string
+                        new_cont += wpt_cont[:948]
+                    else:    # waypoint not present in current string
+                        new_cont += wpt_cont + "</wpt>"
                 elif i == len(cont_list)-1:  # last cache in file
-                    pass
+                    x = wpt_cont.find(u"<name>{}</name>".format(waypoint.shown_name).encode("utf-8"))
+                    if x != -1:  # waypoint present in current string
+                        new_cont += "</gpx>"
+                    else:    # waypoint not present in current string
+                        new_cont += "<wpt " + wpt_cont
                 else:    # neither first nor last cache in file with 3 or more caches
-                    pass
-        return waypointfiles  # TODO: replace by wptfiles_new
+                    x = wpt_cont.find(u"<name>{}</name>".format(waypoint.shown_name).encode("utf-8"))
+                    if x != -1:  # waypoint present in current string
+                        new_cont += ""
+                    else:    # waypoint not present in current string
+                        new_cont += "<wpt " + wpt_cont + "</wpt>"
+            wptfiles_new.append(new_cont)
+        return wptfiles_new
 
     def assign_waypoints(self):
         """lets the user choose for every waypoint if the waypoint should be assigned to a geocache (and to which)
@@ -726,15 +739,18 @@ class GPSContent(object):
                     user_io.general_output("Ungueltiger GC-Code. Wegpunkt wird uebersprungen.")
             elif inp == "delete":    # delete waypoint
                 if user_io.confirm_deletion_wpt():
-                    self._delete_waypoint_from_files(wpt_files, w)
-                    print ("deletion will not be safed")
+                    wpt_files = self._delete_waypoint_from_files(wpt_files, w)
                 else:
                     waypoints_new.append(w)
             else:
                 waypoints_new.append(w)
 
+        # overwrite waypoint files on GPS-device by new content
         for i, wptfile_cont in enumerate(wpt_files):
-            with open(wptfile_names[i], "w") as wpt_file:
-                wpt_file.write(wptfile_cont)
+            if wptfile_cont == "":    # if filestring is empty: delete file
+                os.remove(wptfile_names[i])
+            else:    # else write new content
+                with open(wptfile_names[i], "w") as wpt_file:
+                    wpt_file.write(wptfile_cont)
 
         self.waypoints = waypoints_new
