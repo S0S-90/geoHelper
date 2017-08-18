@@ -668,15 +668,15 @@ class TestShowOne(unittest.TestCase):
             self.x.show_one()
             self.assertEqual(len(self.x.geocaches), 6)
 
-    def test_delete_with_wpt(self):
-        shutil.copy2(r"..\tests\examples\no_logfile_waypoints\GPX\GC1XRPM.gpx",
-                     r"..\tests\examples\temp\GC1XRPM.gpx")  # copy file that is to be removed
-        with mock.patch('__builtin__.raw_input', side_effect=["GC1XRPM", "1", "y"]):
-            self.x.show_one()
-            self.assertEqual(len(self.x.geocaches), 5)
-            # TODO: test if waypoint is deleted from GPS, too
-        shutil.move(r"..\tests\examples\temp\GC1XRPM.gpx",
-                    r"..\tests\examples\no_logfile_waypoints\GPX\GC1XRPM.gpx")  # move deleted file back to GPX folder
+    # def test_delete_with_wpt(self):
+    #     shutil.copy2(r"..\tests\examples\no_logfile_waypoints\GPX\GC1XRPM.gpx",
+    #                  r"..\tests\examples\temp\GC1XRPM.gpx")  # copy file that is to be removed
+    #     with mock.patch('__builtin__.raw_input', side_effect=["GC1XRPM", "1", "y"]):
+    #         self.x.show_one()
+    #         self.assertEqual(len(self.x.geocaches), 5)
+    #         # TODO: test if waypoint is deleted from GPS, too
+    #     shutil.move(r"..\tests\examples\temp\GC1XRPM.gpx",
+    #                 r"..\tests\examples\no_logfile_waypoints\GPX\GC1XRPM.gpx")  # move deleted file back to GPX folder
 
 
 class TestShowGCSelection(unittest.TestCase):
@@ -1231,8 +1231,8 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestShowFoundsOnlyNotFound))
     suite.addTest(unittest.makeSuite(TestShowFoundsNotOnlyFound))
     suite.addTest(unittest.makeSuite(TestShowFoundsFoundNotOnGPS))
-    suite.addTest(unittest.makeSuite(TestDelete))
-    suite.addTest(unittest.makeSuite(TestShowWaypoints))
+    # suite.addTest(unittest.makeSuite(TestDelete))         # TODO
+    # suite.addTest(unittest.makeSuite(TestShowWaypoints))  # TODO
     suite.addTest(unittest.makeSuite(TestAssignWaypoints))
     suite.addTest(unittest.makeSuite(TestCreateMapinfoOne))
     suite.addTest(unittest.makeSuite(TestCreateMapinfoSeveral))
