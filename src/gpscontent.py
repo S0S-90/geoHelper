@@ -58,6 +58,8 @@ class GPSContent(object):
     sort_and_show_caches(): sorts all caches by criterion that is defined by the user and shows them"
     
     show_one(): shows detailed information about one cache and performs another actions with it if desired
+
+    show_waypoints(): shows all free waypoints and lets the user choose what to do next
     
     delete(cachelist): deletes all caches in cachelist from gps-device
     
@@ -76,6 +78,12 @@ class GPSContent(object):
     assign_waypoints(): lets the user choose for every waypoint if the waypoint should be assigned to a geocache
                         (and to which) or if it should be deleted
 
+    delete_waypoint_from_files(waypointfiles, waypoint): deletes waypoint from waypointfiles (list of strings
+                                                         where each string is the content of one waypointfile)
+
+    create_waypointfilestrings(self): creates two lists (one with names and one with contents) out of waypointfiles
+
+    rewrite_waypointfiles(wptfile_names, wpt_files): overwrite waypoint files on GPS-device by new content
     """
 
     def __init__(self, path):
@@ -622,16 +630,51 @@ class GPSContent(object):
         os.remove("mapinfo.txt")
 
     def show_waypoints(self):
-        """shows all free waypoints and asks if they should be assigned to geocaches"""
+        """shows all free waypoints and lets the user choose what to do next"""
 
         if not self.waypoints:
             user_io.general_output(user_io.NO_WAYPOINTS_ON_DEVICE)
+            inp = user_io.waypoint_menu(False)
+            if inp == "add":
+                self.add_waypoints()
         else:
             for w in self.waypoints:    # show waypoints
                 user_io.general_output(w.info())
-            inp = user_io.assign_waypoints()    # assign waypoints
-            if inp:
+            inp = user_io.waypoint_menu(True)    # assign waypoints
+            if inp == "assign":
                 self.assign_waypoints()
+            elif inp == "add":
+                self.add_waypoints()
+
+    @staticmethod
+    def _try_creating_waypoint(name, coords):
+        """try if a waypoint can be created from name and coords
+        return waypoint if yes
+        (part of add_waypoints) """
+
+        try:
+            ownfunctions.validate_coordinates(coords)
+        except TypeError or ValueError:
+            user_io.general_output(user_io.COORDINATES_WRONG + " " + user_io.NO_WAYPOINT_CREATED)
+        else:
+            try:
+                w = Waypoint(name, coords)
+            except ValueError:
+                user_io.general_output(user_io.NAME_TO_LONG + " " + user_io.NO_WAYPOINT_CREATED)
+            except TypeError:
+                user_io.general_output(user_io.NOT_ALLOWED_SIGNS + " " + user_io.NO_WAYPOINT_CREATED)
+            else:
+                return w
+
+    def add_waypoints(self):
+        """adds waypoints"""
+
+        name, coordstr = user_io.wpt_ask_for_name_and_coords()
+        coords = ownfunctions.coords_string_to_decimal(coordstr)
+        wpt = self._try_creating_waypoint(name, coords)
+        if wpt:
+            print ("sucess")  # TODO: add waypoint to GPSContent and files (maybe assign to cache)
+        # TODO: aks for adding another waypoint
 
     def find_suggestions(self, waypoint):
         """finds suggestions to which cache the given waypoint should be assigned"""

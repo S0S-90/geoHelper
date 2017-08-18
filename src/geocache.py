@@ -365,11 +365,13 @@ class Waypoint(object):
 
         if type(name) != str and type(name) != unicode:
             raise TypeError("waypoint name is of wrong type")
+        if len(name) > 30:
+            raise ValueError("waypoint name is too long")
         self.name = name.upper()
         for c in self.name:
             # noinspection PyCompatibility
             if unicode(c) not in self.ALLOWED_SIGNS:  # not compatible with python 3 because of function unicode()
-                raise ValueError("GARMIN does not allow '{}' in a waypoint name.".format(c))
+                raise TypeError(u"GARMIN does not allow '{}' in a waypoint name.".format(c))
         self.shown_name = self.name  # for waypoints not belonging to a geocache
 
         ownfunctions.validate_coordinates(coordinates)  # throws an error if coordinates not valid

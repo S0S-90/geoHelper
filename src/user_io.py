@@ -36,7 +36,7 @@ def show_main_menu(found_exists):
     print ("\nWas moechtest du als naechstes tun?")
     print ("1: Geocaches aktualisieren")
     print ("2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen")
-    print ("3: Alle Wegpunkte anzeigen und zu Geocaches zuordnen")
+    print ("3: Wegpunkt-Menue")
     print ("4: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen (INTERNET!!!)")
     print ("5: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)")
     print ("6: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)")
@@ -250,7 +250,7 @@ def confirm_deletion():
 
 
 def confirm_deletion_wpt():
-    """asks before deleting caches if they should really be deleted
+    """asks before deleting waypoints if they should really be deleted
     returns True for yes and False for no"""
 
     # noinspection PyCompatibility
@@ -261,15 +261,24 @@ def confirm_deletion_wpt():
         return False
 
 
-def assign_waypoints():
-    """asks if waypoints should be assigned"""
+def waypoint_menu(waypoints_exist):
+    """asks what to do with waypoints"""
 
-    # noinspection PyCompatibility
-    inp = raw_input("\nWillst die Wegpunkte zu Geocaches zuordnen? (y/n) ")  # in python 3 only raw_input
-    if inp == "y":
-        return True
+    print ("\nWas moechtest du als naechstes tun?")
+    print ("1: Wegpunkte hinzufuegen")
+    if waypoints_exist:
+        print ("2: Wegpunkte zu Geocaches zuordnen oder loeschen")
+        print ("3: nichts")
     else:
-        return False
+        print ("2: nichts")
+    # noinspection PyCompatibility
+    inp = raw_input(">> ")  # in python 3 only raw_input
+    if inp == "1":
+        return "add"
+    elif inp == "2" and waypoints_exist:
+        return "assign"
+    else:
+        return "continue"
 
 
 def choose_cache(suggestions):
@@ -338,6 +347,17 @@ def coordinates_input():
     # noinspection PyCompatibility
     coords = raw_input(">> ").decode(CODING)  # in python 3 input is raw_input by standard
     return coords
+
+
+def wpt_ask_for_name_and_coords():
+    """asks for name and coordinates of waypoint that should be created"""
+
+    # noinspection PyCompatibility
+    name = raw_input("Gib den Namen des Wegpunkts ein: ").decode(CODING)  # in python 3 input is raw_input by standard
+    print (u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX)")
+    # noinspection PyCompatibility
+    coordstr = raw_input(">> ").decode(CODING)   # in python 3 input is raw_input by standard
+    return name, coordstr
 
 
 def ask_for_path():
@@ -419,6 +439,10 @@ AND = "und"
 ON_DEVICE = "auf dem Geraet."
 NO_WAYPOINTS_ON_DEVICE = "Keine Wegpunkte auf dem Geraet."
 NO_CACHES_ON_DEVICE = "Keine Caches auf dem Geraet."
+NAME_TO_LONG = "Name zu lang."
+NOT_ALLOWED_SIGNS = "Name enthaelt ungueltige Zeichen."
+COORDINATES_WRONG = "Koordinaten fehlerhaft."
+NO_WAYPOINT_CREATED = "Kein Wegpunkt wurde erstellt."
 CURRENT_WAYPOINT = "Aktueller Wegpunkt"
 INPUT_GCCODE = "Gib den GC-Code ein: "
 GC_DOES_NOT_EXIST = "Dieser GC-Code existiert nicht."

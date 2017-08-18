@@ -114,7 +114,7 @@ class TestShowMainMenu(unittest.TestCase):
         expected = "\nWas moechtest du als naechstes tun?\n"
         expected += "1: Geocaches aktualisieren\n"
         expected += "2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen\n"
-        expected += "3: Alle Wegpunkte anzeigen und zu Geocaches zuordnen\n"
+        expected += "3: Wegpunkt-Menue\n"
         expected += "4: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen (INTERNET!!!)\n"
         expected += "5: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)\n"
         expected += "6: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
@@ -132,7 +132,7 @@ class TestShowMainMenu(unittest.TestCase):
         expected = "\nWas moechtest du als naechstes tun?\n"
         expected += "1: Geocaches aktualisieren\n"
         expected += "2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen\n"
-        expected += "3: Alle Wegpunkte anzeigen und zu Geocaches zuordnen\n"
+        expected += "3: Wegpunkt-Menue\n"
         expected += "4: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen (INTERNET!!!)\n"
         expected += "5: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)\n"
         expected += "6: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
@@ -600,19 +600,20 @@ class TestConfirmDeletion(unittest.TestCase):
             self.assertEqual(user_io.confirm_deletion(), False)
 
 
-class TestAssignWaypoints(unittest.TestCase):
-
-    def test_yes(self):
-        with mock.patch('__builtin__.raw_input', return_value="y"):
-            self.assertEqual(user_io.assign_waypoints(), True)
-
-    def test_no(self):
-        with mock.patch('__builtin__.raw_input', return_value="n"):
-            self.assertEqual(user_io.assign_waypoints(), False)
-
-    def test_nonsense(self):
-        with mock.patch('__builtin__.raw_input', return_value="any_nonsense"):
-            self.assertEqual(user_io.assign_waypoints(), False)
+class TestWaypointMenu(unittest.TestCase):
+    pass
+    # TODO
+    # def test_yes(self):
+    #     with mock.patch('__builtin__.raw_input', return_value="y"):
+    #         self.assertEqual(user_io.waypoint_menu(), True)
+    #
+    # def test_no(self):
+    #     with mock.patch('__builtin__.raw_input', return_value="n"):
+    #         self.assertEqual(user_io.assign_waypoints(), False)
+    #
+    # def test_nonsense(self):
+    #     with mock.patch('__builtin__.raw_input', return_value="any_nonsense"):
+    #         self.assertEqual(user_io.assign_waypoints(), False)
 
 
 class TestShowOne(unittest.TestCase):
@@ -871,7 +872,7 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestActionsAfterSearch))
     suite.addTest(unittest.makeSuite(TestActionsWithFounds))
     suite.addTest(unittest.makeSuite(TestConfirmDeletion))
-    suite.addTest(unittest.makeSuite(TestAssignWaypoints))
+    suite.addTest(unittest.makeSuite(TestWaypointMenu))
     suite.addTest(unittest.makeSuite(TestShowOne))
     suite.addTest(unittest.makeSuite(TestCoordinatesInput))
     suite.addTest(unittest.makeSuite(TestAskForPath))
