@@ -314,7 +314,15 @@ def calculate_distance(point1, point2):
     return g
 
 
-def get_month(string):
+def get_year_without_century(year):
+    """removes the century from a year, e.g. 1017 -> 17"""
+    year_str = str(year)
+    if len(year_str) != 4:
+        raise ValueError("{} is not a valid year".format(year))
+    return int(year_str[-2:])
+
+
+def get_month_number(string):
     """
     input: month as three letter string
     return: number of this month in the year
@@ -343,6 +351,37 @@ def get_month(string):
         return 11
     elif string == "Dec":
         return 12
+
+
+def get_month(number):
+    """
+    input: number of this month in the year
+    return: month as three letter string
+    """
+    if number == 1:
+        return "Jan"
+    elif number == 2:
+        return "Feb"
+    elif number == 3:
+        return "Mar"
+    elif number == 4:
+        return "Apr"
+    elif number == 5:
+        return "May"
+    elif number == 6:
+        return "Jun"
+    elif number == 7:
+        return "Jul"
+    elif number == 8:
+        return "Aug"
+    elif number == 9:
+        return "Sep"
+    elif number == 10:
+        return "Oct"
+    elif number == 11:
+        return "Nov"
+    elif number == 12:
+        return "Dec"
 
 
 def string_to_date(string):

@@ -439,59 +439,59 @@ class TestCalculateDistance(unittest.TestCase):
 
 class TestGetMonth(unittest.TestCase):
     def test_january(self):
-        x = ownfunctions.get_month("Jan")
+        x = ownfunctions.get_month_number("Jan")
         self.assertEqual(x, 1)
 
     def test_february(self):
-        x = ownfunctions.get_month("Feb")
+        x = ownfunctions.get_month_number("Feb")
         self.assertEqual(x, 2)
 
     def test_march(self):
-        x = ownfunctions.get_month("Mar")
+        x = ownfunctions.get_month_number("Mar")
         self.assertEqual(x, 3)
 
     def test_april(self):
-        x = ownfunctions.get_month("Apr")
+        x = ownfunctions.get_month_number("Apr")
         self.assertEqual(x, 4)
 
     def test_may(self):
-        x = ownfunctions.get_month("May")
+        x = ownfunctions.get_month_number("May")
         self.assertEqual(x, 5)
 
     def test_june(self):
-        x = ownfunctions.get_month("Jun")
+        x = ownfunctions.get_month_number("Jun")
         self.assertEqual(x, 6)
 
     def test_july(self):
-        x = ownfunctions.get_month("Jul")
+        x = ownfunctions.get_month_number("Jul")
         self.assertEqual(x, 7)
 
     def test_august(self):
-        x = ownfunctions.get_month("Aug")
+        x = ownfunctions.get_month_number("Aug")
         self.assertEqual(x, 8)
 
     def test_september(self):
-        x = ownfunctions.get_month("Sep")
+        x = ownfunctions.get_month_number("Sep")
         self.assertEqual(x, 9)
 
     def test_october(self):
-        x = ownfunctions.get_month("Oct")
+        x = ownfunctions.get_month_number("Oct")
         self.assertEqual(x, 10)
 
     def test_november(self):
-        x = ownfunctions.get_month("Nov")
+        x = ownfunctions.get_month_number("Nov")
         self.assertEqual(x, 11)
 
     def test_december(self):
-        x = ownfunctions.get_month("Dec")
+        x = ownfunctions.get_month_number("Dec")
         self.assertEqual(x, 12)
 
     def test_other_string_givesNone(self):
-        x = ownfunctions.get_month("bla")
+        x = ownfunctions.get_month_number("bla")
         self.assertEqual(x, None)
 
     def test_other_type_givesNone(self):
-        x = ownfunctions.get_month(42)
+        x = ownfunctions.get_month_number(42)
         self.assertEqual(x, None)
 
 

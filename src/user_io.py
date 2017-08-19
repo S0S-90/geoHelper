@@ -281,7 +281,7 @@ def waypoint_menu(waypoints_exist):
         return "continue"
 
 
-def choose_cache(suggestions):
+def choose_cache(suggestions, more_options):
     """asks to which of a list of suggested caches the waypoint should be assigned
     return either the chosen cache or the string 'other'"""
 
@@ -289,8 +289,11 @@ def choose_cache(suggestions):
     for i, s in enumerate(suggestions):
         print (u"{}: {} ({})".format(i+1, s.name, s.gccode))
     print ("{}: anderer Geocache".format(len(suggestions)+1))
-    print ("{}: Wegpunkt loeschen".format(len(suggestions)+2))
-    print ("{}: nichts tun".format(len(suggestions)+3))
+    if more_options:
+        print ("{}: Wegpunkt loeschen".format(len(suggestions)+2))
+        print ("{}: nichts tun".format(len(suggestions)+3))
+    else:
+        print ("{}: Wegpunkt doch nicht zuordnen".format(len(suggestions)+2))
     # noinspection PyCompatibility
     inp = raw_input(">> ")  # in python 3 only raw_input
     try:
@@ -298,7 +301,7 @@ def choose_cache(suggestions):
     except IndexError:
         if int(inp) == len(suggestions)+1:
             sug = "other"
-        elif int(inp) == len(suggestions)+2:
+        elif int(inp) == len(suggestions)+2 and more_options:
             sug = "delete"
         else:
             sug = "continue"
@@ -445,6 +448,9 @@ COORDINATES_WRONG = "Koordinaten fehlerhaft."
 NO_WAYPOINT_CREATED = "Kein Wegpunkt wurde erstellt."
 CURRENT_WAYPOINT = "Aktueller Wegpunkt"
 INPUT_GCCODE = "Gib den GC-Code ein: "
+WAYPOINT_LEFT_OUT = "Wegpunkt wird uebersprungen."
+ASSIGN_WAYPOINT_TO_CACHE = "Willst du den Wegpunkt einem Cache zuordnen?"
+ADD_WAYPOINT = "Moechtest du einen weiteren Wegpunkt erstellen?"
 GC_DOES_NOT_EXIST = "Dieser GC-Code existiert nicht."
 SEARCH_FOR = "Suche nach... "
 MIN_MAX_SEPERATED_BY_KOMMA = "Minimaler und maximaler Wert (mit Komma voneinander getrennt)"
@@ -455,4 +461,4 @@ DIST_SEPERATED_BY_KOMMA = "Minimale und maximale Distanz in Kilometern (mit Komm
 NO_CACHES_FOUND = "keine Geocaches gefunden"
 WARNING_LOG_INFO = "WARNUNG! Bei Fortfahren werden auch Log-Informationen ueber Caches geloescht,  \
                    die nicht gefunden wurden."
-LEAVE_PROGRAMME = "Willst du das Programm verlassen? (y, n) "
+LEAVE_PROGRAMME = "Willst du das Programm verlassen? (y,n) "

@@ -184,7 +184,7 @@ class Geocache(object):
         downloaddate = time.ctime(os.path.getmtime(filename_path))       # read downloaddate (= change of gpx-file)
         downloaddate = downloaddate.split(" ")
         self.downloaddate_string = "".join([downloaddate[2]+" ", downloaddate[1]+" ", downloaddate[-1]])
-        month = ownfunctions.get_month(downloaddate[1])
+        month = ownfunctions.get_month_number(downloaddate[1])
         self.downloaddate = datetime.date(int(downloaddate[-1]), month, int(downloaddate[2]))
         
         self.distance = 0     # initialise for later use

@@ -7,12 +7,13 @@ import os
 import glob
 import webbrowser
 import subprocess
+import time
 import xml.etree.ElementTree as ElementTree
 
-from geocache import TYPE_LIST, SIZE_LIST  
+from geocache import TYPE_LIST, SIZE_LIST
 from geocache import Geocache, Waypoint
-import user_io      
-import ownfunctions 
+import user_io
+import ownfunctions
 
 
 class GPSContent(object):
@@ -88,13 +89,13 @@ class GPSContent(object):
 
     def __init__(self, path):
         """reads geocaches, waypoints and logfile from gps-device"""
-        
-        self.path = path              
-        self.found_exists = False     
-        self.warning = False          
+
+        self.path = path
+        self.found_exists = False
+        self.warning = False
         self.existing_attributes = []
-        
-        self.geocaches = []               # read all caches from GC*.gpx-files in path\GPX and save in list 'geocaches'
+
+        self.geocaches = []  # read all caches from GC*.gpx-files in path\GPX and save in list 'geocaches'
         gpx_path = os.path.join(self.path, "GPX")
         for gpxfile in glob.glob(os.path.join(gpx_path, "GC*.gpx")):
             # noinspection PyBroadException
@@ -105,15 +106,16 @@ class GPSContent(object):
                 user_io.general_output("{}: {}".format(user_io.WARNING_BROKEN_FILE, os.path.basename(gpxfile)))
 
         self.waypoints = []  # read all caches from GC*.gpx-files in path\GPX and save in list 'waypoints'
-        for wptfile in glob.glob(os.path.join(gpx_path, "Wegpunkte_*.gpx")):
+        for wptfile in (glob.glob(os.path.join(gpx_path, "Wegpunkte_*.gpx")) +
+                        glob.glob(os.path.join(gpx_path, "Waypoints_*.gpx"))):
             # noinspection PyBroadException
             # (broad exception necessary because ParseError unknown)
             try:
                 self.waypoints += self._read_waypoints(wptfile)
             except:
                 user_io.general_output("{}: {}".format(user_io.WARNING_BROKEN_FILE, os.path.basename(wptfile)))
-            
-        for g in self.geocaches:      # read existing attributes from geocaches
+
+        for g in self.geocaches:  # read existing attributes from geocaches
             for a in g.attributes:
                 if a not in self.existing_attributes and a != "No attributes specified by the author":
                     self.existing_attributes.append(a)
@@ -152,7 +154,7 @@ class GPSContent(object):
             coordlist.append(coords)
 
         waypoints = []
-        if len(namelist) == len(coordlist):     # as many names as coordinates (else file is broken)
+        if len(namelist) == len(coordlist):  # as many names as coordinates (else file is broken)
             for i, name in enumerate(namelist):  # for every waypoint (defined by name)
                 w = Waypoint(name, coordlist[i])  # create waypoint out of name and coordinates
                 last_word = w.name.split()[-1]
@@ -165,7 +167,7 @@ class GPSContent(object):
                             c.add_waypoint(w)  # if yes add waypoint to cache
                             break
                 if not belongs_to_cache:
-                    waypoints.append(w)   # if not add waypoint to gps
+                    waypoints.append(w)  # if not add waypoint to gps
         else:
             user_io.general_output(user_io.WARNING_BROKEN_FILE)
 
@@ -179,31 +181,31 @@ class GPSContent(object):
             first element: logged caches (not as Geocache-objects but as list [gc-code, date-and-time, logtype])
             second element: list of found caches as Geocache-objects"""
 
-        logged_caches_raw = []           
+        logged_caches_raw = []
         with open(os.path.join(self.path, "geocache_visits.txt")) as visits:
             visits = visits.read().decode("utf-16")
             visits_lines = visits.split("\n")
             for line in visits_lines:
                 logged_caches_raw.append(line)
-        logged_caches = []           
+        logged_caches = []
         for lcr in logged_caches_raw:
             lcr = lcr.split(",")
             lcr.remove(lcr[-1])
             if len(lcr) > 0:
-                logged_caches.append(lcr)  
+                logged_caches.append(lcr)
         found_caches = []
         logged_caches_new = []
         for lc in logged_caches:
             if lc[-1] == "Found it":
                 try:
-                    found_caches.append(Geocache(os.path.join(self.path, "GPX", lc[0]+".gpx")))
+                    found_caches.append(Geocache(os.path.join(self.path, "GPX", lc[0] + ".gpx")))
                     logged_caches_new.append(lc)
                 except IOError:
                     user_io.general_output("\nWARNUNG! Der Geocache {} befindet sich nicht auf dem Geraet. \
                     Er wird daher im Folgenden nicht mehr beruecksichtigt.".format(lc[0]))
             else:
                 try:
-                    Geocache(os.path.join(self.path, "GPX", lc[0]+".gpx"))
+                    Geocache(os.path.join(self.path, "GPX", lc[0] + ".gpx"))
                     logged_caches_new.append(lc)
                 except IOError:
                     user_io.general_output("\nWARNUNG! Der Geocache {} befindet sich nicht auf dem Geraet. \
@@ -212,27 +214,27 @@ class GPSContent(object):
 
     def sort_and_show_caches(self):
         """sorts all caches by criterion that is defined by the user and shows them"""
-        
+
         [criterion, rev] = user_io.sort_caches()
-        if criterion == "distance":   # read coordinates from user input
+        if criterion == "distance":  # read coordinates from user input
             coords_str = user_io.coordinates_input()
             coords = ownfunctions.coords_string_to_decimal(coords_str)
-            
-            if coords:             # if reading coordinates successful
+
+            if coords:  # if reading coordinates successful
                 for g in self.geocaches:
                     g.distance = ownfunctions.calculate_distance(g.coordinates, coords)  # calculate distance
                 self.geocaches = sorted(self.geocaches, key=lambda geocache: getattr(geocache, criterion), reverse=rev)
                 user_io.general_output(self.show_all_dist())
             else:
                 user_io.general_output(user_io.INVALID_INPUT)
-            
-        elif criterion == "name":    # criterions for which capitalization doesn't matter
+
+        elif criterion == "name":  # criterions for which capitalization doesn't matter
             self.geocaches = sorted(self.geocaches, key=lambda geocache: getattr(geocache, criterion).lower(), reverse=rev)
             user_io.general_output(self.show_all())
-        else:                    # criterions for which capitalization matters
+        else:  # criterions for which capitalization matters
             self.geocaches = sorted(self.geocaches, key=lambda geocache: getattr(geocache, criterion), reverse=rev)
             user_io.general_output(self.show_all())
-        
+
     def show_all(self):
         """returns a string with most important infos for each cache, each cache in one line"""
         text = ""
@@ -241,7 +243,7 @@ class GPSContent(object):
         if len(self.geocaches) == 0:
             return user_io.NO_CACHES_ON_DEVICE
         return text
-        
+
     def show_all_dist(self):
         """returns a string with most important infos (+ distances) for each cache, each cache in one line"""
         text = ""
@@ -265,18 +267,18 @@ class GPSContent(object):
             user_io.general_output(user_io.GC_DOES_NOT_EXIST)
         else:
             return cache
-        
+
     def show_one(self):
         """shows detailed information about one cache and performs another actions with it if desired"""
-        
+
         cache = self.read_cache()
         if cache:
             user_io.general_output(cache.longinfo())
-        
+
             while True:
-                wpt = False   # no waypoints exist
+                wpt = False  # no waypoints exist
                 if cache.waypoints:
-                    wpt = True   # waypoints exist
+                    wpt = True  # waypoints exist
                 task = user_io.show_one(wpt)
                 if task == "delete":
                     self.delete([cache])
@@ -316,14 +318,14 @@ class GPSContent(object):
         
         input: list of caches (as Geocache-objects) that are found on gps-device
         return: string with informations about these caches"""
-        
+
         text = ""
         for c in cachelist:
             if type(c) != Geocache:
                 raise TypeError("An Element of the selection is not a Geocache!")
             text = text + c.shortinfo() + "\n"
         return text
-        
+
     @staticmethod
     def show_gc_selection_dist(cachelist):
         """returns a string with most important information (+ distances) of all caches in cachelist,
@@ -331,7 +333,7 @@ class GPSContent(object):
         
         input: list of caches (as Geocache-objects) that are found on gps-device
         return: string with informations about these caches"""
-        
+
         text = ""
         for c in cachelist:
             if type(c) != Geocache:
@@ -339,22 +341,22 @@ class GPSContent(object):
             newline = u"{:7}km | {}\n".format(round(c.distance, 1), c.shortinfo(12))
             text += newline
         return text
-        
+
     def search(self):
         """searches caches for desired criterion and returns list of geocaches that match to search"""
-        
+
         search_results = []
         criterion = user_io.search()
-        if criterion == "name" or criterion == "description":    # search for name or description
+        if criterion == "name" or criterion == "description":  # search for name or description
             keyword = user_io.input_decode(user_io.SEARCH_FOR)
             for c in self.geocaches:
                 if keyword in getattr(c, criterion):
                     search_results.append(c)
         elif criterion == "difficulty" or criterion == "terrain":  # search for difficulty or terrain value
-            input_str = user_io.general_input("{}: ".format(user_io.MIN_MAX_SEPERATED_BY_KOMMA)) 
+            input_str = user_io.general_input("{}: ".format(user_io.MIN_MAX_SEPERATED_BY_KOMMA))
             inp = input_str.split(",")
             if len(inp) != 2:
-                user_io.general_output(user_io.INVALID_INPUT) 
+                user_io.general_output(user_io.INVALID_INPUT)
             else:
                 try:
                     mini = float(inp[0])
@@ -368,7 +370,7 @@ class GPSContent(object):
                                 search_results.append(c)
                     else:
                         user_io.general_output(user_io.INVALID_INPUT)
-        elif criterion == "size":                                           # search by size
+        elif criterion == "size":  # search by size
             input_str = user_io.general_input("{}. {}: other, micro, small, regular, large\n>>".
                                               format(user_io.MIN_MAX_SEPERATED_BY_KOMMA, user_io.POSSIBLE_SIZES))
             inp = input_str.split(",")
@@ -391,7 +393,7 @@ class GPSContent(object):
                         for c in self.geocaches:
                             if mini <= c.size <= maxi:
                                 search_results.append(c)
-        elif criterion == "downloaddate":                               # search by downloaddate
+        elif criterion == "downloaddate":  # search by downloaddate
             input_str = user_io.general_input("{}\n>>".format(user_io.DATE_SEPERATED_BY_KOMMA))
             inp = input_str.split(",")
             if len(inp) != 2:
@@ -413,18 +415,18 @@ class GPSContent(object):
                     else:
                         for c in self.geocaches:
                             if first_date <= c.downloaddate <= last_date:
-                                search_results.append(c) 
-        elif criterion == "available":                # search by availibility
+                                search_results.append(c)
+        elif criterion == "available":  # search by availibility
             input_str = user_io.general_input(user_io.CACHES_AVAILABLE_OR_NOT)
             if input_str == "n":
                 for c in self.geocaches:
                     if not c.available:
                         search_results.append(c)
-            else:      # if invalid input: show available caches
+            else:  # if invalid input: show available caches
                 for c in self.geocaches:
                     if c.available:
                         search_results.append(c)
-        elif criterion == "type":                    # search by cachetype
+        elif criterion == "type":  # search by cachetype
             inp = user_io.search_type()
             if inp not in TYPE_LIST:
                 user_io.general_output(user_io.INVALID_INPUT)
@@ -432,7 +434,7 @@ class GPSContent(object):
                 for c in self.geocaches:
                     if c.type == inp:
                         search_results.append(c)
-        elif criterion == "attribute":              # search by attribute
+        elif criterion == "attribute":  # search by attribute
             inp = user_io.search_attribute(self.existing_attributes)
             if inp not in self.existing_attributes:
                 user_io.general_output(user_io.INVALID_INPUT)
@@ -440,14 +442,14 @@ class GPSContent(object):
                 for c in self.geocaches:
                     if inp in c.attributes:
                         search_results.append(c)
-        elif criterion == "distance":                # search by distance to a given point
+        elif criterion == "distance":  # search by distance to a given point
             coords_str = user_io.coordinates_input()
             coords = ownfunctions.coords_string_to_decimal(coords_str)
             if coords:
-                input_str = user_io.general_input(user_io.DIST_SEPERATED_BY_KOMMA) 
+                input_str = user_io.general_input(user_io.DIST_SEPERATED_BY_KOMMA)
                 inp = input_str.split(",")
                 if len(inp) != 2:
-                    user_io.general_output(user_io.INVALID_INPUT) 
+                    user_io.general_output(user_io.INVALID_INPUT)
                 else:
                     try:
                         mini = float(inp[0])
@@ -461,21 +463,21 @@ class GPSContent(object):
                                 search_results.append(c)
             else:
                 user_io.general_output(user_io.INVALID_INPUT)
-        
-        if len(search_results) == 0:                        # print search results
+
+        if len(search_results) == 0:  # print search results
             user_io.general_output(user_io.NO_CACHES_FOUND)
         else:
             if criterion == "distance":
-                user_io.general_output(self.show_gc_selection_dist(search_results))  
+                user_io.general_output(self.show_gc_selection_dist(search_results))
             else:
                 user_io.general_output(self.show_gc_selection(search_results))
         return search_results
-    
-    def actions_after_search(self, search_results): 
-        """performs different actions with search results
-        input: output from function search()"""    
 
-        if len(search_results) != 0:                        
+    def actions_after_search(self, search_results):
+        """performs different actions with search results
+        input: output from function search()"""
+
+        if len(search_results) != 0:
             while True:
                 task = user_io.actions_after_search()
                 if task == "show_again":
@@ -490,10 +492,10 @@ class GPSContent(object):
                     self.show_one_gccom()
                 elif task == "back":
                     break
-        
+
     def show_founds(self):
         """shows all caches that are marked as found and performs actions with them if desired"""
-        
+
         if not self.found_exists:
             raise ValueError("ERROR: no found caches")
         user_io.general_output(self.show_gc_selection(self.found_caches))
@@ -512,7 +514,7 @@ class GPSContent(object):
                     break
             elif task == "exit":
                 break
-           
+
     def delete(self, cachelist):
         """deletes all caches in cachelist from gps-device
         
@@ -524,7 +526,7 @@ class GPSContent(object):
             wptfile_names, wptfile_strings = self.create_waypointfilestrings()
             for c in cachelist:
                 os.remove(c.filename_path)  # delete cache from gps-device
-                for w in c.waypoints:       # also delete waypoints from gps-device
+                for w in c.waypoints:  # also delete waypoints from gps-device
                     wptfile_strings = self.delete_waypoint_from_files(wptfile_strings, w)
             removelist = []
             for c1 in self.geocaches:
@@ -533,7 +535,7 @@ class GPSContent(object):
                         removelist.append(c1)
 
             self.geocaches = [c for c in self.geocaches if c not in removelist]  # geocaches without deleted
-            self.rewrite_waypointfiles(wptfile_names, wptfile_strings)           # waypoints without deleted
+            self.rewrite_waypointfiles(wptfile_names, wptfile_strings)  # waypoints without deleted
         return delete
 
     def _create_mapinfo_several(self, cachelist, show_waypoints, free_waypoints):
@@ -558,19 +560,19 @@ class GPSContent(object):
                     color = "yellow"
                 elif g.type == "Mystery Cache":
                     color = "blue"
-                else:                        # cache of unknown type
+                else:  # cache of unknown type
                     color = "pink"
                 name = g.name.encode(user_io.CODING)
                 if g.waypoints and show_waypoints:  # if waypoints: add gccode to name
                     name = "{} ({})".format(name, g.gccode)
                 mapinfo.write("{},{} {{{}}} <{}>\n".
                               format(g.coordinates[0], g.coordinates[1], name, color))
-                if show_waypoints:         # waypoints belonging to cache
+                if show_waypoints:  # waypoints belonging to cache
                     for w in g.waypoints:
                         mapinfo.write("{},{} {{{}}} <{}>\n".
                                       format(w.coordinates[0], w.coordinates[1], w.name.encode(user_io.CODING), color))
 
-            if free_waypoints:             # free waypoints
+            if free_waypoints:  # free waypoints
                 for w in self.waypoints:
                     mapinfo.write("{},{} {{{}}} <{}>\n".
                                   format(w.coordinates[0], w.coordinates[1], w.name.encode(user_io.CODING), "yellow"))
@@ -581,7 +583,7 @@ class GPSContent(object):
         part of show_on_map"""
 
         with open("mapinfo.txt", "w") as mapinfo:
-            if cache.type == "Traditional Cache":      # cache itself
+            if cache.type == "Traditional Cache":  # cache itself
                 color = "green"
             elif cache.type == "Multi-cache":
                 color = "default"
@@ -599,7 +601,7 @@ class GPSContent(object):
             mapinfo.write("{},{} {{{}}} <{}>\n".
                           format(cache.coordinates[0], cache.coordinates[1], cache.name.encode(user_io.CODING), color))
 
-            for w in cache.waypoints:              # waypoints
+            for w in cache.waypoints:  # waypoints
                 if color == "yellow":
                     color_w = "grey"
                 else:
@@ -611,13 +613,13 @@ class GPSContent(object):
         """shows all caches in cachelist on a map (uses webservice 'www.mapcustomizer.com')"""
 
         one = True
-        if type(cachelist) == list:     # one is True if one cache, False if several caches
+        if type(cachelist) == list:  # one is True if one cache, False if several caches
             one = False
-        show_waypoints = False    # determines if waypoints are shown
+        show_waypoints = False  # determines if waypoints are shown
         if not one:
             show_waypoints = user_io.ask_for_waypoints()
         free_waypoints = False
-        if show_waypoints and all_caches:     # free waypoints are shown (only for all caches, not a selection)
+        if show_waypoints and all_caches:  # free waypoints are shown (only for all caches, not a selection)
             free_waypoints = True
         editor = user_io.show_on_map_start(one, free_waypoints)
         if one:
@@ -625,7 +627,7 @@ class GPSContent(object):
         else:
             self._create_mapinfo_several(cachelist, show_waypoints, free_waypoints)
         subprocess.Popen([editor, "mapinfo.txt"])
-        webbrowser.open_new_tab("https://www.mapcustomizer.com/#bulkEntryModal") 
+        webbrowser.open_new_tab("https://www.mapcustomizer.com/#bulkEntryModal")
         user_io.show_on_map_end()
         os.remove("mapinfo.txt")
 
@@ -638,9 +640,9 @@ class GPSContent(object):
             if inp == "add":
                 self.add_waypoints()
         else:
-            for w in self.waypoints:    # show waypoints
+            for w in self.waypoints:  # show waypoints
                 user_io.general_output(w.info())
-            inp = user_io.waypoint_menu(True)    # assign waypoints
+            inp = user_io.waypoint_menu(True)  # assign waypoints
             if inp == "assign":
                 self.assign_waypoints()
             elif inp == "add":
@@ -666,6 +668,16 @@ class GPSContent(object):
             else:
                 return w
 
+    @staticmethod
+    def add_waypoint_to_files(waypoint):
+        """adds waypoint to waypoint files on gps-device"""
+
+        now = time.gmtime()
+        month = ownfunctions.get_month(now.tm_mon).upper()
+        year = ownfunctions.get_year_without_century(now.tm_year)
+        filename = "Waypoints_{:02}-{}-{:02}".format(now.tm_mday, month, year)
+        print (filename, waypoint.name)  # TODO
+
     def add_waypoints(self):
         """adds waypoints"""
 
@@ -673,8 +685,37 @@ class GPSContent(object):
         coords = ownfunctions.coords_string_to_decimal(coordstr)
         wpt = self._try_creating_waypoint(name, coords)
         if wpt:
-            print ("sucess")  # TODO: add waypoint to GPSContent and files (maybe assign to cache)
-        # TODO: aks for adding another waypoint
+            inp = user_io.general_input("{} (y/n) ".format(user_io.ASSIGN_WAYPOINT_TO_CACHE))
+            if inp == "y":
+                suggestions = self.find_suggestions(wpt)
+                cache = user_io.choose_cache(suggestions, False)
+                if type(cache) == Geocache:  # assign waypoint accordning to suggestion
+                    wpt.name = u"{} ({})".format(wpt.name, cache.gccode)
+                    cache.add_waypoint(wpt)
+                    self.add_waypoint_to_files(wpt)
+                elif cache == "other":  # assign waypoint to other geocache
+                    inp_gccode = user_io.general_input(user_io.INPUT_GCCODE).upper()
+                    adding = False
+                    for g in self.geocaches:
+                        if g.gccode == inp_gccode:  # successfull assigning waypoint to cache
+                            wpt.name = u"{} ({})".format(wpt.name, inp_gccode)
+                            g.add_waypoint(wpt)
+                            self.add_waypoint_to_files(wpt)
+                            adding = True
+                            break
+                    if not adding:  # not successfull assigning waypoint to cache
+                        self.waypoints.append(wpt)
+                        self.add_waypoint_to_files(wpt)
+                        user_io.general_output(user_io.GC_DOES_NOT_EXIST)
+                else:
+                    self.waypoints.append(wpt)
+                    self.add_waypoint_to_files(wpt)
+            else:
+                self.waypoints.append(wpt)
+                self.add_waypoint_to_files(wpt)
+        inp = user_io.general_input("{} (y/n) ".format(user_io.ADD_WAYPOINT))
+        if inp == "y":
+            self.add_waypoints()
 
     def find_suggestions(self, waypoint):
         """finds suggestions to which cache the given waypoint should be assigned"""
@@ -682,7 +723,7 @@ class GPSContent(object):
         suggestions = []
         namelist = waypoint.name.split(" ")
         if namelist[-1] == "FINAL" or ownfunctions.string_is_int(namelist[-1]):
-            namelist = namelist[:-1]   # if last word is "FINAL" oder a number: discard
+            namelist = namelist[:-1]  # if last word is "FINAL" oder a number: discard
         for g in self.geocaches:
             for word in namelist:
                 if word in g.name.upper():
@@ -727,26 +768,26 @@ class GPSContent(object):
                 if len(cont_list) == 1:  # only one waypoint in file
                     x = wpt_cont.find(u"<name>{}</name>".format(waypoint.name).encode("utf-8"))
                     if x != -1:  # waypoint present in current string
-                        new_cont = ""   # delete everything
-                    else:    # waypoint not present in current string
+                        new_cont = ""  # delete everything
+                    else:  # waypoint not present in current string
                         new_cont += wpt_cont
                 elif i == 0:  # first waypoint in file
                     x = wpt_cont.find(u"<name>{}</name>".format(waypoint.name).encode("utf-8"))
-                    if x != -1:   # waypoint present in current string
+                    if x != -1:  # waypoint present in current string
                         new_cont += wpt_cont[:948]
-                    else:    # waypoint not present in current string
+                    else:  # waypoint not present in current string
                         new_cont += wpt_cont + "</wpt>"
-                elif i == len(cont_list)-1:  # last cache in file
+                elif i == len(cont_list) - 1:  # last cache in file
                     x = wpt_cont.find(u"<name>{}</name>".format(waypoint.name).encode("utf-8"))
                     if x != -1:  # waypoint present in current string
                         new_cont += "</gpx>"
-                    else:    # waypoint not present in current string
+                    else:  # waypoint not present in current string
                         new_cont += "<wpt " + wpt_cont
-                else:    # neither first nor last cache in file with 3 or more caches
+                else:  # neither first nor last cache in file with 3 or more caches
                     x = wpt_cont.find(u"<name>{}</name>".format(waypoint.name).encode("utf-8"))
                     if x != -1:  # waypoint present in current string
                         new_cont += ""
-                    else:    # waypoint not present in current string
+                    else:  # waypoint not present in current string
                         new_cont += "<wpt " + wpt_cont + "</wpt>"
             wptfiles_new.append(new_cont)
         return wptfiles_new
@@ -759,6 +800,7 @@ class GPSContent(object):
         gpx_path = os.path.join(self.path, "GPX")
         wpt_files = []
         wptfile_names = glob.glob(os.path.join(gpx_path, "Wegpunkte_*.gpx"))
+        wptfile_names += glob.glob(os.path.join(gpx_path, "Waypoints_*.gpx"))
         for wptfile_name in wptfile_names:
             with open(wptfile_name) as wptfile:
                 wpt_files.append(wptfile.read())
@@ -789,25 +831,25 @@ class GPSContent(object):
         for w in self.waypoints:
             user_io.general_output(u"\n{}: {}".format(user_io.CURRENT_WAYPOINT, w.name))
             suggestions = self.find_suggestions(w)
-            inp = user_io.choose_cache(suggestions)
-            if type(inp) == Geocache:   # assign waypoint accordning to suggestion
+            inp = user_io.choose_cache(suggestions, True)
+            if type(inp) == Geocache:  # assign waypoint accordning to suggestion
                 w.name = u"{} ({})".format(w.name, inp.gccode)
                 inp.add_waypoint(w)
                 wpt_files = self._replace_waypoint_name(wpt_files, w)
-            elif inp == "other":    # assign waypoint to other geocache
-                inp = user_io.general_input("Gib den GC-Code ein: ").upper()
+            elif inp == "other":  # assign waypoint to other geocache
+                inp = user_io.general_input(user_io.INPUT_GCCODE).upper()
                 adding = False
                 for g in self.geocaches:
-                    if g.gccode == inp:   # successfull assigning waypoint to cache
+                    if g.gccode == inp:  # successfull assigning waypoint to cache
                         w.name = u"{} ({})".format(w.name, inp)
                         g.add_waypoint(w)
                         adding = True
                         wpt_files = self._replace_waypoint_name(wpt_files, w)
                         break
-                if not adding:   # not successfull assigning waypoint to cache
+                if not adding:  # not successfull assigning waypoint to cache
                     waypoints_new.append(w)
-                    user_io.general_output("Ungueltiger GC-Code. Wegpunkt wird uebersprungen.")
-            elif inp == "delete":    # delete waypoint
+                    user_io.general_output("{} {}".format(user_io.GC_DOES_NOT_EXIST, user_io.WAYPOINT_LEFT_OUT))
+            elif inp == "delete":  # delete waypoint
                 if user_io.confirm_deletion_wpt():
                     wpt_files = self.delete_waypoint_from_files(wpt_files, w)
                 else:
@@ -816,4 +858,4 @@ class GPSContent(object):
                 waypoints_new.append(w)
 
         self.rewrite_waypointfiles(wptfile_names, wpt_files)  # write new files
-        self.waypoints = waypoints_new                        # save changes in programme
+        self.waypoints = waypoints_new  # save changes in programme
