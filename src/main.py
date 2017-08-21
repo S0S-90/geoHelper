@@ -8,7 +8,18 @@ import os
 import webbrowser
 
 from gpscontent import GPSContent
-import user_io                      
+import user_io
+
+
+def show_map_menu(gps):
+    """calls the map menu"""
+    task = user_io.map_menu()
+    if task == "show_on_map":
+        gps.show_on_map(gps.geocaches, True)
+    elif task == "google-maps":
+        webbrowser.open_new_tab("https://www.google.de/maps")
+    elif task == "gc-maps":
+        webbrowser.open_new_tab("https://www.geocaching.com/map")
 
 
 def show_main_menu(gps):
@@ -24,21 +35,15 @@ def show_main_menu(gps):
             gps.sort_and_show_caches()
         elif task == "show_waypoints":
             gps.show_waypoints()
-        elif task == "show_on_map":
-            gps.show_on_map(gps.geocaches, True)
+        elif task == "map-menu":
+            show_map_menu(gps)
         elif task == "show_one":
             gps.show_one()
-        elif task == "show_one_gc.com":
-            gps.show_one_gccom()
         elif task == "search":
             results = gps.search()
             gps.actions_after_search(results)
         elif task == "show_founds":
             gps.show_founds()
-        elif task == "google-maps":
-            webbrowser.open_new_tab("https://www.google.de/maps")
-        elif task == "gc-maps":
-            webbrowser.open_new_tab("https://www.geocaching.com/map")
         elif task == "exit":
             sys.exit()
          

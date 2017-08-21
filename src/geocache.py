@@ -365,8 +365,6 @@ class Waypoint(object):
 
         if type(name) != str and type(name) != unicode:
             raise TypeError("waypoint name is of wrong type")
-        if len(name) > 30:
-            raise ValueError("waypoint name is too long")
         self.name = name.upper()
         for c in self.name:
             # noinspection PyCompatibility

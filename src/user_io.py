@@ -30,6 +30,24 @@ def input_decode(string):
     return raw_input(string).decode(CODING)  # in python 3 input is raw_input by standard
 
 
+def map_menu():
+    """map menu"""
+
+    print("\nWas moechtest du als naechstes tun?")
+    print("1: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen (INTERNET!!!)")
+    print("2: https://www.geocaching.com/map aufrufen (INTERNET!!!)")
+    print("3: https://www.google.de/maps aufrufen (INTERNET!!!)")
+
+    # noinspection PyCompatibility
+    inp = raw_input(">> ")  # in python3 only raw_input
+    if inp == "1":
+        return "show_on_map"
+    elif inp == "2":
+        return "gc-maps"
+    elif inp == "3":
+        return "google-maps"
+
+
 def show_main_menu(found_exists):
     """prints main menu"""
 
@@ -37,19 +55,14 @@ def show_main_menu(found_exists):
     print ("1: Geocaches aktualisieren")
     print ("2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen")
     print ("3: Wegpunkt-Menue")
-    print ("4: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen (INTERNET!!!)")
+    print ("4: Karten-Menue")
     print ("5: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)")
-    print ("6: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)")
-    print ("7: Geocaches durchsuchen")
+    print ("6: Geocaches durchsuchen")
     if found_exists:
-        print ("8: Alle gefundenen Caches anzeigen")
-        print ("9: https://www.geocaching.com/map aufrufen (INTERNET!!!)")
-        print ("10: https://www.google.de/maps aufrufen (INTERNET!!!)")
-        print ("11: Programm verlassen")
+        print ("7: Alle gefundenen Caches anzeigen")
+        print ("8: Programm verlassen")
     else:
-        print ("8: https://www.geocaching.com/map aufrufen (INTERNET!!!)")
-        print ("9: https://www.google.de/maps aufrufen (INTERNET!!!)")
-        print ("10: Programm verlassen")
+        print ("7: Programm verlassen")
 
 
 def main_menu(found_exists):
@@ -67,26 +80,16 @@ def main_menu(found_exists):
     elif inp == "3":
         return "show_waypoints"
     elif inp == "4":
-        return "show_on_map"
+        return "map-menu"
     elif inp == "5":
         return "show_one"
     elif inp == "6":
-        return "show_one_gc.com"
-    elif inp == "7":
         return "search"
-    elif inp == "8" and found_exists:
+    elif inp == "7" and found_exists:
         return "show_founds"
-    elif inp == "9" and found_exists:
-        return "gc-maps"
-    elif inp == "10" and found_exists:
-        return "google-maps"
-    elif inp == "11" and found_exists:
+    elif inp == "8" and found_exists:
         return "exit"
-    elif inp == "8" and not found_exists:
-        return "gc-maps"
-    elif inp == "9" and not found_exists:
-        return "google-maps"
-    elif inp == "10" and not found_exists:
+    elif inp == "7" and not found_exists:
         return "exit"
     else:
         print ("Ungueltige Eingabe!")

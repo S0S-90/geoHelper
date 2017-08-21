@@ -8,8 +8,19 @@ import datetime
 # noinspection PyCompatibility
 from HTMLParser import HTMLParser  # not existent in python 3
 import unicodedata
+import urllib
 
 import user_io
+
+
+def connected(website):
+    """prueft, ob Internetverbindung vorhanden"""
+    try:
+        urllib.urlopen(website)
+    except IOError:
+        return False
+    else:
+        return True
 
 
 # noinspection PyClassicStyleClass
