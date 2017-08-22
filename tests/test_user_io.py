@@ -10,6 +10,7 @@ import sys
 from StringIO import StringIO  # module not existent in python 3
 import test_frame
 import user_io
+import geocache
 
     
 class TestGeneralOutput(unittest.TestCase):
@@ -115,13 +116,10 @@ class TestShowMainMenu(unittest.TestCase):
         expected += "1: Geocaches aktualisieren\n"
         expected += "2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen\n"
         expected += "3: Wegpunkt-Menue\n"
-        expected += "4: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen (INTERNET!!!)\n"
+        expected += "4: Karten-Menue\n"
         expected += "5: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)\n"
-        expected += "6: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
-        expected += "7: Geocaches durchsuchen\n"
-        expected += "8: https://www.geocaching.com/map aufrufen (INTERNET!!!)\n"
-        expected += "9: https://www.google.de/maps aufrufen (INTERNET!!!)\n"
-        expected += "10: Programm verlassen\n"
+        expected += "6: Geocaches durchsuchen\n"
+        expected += "7: Programm verlassen\n"
         self.assertEqual(output, expected)
         
     def test_foundexists(self):
@@ -133,14 +131,11 @@ class TestShowMainMenu(unittest.TestCase):
         expected += "1: Geocaches aktualisieren\n"
         expected += "2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen\n"
         expected += "3: Wegpunkt-Menue\n"
-        expected += "4: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen (INTERNET!!!)\n"
+        expected += "4: Karten-Menue\n"
         expected += "5: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)\n"
-        expected += "6: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
-        expected += "7: Geocaches durchsuchen\n"
-        expected += "8: Alle gefundenen Caches anzeigen\n"
-        expected += "9: https://www.geocaching.com/map aufrufen (INTERNET!!!)\n"
-        expected += "10: https://www.google.de/maps aufrufen (INTERNET!!!)\n"
-        expected += "11: Programm verlassen\n"
+        expected += "6: Geocaches durchsuchen\n"
+        expected += "7: Alle gefundenen Caches anzeigen\n"
+        expected += "8: Programm verlassen\n"
         self.assertEqual(output, expected)
    
         
@@ -160,30 +155,18 @@ class TestMainMenu(unittest.TestCase):
 
     def test_4_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="4"):
-            self.assertEqual(user_io.main_menu(False), 'show_on_map')
+            self.assertEqual(user_io.main_menu(False), 'map-menu')
             
     def test_5_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="5"):
             self.assertEqual(user_io.main_menu(False), 'show_one')
-
+        
     def test_6_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="6"):
-            self.assertEqual(user_io.main_menu(False), 'show_one_gc.com')
+            self.assertEqual(user_io.main_menu(False), 'search')
         
     def test_7_nofoundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="7"):
-            self.assertEqual(user_io.main_menu(False), 'search')
-        
-    def test_8_nofoundexists(self):
-        with mock.patch('__builtin__.raw_input', return_value="8"):
-            self.assertEqual(user_io.main_menu(False), 'gc-maps')
-        
-    def test_9_nofoundexists(self):
-        with mock.patch('__builtin__.raw_input', return_value="9"):
-            self.assertEqual(user_io.main_menu(False), 'google-maps')
-        
-    def test_10_nofoundexists(self):
-        with mock.patch('__builtin__.raw_input', return_value="10"):
             self.assertEqual(user_io.main_menu(False), 'exit')
         
     def test_11_nofoundexists(self):
@@ -204,37 +187,56 @@ class TestMainMenu(unittest.TestCase):
         
     def test_4_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="4"):
-            self.assertEqual(user_io.main_menu(True), 'show_on_map')
+            self.assertEqual(user_io.main_menu(True), 'map-menu')
             
     def test_5_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="5"):
             self.assertEqual(user_io.main_menu(True), 'show_one')
-
+        
     def test_6_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="6"):
-            self.assertEqual(user_io.main_menu(True), 'show_one_gc.com')
+            self.assertEqual(user_io.main_menu(True), 'search')
         
     def test_7_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="7"):
-            self.assertEqual(user_io.main_menu(True), 'search')
+            self.assertEqual(user_io.main_menu(True), 'show_founds')
         
     def test_8_foundexists(self):
         with mock.patch('__builtin__.raw_input', return_value="8"):
-            self.assertEqual(user_io.main_menu(True), 'show_founds')
-        
-    def test_9_foundexists(self):
-        with mock.patch('__builtin__.raw_input', return_value="9"):
-            self.assertEqual(user_io.main_menu(True), 'gc-maps')
-        
-    def test_10_foundexists(self):
-        with mock.patch('__builtin__.raw_input', return_value="10"):
-            self.assertEqual(user_io.main_menu(True), 'google-maps')
-        
-    def test_11_foundexists(self):
-        with mock.patch('__builtin__.raw_input', return_value="11"):
             self.assertEqual(user_io.main_menu(True), 'exit')
-        
-        
+
+
+class TestMapMenu(unittest.TestCase):
+
+    def test_output(self):
+        with mock.patch('__builtin__.raw_input', return_value="any bullshit"):
+            out = StringIO()
+            sys.stdout = out                  # capture print output in out
+            user_io.map_menu()     # fill out
+            output = out.getvalue()   # save value of out in output
+            expected = "\nWas moechtest du als naechstes tun?\n"
+            expected += "1: Alle auf dem Geraet gespeicherten Geocaches auf Karte zeigen (INTERNET!!!)\n"
+            expected += "2: https://www.geocaching.com/map aufrufen (INTERNET!!!)\n"
+            expected += "3: https://www.google.de/maps aufrufen (INTERNET!!!)\n"
+            self.assertEqual(output, expected)
+
+    def test_1(self):
+        with mock.patch('__builtin__.raw_input', return_value="1"):
+            self.assertEqual(user_io.map_menu(), 'show_on_map')
+
+    def test_2(self):
+        with mock.patch('__builtin__.raw_input', return_value="2"):
+            self.assertEqual(user_io.map_menu(), 'gc-maps')
+
+    def test_3(self):
+        with mock.patch('__builtin__.raw_input', return_value="3"):
+            self.assertEqual(user_io.map_menu(), 'google-maps')
+
+    def test_bullshit(self):
+        with mock.patch('__builtin__.raw_input', return_value="blub"):
+            self.assertIsNone(user_io.map_menu())
+
+
 class TestSortCaches(unittest.TestCase):
 
     def test_gccode(self):
@@ -601,19 +603,225 @@ class TestConfirmDeletion(unittest.TestCase):
 
 
 class TestWaypointMenu(unittest.TestCase):
-    pass
-    # TODO
-    # def test_yes(self):
-    #     with mock.patch('__builtin__.raw_input', return_value="y"):
-    #         self.assertEqual(user_io.waypoint_menu(), True)
-    #
-    # def test_no(self):
-    #     with mock.patch('__builtin__.raw_input', return_value="n"):
-    #         self.assertEqual(user_io.assign_waypoints(), False)
-    #
-    # def test_nonsense(self):
-    #     with mock.patch('__builtin__.raw_input', return_value="any_nonsense"):
-    #         self.assertEqual(user_io.assign_waypoints(), False)
+
+    def test_output_no_waypoints(self):
+        with mock.patch('__builtin__.raw_input', return_value="any bullshit"):
+            out = StringIO()
+            sys.stdout = out  # capture print output in out
+            user_io.waypoint_menu(False)  # fill out
+            output = out.getvalue()  # save value of out in output
+            expected = "\nWas moechtest du als naechstes tun?\n"
+            expected += "1: Wegpunkte hinzufuegen\n"
+            expected += "2: nichts\n"
+            self.assertEqual(output, expected)
+
+    def test_output_waypoints(self):
+        with mock.patch('__builtin__.raw_input', return_value="any bullshit"):
+            out = StringIO()
+            sys.stdout = out  # capture print output in out
+            user_io.waypoint_menu(True)  # fill out
+            output = out.getvalue()  # save value of out in output
+            expected = "\nWas moechtest du als naechstes tun?\n"
+            expected += "1: Wegpunkte hinzufuegen\n"
+            expected += "2: Wegpunkte zu Geocaches zuordnen oder loeschen\n"
+            expected += "3: nichts\n"
+            self.assertEqual(output, expected)
+
+    def test_no_waypoints_1(self):
+        with mock.patch('__builtin__.raw_input', return_value="1"):
+            self.assertEqual(user_io.waypoint_menu(False), 'add')
+
+    def test_no_waypoints_2(self):
+        with mock.patch('__builtin__.raw_input', return_value="2"):
+            self.assertEqual(user_io.waypoint_menu(False), 'continue')
+
+    def test_no_waypoints_shit(self):
+        with mock.patch('__builtin__.raw_input', return_value="shit"):
+            self.assertEqual(user_io.waypoint_menu(False), 'continue')
+
+    def test_waypoints_1(self):
+        with mock.patch('__builtin__.raw_input', return_value="1"):
+            self.assertEqual(user_io.waypoint_menu(True), 'add')
+
+    def test_waypoints_2(self):
+        with mock.patch('__builtin__.raw_input', return_value="2"):
+            self.assertEqual(user_io.waypoint_menu(True), 'assign')
+
+    def test_no_waypoints_3(self):
+        with mock.patch('__builtin__.raw_input', return_value="3"):
+            self.assertEqual(user_io.waypoint_menu(True), 'continue')
+
+
+class TestChooseCache(unittest.TestCase):
+
+    def test_bullshit_suggestions_give_error(self):
+        self.assertRaises(TypeError, user_io.choose_cache, "bla", False)
+
+    def test_no_suggestions_no_more_options_output(self):
+        with mock.patch('__builtin__.raw_input', return_value="any bullshit"):
+            out = StringIO()
+            sys.stdout = out  # capture print output in out
+            user_io.choose_cache([], False)  # fill out
+            output = out.getvalue()  # save value of out in output
+            expected = "Keine Vorschlaege vorhanden. Was nun?\n"
+            expected += "1: zu anderem Geocache zuordnen (GC-Code erforderlich)\n"
+            expected += "2: Wegpunkt doch nicht zuordnen\n"
+            self.assertEqual(output, expected)
+
+    def test_no_suggestions_more_options_output(self):
+        with mock.patch('__builtin__.raw_input', return_value="any bullshit"):
+            out = StringIO()
+            sys.stdout = out  # capture print output in out
+            user_io.choose_cache([], True)  # fill out
+            output = out.getvalue()  # save value of out in output
+            expected = "Keine Vorschlaege vorhanden. Was nun?\n"
+            expected += "1: zu anderem Geocache zuordnen (GC-Code erforderlich)\n"
+            expected += "2: Wegpunkt loeschen\n"
+            expected += "3: nichts tun\n"
+            self.assertEqual(output, expected)
+
+    def test_no_suggestions_no_more_options_1(self):
+        with mock.patch('__builtin__.raw_input', return_value="1"):
+            self.assertEqual(user_io.choose_cache([], False), 'other')
+
+    def test_no_suggestions_no_more_options_2(self):
+        with mock.patch('__builtin__.raw_input', return_value="2"):
+            self.assertEqual(user_io.choose_cache([], False), 'continue')
+
+    def test_no_suggestions_no_more_options_3(self):
+        with mock.patch('__builtin__.raw_input', return_value="3"):
+            self.assertEqual(user_io.choose_cache([], False), 'continue')
+
+    def test_no_suggestions_more_options_1(self):
+        with mock.patch('__builtin__.raw_input', return_value="1"):
+            self.assertEqual(user_io.choose_cache([], True), 'other')
+
+    def test_no_suggestions_more_options_2(self):
+        with mock.patch('__builtin__.raw_input', return_value="2"):
+            self.assertEqual(user_io.choose_cache([], True), 'delete')
+
+    def test_no_suggestions_more_options_3(self):
+        with mock.patch('__builtin__.raw_input', return_value="3"):
+            self.assertEqual(user_io.choose_cache([], True), 'continue')
+
+    def test_suggestions_no_more_options_output(self):
+        gc1 = geocache.Geocache(r"../tests/examples/GC78K5W.gpx")
+        gc2 = geocache.Geocache(r"../tests/examples/GC6K86W.gpx")
+        gc3 = geocache.Geocache(r"../tests/examples/GC6RNTX.gpx")
+        with mock.patch('__builtin__.raw_input', return_value="any bullshit"):
+            out = StringIO()
+            sys.stdout = out  # capture print output in out
+            user_io.choose_cache([gc1, gc2, gc3], False)  # fill out
+            output = out.getvalue()  # save value of out in output
+            expected = u"Zu welchem der folgenden Caches moechtest du den Wegpunkt zuordnen?\n"
+            expected += u"1: Cachertreffen Würzburg, die 54ste (GC78K5W)\n"
+            expected += u"2: Saaletalblick (GC6K86W)\n"
+            expected += u"3: Hochschule für Musik 1 (GC6RNTX)\n"
+            expected += u"4: zu anderem Geocache zuordnen (GC-Code erforderlich)\n"
+            expected += u"5: Wegpunkt doch nicht zuordnen\n"
+            self.assertEqual(output, expected)
+
+    def test_suggestions_more_options_output(self):
+        gc1 = geocache.Geocache(r"../tests/examples/GC78K5W.gpx")
+        gc2 = geocache.Geocache(r"../tests/examples/GC6K86W.gpx")
+        gc3 = geocache.Geocache(r"../tests/examples/GC6RNTX.gpx")
+        with mock.patch('__builtin__.raw_input', return_value="any bullshit"):
+            out = StringIO()
+            sys.stdout = out  # capture print output in out
+            user_io.choose_cache([gc1, gc2, gc3], True)  # fill out
+            output = out.getvalue()  # save value of out in output
+            expected = u"Zu welchem der folgenden Caches moechtest du den Wegpunkt zuordnen?\n"
+            expected += u"1: Cachertreffen Würzburg, die 54ste (GC78K5W)\n"
+            expected += u"2: Saaletalblick (GC6K86W)\n"
+            expected += u"3: Hochschule für Musik 1 (GC6RNTX)\n"
+            expected += u"4: zu anderem Geocache zuordnen (GC-Code erforderlich)\n"
+            expected += u"5: Wegpunkt loeschen\n"
+            expected += u"6: nichts tun\n"
+            self.assertEqual(output, expected)
+
+    def test_suggestions_no_more_options_1(self):
+        gc1 = geocache.Geocache(r"../tests/examples/GC78K5W.gpx")
+        gc2 = geocache.Geocache(r"../tests/examples/GC6K86W.gpx")
+        gc3 = geocache.Geocache(r"../tests/examples/GC6RNTX.gpx")
+        with mock.patch('__builtin__.raw_input', return_value="1"):
+            self.assertEqual(user_io.choose_cache([gc1, gc2, gc3], False), gc1)
+
+    def test_suggestions_no_more_options_2(self):
+        gc1 = geocache.Geocache(r"../tests/examples/GC78K5W.gpx")
+        gc2 = geocache.Geocache(r"../tests/examples/GC6K86W.gpx")
+        gc3 = geocache.Geocache(r"../tests/examples/GC6RNTX.gpx")
+        with mock.patch('__builtin__.raw_input', return_value="2"):
+            self.assertEqual(user_io.choose_cache([gc1, gc2, gc3], False), gc2)
+
+    def test_suggestions_no_more_options_3(self):
+        gc1 = geocache.Geocache(r"../tests/examples/GC78K5W.gpx")
+        gc2 = geocache.Geocache(r"../tests/examples/GC6K86W.gpx")
+        gc3 = geocache.Geocache(r"../tests/examples/GC6RNTX.gpx")
+        with mock.patch('__builtin__.raw_input', return_value="3"):
+            self.assertEqual(user_io.choose_cache([gc1, gc2, gc3], False), gc3)
+
+    def test_suggestions_no_more_options_4(self):
+        gc1 = geocache.Geocache(r"../tests/examples/GC78K5W.gpx")
+        gc2 = geocache.Geocache(r"../tests/examples/GC6K86W.gpx")
+        gc3 = geocache.Geocache(r"../tests/examples/GC6RNTX.gpx")
+        with mock.patch('__builtin__.raw_input', return_value="4"):
+            self.assertEqual(user_io.choose_cache([gc1, gc2, gc3], False), "other")
+
+    def test_suggestions_no_more_options_5(self):
+        gc1 = geocache.Geocache(r"../tests/examples/GC78K5W.gpx")
+        gc2 = geocache.Geocache(r"../tests/examples/GC6K86W.gpx")
+        gc3 = geocache.Geocache(r"../tests/examples/GC6RNTX.gpx")
+        with mock.patch('__builtin__.raw_input', return_value="5"):
+            self.assertEqual(user_io.choose_cache([gc1, gc2, gc3], False), "continue")
+
+    def test_suggestions_no_more_options_6(self):
+        gc1 = geocache.Geocache(r"../tests/examples/GC78K5W.gpx")
+        gc2 = geocache.Geocache(r"../tests/examples/GC6K86W.gpx")
+        gc3 = geocache.Geocache(r"../tests/examples/GC6RNTX.gpx")
+        with mock.patch('__builtin__.raw_input', return_value="6"):
+            self.assertEqual(user_io.choose_cache([gc1, gc2, gc3], False), "continue")
+
+    def test_suggestions_more_options_1(self):
+        gc1 = geocache.Geocache(r"../tests/examples/GC78K5W.gpx")
+        gc2 = geocache.Geocache(r"../tests/examples/GC6K86W.gpx")
+        gc3 = geocache.Geocache(r"../tests/examples/GC6RNTX.gpx")
+        with mock.patch('__builtin__.raw_input', return_value="1"):
+            self.assertEqual(user_io.choose_cache([gc1, gc2, gc3], True), gc1)
+
+    def test_suggestions_more_options_2(self):
+        gc1 = geocache.Geocache(r"../tests/examples/GC78K5W.gpx")
+        gc2 = geocache.Geocache(r"../tests/examples/GC6K86W.gpx")
+        gc3 = geocache.Geocache(r"../tests/examples/GC6RNTX.gpx")
+        with mock.patch('__builtin__.raw_input', return_value="2"):
+            self.assertEqual(user_io.choose_cache([gc1, gc2, gc3], True), gc2)
+
+    def test_suggestions_more_options_3(self):
+        gc1 = geocache.Geocache(r"../tests/examples/GC78K5W.gpx")
+        gc2 = geocache.Geocache(r"../tests/examples/GC6K86W.gpx")
+        gc3 = geocache.Geocache(r"../tests/examples/GC6RNTX.gpx")
+        with mock.patch('__builtin__.raw_input', return_value="3"):
+            self.assertEqual(user_io.choose_cache([gc1, gc2, gc3], True), gc3)
+
+    def test_suggestions_more_options_4(self):
+        gc1 = geocache.Geocache(r"../tests/examples/GC78K5W.gpx")
+        gc2 = geocache.Geocache(r"../tests/examples/GC6K86W.gpx")
+        gc3 = geocache.Geocache(r"../tests/examples/GC6RNTX.gpx")
+        with mock.patch('__builtin__.raw_input', return_value="4"):
+            self.assertEqual(user_io.choose_cache([gc1, gc2, gc3], True), "other")
+
+    def test_suggestions_more_options_5(self):
+        gc1 = geocache.Geocache(r"../tests/examples/GC78K5W.gpx")
+        gc2 = geocache.Geocache(r"../tests/examples/GC6K86W.gpx")
+        gc3 = geocache.Geocache(r"../tests/examples/GC6RNTX.gpx")
+        with mock.patch('__builtin__.raw_input', return_value="5"):
+            self.assertEqual(user_io.choose_cache([gc1, gc2, gc3], True), "delete")
+
+    def test_suggestions_more_options_6(self):
+        gc1 = geocache.Geocache(r"../tests/examples/GC78K5W.gpx")
+        gc2 = geocache.Geocache(r"../tests/examples/GC6K86W.gpx")
+        gc3 = geocache.Geocache(r"../tests/examples/GC6RNTX.gpx")
+        with mock.patch('__builtin__.raw_input', return_value="6"):
+            self.assertEqual(user_io.choose_cache([gc1, gc2, gc3], True), "continue")
 
 
 class TestShowOne(unittest.TestCase):
@@ -865,6 +1073,7 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestInputDecode))
     suite.addTest(unittest.makeSuite(TestShowMainMenu))
     suite.addTest(unittest.makeSuite(TestMainMenu))
+    suite.addTest(unittest.makeSuite(TestMapMenu))
     suite.addTest(unittest.makeSuite(TestSortCaches))
     suite.addTest(unittest.makeSuite(TestSearch))
     suite.addTest(unittest.makeSuite(TestSearchType))
@@ -873,6 +1082,7 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestActionsWithFounds))
     suite.addTest(unittest.makeSuite(TestConfirmDeletion))
     suite.addTest(unittest.makeSuite(TestWaypointMenu))
+    suite.addTest(unittest.makeSuite(TestChooseCache))
     suite.addTest(unittest.makeSuite(TestShowOne))
     suite.addTest(unittest.makeSuite(TestCoordinatesInput))
     suite.addTest(unittest.makeSuite(TestAskForPath))

@@ -85,6 +85,8 @@ class GPSContent(object):
     create_waypointfilestrings(self): creates two lists (one with names and one with contents) out of waypointfiles
 
     rewrite_waypointfiles(wptfile_names, wpt_files): overwrite waypoint files on GPS-device by new content
+
+    show_map_menu(): calls the map menu
     """
 
     def __init__(self, path):
@@ -880,3 +882,13 @@ class GPSContent(object):
 
         self.rewrite_waypointfiles(wptfile_names, wpt_files)  # write new files
         self.waypoints = waypoints_new  # save changes in programme
+
+    def show_map_menu(self):
+        """calls the map menu"""
+        task = user_io.map_menu()
+        if task == "show_on_map":
+            self.show_on_map(self.geocaches, True)
+        elif task == "google-maps":
+            webbrowser.open_new_tab("https://www.google.de/maps")
+        elif task == "gc-maps":
+            webbrowser.open_new_tab("https://www.geocaching.com/map")

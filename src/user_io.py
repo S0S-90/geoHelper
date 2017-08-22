@@ -5,6 +5,7 @@
 
 from __future__ import print_function
 import ownfunctions
+import geocache
 
 PATH = r"F:\Garmin"    # path to GPS-device (standard)
 CODING = "cp1252"   # coding of cmd (cp1252 recommended)
@@ -288,10 +289,17 @@ def choose_cache(suggestions, more_options):
     """asks to which of a list of suggested caches the waypoint should be assigned
     return either the chosen cache or the string 'other'"""
 
-    print ("Zu welchem der folgenden Caches moechtest du den Wegpunkt zuordnen?")
+    if type(suggestions) != list:
+        raise TypeError
+    if len(suggestions) > 0:
+        print ("Zu welchem der folgenden Caches moechtest du den Wegpunkt zuordnen?")
+    else:
+        print ("Keine Vorschlaege vorhanden. Was nun?")
     for i, s in enumerate(suggestions):
+        if type(s) != geocache.Geocache:
+            raise TypeError
         print (u"{}: {} ({})".format(i+1, s.name, s.gccode))
-    print ("{}: anderer Geocache".format(len(suggestions)+1))
+    print ("{}: zu anderem Geocache zuordnen (GC-Code erforderlich)".format(len(suggestions)+1))
     if more_options:
         print ("{}: Wegpunkt loeschen".format(len(suggestions)+2))
         print ("{}: nichts tun".format(len(suggestions)+3))

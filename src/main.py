@@ -5,21 +5,9 @@
 
 import sys
 import os
-import webbrowser
 
 from gpscontent import GPSContent
 import user_io
-
-
-def show_map_menu(gps):
-    """calls the map menu"""
-    task = user_io.map_menu()
-    if task == "show_on_map":
-        gps.show_on_map(gps.geocaches, True)
-    elif task == "google-maps":
-        webbrowser.open_new_tab("https://www.google.de/maps")
-    elif task == "gc-maps":
-        webbrowser.open_new_tab("https://www.geocaching.com/map")
 
 
 def show_main_menu(gps):
@@ -36,7 +24,7 @@ def show_main_menu(gps):
         elif task == "show_waypoints":
             gps.show_waypoints()
         elif task == "map-menu":
-            show_map_menu(gps)
+            gps.show_map_menu()
         elif task == "show_one":
             gps.show_one()
         elif task == "search":
