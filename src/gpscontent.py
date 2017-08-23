@@ -28,6 +28,9 @@ class GPSContent(object):
         
     geocaches: list
         list with all geocaches
+
+    waypoints: list
+        list with all waypoints that do not belong to a geocache
         
     existing_attributes: list
         list with all attributes existing in the geocaches

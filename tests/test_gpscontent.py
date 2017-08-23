@@ -668,15 +668,34 @@ class TestShowOne(unittest.TestCase):
             self.x.show_one()
             self.assertEqual(len(self.x.geocaches), 6)
 
-    # def test_delete_with_wpt(self):
-    #     shutil.copy2(r"..\tests\examples\no_logfile_waypoints\GPX\GC1XRPM.gpx",
-    #                  r"..\tests\examples\temp\GC1XRPM.gpx")  # copy file that is to be removed
-    #     with mock.patch('__builtin__.raw_input', side_effect=["GC1XRPM", "1", "y"]):
-    #         self.x.show_one()
-    #         self.assertEqual(len(self.x.geocaches), 5)
-    #         # TODO: test if waypoint is deleted from GPS, too
-    #     shutil.move(r"..\tests\examples\temp\GC1XRPM.gpx",
-    #                 r"..\tests\examples\no_logfile_waypoints\GPX\GC1XRPM.gpx")  # move deleted file back to GPX folder
+    def test_delete_with_wpt(self):
+        shutil.copy2(r"..\tests\examples\no_logfile_waypoints\GPX\GC1XRPM.gpx",
+                     r"..\tests\examples\temp\GC1XRPM.gpx")  # copy file that is to be removed
+        shutil.copy2(r"..\tests\examples\no_logfile_waypoints\GPX\Wegpunkte_14-JAN-17.gpx",
+                     r"..\tests\examples\temp\Wegpunkte_14-JAN-17.gpx")  # copy waypointfile that is to be changed
+        with mock.patch('__builtin__.raw_input', side_effect=["GC1XRPM", "1", "y"]):
+            self.x.show_one()
+            self.assertEqual(len(self.x.geocaches), 5)
+            with open(r"..\tests\examples\no_logfile_waypoints\GPX\Wegpunkte_14-JAN-17.gpx") as wptfile:
+                wptfile_cont = wptfile.read()
+                expected = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix'
+                expected += u'.com/GPX/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1'
+                expected += u'="http://www.garmin.com/xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.'
+                expected += u'com/xmlschemas/TrackPointExtension/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http:'
+                expected += u'//www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/'
+                expected += u'1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/Gpx'
+                expected += u'Extensions/v3 http://www8.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.'
+                expected += u'com/xmlschemas/WaypointExtension/v1 http://www8.garmin.com/xmlschemas/WaypointExtensionv1'
+                expected += u'.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xml'
+                expected += u'schemas/TrackPointExtensionv1.xsd"><metadata><link href="http://www.garmin.com"><text>'
+                expected += u'Garmin International</text></link><time>2017-01-14T13:42:12Z</time></metadata><wpt '
+                expected += u'lat="49.790983" lon="9.932300"><ele>231.912979</ele><time>2017-01-14T19:02:03Z</time>'
+                expected += u'<name>DOM FINAL (GC1QNWT)</name><sym>Flag, Blue</sym></wpt></gpx>'
+            self.assertEqual(wptfile_cont, expected)
+        shutil.move(r"..\tests\examples\temp\GC1XRPM.gpx",
+                    r"..\tests\examples\no_logfile_waypoints\GPX\GC1XRPM.gpx")  # move deleted / modified files
+        shutil.move(r"..\tests\examples\temp\Wegpunkte_14-JAN-17.gpx",          # back to GPX folder
+                    r"..\tests\examples\no_logfile_waypoints\GPX\Wegpunkte_14-JAN-17.gpx")
 
 
 class TestShowGCSelection(unittest.TestCase):
@@ -1041,39 +1060,74 @@ class TestDelete(unittest.TestCase):
 
     def setUp(self):
         """creates a gpscontent object for the tests"""
-        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
 
     def test_not_delete(self):
-        cache = geocache.Geocache(r"..\tests\examples\no_logfile\GPX\GC5N23T.gpx")
+        cache = geocache.Geocache(r"..\tests\examples\no_logfile_waypoints\GPX\GC5N23T.gpx")
         with mock.patch('__builtin__.raw_input', return_value="anything_except_for_y"):
             self.x.delete([cache])
             self.assertEqual(len(self.x.geocaches), 6)
 
     def test_delete_one(self):
-        cache = geocache.Geocache(r"..\tests\examples\no_logfile\GPX\GC5N23T.gpx")
+        cache = geocache.Geocache(r"..\tests\examples\no_logfile_waypoints\GPX\GC5N23T.gpx")
         shutil.copy2(r"..\tests\examples\no_logfile\GPX\GC5N23T.gpx",
                      r"..\tests\examples\temp\GC5N23T.gpx")  # copy file that is to be removed
         with mock.patch('__builtin__.raw_input', return_value="y"):
             self.x.delete([cache])
             self.assertEqual(len(self.x.geocaches), 5)
-            self.assertFalse(os.path.isfile(r"..\tests\examples\no_logfile\GPX\GC5N23T.gpx"))
+            self.assertFalse(os.path.isfile(r"..\tests\examples\no_logfile_waypoints\GPX\GC5N23T.gpx"))
         # move deleted file back
-        shutil.move(r"..\tests\examples\temp\GC5N23T.gpx", r"..\tests\examples\no_logfile\GPX\GC5N23T.gpx")
+        shutil.move(r"..\tests\examples\temp\GC5N23T.gpx", r"..\tests\examples\no_logfile_waypoints\GPX\GC5N23T.gpx")
 
     def test_delete_more_than_one(self):
-        cache1 = geocache.Geocache(r"..\tests\examples\no_logfile\GPX\GC5N23T.gpx")
-        cache2 = geocache.Geocache(r"..\tests\examples\no_logfile\GPX\GC1XRPM.gpx")
-        shutil.copy2(r"..\tests\examples\no_logfile\GPX\GC5N23T.gpx",
+        cache1 = geocache.Geocache(r"..\tests\examples\no_logfile_waypoints\GPX\GC5N23T.gpx")
+        cache2 = geocache.Geocache(r"..\tests\examples\no_logfile_waypoints\GPX\GC6K86W.gpx")
+        shutil.copy2(r"..\tests\examples\no_logfile_waypoints\GPX\GC5N23T.gpx",
                      r"..\tests\examples\temp\GC5N23T.gpx")  # copy files that are to be removed
-        shutil.copy2(r"..\tests\examples\no_logfile\GPX\GC1XRPM.gpx", r"..\tests\examples\temp\GC1XRPM.gpx")
+        shutil.copy2(r"..\tests\examples\no_logfile_waypoints\GPX\GC6K86W.gpx", r"..\tests\examples\temp\GC6K86W.gpx")
         with mock.patch('__builtin__.raw_input', return_value="y"):
             self.x.delete([cache1, cache2])
             self.assertEqual(len(self.x.geocaches), 4)
-            self.assertFalse(os.path.isfile(r"..\tests\examples\no_logfile\GPX\GC5N23T.gpx"))
-            self.assertFalse(os.path.isfile(r"..\tests\examples\no_logfile\GPX\GC1XRPM.gpx"))
+            self.assertFalse(os.path.isfile(r"..\tests\examples\no_logfile_waypoints\GPX\GC5N23T.gpx"))
+            self.assertFalse(os.path.isfile(r"..\tests\examples\no_logfile_waypoints\GPX\GC6K86W.gpx"))
         # move deleted files back
-        shutil.move(r"..\tests\examples\temp\GC5N23T.gpx", r"..\tests\examples\no_logfile\GPX\GC5N23T.gpx")
-        shutil.move(r"..\tests\examples\temp\GC1XRPM.gpx", r"..\tests\examples\no_logfile\GPX\GC1XRPM.gpx")
+        shutil.move(r"..\tests\examples\temp\GC5N23T.gpx", r"..\tests\examples\no_logfile_waypoints\GPX\GC5N23T.gpx")
+        shutil.move(r"..\tests\examples\temp\GC6K86W.gpx", r"..\tests\examples\no_logfile_waypoints\GPX\GC6K86W.gpx")
+
+    def test_delete_with_waypoint(self):
+        cache1 = self.x.geocaches[0]  # geocaches have to be created like this because by creating them directly
+        cache2 = self.x.geocaches[2]  # there are no waypoints assigned
+        shutil.copy2(r"..\tests\examples\no_logfile_waypoints\GPX\GC5N23T.gpx",
+                     r"..\tests\examples\temp\GC5N23T.gpx")  # copy files that are to be removed or modified
+        shutil.copy2(r"..\tests\examples\no_logfile_waypoints\GPX\GC1XRPM.gpx", r"..\tests\examples\temp\GC1XRPM.gpx")
+        shutil.copy2(r"..\tests\examples\no_logfile_waypoints\GPX\Wegpunkte_14-JAN-17.gpx",
+                     r"..\tests\examples\temp\Wegpunkte_14-JAN-17.gpx")  # copy waypointfile that is to be changed
+        with mock.patch('__builtin__.raw_input', return_value="y"):
+            self.x.delete([cache1, cache2])
+            self.assertEqual(len(self.x.geocaches), 4)
+            self.assertFalse(os.path.isfile(r"..\tests\examples\no_logfile_waypoints\GPX\GC5N23T.gpx"))
+            self.assertFalse(os.path.isfile(r"..\tests\examples\no_logfile_waypoints\GPX\GC1XRPM.gpx"))
+            with open(r"..\tests\examples\no_logfile_waypoints\GPX\Wegpunkte_14-JAN-17.gpx") as wptfile:
+                wptfile_cont = wptfile.read()
+                expected = '<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix'
+                expected += '.com/GPX/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1'
+                expected += '="http://www.garmin.com/xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.'
+                expected += 'com/xmlschemas/TrackPointExtension/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http:'
+                expected += '//www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/'
+                expected += '1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/Gpx'
+                expected += 'Extensions/v3 http://www8.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.'
+                expected += 'com/xmlschemas/WaypointExtension/v1 http://www8.garmin.com/xmlschemas/WaypointExtensionv1'
+                expected += '.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xml'
+                expected += 'schemas/TrackPointExtensionv1.xsd"><metadata><link href="http://www.garmin.com"><text>'
+                expected += 'Garmin International</text></link><time>2017-01-14T13:42:12Z</time></metadata><wpt '
+                expected += 'lat="49.790983" lon="9.932300"><ele>231.912979</ele><time>2017-01-14T19:02:03Z</time>'
+                expected += '<name>DOM FINAL (GC1QNWT)</name><sym>Flag, Blue</sym></wpt></gpx>'
+            self.assertEqual(wptfile_cont, expected)
+        # move files back
+        shutil.move(r"..\tests\examples\temp\GC5N23T.gpx", r"..\tests\examples\no_logfile_waypoints\GPX\GC5N23T.gpx")
+        shutil.move(r"..\tests\examples\temp\GC1XRPM.gpx", r"..\tests\examples\no_logfile_waypoints\GPX\GC1XRPM.gpx")
+        shutil.move(r"..\tests\examples\temp\Wegpunkte_14-JAN-17.gpx",
+                    r"..\tests\examples\no_logfile_waypoints\GPX\Wegpunkte_14-JAN-17.gpx")
 
     def test_bullshit_cachelist_gives_error(self):
         with mock.patch('__builtin__.raw_input', return_value="y"):
@@ -1231,7 +1285,7 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestShowFoundsOnlyNotFound))
     suite.addTest(unittest.makeSuite(TestShowFoundsNotOnlyFound))
     suite.addTest(unittest.makeSuite(TestShowFoundsFoundNotOnGPS))
-    # suite.addTest(unittest.makeSuite(TestDelete))         # TODO
+    suite.addTest(unittest.makeSuite(TestDelete))
     # suite.addTest(unittest.makeSuite(TestShowWaypoints))  # TODO
     suite.addTest(unittest.makeSuite(TestAssignWaypoints))
     suite.addTest(unittest.makeSuite(TestCreateMapinfoOne))

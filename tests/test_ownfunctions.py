@@ -437,7 +437,31 @@ class TestCalculateDistance(unittest.TestCase):
                           [49.7781628, 9.8729888])
 
 
-class TestGetMonth(unittest.TestCase):
+class TestGetYearWithoutCentury(unittest.TestCase):
+
+    def test_1998(self):
+        self.assertEqual(ownfunctions.get_year_without_century(1998), 98)
+
+    def test_2000(self):
+        self.assertEqual(ownfunctions.get_year_without_century(2000), 00)
+
+    def test_2017(self):
+        self.assertEqual(ownfunctions.get_year_without_century(2017), 17)
+
+    def test_827(self):
+        self.assertEqual(ownfunctions.get_year_without_century(827), 27)
+
+    def test_float(self):
+        self.assertRaises(TypeError, ownfunctions.get_year_without_century, 490.67)
+
+    def test_list(self):
+        self.assertRaises(TypeError, ownfunctions.get_year_without_century, [1, 2, 3, 4])
+
+    def test_string(self):
+        self.assertRaises(TypeError, ownfunctions.get_year_without_century, "2017")
+
+
+class TestGetMonthNumber(unittest.TestCase):
     def test_january(self):
         x = ownfunctions.get_month_number("Jan")
         self.assertEqual(x, 1)
@@ -495,6 +519,68 @@ class TestGetMonth(unittest.TestCase):
         self.assertEqual(x, None)
 
 
+class TestGetMonth(unittest.TestCase):
+    def test_january(self):
+        x = ownfunctions.get_month(1)
+        self.assertEqual(x, "Jan")
+
+    def test_february(self):
+        x = ownfunctions.get_month(2)
+        self.assertEqual(x, "Feb")
+
+    def test_march(self):
+        x = ownfunctions.get_month(3)
+        self.assertEqual(x, "Mar")
+
+    def test_april(self):
+        x = ownfunctions.get_month(4)
+        self.assertEqual(x, "Apr")
+
+    def test_may(self):
+        x = ownfunctions.get_month(5)
+        self.assertEqual(x, "May")
+
+    def test_june(self):
+        x = ownfunctions.get_month(6)
+        self.assertEqual(x, "Jun")
+
+    def test_july(self):
+        x = ownfunctions.get_month(7)
+        self.assertEqual(x, "Jul")
+
+    def test_august(self):
+        x = ownfunctions.get_month(8)
+        self.assertEqual(x, "Aug")
+
+    def test_september(self):
+        x = ownfunctions.get_month(9)
+        self.assertEqual(x, "Sep")
+
+    def test_october(self):
+        x = ownfunctions.get_month(10)
+        self.assertEqual(x, "Oct")
+
+    def test_november(self):
+        x = ownfunctions.get_month(11)
+        self.assertEqual(x, "Nov")
+
+    def test_december(self):
+        x = ownfunctions.get_month(12)
+        self.assertEqual(x, "Dec")
+
+    def test_other_int_givesNone(self):
+        x = ownfunctions.get_month(13)
+        self.assertEqual(x, None)
+
+    def test_float_givesNone(self):
+        x = ownfunctions.get_month(42.3)
+        self.assertEqual(x, None)
+
+    def test_other_type_givesNone(self):
+        x = ownfunctions.get_month("bla")
+        self.assertEqual(x, None)
+
+
 class TestStringToDate(unittest.TestCase):
     def test_normal_date(self):
         x = ownfunctions.string_to_date("04.07.1990")
@@ -537,6 +623,18 @@ class TestRemoveSpaces(unittest.TestCase):
         self.assertRaises(TypeError, ownfunctions.remove_spaces, 42)
 
 
+class TestStringIsInt(unittest.TestCase):
+
+    def test_yes(self):
+        self.assertTrue(ownfunctions.string_is_int("10"))
+
+    def test_no(self):
+        self.assertFalse(ownfunctions.string_is_int("bla"))
+
+    def test_no_string(self):
+        self.assertRaises(TypeError, ownfunctions.string_is_int, [10])
+
+
 def create_testsuite():
     """creates a testsuite with out of all tests in this file"""
     suite = unittest.TestSuite()
@@ -549,9 +647,12 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestCoordsUrlToDecimal))
     suite.addTest(unittest.makeSuite(TestCoordsStringToDecimal))
     suite.addTest(unittest.makeSuite(TestCalculateDistance))
+    suite.addTest(unittest.makeSuite(TestGetYearWithoutCentury))
+    suite.addTest(unittest.makeSuite(TestGetMonthNumber))
     suite.addTest(unittest.makeSuite(TestGetMonth))
     suite.addTest(unittest.makeSuite(TestStringToDate))
     suite.addTest(unittest.makeSuite(TestRemoveSpaces))
+    suite.addTest(unittest.makeSuite(TestStringIsInt))
     return suite
 
 

@@ -327,9 +327,9 @@ def calculate_distance(point1, point2):
 
 def get_year_without_century(year):
     """removes the century from a year, e.g. 1017 -> 17"""
+    if type(year) != int:
+        raise TypeError("ERROR: not a valid year")
     year_str = str(year)
-    if len(year_str) != 4:
-        raise ValueError("{} is not a valid year".format(year))
     return int(year_str[-2:])
 
 
