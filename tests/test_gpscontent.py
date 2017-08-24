@@ -1137,16 +1137,20 @@ class TestDelete(unittest.TestCase):
 class TestShowWaypoints(unittest.TestCase):
 
     def test_no_waypoints(self):
-        x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
-        out = StringIO()
-        sys.stdout = out
-        x.show_waypoints()
-        output = out.getvalue()
-        expected = "Keine Wegpunkte auf dem Geraet.\n"
-        self.assertEqual(output, expected)
+        with mock.patch('__builtin__.raw_input', return_value=["2"]):
+            x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
+            out = StringIO()
+            sys.stdout = out
+            x.show_waypoints()
+            output = out.getvalue()
+            expected = "Keine Wegpunkte auf dem Geraet.\n"
+            expected += "\nWas moechtest du als naechstes tun?\n"
+            expected += "1: Wegpunkte hinzufuegen\n"
+            expected += "2: nichts\n"
+            self.assertEqual(output, expected)
 
     def test_waypoints(self):
-        with mock.patch('__builtin__.raw_input', return_value=["n"]):
+        with mock.patch('__builtin__.raw_input', return_value=["3"]):
             x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
             out = StringIO()
             sys.stdout = out
@@ -1154,7 +1158,107 @@ class TestShowWaypoints(unittest.TestCase):
             output = out.getvalue()
             expected = u"        | N 49°45.609, E 009°59.454 | BLICK ZUM RANDERSACKERER KÄPPE\n"
             expected += u"        | N 49\xb047.459, E 009\xb055.938 | DOM FINAL (GC1QNWT)\n"
+            expected += u"\nWas moechtest du als naechstes tun?\n"
+            expected += u"1: Wegpunkte hinzufuegen\n"
+            expected += u"2: Wegpunkte zu Geocaches zuordnen oder loeschen\n"
+            expected += u"3: nichts\n"
             self.assertEqual(output, expected)
+
+
+class TestReplaceWaypointName(unittest.TestCase):
+
+    def setUp(self):
+        """is not used but a gpscontent has to exist in order to use class functions"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
+
+    def test_all_well(self):
+        gc = geocache.Geocache(r"..\tests\examples\GC78K5W.gpx")
+        wpt = geocache.Waypoint("testwpt (GC78K5W)", [49.792433, 9.932233])
+        gc.add_waypoint(wpt)
+
+        filestring1 = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com'
+        filestring1 += u'/GPX/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://'
+        filestring1 += u'www.garmin.com/xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas'
+        filestring1 += u'/TrackPointExtension/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/'
+        filestring1 += u'XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix'
+        filestring1 += u'.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/'
+        filestring1 += u'xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://'
+        filestring1 += u'www8.garmin.com/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPoint'
+        filestring1 += u'Extension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd"><metadata><link '
+        filestring1 += u'href="http://www.garmin.com"><text>Garmin International</text></link><time>2016-10-08T13:'
+        filestring1 += u'26:03Z</time></metadata><wpt lat="49.794800" lon="9.941167"><time>2016-10-08T13:27:25Z</time>'
+        filestring1 += u'<name>TESTWPT</name><sym>Flag, Blue</sym></wt><wpt lat="49.794800" lon="9.941167"><time>2016'
+        filestring1 += u'-10-08T13:27:25Z</time><name>TESTWPT FINAL</name><sym>Flag, Blue</sym></wt></gpx>'
+
+        filestring2 = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com'
+        filestring2 += u'/GPX/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://'
+        filestring2 += u'www.garmin.com/xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas'
+        filestring2 += u'/TrackPointExtension/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/'
+        filestring2 += u'XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix'
+        filestring2 += u'.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/'
+        filestring2 += u'xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://'
+        filestring2 += u'www8.garmin.com/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPoint'
+        filestring2 += u'Extension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd"><metadata><link '
+        filestring2 += u'href="http://www.garmin.com"><text>Garmin International</text></link><time>2016-10-08T13:'
+        filestring2 += u'26:03Z</time></metadata><wpt lat="49.794800" lon="9.941167"><time>2016-10-08T13:27:25Z</time>'
+        filestring2 += u'<name>QUACK</name><sym>Flag, Blue</sym></wt></gpx>'
+
+        wptfiles = [filestring1, filestring2]
+        new_wptfls = self.x._replace_waypoint_name(wptfiles, wpt)
+
+        filestring1 = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com'
+        filestring1 += u'/GPX/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://'
+        filestring1 += u'www.garmin.com/xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas'
+        filestring1 += u'/TrackPointExtension/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/'
+        filestring1 += u'XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix'
+        filestring1 += u'.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/'
+        filestring1 += u'xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://'
+        filestring1 += u'www8.garmin.com/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPoint'
+        filestring1 += u'Extension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd"><metadata><link '
+        filestring1 += u'href="http://www.garmin.com"><text>Garmin International</text></link><time>2016-10-08T13:'
+        filestring1 += u'26:03Z</time></metadata><wpt lat="49.794800" lon="9.941167"><time>2016-10-08T13:27:25Z</time>'
+        filestring1 += u'<name>TESTWPT (GC78K5W)</name><sym>Flag, Blue</sym></wt><wpt lat="49.794800" lon="9.941167">'
+        filestring1 += u'<time>2016-10-08T13:27:25Z</time><name>TESTWPT FINAL</name><sym>Flag, Blue</sym></wt></gpx>'
+
+        expected = [filestring1, filestring2]
+
+        self.assertEqual(new_wptfls, expected)
+
+
+class TestTryCreatingWaypoints(unittest.TestCase):
+
+    def setUp(self):
+        """is not used but a gpscontent has to exist in order to use class functions"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
+
+    def test_all_well(self):
+        wpt = self.x._try_creating_waypoint("wpt", [49.792433, 9.932233])
+        self.assertEqual(wpt.name, "WPT")
+        self.assertEqual(wpt.coordinates, [49.792433, 9.932233])
+
+    def test_invalid_coordinates(self):
+        out = StringIO()
+        sys.stdout = out
+        w = self.x._try_creating_waypoint("wpt", "blub")
+        output = out.getvalue()
+        self.assertIsNone(w)
+        self.assertEqual(output, "Koordinaten fehlerhaft. Kein Wegpunkt wurde erstellt.\n")
+
+    def test_name_too_long(self):
+        out = StringIO()
+        sys.stdout = out
+        w = self.x._try_creating_waypoint("wptqwertzuiopülkjhgfdsxcvbnmrwq8tho4ghfbwqufib32fboaes", [49.792433, 9.932233])
+        output = out.getvalue()
+        self.assertIsNone(w)
+        self.assertEqual(output, "Name zu lang. Kein Wegpunkt wurde erstellt.\n")
+
+    def test_sign_not_allowed(self):
+        out = StringIO()
+        sys.stdout = out
+        w = self.x._try_creating_waypoint(u"s°s", [49.792433, 9.932233])
+        output = out.getvalue()
+        self.assertIsNone(w)
+        self.assertEqual(output, "Name enthaelt ungueltige Zeichen. Kein Wegpunkt wurde erstellt.\n")
 
 
 class TestAssignWaypoints(unittest.TestCase):
@@ -1286,7 +1390,9 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestShowFoundsNotOnlyFound))
     suite.addTest(unittest.makeSuite(TestShowFoundsFoundNotOnGPS))
     suite.addTest(unittest.makeSuite(TestDelete))
-    # suite.addTest(unittest.makeSuite(TestShowWaypoints))  # TODO
+    suite.addTest(unittest.makeSuite(TestShowWaypoints))
+    suite.addTest(unittest.makeSuite(TestReplaceWaypointName))
+    suite.addTest(unittest.makeSuite(TestTryCreatingWaypoints))
     suite.addTest(unittest.makeSuite(TestAssignWaypoints))
     suite.addTest(unittest.makeSuite(TestCreateMapinfoOne))
     suite.addTest(unittest.makeSuite(TestCreateMapinfoSeveral))
