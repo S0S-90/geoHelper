@@ -833,14 +833,14 @@ class GPSContent(object):
         return [wptfile_names, wpt_files]
 
     @staticmethod
-    def rewrite_waypointfiles(wptfile_names, wpt_files):
+    def rewrite_waypointfiles(wptfile_names, waypointfiles):
         """overwrite waypoint files on GPS-device by new content
 
         input:
         wptfile_names: list of all names of waypointfiles on gps device
         wpt_files: list of strings, every string is the content of one waypointfile"""
 
-        for i, wptfile_cont in enumerate(wpt_files):
+        for i, wptfile_cont in enumerate(waypointfiles):
             if wptfile_cont == "":  # if filestring is empty: delete file
                 os.remove(wptfile_names[i])
             else:  # else write new content
