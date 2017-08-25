@@ -782,8 +782,7 @@ class GPSContent(object):
 
         input:
         waypointfiles: list of strings where each string is the content of one waypointfile
-        waypoint: waypoint whose name should be changed
-
+        waypoint: waypoint who is to be deleted
         returns new list of waypointfile strings"""
 
         wptfiles_new = []

@@ -1156,8 +1156,8 @@ class TestShowWaypoints(unittest.TestCase):
             sys.stdout = out
             x.show_waypoints()
             output = out.getvalue()
-            expected = u"        | N 49°45.609, E 009°59.454 | BLICK ZUM RANDERSACKERER KÄPPE\n"
-            expected += u"        | N 49\xb047.459, E 009\xb055.938 | DOM FINAL (GC1QNWT)\n"
+            expected = u"        | N 49\xb047.459, E 009\xb055.938 | DOM FINAL (GC1QNWT)\n"
+            expected += u"        | N 49°45.609, E 009°59.454 | BLICK ZUM RANDERSACKERER KÄPPE\n"
             expected += u"\nWas moechtest du als naechstes tun?\n"
             expected += u"1: Wegpunkte hinzufuegen\n"
             expected += u"2: Wegpunkte zu Geocaches zuordnen oder loeschen\n"
@@ -1187,8 +1187,8 @@ class TestReplaceWaypointName(unittest.TestCase):
         filestring1 += u'Extension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd"><metadata><link '
         filestring1 += u'href="http://www.garmin.com"><text>Garmin International</text></link><time>2016-10-08T13:'
         filestring1 += u'26:03Z</time></metadata><wpt lat="49.794800" lon="9.941167"><time>2016-10-08T13:27:25Z</time>'
-        filestring1 += u'<name>TESTWPT</name><sym>Flag, Blue</sym></wt><wpt lat="49.794800" lon="9.941167"><time>2016'
-        filestring1 += u'-10-08T13:27:25Z</time><name>TESTWPT FINAL</name><sym>Flag, Blue</sym></wt></gpx>'
+        filestring1 += u'<name>TESTWPT</name><sym>Flag, Blue</sym></wpt><wpt lat="49.794800" lon="9.941167"><time>2016'
+        filestring1 += u'-10-08T13:27:25Z</time><name>TESTWPT FINAL</name><sym>Flag, Blue</sym></wpt></gpx>'
 
         filestring2 = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com'
         filestring2 += u'/GPX/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://'
@@ -1201,7 +1201,7 @@ class TestReplaceWaypointName(unittest.TestCase):
         filestring2 += u'Extension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd"><metadata><link '
         filestring2 += u'href="http://www.garmin.com"><text>Garmin International</text></link><time>2016-10-08T13:'
         filestring2 += u'26:03Z</time></metadata><wpt lat="49.794800" lon="9.941167"><time>2016-10-08T13:27:25Z</time>'
-        filestring2 += u'<name>QUACK</name><sym>Flag, Blue</sym></wt></gpx>'
+        filestring2 += u'<name>QUACK</name><sym>Flag, Blue</sym></wpt></gpx>'
 
         wptfiles = [filestring1, filestring2]
         new_wptfls = self.x._replace_waypoint_name(wptfiles, wpt)
@@ -1217,8 +1217,8 @@ class TestReplaceWaypointName(unittest.TestCase):
         filestring1 += u'Extension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd"><metadata><link '
         filestring1 += u'href="http://www.garmin.com"><text>Garmin International</text></link><time>2016-10-08T13:'
         filestring1 += u'26:03Z</time></metadata><wpt lat="49.794800" lon="9.941167"><time>2016-10-08T13:27:25Z</time>'
-        filestring1 += u'<name>TESTWPT (GC78K5W)</name><sym>Flag, Blue</sym></wt><wpt lat="49.794800" lon="9.941167">'
-        filestring1 += u'<time>2016-10-08T13:27:25Z</time><name>TESTWPT FINAL</name><sym>Flag, Blue</sym></wt></gpx>'
+        filestring1 += u'<name>TESTWPT (GC78K5W)</name><sym>Flag, Blue</sym></wpt><wpt lat="49.794800" lon="9.941167">'
+        filestring1 += u'<time>2016-10-08T13:27:25Z</time><name>TESTWPT FINAL</name><sym>Flag, Blue</sym></wpt></gpx>'
 
         expected = [filestring1, filestring2]
 
@@ -1259,6 +1259,229 @@ class TestTryCreatingWaypoints(unittest.TestCase):
         output = out.getvalue()
         self.assertIsNone(w)
         self.assertEqual(output, "Name enthaelt ungueltige Zeichen. Kein Wegpunkt wurde erstellt.\n")
+
+
+class TestDeleteWaypointFromFiles(unittest.TestCase):
+
+    def setUp(self):
+        """is not used but a gpscontent has to exist in order to use class functions"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
+
+    def test_only_one_wpt_in_file(self):
+        wpt = geocache.Waypoint("testwpt", [49.792433, 9.932233])
+
+        filestring1 = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com'
+        filestring1 += u'/GPX/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://'
+        filestring1 += u'www.garmin.com/xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas'
+        filestring1 += u'/TrackPointExtension/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/'
+        filestring1 += u'XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix'
+        filestring1 += u'.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/'
+        filestring1 += u'xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://'
+        filestring1 += u'www8.garmin.com/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPoint'
+        filestring1 += u'Extension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd"><metadata><link '
+        filestring1 += u'href="http://www.garmin.com"><text>Garmin International</text></link><time>2016-10-08T13:'
+        filestring1 += u'26:03Z</time></metadata><wpt lat="49.794800" lon="9.941167"><time>2016-10-08T13:27:25Z</time>'
+        filestring1 += u'<name>BLA</name><sym>Flag, Blue</sym></wpt><wpt lat="49.794800" lon="9.941167"><time>2016'
+        filestring1 += u'-10-08T13:27:25Z</time><name>TESTWPT FINAL</name><sym>Flag, Blue</sym></wpt></gpx>'
+
+        filestring2 = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com'
+        filestring2 += u'/GPX/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://'
+        filestring2 += u'www.garmin.com/xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas'
+        filestring2 += u'/TrackPointExtension/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/'
+        filestring2 += u'XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix'
+        filestring2 += u'.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/'
+        filestring2 += u'xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://'
+        filestring2 += u'www8.garmin.com/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPoint'
+        filestring2 += u'Extension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd"><metadata><link '
+        filestring2 += u'href="http://www.garmin.com"><text>Garmin International</text></link><time>2016-10-08T13:'
+        filestring2 += u'26:03Z</time></metadata><wpt lat="49.794800" lon="9.941167"><time>2016-10-08T13:27:25Z</time>'
+        filestring2 += u'<name>TESTWPT</name><sym>Flag, Blue</sym></wpt></gpx>'
+
+        wptfiles = [filestring1, filestring2]
+        new_wptfiles = self.x.delete_waypoint_from_files(wptfiles, wpt)
+        self.assertEqual(new_wptfiles, [filestring1, ""])
+
+    def test_first_wpt_in_file(self):
+        wpt = geocache.Waypoint("testwpt", [49.792433, 9.932233])
+
+        filestring1 = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com'
+        filestring1 += u'/GPX/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://'
+        filestring1 += u'www.garmin.com/xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas'
+        filestring1 += u'/TrackPointExtension/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/'
+        filestring1 += u'XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix'
+        filestring1 += u'.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/'
+        filestring1 += u'xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://'
+        filestring1 += u'www8.garmin.com/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPoint'
+        filestring1 += u'Extension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd"><metadata><link '
+        filestring1 += u'href="http://www.garmin.com"><text>Garmin International</text></link><time>2016-10-08T13:'
+        filestring1 += u'26:03Z</time></metadata><wpt lat="49.794800" lon="9.941167"><time>2016-10-08T13:27:25Z</time>'
+        filestring1 += u'<name>TESTWPT</name><sym>Flag, Blue</sym></wpt><wpt lat="49.794800" lon="9.941167"><time>2016'
+        filestring1 += u'-10-08T13:27:25Z</time><name>TESTWPT FINAL</name><sym>Flag, Blue</sym></wpt></gpx>'
+
+        filestring2 = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com'
+        filestring2 += u'/GPX/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://'
+        filestring2 += u'www.garmin.com/xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas'
+        filestring2 += u'/TrackPointExtension/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/'
+        filestring2 += u'XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix'
+        filestring2 += u'.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/'
+        filestring2 += u'xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://'
+        filestring2 += u'www8.garmin.com/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPoint'
+        filestring2 += u'Extension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd"><metadata><link '
+        filestring2 += u'href="http://www.garmin.com"><text>Garmin International</text></link><time>2016-10-08T13:'
+        filestring2 += u'26:03Z</time></metadata><wpt lat="49.794800" lon="9.941167"><time>2016-10-08T13:27:25Z</time>'
+        filestring2 += u'<name>QUAK</name><sym>Flag, Blue</sym></wpt></gpx>'
+
+        wptfiles = [filestring1, filestring2]
+        new_wptfiles = self.x.delete_waypoint_from_files(wptfiles, wpt)
+
+        filestring1 = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com'
+        filestring1 += u'/GPX/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://'
+        filestring1 += u'www.garmin.com/xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas'
+        filestring1 += u'/TrackPointExtension/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/'
+        filestring1 += u'XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix'
+        filestring1 += u'.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/'
+        filestring1 += u'xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://'
+        filestring1 += u'www8.garmin.com/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPoint'
+        filestring1 += u'Extension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd"><metadata><link '
+        filestring1 += u'href="http://www.garmin.com"><text>Garmin International</text></link><time>2016-10-08T13:'
+        filestring1 += u'26:03Z</time></metadata><wpt lat="49.794800" lon="9.941167"><time>2016'
+        filestring1 += u'-10-08T13:27:25Z</time><name>TESTWPT FINAL</name><sym>Flag, Blue</sym></wpt></gpx>'
+
+        self.assertEqual(new_wptfiles, [filestring1, filestring2])
+
+    def test_last_wpt_in_file(self):
+        wpt = geocache.Waypoint("testwpt", [49.792433, 9.932233])
+
+        filestring1 = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com'
+        filestring1 += u'/GPX/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://'
+        filestring1 += u'www.garmin.com/xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas'
+        filestring1 += u'/TrackPointExtension/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/'
+        filestring1 += u'XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix'
+        filestring1 += u'.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/'
+        filestring1 += u'xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://'
+        filestring1 += u'www8.garmin.com/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPoint'
+        filestring1 += u'Extension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd"><metadata><link '
+        filestring1 += u'href="http://www.garmin.com"><text>Garmin International</text></link><time>2016-10-08T13:'
+        filestring1 += u'26:03Z</time></metadata><wpt lat="49.794800" lon="9.941167"><time>2016-10-08T13:27:25Z</time>'
+        filestring1 += u'<name>TESTWPT START</name><sym>Flag, Blue</sym></wpt><wpt lat="49.794800" lon="9.941167"><time>'
+        filestring1 += u'2016-10-08T13:27:25Z</time><name>TESTWPT</name><sym>Flag, Blue</sym></wpt></gpx>'
+
+        filestring2 = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com'
+        filestring2 += u'/GPX/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://'
+        filestring2 += u'www.garmin.com/xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas'
+        filestring2 += u'/TrackPointExtension/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/'
+        filestring2 += u'XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix'
+        filestring2 += u'.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/'
+        filestring2 += u'xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://'
+        filestring2 += u'www8.garmin.com/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPoint'
+        filestring2 += u'Extension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd"><metadata><link '
+        filestring2 += u'href="http://www.garmin.com"><text>Garmin International</text></link><time>2016-10-08T13:'
+        filestring2 += u'26:03Z</time></metadata><wpt lat="49.794800" lon="9.941167"><time>2016-10-08T13:27:25Z</time>'
+        filestring2 += u'<name>QUAK</name><sym>Flag, Blue</sym></wpt></gpx>'
+
+        wptfiles = [filestring1, filestring2]
+        new_wptfiles = self.x.delete_waypoint_from_files(wptfiles, wpt)
+
+        filestring1 = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com'
+        filestring1 += u'/GPX/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://'
+        filestring1 += u'www.garmin.com/xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas'
+        filestring1 += u'/TrackPointExtension/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/'
+        filestring1 += u'XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix'
+        filestring1 += u'.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/'
+        filestring1 += u'xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://'
+        filestring1 += u'www8.garmin.com/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPoint'
+        filestring1 += u'Extension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd"><metadata><link '
+        filestring1 += u'href="http://www.garmin.com"><text>Garmin International</text></link><time>2016-10-08T13:'
+        filestring1 += u'26:03Z</time></metadata><wpt lat="49.794800" lon="9.941167"><time>2016-10-08T13:27:25Z</time>'
+        filestring1 += u'<name>TESTWPT START</name><sym>Flag, Blue</sym></wpt></gpx>'
+
+        self.assertEqual(new_wptfiles, [filestring1, filestring2])
+
+    def test_wpt_in_middle_of_file(self):
+        wpt = geocache.Waypoint("testwpt", [49.792433, 9.932233])
+
+        filestring1 = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com'
+        filestring1 += u'/GPX/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://'
+        filestring1 += u'www.garmin.com/xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas'
+        filestring1 += u'/TrackPointExtension/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/'
+        filestring1 += u'XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix'
+        filestring1 += u'.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/'
+        filestring1 += u'xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://'
+        filestring1 += u'www8.garmin.com/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPoint'
+        filestring1 += u'Extension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd"><metadata><link '
+        filestring1 += u'href="http://www.garmin.com"><text>Garmin International</text></link><time>2016-10-08T13:'
+        filestring1 += u'26:03Z</time></metadata><wpt lat="49.794800" lon="9.941167"><time>2016-10-08T13:27:25Z</time>'
+        filestring1 += u'<name>TESTWPT START</name><sym>Flag, Blue</sym></wpt><wpt lat="49.794800" lon="9.941167"><time>'
+        filestring1 += u'2016-10-08T13:27:25Z</time><name>TESTWPT</name><sym>Flag, Blue</sym></wpt><wpt lat="49.794800"'
+        filestring1 += u' lon="9.941167"><time>2016-10-08T13:27:25Z</time><name>TESTWPT FINAL</name><sym>Flag, Blue'
+        filestring1 += u'</sym></wpt></gpx>'
+
+        filestring2 = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com'
+        filestring2 += u'/GPX/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://'
+        filestring2 += u'www.garmin.com/xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas'
+        filestring2 += u'/TrackPointExtension/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/'
+        filestring2 += u'XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix'
+        filestring2 += u'.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/'
+        filestring2 += u'xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://'
+        filestring2 += u'www8.garmin.com/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPoint'
+        filestring2 += u'Extension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd"><metadata><link '
+        filestring2 += u'href="http://www.garmin.com"><text>Garmin International</text></link><time>2016-10-08T13:'
+        filestring2 += u'26:03Z</time></metadata><wpt lat="49.794800" lon="9.941167"><time>2016-10-08T13:27:25Z</time>'
+        filestring2 += u'<name>QUAK</name><sym>Flag, Blue</sym></wpt></gpx>'
+
+        wptfiles = [filestring1, filestring2]
+        new_wptfiles = self.x.delete_waypoint_from_files(wptfiles, wpt)
+
+        filestring1 = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com'
+        filestring1 += u'/GPX/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://'
+        filestring1 += u'www.garmin.com/xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas'
+        filestring1 += u'/TrackPointExtension/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/'
+        filestring1 += u'XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix'
+        filestring1 += u'.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/'
+        filestring1 += u'xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://'
+        filestring1 += u'www8.garmin.com/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPoint'
+        filestring1 += u'Extension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd"><metadata><link '
+        filestring1 += u'href="http://www.garmin.com"><text>Garmin International</text></link><time>2016-10-08T13:'
+        filestring1 += u'26:03Z</time></metadata><wpt lat="49.794800" lon="9.941167"><time>2016-10-08T13:27:25Z</time>'
+        filestring1 += u'<name>TESTWPT START</name><sym>Flag, Blue</sym></wpt><wpt lat="49.794800"'
+        filestring1 += u' lon="9.941167"><time>2016-10-08T13:27:25Z</time><name>TESTWPT FINAL</name><sym>Flag, Blue'
+        filestring1 += u'</sym></wpt></gpx>'
+
+        self.assertEqual(new_wptfiles, [filestring1, filestring2])
+
+    def test_wpt_not_in_file(self):
+        wpt = geocache.Waypoint("testwpt", [49.792433, 9.932233])
+
+        filestring1 = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com'
+        filestring1 += u'/GPX/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://'
+        filestring1 += u'www.garmin.com/xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas'
+        filestring1 += u'/TrackPointExtension/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/'
+        filestring1 += u'XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix'
+        filestring1 += u'.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/'
+        filestring1 += u'xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://'
+        filestring1 += u'www8.garmin.com/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPoint'
+        filestring1 += u'Extension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd"><metadata><link '
+        filestring1 += u'href="http://www.garmin.com"><text>Garmin International</text></link><time>2016-10-08T13:'
+        filestring1 += u'26:03Z</time></metadata><wpt lat="49.794800" lon="9.941167"><time>2016-10-08T13:27:25Z</time>'
+        filestring1 += u'<name>BLA</name><sym>Flag, Blue</sym></wpt><wpt lat="49.794800" lon="9.941167"><time>2016'
+        filestring1 += u'-10-08T13:27:25Z</time><name>TESTWPT FINAL</name><sym>Flag, Blue</sym></wpt></gpx>'
+
+        filestring2 = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com'
+        filestring2 += u'/GPX/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://'
+        filestring2 += u'www.garmin.com/xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas'
+        filestring2 += u'/TrackPointExtension/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/'
+        filestring2 += u'XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix'
+        filestring2 += u'.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/'
+        filestring2 += u'xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://'
+        filestring2 += u'www8.garmin.com/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPoint'
+        filestring2 += u'Extension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd"><metadata><link '
+        filestring2 += u'href="http://www.garmin.com"><text>Garmin International</text></link><time>2016-10-08T13:'
+        filestring2 += u'26:03Z</time></metadata><wpt lat="49.794800" lon="9.941167"><time>2016-10-08T13:27:25Z</time>'
+        filestring2 += u'<name>QUAK</name><sym>Flag, Blue</sym></wpt></gpx>'
+
+        wptfiles = [filestring1, filestring2]
+        new_wptfiles = self.x.delete_waypoint_from_files(wptfiles, wpt)
+        self.assertEqual(new_wptfiles, [filestring1, filestring2])
 
 
 class TestAssignWaypoints(unittest.TestCase):
@@ -1342,8 +1565,8 @@ class TestCreateMapinfoSeveral(unittest.TestCase):
         expected = u"49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl (GC1XRPM)} <default>\r\n"
         expected += u"49.792433,9.932233 {MÄRCHENSTUHL 2 (GC1XRPM)} <default>\r\n"
         expected += u"49.8076166667,9.91211666667 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
-        expected += u"49.76015,9.9909 {BLICK ZUM RANDERSACKERER KÄPPE} <yellow>\r\n"
         expected += u"49.790983,9.9323 {DOM FINAL (GC1QNWT)} <yellow>\r\n"
+        expected += u"49.76015,9.9909 {BLICK ZUM RANDERSACKERER KÄPPE} <yellow>\r\n"
         self.assertEqual(output, expected)
 
     def test_only_free_waypoints(self):  # normally should not happen
@@ -1354,9 +1577,63 @@ class TestCreateMapinfoSeveral(unittest.TestCase):
         os.remove("mapinfo.txt")
         expected = u"49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
         expected += u"49.8076166667,9.91211666667 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
-        expected += u"49.76015,9.9909 {BLICK ZUM RANDERSACKERER KÄPPE} <yellow>\r\n"
         expected += u"49.790983,9.9323 {DOM FINAL (GC1QNWT)} <yellow>\r\n"
+        expected += u"49.76015,9.9909 {BLICK ZUM RANDERSACKERER KÄPPE} <yellow>\r\n"
         self.assertEqual(output, expected)
+
+
+class TestCreateWaypointfilestrings(unittest.TestCase):
+
+    def test_all_well(self):
+        x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
+        y = x.create_waypointfilestrings()
+
+        namelist = [r"..\tests\examples\no_logfile_waypoints\GPX\Wegpunkte_08-OKT-16.gpx",
+                    r"..\tests\examples\no_logfile_waypoints\GPX\Wegpunkte_14-JAN-17.gpx",
+                    r"..\tests\examples\no_logfile_waypoints\GPX\Waypoints_11-MRZ-17.gpx"]
+
+        cont1 = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com/GPX/1/1"'
+        cont1 += u' xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://www.garmin.com/'
+        cont1 += u'xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/'
+        cont1 += u'v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:sche'
+        cont1 += u'maLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.'
+        cont1 += u'garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlschemas/GpxExtensionsv3.xsd http:/'
+        cont1 += u'/www.garmin.com/xmlschemas/WaypointExtension/v1 http://www8.garmin.com/xmlschemas/WaypointExtension'
+        cont1 += u'v1.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/Trac'
+        cont1 += u'kPointExtensionv1.xsd"><metadata><link href="http://www.garmin.com"><text>Garmin International</te'
+        cont1 += u'xt></link><time>2016-10-08T13:26:03Z</time></metadata><wpt lat="49.794800" lon="9.941167"><time>2016'
+        cont1 += u'-10-08T13:27:25Z</time><name>MUSIKHOCHSCHULE</name><sym>Flag, Blue</sym></wt></gpx>'
+
+        cont2 = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com/GPX/1/1"'
+        cont2 += u' xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://www.garmin.com/'
+        cont2 += u'xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/'
+        cont2 += u'v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:sche'
+        cont2 += u'maLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.'
+        cont2 += u'garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://'
+        cont2 += u'www.garmin.com/xmlschemas/WaypointExtension/v1 http://www8.garmin.com/xmlschemas/WaypointExtensionv1'
+        cont2 += u'.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/Track'
+        cont2 += u'PointExtensionv1.xsd"><metadata><link href="http://www.garmin.com"><text>Garmin International</text>'
+        cont2 += u'</link><time>2017-01-14T13:42:12Z</time></metadata><wpt lat="49.792433" lon="9.932233"><time>2017-01'
+        cont2 += u'-14T13:43:14Z</time><name>MÄRCHENSTUHL 2 (GC1XRPM)</name><sym>Flag, Blue</sym></wpt><wpt lat="49.'
+        cont2 += u'790983" lon="9.932300"><ele>231.912979</ele><time>2017-01-14T19:02:03Z</time><name>DOM FINAL '
+        cont2 += u'(GC1QNWT)</name><sym>Flag, Blue</sym></wpt></gpx>'
+
+        cont3 = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com/GPX/1/1"'
+        cont3 += u' xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://www.garmin.com/'
+        cont3 += u'xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension'
+        cont3 += u'/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:sch'
+        cont3 += u'emaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www'
+        cont3 += u'.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlschemas/GpxExtensionsv3.xsd http:/'
+        cont3 += u'/www.garmin.com/xmlschemas/WaypointExtension/v1 http://www8.garmin.com/xmlschemas/WaypointExtensionv1'
+        cont3 += u'.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/Track'
+        cont3 += u'PointExtensionv1.xsd"><metadata><link href="http://www.garmin.com"><text>Garmin International</text>'
+        cont3 += u'</link><time>2017-03-11T13:42:47Z</time></metadata><wpt lat="49.760150" lon="9.990900"><ele>216.568'
+        cont3 += u'268</ele><time>2017-03-11T13:44:53Z</time><name>BLICK ZUM RANDERSACKERER KÄPPE</name><sym>Flag, '
+        cont3 += u'Blue</sym></wpt></gpx>'
+
+        contlist = [str(cont1.encode("utf-8")), str(cont2.encode("utf-8")), str(cont3.encode("utf-8"))]
+
+        self.assertEqual(y, [namelist, contlist])
 
 
 def create_testsuite():
@@ -1393,9 +1670,11 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestShowWaypoints))
     suite.addTest(unittest.makeSuite(TestReplaceWaypointName))
     suite.addTest(unittest.makeSuite(TestTryCreatingWaypoints))
+    suite.addTest(unittest.makeSuite(TestDeleteWaypointFromFiles))
     suite.addTest(unittest.makeSuite(TestAssignWaypoints))
     suite.addTest(unittest.makeSuite(TestCreateMapinfoOne))
     suite.addTest(unittest.makeSuite(TestCreateMapinfoSeveral))
+    suite.addTest(unittest.makeSuite(TestCreateWaypointfilestrings))
     return suite
 
 
