@@ -751,7 +751,7 @@ class GPSContent(object):
         if namelist[-1] == "FINAL" or ownfunctions.string_is_int(namelist[-1]):
             namelist = namelist[:-1]  # if last word is "FINAL" oder a number: discard
         for g in self.geocaches:
-            for word in namelist:
+            for word in namelist:     # suggest cache if one of the word in waypoint name also is in geocachename
                 if word in g.name.upper():
                     suggestions.append(g)
                     break
@@ -834,12 +834,19 @@ class GPSContent(object):
     @staticmethod
     def rewrite_waypointfiles(wptfile_names, waypointfiles):
         """overwrite waypoint files on GPS-device by new content
+        (used to assign or delete waypoints)
 
         input:
-        wptfile_names: list of all names of waypointfiles on gps device
+        wptfile_names: list of all names of waypointfiles (with path) on gps device
         wpt_files: list of strings, every string is the content of one waypointfile"""
 
+        if len(wptfile_names) != len(waypointfiles):
+            raise IOError("Invalid Input")
+
         for i, wptfile_cont in enumerate(waypointfiles):
+            if not os.path.isfile(wptfile_names[i]):
+                raise TypeError("{} is not an existing file".format(wptfile_names[i]))
+
             if wptfile_cont == "":  # if filestring is empty: delete file
                 os.remove(wptfile_names[i])
             else:  # else write new content

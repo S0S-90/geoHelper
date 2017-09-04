@@ -1484,9 +1484,129 @@ class TestDeleteWaypointFromFiles(unittest.TestCase):
         self.assertEqual(new_wptfiles, [filestring1, filestring2])
 
 
+class TestRewriteWaypointfiles(unittest.TestCase):
+
+    def setUp(self):
+        """is not used but a gpscontent has to exist in order to use class functions"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
+
+    def test_files_do_not_exist(self):
+        names = [r"..\tests\examples\temp\one.gpx", r"..\tests\examples\temp\two.gpx", r"..\tests\examples\temp\three.gpx"]
+        conts = ["bli", "bla", "blub"]
+        self.assertRaises(TypeError, self.x.rewrite_waypointfiles, names, conts)
+
+    def test_overwrite_files(self):
+        with open(r"..\tests\examples\temp\one.gpx", "w") as file1:
+            file1.write("one")
+        with open(r"..\tests\examples\temp\two.gpx", "w") as file1:
+            file1.write("two")
+        with open(r"..\tests\examples\temp\three.gpx", "w") as file1:
+            file1.write("three")
+
+        names = [r"..\tests\examples\temp\one.gpx", r"..\tests\examples\temp\two.gpx", r"..\tests\examples\temp\three.gpx"]
+        conts = ["bli", "bla", "blub"]
+        self.x.rewrite_waypointfiles(names, conts)
+
+        for i, n in enumerate(names):  # for every file
+            with open(n) as f:
+                cont = f.read()
+                self.assertEqual(cont, conts[i])  # look if right content
+            os.remove(n)  # delete created file
+
+    def test_delete_a_file(self):
+        with open(r"..\tests\examples\temp\one.gpx", "w") as file1:
+            file1.write("one")
+        with open(r"..\tests\examples\temp\two.gpx", "w") as file1:
+            file1.write("two")
+        with open(r"..\tests\examples\temp\three.gpx", "w") as file1:
+            file1.write("three")
+
+        names = [r"..\tests\examples\temp\one.gpx", r"..\tests\examples\temp\two.gpx", r"..\tests\examples\temp\three.gpx"]
+        conts = ["bli", "", "blub"]
+        self.x.rewrite_waypointfiles(names, conts)
+
+        self.assertRaises(IOError, open, r"..\tests\examples\temp\two.gpx")  # file does not exist amymore
+
+    def test_wrong_length(self):
+        with open(r"..\tests\examples\temp\one.gpx", "w") as file1:
+            file1.write("one")
+        with open(r"..\tests\examples\temp\two.gpx", "w") as file1:
+            file1.write("two")
+        with open(r"..\tests\examples\temp\three.gpx", "w") as file1:
+            file1.write("three")
+
+        names = [r"..\tests\examples\temp\one.gpx", r"..\tests\examples\temp\two.gpx", r"..\tests\examples\temp\three.gpx"]
+        conts = ["bli", "blub"]
+        self.assertRaises(IOError, self.x.rewrite_waypointfiles, names, conts)
+
+    def test_wrong_type_in_cont(self):
+        with open(r"..\tests\examples\temp\one.gpx", "w") as file1:
+            file1.write("one")
+        with open(r"..\tests\examples\temp\two.gpx", "w") as file1:
+            file1.write("two")
+        with open(r"..\tests\examples\temp\three.gpx", "w") as file1:
+            file1.write("three")
+
+        names = [r"..\tests\examples\temp\one.gpx", r"..\tests\examples\temp\two.gpx", r"..\tests\examples\temp\three.gpx"]
+        conts = ["bli", "bla", 42]
+        self.assertRaises(TypeError, self.x.rewrite_waypointfiles, names, conts)
+
+    def test_wrong_type_in_names(self):
+        with open(r"..\tests\examples\temp\one.gpx", "w") as file1:
+            file1.write("one")
+        with open(r"..\tests\examples\temp\two.gpx", "w") as file1:
+            file1.write("two")
+        with open(r"..\tests\examples\temp\three.gpx", "w") as file1:
+            file1.write("three")
+
+        names = [42, r"..\tests\examples\temp\two.gpx", r"..\tests\examples\temp\three.gpx"]
+        conts = ["bli", "bla", "blub"]
+        self.assertRaises(TypeError, self.x.rewrite_waypointfiles, names, conts)
+
+
+class TestFindSuggestions(unittest.TestCase):
+
+    def setUp(self):
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
+
+    def test_normal(self):
+        wpt = geocache.Waypoint(u"FÜR", [49.80761666666667, 9.912116666666666])
+        sug = self.x.find_suggestions(wpt)
+        g = geocache.Geocache(r"..\tests\examples\no_logfile\GPX\GC6RNTX.gpx")
+        self.assertEqual(sug, [g])
+
+    def test_number_at_the_end_only_part_of_word(self):
+        wpt = geocache.Waypoint(u"Märchen 1", [49.80761666666667, 9.912116666666666])
+        sug = self.x.find_suggestions(wpt)
+        g = geocache.Geocache(r"..\tests\examples\no_logfile\GPX\GC1XRPM.gpx")
+        self.assertEqual(sug, [g])
+
+    def test_number_not_at_the_end_more_than_one_suggestion(self):
+        wpt = geocache.Waypoint(u"Märchen 1 2", [49.80761666666667, 9.912116666666666])
+        sug = self.x.find_suggestions(wpt)
+        g1 = geocache.Geocache(r"..\tests\examples\no_logfile\GPX\GC1XRPM.gpx")
+        g2 = geocache.Geocache(r"..\tests\examples\no_logfile\GPX\GC6RNTX.gpx")
+        self.assertEqual(sug, [g1, g2])
+
+    def test_musikhochschule(self):
+        wpt = geocache.Waypoint(u"Musikhochschule", [49.80761666666667, 9.912116666666666])
+        sug = self.x.find_suggestions(wpt)
+        self.assertEqual(sug, [])
+
+
 class TestAssignWaypoints(unittest.TestCase):
-    # TODO
-    pass
+
+    def setUp(self):
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
+        w1 = geocache.Waypoint(u"Märchen 1 2", [49.80761666666667, 9.912116666666666])
+        w2 = geocache.Waypoint(u"delete", [49.80761666666667, 9.912116666666666])
+        w3 = geocache.Waypoint(u"nothing", [49.80761666666667, 9.912116666666666])
+        w4 = geocache.Waypoint(u"bullshit", [49.80761666666667, 9.912116666666666])
+        self.x.waypoints += [w1, w2, w3, w4]
+
+    # TODO: write test
 
 
 class TestCreateMapinfoOne(unittest.TestCase):
@@ -1671,6 +1791,8 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestReplaceWaypointName))
     suite.addTest(unittest.makeSuite(TestTryCreatingWaypoints))
     suite.addTest(unittest.makeSuite(TestDeleteWaypointFromFiles))
+    suite.addTest(unittest.makeSuite(TestRewriteWaypointfiles))
+    suite.addTest(unittest.makeSuite(TestFindSuggestions))
     suite.addTest(unittest.makeSuite(TestAssignWaypoints))
     suite.addTest(unittest.makeSuite(TestCreateMapinfoOne))
     suite.addTest(unittest.makeSuite(TestCreateMapinfoSeveral))
