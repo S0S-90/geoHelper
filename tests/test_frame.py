@@ -24,7 +24,6 @@ def run(v, testsuite_creating_function, filename):
     out = StringIO()
     sys.stdout = out
     testsuite = testsuite_creating_function()
-    print ("blub")
     x = unittest.TextTestRunner(verbosity=v).run(testsuite)
     return x.testsRun, len(x.failures), len(x.errors)
 
