@@ -1527,6 +1527,9 @@ class TestRewriteWaypointfiles(unittest.TestCase):
 
         self.assertRaises(IOError, open, r"..\tests\examples\temp\two.gpx")  # file does not exist amymore
 
+        os.remove(r"..\tests\examples\temp\one.gpx")  # delete created files
+        os.remove(r"..\tests\examples\temp\three.gpx")
+
     def test_wrong_length(self):
         with open(r"..\tests\examples\temp\one.gpx", "w") as file1:
             file1.write("one")
@@ -1538,6 +1541,10 @@ class TestRewriteWaypointfiles(unittest.TestCase):
         names = [r"..\tests\examples\temp\one.gpx", r"..\tests\examples\temp\two.gpx", r"..\tests\examples\temp\three.gpx"]
         conts = ["bli", "blub"]
         self.assertRaises(IOError, self.x.rewrite_waypointfiles, names, conts)
+
+        os.remove(r"..\tests\examples\temp\one.gpx")  # delete created files
+        os.remove(r"..\tests\examples\temp\two.gpx")
+        os.remove(r"..\tests\examples\temp\three.gpx")
 
     def test_wrong_type_in_cont(self):
         with open(r"..\tests\examples\temp\one.gpx", "w") as file1:
@@ -1551,6 +1558,10 @@ class TestRewriteWaypointfiles(unittest.TestCase):
         conts = ["bli", "bla", 42]
         self.assertRaises(TypeError, self.x.rewrite_waypointfiles, names, conts)
 
+        os.remove(r"..\tests\examples\temp\one.gpx")  # delete created files
+        os.remove(r"..\tests\examples\temp\two.gpx")
+        os.remove(r"..\tests\examples\temp\three.gpx")
+
     def test_wrong_type_in_names(self):
         with open(r"..\tests\examples\temp\one.gpx", "w") as file1:
             file1.write("one")
@@ -1562,6 +1573,10 @@ class TestRewriteWaypointfiles(unittest.TestCase):
         names = [42, r"..\tests\examples\temp\two.gpx", r"..\tests\examples\temp\three.gpx"]
         conts = ["bli", "bla", "blub"]
         self.assertRaises(TypeError, self.x.rewrite_waypointfiles, names, conts)
+
+        os.remove(r"..\tests\examples\temp\one.gpx")  # delete created files
+        os.remove(r"..\tests\examples\temp\two.gpx")
+        os.remove(r"..\tests\examples\temp\three.gpx")
 
 
 class TestFindSuggestions(unittest.TestCase):
@@ -1598,15 +1613,41 @@ class TestFindSuggestions(unittest.TestCase):
 class TestAssignWaypoints(unittest.TestCase):
 
     def setUp(self):
-        """creates a gpscontent object for the tests"""
-        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
-        w1 = geocache.Waypoint(u"Märchen 1 2", [49.80761666666667, 9.912116666666666])
-        w2 = geocache.Waypoint(u"delete", [49.80761666666667, 9.912116666666666])
-        w3 = geocache.Waypoint(u"nothing", [49.80761666666667, 9.912116666666666])
-        w4 = geocache.Waypoint(u"bullshit", [49.80761666666667, 9.912116666666666])
-        self.x.waypoints += [w1, w2, w3, w4]
+        """stuff that has to be done before tests start"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints2")
 
-    # TODO: write test
+        # copy files that will be changed
+        shutil.copy2(r"..\tests\examples\no_logfile_waypoints2\GPX\Wegpunkte_05-SEP-17.gpx",
+                     r"..\tests\examples\temp\Wegpunkte_05-SEP-17.gpx")
+        shutil.copy2(r"..\tests\examples\no_logfile_waypoints2\GPX\Waypoints_11-MRZ-17.gpx",
+                     r"..\tests\examples\temp\Waypoints_11-MRZ-17.gpx")
+
+        # run function assign_waypoint()
+        with mock.patch('__builtin__.raw_input',
+                        side_effect=['2', '2', "y", "2", "n", "3", "blub", "1", "bla", "1", "GC6K86W"]):
+            self.x.assign_waypoints()
+
+        # this is what happens when running the function:
+            # 2: 'MÄRCHEN 1 2' is assigned to suggestion 2 (GC6RNTX)
+            # 2, y: 'DELETE' is deleted
+            # 2, n: "NOT DELETE" is nearly deleted but in the end not
+            # 3: 'DO NOTHING' remains unchanged
+            # blub: some bullshit input is given for 'BULLSHIT' so it also remains unchanged
+            # 1, bla: 'DOM FINAL' is tried to be assigned to geocache 'bla' which doesn't exists so it remains unchanged
+            # 1, GC6K86W: 'BLICK ZUM RANDERSACKERER KÄPPE' is assigned to geocache GC6K86W
+
+    def tearDown(self):
+        """move files back after tests are done"""
+        shutil.move(r"..\tests\examples\temp\Wegpunkte_05-SEP-17.gpx",
+                    r"..\tests\examples\no_logfile_waypoints2\GPX\Wegpunkte_05-SEP-17.gpx")
+        shutil.move(r"..\tests\examples\temp\Waypoints_11-MRZ-17.gpx",
+                    r"..\tests\examples\no_logfile_waypoints2\GPX\Waypoints_11-MRZ-17.gpx")
+
+    def test(self):
+        pass
+
+    # TODO:
+    # one test for every waypointfile, one test for every waypoint
 
 
 class TestCreateMapinfoOne(unittest.TestCase):
