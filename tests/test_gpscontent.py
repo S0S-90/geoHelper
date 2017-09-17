@@ -1614,6 +1614,8 @@ class TestAssignWaypoints(unittest.TestCase):
 
     def setUp(self):
         """stuff that has to be done before tests start"""
+
+        # create gpscontent object
         self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints2")
 
         # copy files that will be changed

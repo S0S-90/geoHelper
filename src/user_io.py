@@ -7,7 +7,7 @@ from __future__ import print_function
 import ownfunctions
 import geocache
 
-PATH = r"F:\Garmin"    # path to GPS-device (standard)
+PATH = [r"E:\Garmin", r"F:\Garmin", r"G:\Garmin", r"H:\Garmin"]  # path to GPS-device (standard)
 CODING = "cp1252"   # coding of cmd (cp1252 recommended)
 EDITORNAME = "notepad.exe"  # name (+ path) of standard text editor
 
@@ -379,11 +379,11 @@ def ask_for_path():
     if no path is specified: returns the standard PATH"""
 
     print ("\nGib den Pfad zum GPS-Geraet ein (NICHT zum Unterordner 'GPX').")
-    print ("Falls Standardpfad '{}' uebernommen werden soll: keine Eingabe".format(PATH))
+    print ("Falls Standardpfad uebernommen werden soll: keine Eingabe")
     # noinspection PyCompatibility
     inp = raw_input(">> ")  # in python 3 input is raw_input by standard
     if inp == "":
-        return PATH
+        return "default"
     else:
         return inp
 

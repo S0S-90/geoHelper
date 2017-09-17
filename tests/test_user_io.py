@@ -946,7 +946,7 @@ class TestAskForPath(unittest.TestCase):
             user_io.ask_for_path()
             output = out.getvalue()
             expected = "\nGib den Pfad zum GPS-Geraet ein (NICHT zum Unterordner 'GPX').\n"
-            expected += "Falls Standardpfad 'F:\Garmin' uebernommen werden soll: keine Eingabe\n"
+            expected += "Falls Standardpfad uebernommen werden soll: keine Eingabe\n"
             self.assertEqual(output, expected) 
 
     def test_return(self):
@@ -955,7 +955,7 @@ class TestAskForPath(unittest.TestCase):
 
     def test_default_return(self):
         with mock.patch('__builtin__.raw_input', return_value=""): 
-            self.assertEqual(user_io.ask_for_path(), r"F:\Garmin")
+            self.assertEqual(user_io.ask_for_path(), "default")
 
 
 class TestAskForWaypoints(unittest.TestCase):
