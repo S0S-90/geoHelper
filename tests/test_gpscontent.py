@@ -658,14 +658,16 @@ class TestShowOne(unittest.TestCase):
         shutil.copy2(r"..\tests\examples\no_logfile_waypoints\GPX\GC5N23T.gpx",
                      r"..\tests\examples\temp\GC5N23T.gpx")  # copy file that is to be removed
         with mock.patch('__builtin__.raw_input', side_effect=["GC5N23T", "1", "y"]):
-            self.x.show_one()
+            with mock.patch("webbrowser.open_new_tab"):
+                self.x.show_one()
             self.assertEqual(len(self.x.geocaches), 5)
         shutil.move(r"..\tests\examples\temp\GC5N23T.gpx",
                     r"..\tests\examples\no_logfile_waypoints\GPX\GC5N23T.gpx")  # move deleted file back to GPX folder
 
     def test_not_delete(self):
         with mock.patch('__builtin__.raw_input', side_effect=["GC5N23T", "1", "n"]):
-            self.x.show_one()
+            with mock.patch("webbrowser.open_new_tab"):
+                self.x.show_one()
             self.assertEqual(len(self.x.geocaches), 6)
 
     def test_delete_with_wpt(self):
@@ -674,7 +676,8 @@ class TestShowOne(unittest.TestCase):
         shutil.copy2(r"..\tests\examples\no_logfile_waypoints\GPX\Wegpunkte_14-JAN-17.gpx",
                      r"..\tests\examples\temp\Wegpunkte_14-JAN-17.gpx")  # copy waypointfile that is to be changed
         with mock.patch('__builtin__.raw_input', side_effect=["GC1XRPM", "1", "y"]):
-            self.x.show_one()
+            with mock.patch("webbrowser.open_new_tab"):
+                self.x.show_one()
             self.assertEqual(len(self.x.geocaches), 5)
             with open(r"..\tests\examples\no_logfile_waypoints\GPX\Wegpunkte_14-JAN-17.gpx") as wptfile:
                 wptfile_cont = wptfile.read()
