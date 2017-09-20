@@ -1096,6 +1096,7 @@ def main(v):
     """runs the testsuite"""
     return test_frame.run(v, create_testsuite, "user_io.py")
 
+
 if __name__ == '__main__':
     if len(sys.argv) > 1:  # if script is run with argument
         verbosity = int(sys.argv[1])

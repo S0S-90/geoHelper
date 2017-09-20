@@ -34,7 +34,8 @@ def show_main_menu(gps):
             gps.show_founds()
         elif task == "exit":
             sys.exit()
-         
+
+
 if __name__ == "__main__":
     while True:
         PATH = user_io.ask_for_path()   # path to gps-device

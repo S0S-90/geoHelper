@@ -10,6 +10,7 @@ import shutil
 import os
 # noinspection PyCompatibility
 from StringIO import StringIO  # module not existent in python 3
+import xml.etree.ElementTree as ElementTree
 import test_frame
 import ownfunctions
 import geocache
@@ -341,7 +342,6 @@ class TestGetLoggedAndFoundCachesNotFoundNotOnGPS(unittest.TestCase):
 
 
 class TestReadWaypoints(unittest.TestCase):
-
     def setUp(self):
         """creates a gpscontent object for the tests"""
         self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
@@ -352,10 +352,9 @@ class TestReadWaypoints(unittest.TestCase):
 
     def test_broken_wptfile(self):
         exception = False  # has to be that complicated because ParseError unknown
-        # noinspection PyBroadException
         try:
             self.x._read_waypoints(r"..\tests\examples\no_logfile_waypoints\GPX\Wegpunkte_08-OKT-16.gpx")
-        except:  # broad exception because ParseError unknown
+        except ElementTree.ParseError:
             exception = True
         self.assertTrue(exception)
 
@@ -621,7 +620,6 @@ class TestShowAllDist(unittest.TestCase):
 
 
 class TestReadCache(unittest.TestCase):
-
     def setUp(self):
         """creates a gpscontent object for the tests"""
         self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
@@ -697,12 +695,11 @@ class TestShowOne(unittest.TestCase):
             self.assertEqual(wptfile_cont, expected)
         shutil.move(r"..\tests\examples\temp\GC1XRPM.gpx",
                     r"..\tests\examples\no_logfile_waypoints\GPX\GC1XRPM.gpx")  # move deleted / modified files
-        shutil.move(r"..\tests\examples\temp\Wegpunkte_14-JAN-17.gpx",          # back to GPX folder
+        shutil.move(r"..\tests\examples\temp\Wegpunkte_14-JAN-17.gpx",  # back to GPX folder
                     r"..\tests\examples\no_logfile_waypoints\GPX\Wegpunkte_14-JAN-17.gpx")
 
 
 class TestShowGCSelection(unittest.TestCase):
-
     def setUp(self):
         """creates a gpscontent object for the tests"""
         self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
@@ -733,7 +730,6 @@ class TestShowGCSelection(unittest.TestCase):
 
 
 class TestShowGCSelectionDist(unittest.TestCase):
-
     def setUp(self):
         """creates a gpscontent object for the tests"""
         self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
@@ -766,7 +762,6 @@ class TestShowGCSelectionDist(unittest.TestCase):
 
 
 class TestSearch(unittest.TestCase):
-
     def setUp(self):
         """creates a gpscontent object for the tests"""
         self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
@@ -912,7 +907,6 @@ class TestSearch(unittest.TestCase):
 
 
 class TestShowFoundsNoFoundCaches(unittest.TestCase):
-
     def setUp(self):
         """creates a gpscontent object for the tests"""
         self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
@@ -922,7 +916,6 @@ class TestShowFoundsNoFoundCaches(unittest.TestCase):
 
 
 class TestShowFoundsOnlyFound(unittest.TestCase):
-
     def setUp(self):
         """creates a gpscontent object for the tests"""
         self.x = gpscontent.GPSContent(r"..\tests\examples\only_found")
@@ -965,7 +958,6 @@ class TestShowFoundsOnlyFound(unittest.TestCase):
 
 
 class TestShowFoundsOnlyNotFound(unittest.TestCase):
-
     def setUp(self):
         """creates a gpscontent object for the tests"""
         self.x = gpscontent.GPSContent(r"..\tests\examples\only_notfound")
@@ -975,7 +967,6 @@ class TestShowFoundsOnlyNotFound(unittest.TestCase):
 
 
 class TestShowFoundsNotOnlyFound(unittest.TestCase):
-
     def setUp(self):
         """creates a gpscontent object for the tests"""
         self.x = gpscontent.GPSContent(r"..\tests\examples\not_only_found")
@@ -1019,7 +1010,6 @@ class TestShowFoundsNotOnlyFound(unittest.TestCase):
 
 
 class TestShowFoundsFoundNotOnGPS(unittest.TestCase):
-
     def setUp(self):
         """creates a gpscontent object for the tests"""
         self.x = gpscontent.GPSContent(r"..\tests\examples\found_not_on_gps")
@@ -1060,7 +1050,6 @@ class TestShowFoundsFoundNotOnGPS(unittest.TestCase):
 
 
 class TestDelete(unittest.TestCase):
-
     def setUp(self):
         """creates a gpscontent object for the tests"""
         self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
@@ -1138,7 +1127,6 @@ class TestDelete(unittest.TestCase):
 
 
 class TestShowWaypoints(unittest.TestCase):
-
     def test_no_waypoints(self):
         with mock.patch('__builtin__.raw_input', return_value=["2"]):
             x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
@@ -1169,7 +1157,6 @@ class TestShowWaypoints(unittest.TestCase):
 
 
 class TestReplaceWaypointName(unittest.TestCase):
-
     def setUp(self):
         """is not used but a gpscontent has to exist in order to use class functions"""
         self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
@@ -1229,7 +1216,6 @@ class TestReplaceWaypointName(unittest.TestCase):
 
 
 class TestTryCreatingWaypoints(unittest.TestCase):
-
     def setUp(self):
         """is not used but a gpscontent has to exist in order to use class functions"""
         self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
@@ -1265,7 +1251,6 @@ class TestTryCreatingWaypoints(unittest.TestCase):
 
 
 class TestDeleteWaypointFromFiles(unittest.TestCase):
-
     def setUp(self):
         """is not used but a gpscontent has to exist in order to use class functions"""
         self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
@@ -1488,7 +1473,6 @@ class TestDeleteWaypointFromFiles(unittest.TestCase):
 
 
 class TestRewriteWaypointfiles(unittest.TestCase):
-
     def setUp(self):
         """is not used but a gpscontent has to exist in order to use class functions"""
         self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
@@ -1583,7 +1567,6 @@ class TestRewriteWaypointfiles(unittest.TestCase):
 
 
 class TestFindSuggestions(unittest.TestCase):
-
     def setUp(self):
         """creates a gpscontent object for the tests"""
         self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile")
@@ -1614,7 +1597,6 @@ class TestFindSuggestions(unittest.TestCase):
 
 
 class TestAssignWaypoints(unittest.TestCase):
-
     def setUp(self):
         """stuff that has to be done before tests start"""
 
@@ -1632,7 +1614,7 @@ class TestAssignWaypoints(unittest.TestCase):
                         side_effect=['2', '2', "y", "2", "n", "3", "blub", "1", "bla", "1", "GC6K86W"]):
             self.x.assign_waypoints()
 
-        # this is what happens when running the function:
+            # this is what happens when running the function:
             # 2: 'MÄRCHEN 1 2' is assigned to suggestion 2 (GC6RNTX)
             # 2, y: 'DELETE' is deleted
             # 2, n: "NOT DELETE" is nearly deleted but in the end not
@@ -1641,6 +1623,41 @@ class TestAssignWaypoints(unittest.TestCase):
             # 1, bla: 'DOM FINAL' is tried to be assigned to geocache 'bla' which doesn't exists so it remains unchanged
             # 1, GC6K86W: 'BLICK ZUM RANDERSACKERER KÄPPE' is assigned to geocache GC6K86W
 
+    def test_assign_maerchen(self):
+        for gc in self.x.geocaches:
+            if gc.gccode == "GC6RNT":
+                self.assertEqual(len(gc.waypoints), 2)
+
+    def test_delete(self):
+        delete = False
+        for wpt in self.x.waypoints:
+            if wpt.name == "DELETE":
+                delete = True
+        self.assertFalse(delete)
+
+    def test_file_05sep17(self):
+        expected = '<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com/GPX/1/' \
+                   '1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://www.garmin.' \
+                   'com/xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPoint' \
+                   'Extension/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance' \
+                   '" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd ' \
+                   'http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlschemas/GpxExtensionsv3' \
+                   '.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://www8.garmin.com/xmlschemas/' \
+                   'WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.' \
+                   'com/xmlschemas/TrackPointExtensionv1.xsd"><metadata><link href="http://www.garmin.com"><text>Garmin' \
+                   ' International</text></link><time>2017-01-14T13:42:12Z</time></metadata><wpt lat="49.792433" lon="' \
+                   '9.932233"><time>2017-01-14T13:43:14Z</time><name>MÄRCHEN 1 2 (GC6RNTX)</name><sym>Flag, Blue</sym>' \
+                   '</wpt><wpt lat="49.790983" lon="9.932300"><ele>231.912979</ele><time>2017-01-14T19:02:03Z</time>' \
+                   '<name>NOT DELETE</name><sym>Flag, Blue</sym></wpt><wpt lat="49.790983" lon="9.932300"><ele>231.' \
+                   '912979</ele><time>2017-01-14T19:02:03Z</time><name>DO NOTHING</name><sym>Flag, Blue</sym></wpt>' \
+                   '<wpt lat="49.790983" lon="9.932300"><ele>231.912979</ele><time>2017-01-14T19:02:03Z</time><name>' \
+                   'BULLSHIT</name><sym>Flag, Blue</sym></wpt></gpx>'
+        with open(r"..\tests\examples\no_logfile_waypoints2\GPX\Wegpunkte_05-SEP-17.gpx") as wptfile:
+            output = wptfile.read()
+        self.assertEqual(output, expected)
+
+    # TODO: hier geht's weiter
+
     def tearDown(self):
         """move files back after tests are done"""
         shutil.move(r"..\tests\examples\temp\Wegpunkte_05-SEP-17.gpx",
@@ -1648,15 +1665,8 @@ class TestAssignWaypoints(unittest.TestCase):
         shutil.move(r"..\tests\examples\temp\Waypoints_11-MRZ-17.gpx",
                     r"..\tests\examples\no_logfile_waypoints2\GPX\Waypoints_11-MRZ-17.gpx")
 
-    def test(self):
-        pass
-
-    # TODO:
-    # one test for every waypointfile, one test for every waypoint
-
 
 class TestCreateMapinfoOne(unittest.TestCase):
-
     def setUp(self):
         """creates a gpscontent object for the tests"""
         self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
@@ -1695,7 +1705,6 @@ class TestCreateMapinfoOne(unittest.TestCase):
 
 
 class TestCreateMapinfoSeveral(unittest.TestCase):
-
     def setUp(self):
         """creates a gpscontent object and a cachelist for the tests"""
         self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
@@ -1749,7 +1758,6 @@ class TestCreateMapinfoSeveral(unittest.TestCase):
 
 
 class TestCreateWaypointfilestrings(unittest.TestCase):
-
     def test_all_well(self):
         x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
         y = x.create_waypointfilestrings()
