@@ -1597,6 +1597,7 @@ class TestFindSuggestions(unittest.TestCase):
 
 
 class TestAssignWaypoints(unittest.TestCase):
+
     def setUp(self):
         """stuff that has to be done before tests start"""
 
@@ -1626,7 +1627,13 @@ class TestAssignWaypoints(unittest.TestCase):
     def test_assign_maerchen(self):
         for gc in self.x.geocaches:
             if gc.gccode == "GC6RNT":
-                self.assertEqual(len(gc.waypoints), 2)
+                self.assertEqual(len(gc.waypoints), 2)  # one waypoint is there from the beginning
+
+        maerchen = False
+        for wpt in self.x.waypoints:
+            if wpt.name == "MÄRCHEN 1 2":
+                maerchen = True
+        self.assertFalse(maerchen)  # waypoint not in gps.waypoints any more
 
     def test_delete(self):
         delete = False
@@ -1656,7 +1663,79 @@ class TestAssignWaypoints(unittest.TestCase):
             output = wptfile.read()
         self.assertEqual(output, expected)
 
-    # TODO: hier geht's weiter
+    def test_not_delete(self):
+        not_delete = False
+        for wpt in self.x.waypoints:
+            if wpt.name == "NOT DELETE":
+                not_delete = True
+        self.assertTrue(not_delete)
+
+    def test_do_nothing(self):
+        do_nothing = False
+        for wpt in self.x.waypoints:
+            if wpt.name == "DO NOTHING":
+                do_nothing = True
+        self.assertTrue(do_nothing)
+
+    def test_bullshit_input(self):
+        bullshit = False
+        for wpt in self.x.waypoints:
+            if wpt.name == "BULLSHIT":
+                bullshit = True
+        self.assertTrue(bullshit)
+
+    def test_assigning_fails(self):
+        dom_final = False
+        for wpt in self.x.waypoints:
+            if wpt.name == "DOM FINAL":
+                dom_final = True
+        self.assertTrue(dom_final)
+
+    def test_assign_randersackerer_kaeppe(self):
+        for gc in self.x.geocaches:
+            if gc.gccode == "GC6K86W":
+                self.assertEqual(len(gc.waypoints), 1)
+
+        kaeppe = False
+        for wpt in self.x.waypoints:
+            if wpt.name == u"BLICK ZUM RANDERSACKERER KÄPPE":
+                kaeppe = True
+        self.assertFalse(kaeppe)  # waypoint not in gps.waypoints any more
+
+    def test_file_11mar17(self):
+        expected = '<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com/GPX/1' \
+                   '/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://www.garmin.' \
+                   'com/xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPoint' \
+                   'Extension/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' \
+                   ' xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd ' \
+                   'http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlschemas/GpxExtensionsv3.' \
+                   'xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://www8.garmin.com/xmlschemas/Waypoint' \
+                   'Extensionv1.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/' \
+                   'xmlschemas/TrackPointExtensionv1.xsd"><metadata><link href="http://www.garmin.com"><text>Garmin' \
+                   ' International</text></link><time>2017-03-11T13:42:47Z</time></metadata><wpt lat="49.760150" ' \
+                   'lon="9.990900"><ele>216.568268</ele><time>2017-03-11T13:44:53Z</time><name>BLICK ZUM RANDERSACKERER' \
+                   ' KÄPPE (GC6K86W)</name><sym>Flag, Blue</sym></wpt></gpx>'
+        with open(r"..\tests\examples\no_logfile_waypoints2\GPX\Waypoints_11-MRZ-17.gpx") as wptfile:
+            output = wptfile.read()
+        self.assertEqual(output, expected)
+
+    def test_file_14jan17_no_changes(self):
+        expected = '<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com/GPX/1/1' \
+                   '" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://www.garmin.com/' \
+                   'xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension' \
+                   '/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:' \
+                   'schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http:/' \
+                   '/www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlschemas/GpxExtensionsv3.xsd ' \
+                   'http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://www8.garmin.com/xmlschemas/Waypoint' \
+                   'Extensionv1.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xml' \
+                   'schemas/TrackPointExtensionv1.xsd"><metadata><link href="http://www.garmin.com"><text>Garmin ' \
+                   'International</text></link><time>2017-01-14T13:42:12Z</time></metadata><wpt lat="49.792433" ' \
+                   'lon="9.932233"><time>2017-01-14T13:43:14Z</time><name>MÄRCHENSTUHL 2 (GC1XRPM)</name><sym>Flag, ' \
+                   'Blue</sym></wpt><wpt lat="49.790983" lon="9.932300"><ele>231.912979</ele><time>2017-01-14T19:02:03Z' \
+                   '</time><name>DOM FINAL</name><sym>Flag, Blue</sym></wpt></gpx>'
+        with open(r"..\tests\examples\no_logfile_waypoints2\GPX\Wegpunkte_14-JAN-17.gpx") as wptfile:
+            output = wptfile.read()
+        self.assertEqual(output, expected)
 
     def tearDown(self):
         """move files back after tests are done"""

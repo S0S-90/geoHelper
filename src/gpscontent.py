@@ -103,21 +103,19 @@ class GPSContent(object):
         self.geocaches = []  # read all caches from GC*.gpx-files in path\GPX and save in list 'geocaches'
         gpx_path = os.path.join(self.path, "GPX")
         for gpxfile in glob.glob(os.path.join(gpx_path, "GC*.gpx")):
-            # noinspection PyBroadException
-            # (broad exception necessary because ParseError unknown)
             try:
                 self.geocaches.append(Geocache(gpxfile))
-            except:
+            except ElementTree.ParseError:
+                user_io.general_output("{}: {}".format(user_io.WARNING_BROKEN_FILE, os.path.basename(gpxfile)))
+            except AttributeError:
                 user_io.general_output("{}: {}".format(user_io.WARNING_BROKEN_FILE, os.path.basename(gpxfile)))
 
         self.waypoints = []  # read all caches from GC*.gpx-files in path\GPX and save in list 'waypoints'
         for wptfile in (glob.glob(os.path.join(gpx_path, "Wegpunkte_*.gpx")) +
                         glob.glob(os.path.join(gpx_path, "Waypoints_*.gpx"))):
-            # noinspection PyBroadException
-            # (broad exception necessary because ParseError unknown)
             try:
                 self.waypoints += self._read_waypoints(wptfile)
-            except:
+            except ElementTree.ParseError:
                 user_io.general_output("{}: {}".format(user_io.WARNING_BROKEN_FILE, os.path.basename(wptfile)))
 
         for g in self.geocaches:  # read existing attributes from geocaches
