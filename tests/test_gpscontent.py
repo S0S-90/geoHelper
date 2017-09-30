@@ -1626,8 +1626,8 @@ class TestAssignWaypoints(unittest.TestCase):
 
     def test_assign_maerchen(self):
         for gc in self.x.geocaches:
-            if gc.gccode == "GC6RNT":
-                self.assertEqual(len(gc.waypoints), 2)  # one waypoint is there from the beginning
+            if gc.gccode == "GC6RNTX":
+                self.assertEqual(len(gc.waypoints), 1)
 
         maerchen = False
         for wpt in self.x.waypoints:
@@ -1889,6 +1889,32 @@ class TestCreateWaypointfilestrings(unittest.TestCase):
         self.assertEqual(y, [namelist, contlist])
 
 
+class TestShowOnMap(unittest.TestCase):
+
+    def setUp(self):
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints2")
+
+    def test_one_without_waypoints(self):
+        gc = geocache.Geocache(r"..\tests\examples\no_logfile_waypoints2\GPX\GC6RNTX.gpx")
+        with mock.patch('__builtin__.raw_input', return_value=""):
+            with mock.patch("webbrowser.open_new_tab"):
+                with mock.patch("subprocess.Popen"):
+                    with mock.patch("user_io.show_on_map_end"):
+                        with mock.patch("os.remove"):
+                            self.x.show_on_map(gc)
+        expected = u"49.794497,9.94094 {Hochschule für Musik 1} <blue>\r\n"
+        with open("mapinfo.txt", "rb") as mapinfo:
+            result = mapinfo.read().decode("cp1252")
+        self.assertEqual(expected, result)
+
+    # TODO: hier geht's weiter
+
+    def tearDown(self):
+        """delete mapinfo.txt file"""
+        os.remove("mapinfo.txt")
+
+
 def create_testsuite():
     """creates a testsuite with out of all tests in this file"""
     suite = unittest.TestSuite()
@@ -1930,6 +1956,7 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestCreateMapinfoOne))
     suite.addTest(unittest.makeSuite(TestCreateMapinfoSeveral))
     suite.addTest(unittest.makeSuite(TestCreateWaypointfilestrings))
+    suite.addTest(unittest.makeSuite(TestShowOnMap))
     return suite
 
 
