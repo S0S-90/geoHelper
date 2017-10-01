@@ -1893,22 +1893,94 @@ class TestShowOnMap(unittest.TestCase):
 
     def setUp(self):
         """creates a gpscontent object for the tests"""
-        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints2")
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
 
-    def test_one_without_waypoints(self):
-        gc = geocache.Geocache(r"..\tests\examples\no_logfile_waypoints2\GPX\GC6RNTX.gpx")
+    def test_one_always_with_waypoints(self):
         with mock.patch('__builtin__.raw_input', return_value=""):
             with mock.patch("webbrowser.open_new_tab"):
                 with mock.patch("subprocess.Popen"):
                     with mock.patch("user_io.show_on_map_end"):
                         with mock.patch("os.remove"):
-                            self.x.show_on_map(gc)
-        expected = u"49.794497,9.94094 {Hochschule für Musik 1} <blue>\r\n"
+                            for g in self.x.geocaches:
+                                if g.gccode == "GC1XRPM":
+                                    self.x.show_on_map(g)
+        expected = u"49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
+        expected += u"49.792433,9.932233 {MÄRCHENSTUHL 2} <yellow>\r\n"
         with open("mapinfo.txt", "rb") as mapinfo:
             result = mapinfo.read().decode("cp1252")
         self.assertEqual(expected, result)
 
-    # TODO: hier geht's weiter
+    def test_several_without_waypoints(self):
+        self.cachelist = []           # create cachelist
+        for gc in self.x.geocaches:
+            if gc.gccode == "GC1XRPM" or gc.gccode == "GC5N23T":
+                self.cachelist.append(gc)
+        with mock.patch('__builtin__.raw_input', side_effect=["n", ""]):   # test
+            with mock.patch("webbrowser.open_new_tab"):
+                with mock.patch("subprocess.Popen"):
+                    with mock.patch("user_io.show_on_map_end"):
+                        with mock.patch("os.remove"):
+                            self.x.show_on_map(self.cachelist)
+        expected = u"49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
+        expected += u"49.8076166667,9.91211666667 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+        with open("mapinfo.txt", "rb") as mapinfo:
+            result = mapinfo.read().decode("cp1252")
+        self.assertEqual(expected, result)
+
+    def test_several_with_waypoints(self):
+        self.cachelist = []           # create cachelist
+        for gc in self.x.geocaches:
+            if gc.gccode == "GC1XRPM" or gc.gccode == "GC5N23T":
+                self.cachelist.append(gc)
+        with mock.patch('__builtin__.raw_input', side_effect=["y", ""]):   # test
+            with mock.patch("webbrowser.open_new_tab"):
+                with mock.patch("subprocess.Popen"):
+                    with mock.patch("user_io.show_on_map_end"):
+                        with mock.patch("os.remove"):
+                            self.x.show_on_map(self.cachelist)
+        expected = u"49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl (GC1XRPM)} <default>\r\n"
+        expected += u"49.792433,9.932233 {MÄRCHENSTUHL 2 (GC1XRPM)} <default>\r\n"
+        expected += u"49.8076166667,9.91211666667 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+        with open("mapinfo.txt", "rb") as mapinfo:
+            result = mapinfo.read().decode("cp1252")
+        self.assertEqual(expected, result)
+
+    def test_all_without_waypoints(self):
+        with mock.patch('__builtin__.raw_input', side_effect=["n", ""]):
+            with mock.patch("webbrowser.open_new_tab"):
+                with mock.patch("subprocess.Popen"):
+                    with mock.patch("user_io.show_on_map_end"):
+                        with mock.patch("os.remove"):
+                            self.x.show_on_map(self.x.geocaches, True)
+        expected = u"49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
+        expected += u"-43.695433,-66.4515 {Tesoro Ameghino} <green>\r\n"
+        expected += u"49.8076166667,9.91211666667 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+        expected += u"50.318883,10.1936 {Saaletalblick} <green>\r\n"
+        expected += u"49.794497,9.94094 {Hochschule für Musik 1} <blue>\r\n"
+        expected += u"49.7948,9.930267 {Wuerzburger webcam} <pink>\r\n"
+        with open("mapinfo.txt", "rb") as mapinfo:
+            result = mapinfo.read().decode("cp1252")
+        self.assertEqual(expected, result)
+
+    def test_all_with_waypoints(self):
+        with mock.patch('__builtin__.raw_input', side_effect=["y", ""]):
+            with mock.patch("webbrowser.open_new_tab"):
+                with mock.patch("subprocess.Popen"):
+                    with mock.patch("user_io.show_on_map_end"):
+                        with mock.patch("os.remove"):
+                            self.x.show_on_map(self.x.geocaches, True)
+        expected = u"49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl (GC1XRPM)} <default>\r\n"
+        expected += u"49.792433,9.932233 {MÄRCHENSTUHL 2 (GC1XRPM)} <default>\r\n"
+        expected += u"-43.695433,-66.4515 {Tesoro Ameghino} <green>\r\n"
+        expected += u"49.8076166667,9.91211666667 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+        expected += u"50.318883,10.1936 {Saaletalblick} <green>\r\n"
+        expected += u"49.794497,9.94094 {Hochschule für Musik 1} <blue>\r\n"
+        expected += u"49.7948,9.930267 {Wuerzburger webcam} <pink>\r\n"
+        expected += u"49.790983,9.9323 {DOM FINAL (GC1QNWT)} <yellow>\r\n"            # free waypoints
+        expected += u"49.76015,9.9909 {BLICK ZUM RANDERSACKERER K\xc4PPE} <yellow>\r\n"
+        with open("mapinfo.txt", "rb") as mapinfo:
+            result = mapinfo.read().decode("cp1252")
+        self.assertEqual(expected, result)
 
     def tearDown(self):
         """delete mapinfo.txt file"""
