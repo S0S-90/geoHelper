@@ -674,15 +674,25 @@ class GPSContent(object):
         year = ownfunctions.get_year_without_century(now.tm_year)
         filename = "Waypoints_{:02}-{}-{:02}.gpx".format(now.tm_mday, month, year)
         wptfile_path = os.path.join(self.path, "GPX", filename)
-        timestring = "{}-{:02}-{:2}T{}:{}:{}Z".format(now.tm_year, now.tm_mon, now.tm_mday,
-                                                      now.tm_hour, now.tm_min, now.tm_sec)
-        if os.path.isfile(wptfile_path):
+        filename_ger = "Wegpunkte_{:02}-{}-{:02}.gpx".format(now.tm_mday, month, year)
+        wptfile_path_ger = os.path.join(self.path, "GPX", filename_ger)
+        timestring = "{}-{:02}-{:02}T{:02}:{:02}:{:02}Z".format(now.tm_year, now.tm_mon, now.tm_mday,
+                                                                now.tm_hour, now.tm_min, now.tm_sec)
+        if os.path.isfile(wptfile_path):   # file Waypoints_XX-XX-XX.gpx exists
             wptstring = u'<wpt lat="{}" lon="{}"><time>{}</time><name>{}</name><sym>Flag, Blue</sym></wpt>'.format(
                 waypoint.coordinates[0], waypoint.coordinates[1], timestring, waypoint.name)
             with open(wptfile_path) as wptfile:
                 content = wptfile.read()
-            newstring = content[:-6] + wptstring + "</gpx>"
+            newstring = content[:-6].decode("utf-8") + wptstring + "</gpx>"
             with open(wptfile_path, "w") as wptfile_new:
+                wptfile_new.write(newstring.encode("utf-8"))
+        elif os.path.isfile(wptfile_path_ger):   # file Wegpunkte_XX-XX-XX.gpx exists
+            wptstring = u'<wpt lat="{}" lon="{}"><time>{}</time><name>{}</name><sym>Flag, Blue</sym></wpt>'.format(
+                waypoint.coordinates[0], waypoint.coordinates[1], timestring, waypoint.name)
+            with open(wptfile_path_ger) as wptfile:
+                content = wptfile.read()
+            newstring = content[:-6].decode("utf-8") + wptstring + "</gpx>"
+            with open(wptfile_path_ger, "w") as wptfile_new:
                 wptfile_new.write(newstring.encode("utf-8"))
 
         else:   # if no waypointfile from today exists -> create the file

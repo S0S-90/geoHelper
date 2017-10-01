@@ -8,6 +8,7 @@ import mock
 import sys
 import shutil
 import os
+import time
 # noinspection PyCompatibility
 from StringIO import StringIO  # module not existent in python 3
 import xml.etree.ElementTree as ElementTree
@@ -1987,6 +1988,73 @@ class TestShowOnMap(unittest.TestCase):
         os.remove("mapinfo.txt")
 
 
+class TestAddWaypointToFiles(unittest.TestCase):
+
+    def setUp(self):
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
+
+    def test_add_new_file(self):
+        struct_time = time.strptime("30 Nov 00 20 17 05", "%d %b %y %H %M %S")
+        wpt = geocache.Waypoint("NEW", [49.792433, 9.932233])
+        with mock.patch("time.localtime", return_value=struct_time):
+            self.x._add_waypoint_to_files(wpt)
+
+        string = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com/GPX'
+        string += u'/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://www.'
+        string += u'garmin.com/xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/'
+        string += u'TrackPointExtension/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/'
+        string += u'XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.'
+        string += u'topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.'
+        string += u'garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 '
+        string += u'http://www8.garmin.com/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/'
+        string += u'TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd"><metadata>'
+        string += u'<link href="http://www.garmin.com"><text>Garmin International</text></link>'
+        string += u'<time>2000-11-30T20:17:05Z</time></metadata><wpt lat="49.792433" '
+        string += u'lon="9.932233"><time>2000-11-30T20:17:05Z</time><name>NEW</name><sym>Flag, Blue</sym></wpt></gpx>'
+        with open(r"..\tests\examples\no_logfile_waypoints\GPX\Waypoints_30-NOV-00.gpx") as wptfile:
+            content = wptfile.read()
+
+        self.assertEqual(string, content)
+        os.remove(r"..\tests\examples\no_logfile_waypoints\GPX\Waypoints_30-NOV-00.gpx")
+
+    def test_add_wpt_to_existing_file_ger(self):
+        shutil.copy2(r"..\tests\examples\no_logfile_waypoints\GPX\Wegpunkte_14-JAN-17.gpx",
+                     r"..\tests\examples\temp\Wegpunkte_14-JAN-17.gpx")  # copy file that is to be changed
+
+        struct_time = time.strptime("14 Jan 17 13 07 25", "%d %b %y %H %M %S")
+        wpt = geocache.Waypoint("NEW", [49.792433, 9.932233])
+        with mock.patch("time.localtime", return_value=struct_time):
+            self.x._add_waypoint_to_files(wpt)
+
+        expected = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com/GPX/1/' \
+                   u'1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://www.garmin.' \
+                   u'com/xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPoint' \
+                   u'Extension/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance' \
+                   u'" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd ' \
+                   u'http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlschemas/GpxExtensions' \
+                   u'v3.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://www8.garmin.com/xmlschemas/' \
+                   u'WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.' \
+                   u'com/xmlschemas/TrackPointExtensionv1.xsd"><metadata><link href="http://www.garmin.com"><text>Garmin' \
+                   u' International</text></link><time>2017-01-14T13:42:12Z</time></metadata><wpt lat="49.792433" ' \
+                   u'lon="9.932233"><time>2017-01-14T13:43:14Z</time><name>MÄRCHENSTUHL 2 (GC1XRPM)</name><sym>Flag, ' \
+                   u'Blue</sym></wpt><wpt lat="49.790983" lon="9.932300"><ele>231.912979</ele><time>2017-01-14T19:02:03Z' \
+                   u'</time><name>DOM FINAL (GC1QNWT)</name><sym>Flag, Blue</sym></wpt><wpt lat="49.792433" ' \
+                   u'lon="9.932233"><time>2017-01-14T13:07:25Z</time><name>NEW</name><sym>Flag, Blue</sym></wpt></gpx>'
+
+        with open(r"..\tests\examples\no_logfile_waypoints\GPX\Wegpunkte_14-JAN-17.gpx") as wptfile:
+            content = wptfile.read().decode("utf-8")
+
+        self.assertEqual(content, expected)
+
+        shutil.move(r"..\tests\examples\temp\Wegpunkte_14-JAN-17.gpx",
+                    r"..\tests\examples\no_logfile_waypoints\GPX\Wegpunkte_14-JAN-17.gpx")  # move file back
+
+    def test_add_wpt_to_existing_file_eng(self):
+        pass
+        # TODO
+
+
 def create_testsuite():
     """creates a testsuite with out of all tests in this file"""
     suite = unittest.TestSuite()
@@ -2029,6 +2097,7 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestCreateMapinfoSeveral))
     suite.addTest(unittest.makeSuite(TestCreateWaypointfilestrings))
     suite.addTest(unittest.makeSuite(TestShowOnMap))
+    suite.addTest(unittest.makeSuite(TestAddWaypointToFiles))
     return suite
 
 
