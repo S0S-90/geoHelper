@@ -124,7 +124,7 @@ class Geocache(object):
     
     def __init__(self, filename_path):
     
-        if type(filename_path) != str and type(filename_path) != unicode:
+        if type(filename_path) != str:
             raise TypeError("Bad input.")
         
         self.filename_path = filename_path
@@ -182,8 +182,8 @@ class Geocache(object):
             self.available = False
         
         downloaddate = time.ctime(os.path.getmtime(filename_path))       # read downloaddate (= change of gpx-file)
-        downloaddate = downloaddate.split(" ")
-        self.downloaddate_string = "".join([downloaddate[2]+" ", downloaddate[1]+" ", downloaddate[-1]])
+        downloaddate = ownfunctions.remove_spaces(downloaddate).split(" ")
+        self.downloaddate_string = "{:02} {} {}".format(int(downloaddate[2]), downloaddate[1], downloaddate[-1])
         month = ownfunctions.get_month_number(downloaddate[1])
         self.downloaddate = datetime.date(int(downloaddate[-1]), month, int(downloaddate[2]))
         
@@ -363,12 +363,11 @@ class Waypoint(object):
     def __init__(self, name, coordinates):
         """creates the object out of name and coordinates as list [lat, lon]"""
 
-        if type(name) != str and type(name) != unicode:
+        if type(name) != str:
             raise TypeError("waypoint name is of wrong type")
         self.name = name.upper()
         for c in self.name:
-            # noinspection PyCompatibility
-            if unicode(c) not in self.ALLOWED_SIGNS:  # not compatible with python 3 because of function unicode()
+            if c not in self.ALLOWED_SIGNS:
                 raise TypeError(u"GARMIN does not allow '{}' in a waypoint name.".format(c))
         self.shown_name = self.name  # for waypoints not belonging to a geocache
 

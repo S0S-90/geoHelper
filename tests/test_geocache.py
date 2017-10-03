@@ -635,7 +635,7 @@ class TestWaypointInit(unittest.TestCase):
         self.assertEqual(w.shown_name, "NAME")
 
     def test_strange_signs_in_name(self):
-        self.assertRaises(ValueError, geocache.Waypoint, "abc§def", [49.80761666666667, 9.912116666666666])
+        self.assertRaises(TypeError, geocache.Waypoint, "abc§def", [49.80761666666667, 9.912116666666666])
 
     def test_name_is_not_a_string(self):
         self.assertRaises(TypeError, geocache.Waypoint, 42, [49.80761666666667, 9.912116666666666])
