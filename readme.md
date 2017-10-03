@@ -19,7 +19,7 @@ So sollte das Programm auch auf Nicht-Windows-Rechnern laufen, was allerdings ni
 
 
 # Funktionen
-* Anzeigen aller Caches auf dem GPS-Gerät mit den wichtigsten Informationen (GC-Code, Koordinaten, Cachetyp, D- und T-Wertung, Größe, Verfügbarkeit, Download-Datum, Name) 
+* Anzeigen aller Caches und Wegpunkte auf dem GPS-Gerät mit den wichtigsten Informationen (GC-Code, Koordinaten, Cachetyp, D- und T-Wertung, Größe, Verfügbarkeit, Download-Datum, Name) 
 * Sortieren der Caches nach einer bestimmten Eigenschaft (GC-Code, Name, Cachetyp, D- und T-Wertung, Groesse, Download-Datum, Verfügbarkeit)
 * Berechnung der Entfernung der Caches zu einer bestimmten Position und Sortieren der Caches nach dieser Entfernung. Das Einlesen der Position erfolgt dabei entweder über 
 Eingabe der Koordinaten im auf geocaching.com üblichen Format (Grad und Minuten) oder aus einer Url (Google-Maps oder geocaching.com/map), wobei diese Internetseiten auch aus dem 
@@ -27,10 +27,11 @@ Programm heraus geöffnet werden können.
 * Anzeigen der vollständigen Beschreibung eines Caches sowie Möglichkeit, direkt zur aktuellen Version der Beschreibung im Browser zu wechseln - wird von dort aus eine neue Version der 
 GPX-Datei heruntergeladen, kann diese mittels "Geocaches aktualisieren" in das Program eingebunden werden, ohne es neu zu starten
 * Anzeigen der Position eines Caches auf https://www.google.de/maps oder https://www.geocaching.com/map
-* Anzeigen aller Caches oder einer Auswahl auf der Karte https://www.mapcustomizer.com
+* Anzeigen aller Caches und Wegpunkte oder einer Auswahl auf der Karte https://www.mapcustomizer.com
 * Durchsuchen der Caches (Name, Beschreibung, Cachetyp, D- und T-Wertung, Größe, Download-Datum, Verfügbarkeit, Atttribute, Abstand zu einer bestimmten Position)
 * Löschen eines oder mehrerer Caches, z.B. aller als gefunden markieren Caches
 * Loggen der gefundenen Caches auf der Fieldnotes-/Draftsseite von geocaching.com
+* Wegpunkte erstellen, zu Caches zuordnen und löschen
 
 
 # Testen des Programms (nur für Entwickler)
