@@ -17,17 +17,9 @@ def general_output(string):
     print(string)
 
 
-# noinspection PyCompatibility
 def general_input(string):
     """asks for user input (by the use of string) and returns it (as string)"""
     return input(string)  # in python 3 input is input by standard
-
-
-# noinspection PyCompatibility
-def input_decode(string):
-    """asks for user input (by the help of string), decodes it and returns it as string
-    string must not contain characters that are not included in CODING"""
-    return input(string).decode(CODING)  # in python 3 input is input by standard
 
 
 def map_menu():
@@ -357,19 +349,16 @@ def coordinates_input():
     """asks for coordinates, returns input as a string"""
     
     print(u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX oder URL (google maps oder geocaching.com/map))")
-    # noinspection PyCompatibility
-    coords = input(">> ").decode(CODING)  # in python 3 input is input by standard
+    coords = input(">> ")
     return coords
 
 
 def wpt_ask_for_name_and_coords():
     """asks for name and coordinates of waypoint that should be created"""
 
-    # noinspection PyCompatibility
-    name = input("Gib den Namen des Wegpunkts ein: ").decode(CODING)  # in python 3 input is input by standard
+    name = input("Gib den Namen des Wegpunkts ein: ")
     print(u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX)")
-    # noinspection PyCompatibility
-    coordstr = input(">> ").decode(CODING)   # in python 3 input is input by standard
+    coordstr = input(">> ")
     return name, coordstr
 
 
@@ -379,8 +368,7 @@ def ask_for_path():
 
     print("\nGib den Pfad zum GPS-Geraet ein (NICHT zum Unterordner 'GPX').")
     print("Falls Standardpfad uebernommen werden soll: keine Eingabe")
-    # noinspection PyCompatibility
-    inp = input(">> ")  # in python 3 input is input by standard
+    inp = input(">> ")
     if inp == "":
         return "default"
     else:
@@ -390,7 +378,6 @@ def ask_for_path():
 def ask_for_waypoints():
     """asks if waypoints should be shown on map"""
 
-    # noinspection PyCompatibility
     inp = input("\nSollen auch Wegpunkte auf der Karte angezeigt werden? (y/n) ")  # in python 3 only input
     if inp == "y":
         return True
