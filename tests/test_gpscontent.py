@@ -2083,6 +2083,112 @@ class TestAddWaypointToFiles(unittest.TestCase):
                     r"..\tests\examples\no_logfile_waypoints\GPX\Waypoints_11-MAR-17.gpx")  # move file back
 
 
+class TestAddWaypoints(unittest.TestCase):
+
+    def setUp(self):
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\no_logfile_waypoints")
+
+    def test_add_one_wpt_without_assigning(self):
+
+        struct_time = time.strptime("02 Oct 17 20 17 05", "%d %b %y %H %M %S")
+        with mock.patch('__builtin__.raw_input', side_effect=["NEW", "N 49\xb057.340, E 009\xb034.222", "n", "n"]):
+            with mock.patch("time.localtime", return_value=struct_time):
+                self.x.add_waypoints()
+        self.assertEqual(len(self.x.waypoints), 3)  # before: 2
+        file_exists = os.path.isfile(r"..\tests\examples\no_logfile_waypoints\GPX\Waypoints_02-OCT-17.gpx")
+        self.assertTrue(file_exists)
+
+        os.remove(r"..\tests\examples\no_logfile_waypoints\GPX\Waypoints_02-OCT-17.gpx")
+
+    def test_add_several_wpts_without_assigning(self):
+
+        struct_time = time.strptime("02 Oct 17 20 17 05", "%d %b %y %H %M %S")
+        with mock.patch('__builtin__.raw_input', side_effect=["NEW", "N 49\xb057.340, E 009\xb034.222", "n", "y", "TWO",
+                                                              "N 39\xb057.340, E 010\xb034.222", "n", "n"]):
+            with mock.patch("time.localtime", return_value=struct_time):
+                self.x.add_waypoints()
+        self.assertEqual(len(self.x.waypoints), 4)  # before: 2
+
+        expected = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com/GPX/1/' \
+                   u'1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://www.garmin.' \
+                   u'com/xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPoint' \
+                   u'Extension/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance' \
+                   u'" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd ' \
+                   u'http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlschemas/GpxExtensionsv3' \
+                   u'.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://www8.garmin.com/xmlschemas/' \
+                   u'WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.' \
+                   u'com/xmlschemas/TrackPointExtensionv1.xsd"><metadata><link href="http://www.garmin.com"><text>Garmin' \
+                   u' International</text></link><time>2017-10-02T20:17:05Z</time></metadata><wpt lat="49.9556666667" ' \
+                   u'lon="9.57036666667"><time>2017-10-02T20:17:05Z</time><name>NEW</name><sym>Flag, Blue</sym></wpt>' \
+                   u'<wpt lat="39.9556666667" lon="10.5703666667"><time>2017-10-02T20:17:05Z</time><name>TWO</name>' \
+                   u'<sym>Flag, Blue</sym></wpt></gpx>'
+        with open(r"..\tests\examples\no_logfile_waypoints\GPX\Waypoints_02-OCT-17.gpx") as wptfile:
+            content = wptfile.read().decode("utf-8")
+        self.assertEqual(content, expected)
+
+        os.remove(r"..\tests\examples\no_logfile_waypoints\GPX\Waypoints_02-OCT-17.gpx")
+
+    def test_add_one_with_assigning_to_suggestion(self):
+
+        shutil.copy2(r"..\tests\examples\no_logfile_waypoints\GPX\GC6K86W.gpx",
+                     r"..\tests\examples\temp\GC6K86W.gpx")
+
+        struct_time = time.strptime("02 Oct 17 20 17 05", "%d %b %y %H %M %S")
+        with mock.patch('__builtin__.raw_input', side_effect=["SAALE", "N 49\xb057.340, E 009\xb034.222", "y", "1", "n"]):
+            with mock.patch("time.localtime", return_value=struct_time):
+                self.x.add_waypoints()
+
+        self.assertEqual(len(self.x.waypoints), 2)  # still two because waypoints belongs to cache
+        file_exists = os.path.isfile(r"..\tests\examples\no_logfile_waypoints\GPX\Waypoints_02-OCT-17.gpx")
+        self.assertTrue(file_exists)
+
+        for gc in self.x.geocaches:
+            if gc.gccode == "GC6K86W":
+                self.assertEqual(len(gc.waypoints), 1)
+
+        os.remove(r"..\tests\examples\no_logfile_waypoints\GPX\Waypoints_02-OCT-17.gpx")
+        shutil.move(r"..\tests\examples\temp\GC6K86W.gpx",
+                    r"..\tests\examples\no_logfile_waypoints\GPX\GC6K86W.gpx")
+
+    def test_add_one_with_assigning_to_other(self):
+
+        shutil.copy2(r"..\tests\examples\no_logfile_waypoints\GPX\GC1XRPM.gpx",
+                     r"..\tests\examples\temp\GC1XRPM.gpx")
+
+        struct_time = time.strptime("02 Oct 17 20 17 05", "%d %b %y %H %M %S")
+        with mock.patch('__builtin__.raw_input', side_effect=["SAALE", "N 49\xb057.340, E 009\xb034.222", "y", "2",
+                                                              "GC1XRPM", "n"]):
+            with mock.patch("time.localtime", return_value=struct_time):
+                self.x.add_waypoints()
+
+        self.assertEqual(len(self.x.waypoints), 2)  # still two because waypoints belongs to cache
+        file_exists = os.path.isfile(r"..\tests\examples\no_logfile_waypoints\GPX\Waypoints_02-OCT-17.gpx")
+        self.assertTrue(file_exists)
+
+        for gc in self.x.geocaches:
+            if gc.gccode == "GC1XRPM":
+                self.assertEqual(len(gc.waypoints), 2)
+
+        os.remove(r"..\tests\examples\no_logfile_waypoints\GPX\Waypoints_02-OCT-17.gpx")
+        shutil.move(r"..\tests\examples\temp\GC1XRPM.gpx",
+                    r"..\tests\examples\no_logfile_waypoints\GPX\GC1XRPM.gpx")
+
+    def test_add_one_with_assigning_to_other_not_successfull(self):
+
+        struct_time = time.strptime("02 Oct 17 20 17 05", "%d %b %y %H %M %S")
+        with mock.patch('__builtin__.raw_input', side_effect=["SAALE", "N 49\xb057.340, E 009\xb034.222", "y", "2",
+                                                              "fewufeiwf", "n"]):
+            with mock.patch("time.localtime", return_value=struct_time):
+                self.x.add_waypoints()
+
+        self.assertEqual(len(self.x.waypoints), 3)  # new waypoint is in here
+        file_exists = os.path.isfile(r"..\tests\examples\no_logfile_waypoints\GPX\Waypoints_02-OCT-17.gpx")
+        self.assertTrue(file_exists)
+
+        os.remove(r"..\tests\examples\no_logfile_waypoints\GPX\Waypoints_02-OCT-17.gpx")
+
+
 def create_testsuite():
     """creates a testsuite with out of all tests in this file"""
     suite = unittest.TestSuite()
@@ -2126,6 +2232,7 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestCreateWaypointfilestrings))
     suite.addTest(unittest.makeSuite(TestShowOnMap))
     suite.addTest(unittest.makeSuite(TestAddWaypointToFiles))
+    suite.addTest(unittest.makeSuite(TestAddWaypoints))
     return suite
 
 
