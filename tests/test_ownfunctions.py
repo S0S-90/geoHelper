@@ -474,6 +474,10 @@ class TestGetMonthNumber(unittest.TestCase):
         x = ownfunctions.get_month_number("Mar")
         self.assertEqual(x, 3)
 
+    def test_march_ger(self):
+        x = ownfunctions.get_month_number("Mrz")
+        self.assertEqual(x, 3)
+
     def test_april(self):
         x = ownfunctions.get_month_number("Apr")
         self.assertEqual(x, 4)
@@ -502,12 +506,20 @@ class TestGetMonthNumber(unittest.TestCase):
         x = ownfunctions.get_month_number("Oct")
         self.assertEqual(x, 10)
 
+    def test_october_ger(self):
+        x = ownfunctions.get_month_number("Okt")
+        self.assertEqual(x, 10)
+
     def test_november(self):
         x = ownfunctions.get_month_number("Nov")
         self.assertEqual(x, 11)
 
     def test_december(self):
         x = ownfunctions.get_month_number("Dec")
+        self.assertEqual(x, 12)
+
+    def test_december_ger(self):
+        x = ownfunctions.get_month_number("Dez")
         self.assertEqual(x, 12)
 
     def test_other_string_givesNone(self):

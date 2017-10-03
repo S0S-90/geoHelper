@@ -344,6 +344,8 @@ def get_month_number(string):
         return 2
     elif string == "Mar":
         return 3
+    elif string == "Mrz":
+        return 3
     elif string == "Apr":
         return 4
     elif string == "May":
@@ -358,9 +360,13 @@ def get_month_number(string):
         return 9
     elif string == "Oct":
         return 10
+    elif string == "Okt":
+        return 10
     elif string == "Nov":
         return 11
     elif string == "Dec":
+        return 12
+    elif string == "Dez":
         return 12
 
 

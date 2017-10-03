@@ -1608,8 +1608,8 @@ class TestAssignWaypoints(unittest.TestCase):
         # copy files that will be changed
         shutil.copy2(r"..\tests\examples\no_logfile_waypoints2\GPX\Wegpunkte_05-SEP-17.gpx",
                      r"..\tests\examples\temp\Wegpunkte_05-SEP-17.gpx")
-        shutil.copy2(r"..\tests\examples\no_logfile_waypoints2\GPX\Waypoints_11-MRZ-17.gpx",
-                     r"..\tests\examples\temp\Waypoints_11-MRZ-17.gpx")
+        shutil.copy2(r"..\tests\examples\no_logfile_waypoints2\GPX\Waypoints_11-MAR-17.gpx",
+                     r"..\tests\examples\temp\Waypoints_11-MAR-17.gpx")
 
         # run function assign_waypoint()
         with mock.patch('__builtin__.raw_input',
@@ -1716,7 +1716,7 @@ class TestAssignWaypoints(unittest.TestCase):
                    ' International</text></link><time>2017-03-11T13:42:47Z</time></metadata><wpt lat="49.760150" ' \
                    'lon="9.990900"><ele>216.568268</ele><time>2017-03-11T13:44:53Z</time><name>BLICK ZUM RANDERSACKERER' \
                    ' KÄPPE (GC6K86W)</name><sym>Flag, Blue</sym></wpt></gpx>'
-        with open(r"..\tests\examples\no_logfile_waypoints2\GPX\Waypoints_11-MRZ-17.gpx") as wptfile:
+        with open(r"..\tests\examples\no_logfile_waypoints2\GPX\Waypoints_11-MAR-17.gpx") as wptfile:
             output = wptfile.read()
         self.assertEqual(output, expected)
 
@@ -1742,8 +1742,8 @@ class TestAssignWaypoints(unittest.TestCase):
         """move files back after tests are done"""
         shutil.move(r"..\tests\examples\temp\Wegpunkte_05-SEP-17.gpx",
                     r"..\tests\examples\no_logfile_waypoints2\GPX\Wegpunkte_05-SEP-17.gpx")
-        shutil.move(r"..\tests\examples\temp\Waypoints_11-MRZ-17.gpx",
-                    r"..\tests\examples\no_logfile_waypoints2\GPX\Waypoints_11-MRZ-17.gpx")
+        shutil.move(r"..\tests\examples\temp\Waypoints_11-MAR-17.gpx",
+                    r"..\tests\examples\no_logfile_waypoints2\GPX\Waypoints_11-MAR-17.gpx")
 
 
 class TestCreateMapinfoOne(unittest.TestCase):
@@ -1844,7 +1844,7 @@ class TestCreateWaypointfilestrings(unittest.TestCase):
 
         namelist = [r"..\tests\examples\no_logfile_waypoints\GPX\Wegpunkte_08-OKT-16.gpx",
                     r"..\tests\examples\no_logfile_waypoints\GPX\Wegpunkte_14-JAN-17.gpx",
-                    r"..\tests\examples\no_logfile_waypoints\GPX\Waypoints_11-MRZ-17.gpx"]
+                    r"..\tests\examples\no_logfile_waypoints\GPX\Waypoints_11-MAR-17.gpx"]
 
         cont1 = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com/GPX/1/1"'
         cont1 += u' xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://www.garmin.com/'
@@ -2051,8 +2051,36 @@ class TestAddWaypointToFiles(unittest.TestCase):
                     r"..\tests\examples\no_logfile_waypoints\GPX\Wegpunkte_14-JAN-17.gpx")  # move file back
 
     def test_add_wpt_to_existing_file_eng(self):
-        pass
-        # TODO
+
+        shutil.copy2(r"..\tests\examples\no_logfile_waypoints\GPX\Waypoints_11-MAR-17.gpx",
+                     r"..\tests\examples\temp\Waypoints_11-MAR-17.gpx")  # copy file that is to be changed
+
+        struct_time = time.strptime("11 Mar 17 13 07 25", "%d %b %y %H %M %S")
+        wpt = geocache.Waypoint("NEW", [49.792433, 9.932233])
+        with mock.patch("time.localtime", return_value=struct_time):
+            self.x._add_waypoint_to_files(wpt)
+
+        expected = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com/GPX/1/' \
+                   u'1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://www.garmin.' \
+                   u'com/xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPoint' \
+                   u'Extension/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance' \
+                   u'" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd ' \
+                   u'http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlschemas/GpxExtensionsv3' \
+                   u'.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://www8.garmin.com/xmlschemas/' \
+                   u'WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.' \
+                   u'com/xmlschemas/TrackPointExtensionv1.xsd"><metadata><link href="http://www.garmin.com"><text>Garmin' \
+                   u' International</text></link><time>2017-03-11T13:42:47Z</time></metadata><wpt lat="49.760150" ' \
+                   u'lon="9.990900"><ele>216.568268</ele><time>2017-03-11T13:44:53Z</time><name>BLICK ZUM RANDERSACKERER' \
+                   u' KÄPPE</name><sym>Flag, Blue</sym></wpt><wpt lat="49.792433" ' \
+                   u'lon="9.932233"><time>2017-03-11T13:07:25Z</time><name>NEW</name><sym>Flag, Blue</sym></wpt></gpx>'
+
+        with open(r"..\tests\examples\no_logfile_waypoints\GPX\Waypoints_11-MAR-17.gpx") as wptfile:
+            content = wptfile.read().decode("utf-8")
+
+        self.assertEqual(content, expected)
+
+        shutil.move(r"..\tests\examples\temp\Waypoints_11-MAR-17.gpx",
+                    r"..\tests\examples\no_logfile_waypoints\GPX\Waypoints_11-MAR-17.gpx")  # move file back
 
 
 def create_testsuite():
