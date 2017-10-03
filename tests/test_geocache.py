@@ -3,11 +3,10 @@
 
 """tests for geocache.py"""
 
-from __future__ import print_function
-
 import unittest
 import datetime
 import sys
+import xml.etree.ElementTree as ElementTree
 import test_frame
 import geocache
 
@@ -610,10 +609,9 @@ class TestInvalidInput(unittest.TestCase):
 
     def test_broken_file(self):
         exception = False  # has to be that complicated because ParseError unknown
-        # noinspection PyBroadException
         try:
             geocache.Geocache("../tests/examples/GC6V4PN.gpx")
-        except:  # broad exception because ParseError unknown
+        except ElementTree.ParseError:
             exception = True
         self.assertTrue(exception)
 

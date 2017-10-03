@@ -710,7 +710,7 @@ class GPSContent(object):
             string += u'</metadata><wpt lat="{}" lon="{}"><time>{}</time><name>{}</name><sym>Flag, Blue</sym></wpt></gpx>'\
                 .format(waypoint.coordinates[0], waypoint.coordinates[1], timestring, waypoint.name)
             with open(wptfile_path, "w") as wptfile:
-                wptfile.write(string.encode("utf-8"))
+                wptfile.write(string.encode())
 
     def add_waypoints(self):
         """adds waypoints"""
@@ -780,7 +780,7 @@ class GPSContent(object):
         for cont in waypointfiles:
             old = u"<name>{}</name>".format(waypoint.shown_name)
             new = u"<name>{}</name>".format(waypoint.name)
-            new_cont = cont.replace(old.encode("utf-8"), new.encode("utf-8"))
+            new_cont = cont.replace(old.encode(), new.encode())
             wptfiles_new.append(new_cont)
         return wptfiles_new
 
@@ -799,25 +799,25 @@ class GPSContent(object):
             cont_list = cont.split("</wpt><wpt ")  # split in single waypoints
             for i, wpt_cont in enumerate(cont_list):
                 if len(cont_list) == 1:  # only one waypoint in file
-                    x = wpt_cont.find(u"<name>{}</name>".format(waypoint.name).encode("utf-8"))
+                    x = wpt_cont.find(u"<name>{}</name>".format(waypoint.name).encode())
                     if x != -1:  # waypoint present in current string
                         new_cont = ""  # delete everything
                     else:  # waypoint not present in current string
                         new_cont += wpt_cont
                 elif i == 0:  # first waypoint in file
-                    x = wpt_cont.find(u"<name>{}</name>".format(waypoint.name).encode("utf-8"))
+                    x = wpt_cont.find(u"<name>{}</name>".format(waypoint.name).encode())
                     if x != -1:  # waypoint present in current string
                         new_cont += wpt_cont[:948]
                     else:  # waypoint not present in current string
                         new_cont += wpt_cont + "</wpt>"
                 elif i == len(cont_list) - 1:  # last cache in file
-                    x = wpt_cont.find(u"<name>{}</name>".format(waypoint.name).encode("utf-8"))
+                    x = wpt_cont.find(u"<name>{}</name>".format(waypoint.name).encode())
                     if x != -1:  # waypoint present in current string
                         new_cont += "</gpx>"
                     else:  # waypoint not present in current string
                         new_cont += "<wpt " + wpt_cont
                 else:  # neither first nor last cache in file with 3 or more caches
-                    x = wpt_cont.find(u"<name>{}</name>".format(waypoint.name).encode("utf-8"))
+                    x = wpt_cont.find(u"<name>{}</name>".format(waypoint.name).encode())
                     if x != -1:  # waypoint present in current string
                         new_cont += ""
                     else:  # waypoint not present in current string

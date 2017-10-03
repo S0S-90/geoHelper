@@ -4,13 +4,12 @@
 """tests for gpscontent.py"""
 
 import unittest
-import mock
+from unittest import mock
 import sys
 import shutil
 import os
 import time
-# noinspection PyCompatibility
-from StringIO import StringIO  # module not existent in python 3
+from io import StringIO
 import xml.etree.ElementTree as ElementTree
 import test_frame
 import ownfunctions
@@ -1885,7 +1884,7 @@ class TestCreateWaypointfilestrings(unittest.TestCase):
         cont3 += u'268</ele><time>2017-03-11T13:44:53Z</time><name>BLICK ZUM RANDERSACKERER KÄPPE</name><sym>Flag, '
         cont3 += u'Blue</sym></wpt></gpx>'
 
-        contlist = [str(cont1.encode("utf-8")), str(cont2.encode("utf-8")), str(cont3.encode("utf-8"))]
+        contlist = [str(cont1.encode()), str(cont2.encode()), str(cont3.encode())]
 
         self.assertEqual(y, [namelist, contlist])
 
