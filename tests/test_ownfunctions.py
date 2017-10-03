@@ -143,22 +143,27 @@ class TestShowXML(unittest.TestCase):
         sys.stdout = out
         ownfunctions.show_xml(tree)
         output = out.getvalue()
-        expected_output = "{http://www.topografix.com/GPX/1/1}gpx {'{http://www.w3.org/2001/XMLSchema-instance}" \
-                          "schemaLocation': 'http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" \
-                          " http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlschemas/Gpx" \
-                          "Extensionsv3.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://www8.garmin.com" \
-                          "/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1" \
-                          " http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd', 'version': '1.1', 'creator':" \
-                          " 'eTrex 10'} \n{http://www.topografix.com/GPX/1/1}metadata {} \n{http://www.topografix.com/" \
-                          "GPX/1/1}link {'href': 'http://www.garmin.com'} \n{http://www.topografix.com/GPX/1/1}text {} " \
-                          "Garmin International\n{http://www.topografix.com/GPX/1/1}time {} 2016-09-10T13:36:17Z\n{http:" \
-                          "//www.topografix.com/GPX/1/1}wpt {'lat': '49.794845', 'lon': '9.944192'} \n{http://www." \
-                          "topografix.com/GPX/1/1}ele {} 187.175018\n{http://www.topografix.com/GPX/1/1}time {} " \
-                          "2016-09-10T13:36:17Z\n{http://www.topografix.com/GPX/1/1}name {} ELEFANT\n{http://www." \
-                          "topografix.com/GPX/1/1}sym {} Flag, Blue\n{http://www.topografix.com/GPX/1/1}wpt {'lat': " \
-                          "'49.793617', 'lon': '9.943833'} \n{http://www.topografix.com/GPX/1/1}ele {} 187.503296\n" \
-                          "{http://www.topografix.com/GPX/1/1}time {} 2016-09-10T14:24:16Z\n{http://www.topografix.com" \
-                          "/GPX/1/1}name {} ELEFANT FINAL\n{http://www.topografix.com/GPX/1/1}sym {} Flag, Blue\n"
+        expected_output = "{http://www.topografix.com/GPX/1/1}gpx {'creator': 'eTrex 10', 'version': '1.1', '{http://www" \
+                          ".w3.org/2001/XMLSchema-instance}schemaLocation': 'http://www.topografix.com/GPX/1/1 " \
+                          "http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3" \
+                          " http://www8.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/Way" \
+                          "pointExtension/v1 http://www8.garmin.com/xmlschemas/WaypointExtensionv1.xsd http://www.garmin" \
+                          ".com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1" \
+                          ".xsd'} \n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}metadata {} \n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}link {'href': 'http://www.garmin.com'} \n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}text {} Garmin International\n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}time {} 2016-09-10T13:36:17Z\n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}wpt {'lat': '49.794845', 'lon': '9.944192'} \n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}ele {} 187.175018\n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}time {} 2016-09-10T13:36:17Z\n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}name {} ELEFANT\n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}sym {} Flag, Blue\n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}wpt {'lat': '49.793617', 'lon': '9.943833'} \n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}ele {} 187.503296\n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}time {} 2016-09-10T14:24:16Z\n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}name {} ELEFANT FINAL\n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}sym {} Flag, Blue\n"
         self.assertEqual(output, expected_output)
 
 

@@ -22,7 +22,6 @@ def connected(website):
         return True
 
 
-# noinspection PyClassicStyleClass
 class MyHTMLParser(HTMLParser):
     """parser to read all data that is in a table (tags <td> / </td)
     
@@ -123,7 +122,7 @@ def show_xml(xml_tree):
     for x in xml_tree.iter():
         t = ""
         if x.text:
-            t = x.text.encode("utf-8")
+            t = x.text
         user_io.general_output("{} {} {}".format(x.tag, str(x.attrib), t))
 
 
