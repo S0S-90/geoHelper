@@ -185,8 +185,8 @@ class GPSContent(object):
             second element: list of found caches as Geocache-objects"""
 
         logged_caches_raw = []
-        with open(os.path.join(self.path, "geocache_visits.txt")) as visits:
-            visits = visits.read().decode("utf-16")
+        with open(os.path.join(self.path, "geocache_visits.txt"), encoding="utf-16") as visits:
+            visits = visits.read()
             visits_lines = visits.split("\n")
             for line in visits_lines:
                 logged_caches_raw.append(line)
@@ -346,7 +346,7 @@ class GPSContent(object):
         search_results = []
         criterion = user_io.search()
         if criterion == "name" or criterion == "description":  # search for name or description
-            keyword = user_io.input_decode(user_io.SEARCH_FOR)
+            keyword = user_io.general_input(user_io.SEARCH_FOR)
             for c in self.geocaches:
                 if keyword in getattr(c, criterion):
                     search_results.append(c)
@@ -683,17 +683,17 @@ class GPSContent(object):
                 waypoint.coordinates[0], waypoint.coordinates[1], timestring, waypoint.name)
             with open(wptfile_path) as wptfile:
                 content = wptfile.read()
-            newstring = content[:-6].decode("utf-8") + wptstring + "</gpx>"
+            newstring = content[:-6] + wptstring + "</gpx>"
             with open(wptfile_path, "w") as wptfile_new:
-                wptfile_new.write(newstring.encode("utf-8"))
+                wptfile_new.write(newstring.encode())
         elif os.path.isfile(wptfile_path_ger):   # file Wegpunkte_XX-XX-XX.gpx exists
             wptstring = u'<wpt lat="{}" lon="{}"><time>{}</time><name>{}</name><sym>Flag, Blue</sym></wpt>'.format(
                 waypoint.coordinates[0], waypoint.coordinates[1], timestring, waypoint.name)
             with open(wptfile_path_ger) as wptfile:
                 content = wptfile.read()
-            newstring = content[:-6].decode("utf-8") + wptstring + "</gpx>"
+            newstring = content[:-6] + wptstring + "</gpx>"
             with open(wptfile_path_ger, "w") as wptfile_new:
-                wptfile_new.write(newstring.encode("utf-8"))
+                wptfile_new.write(newstring.encode())
 
         else:   # if no waypointfile from today exists -> create the file
             string = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com/GPX'
@@ -799,25 +799,25 @@ class GPSContent(object):
             cont_list = cont.split("</wpt><wpt ")  # split in single waypoints
             for i, wpt_cont in enumerate(cont_list):
                 if len(cont_list) == 1:  # only one waypoint in file
-                    x = wpt_cont.find(u"<name>{}</name>".format(waypoint.name).encode())
+                    x = wpt_cont.find(u"<name>{}</name>".format(waypoint.name))
                     if x != -1:  # waypoint present in current string
                         new_cont = ""  # delete everything
                     else:  # waypoint not present in current string
                         new_cont += wpt_cont
                 elif i == 0:  # first waypoint in file
-                    x = wpt_cont.find(u"<name>{}</name>".format(waypoint.name).encode())
+                    x = wpt_cont.find(u"<name>{}</name>".format(waypoint.name))
                     if x != -1:  # waypoint present in current string
                         new_cont += wpt_cont[:948]
                     else:  # waypoint not present in current string
                         new_cont += wpt_cont + "</wpt>"
                 elif i == len(cont_list) - 1:  # last cache in file
-                    x = wpt_cont.find(u"<name>{}</name>".format(waypoint.name).encode())
+                    x = wpt_cont.find(u"<name>{}</name>".format(waypoint.name))
                     if x != -1:  # waypoint present in current string
                         new_cont += "</gpx>"
                     else:  # waypoint not present in current string
                         new_cont += "<wpt " + wpt_cont
                 else:  # neither first nor last cache in file with 3 or more caches
-                    x = wpt_cont.find(u"<name>{}</name>".format(waypoint.name).encode())
+                    x = wpt_cont.find(u"<name>{}</name>".format(waypoint.name))
                     if x != -1:  # waypoint present in current string
                         new_cont += ""
                     else:  # waypoint not present in current string
