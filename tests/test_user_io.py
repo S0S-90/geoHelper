@@ -4,10 +4,9 @@
 """tests for user_io.py"""
 
 import unittest
-import mock
+from unittest import mock
 import sys
-# noinspection PyCompatibility
-from StringIO import StringIO  # module not existent in python 3
+from io import StringIO
 import test_frame
 import user_io
 import geocache

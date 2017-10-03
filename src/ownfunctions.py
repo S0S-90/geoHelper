@@ -5,10 +5,9 @@
 
 import math
 import datetime
-# noinspection PyCompatibility
-from HTMLParser import HTMLParser  # not existent in python 3
+from html.parser import HTMLParser
 import unicodedata
-import urllib
+import urllib.request
 
 import user_io
 
@@ -16,7 +15,7 @@ import user_io
 def connected(website):
     """prueft, ob Internetverbindung vorhanden"""
     try:
-        urllib.urlopen(website)
+        urllib.request.urlopen(website)
     except IOError:
         return False
     else:
@@ -40,6 +39,10 @@ class MyHTMLParser(HTMLParser):
     ---------
     return data(): return list data 
     """
+
+    def error(self, message):
+        """automatically added function by PyCharm"""
+        pass
 
     def __init__(self):
         HTMLParser.__init__(self)
@@ -78,7 +81,7 @@ def find_cp1252():
 
     cp1252 = []  # find unicode-descriptions in cpdata and save them in cp1252
     for i, d in enumerate(cpdata):
-        if i % 3 == 1 and i > 6:
+        if i % 4 == 3 and i > 6:
             cp1252.append(d)
     return cp1252
 
@@ -98,17 +101,17 @@ def replace_signs(string):
             newstring += c
         else:
             try:
-                unic = unicodedata.name(unicode(c))
+                unic = unicodedata.name(c)
             except ValueError:  # if sign not in unicode
                 newstring += u"\u001a"
             else:
                 if unic in ALLOWED_SIGNS:  # allowed signs
                     newstring += c
-                elif unicode(c) == u"\u263a":  # smiley
+                elif c == u"\u263a":  # smiley
                     newstring += ":-)"
-                elif unicode(c) == u"\u2211":  # sign for sum
+                elif c == u"\u2211":  # sign for sum
                     newstring += "sum"
-                elif unicode(c) == u"\u221a":  # sign for square root
+                elif c == u"\u221a":  # sign for square root
                     newstring += "sqrt"
                 else:  # unknown sign
                     newstring += u"\u001a"
@@ -178,7 +181,7 @@ def coords_minutes_to_decimal(coordstring):
     return: list of floats [lat, lon]
     """
 
-    if type(coordstring) != unicode and type(coordstring) != str:
+    if type(coordstring) != str:
         raise TypeError("Wrong input type: {}".format(type(coordstring)))
     if len(coordstring) != 25:
         raise ValueError("Bad Input.")
@@ -211,7 +214,7 @@ def coords_minutes_to_seconds(coordstring):
     to degrees, minutes and seconds (e.g. for google maps input)
     input and return value is a string"""
 
-    if type(coordstring) != unicode and type(coordstring) != str:
+    if type(coordstring) != str:
         raise TypeError("Wrong input type: {}".format(type(coordstring)))
     if len(coordstring) != 25:
         return None
@@ -245,7 +248,7 @@ def coords_url_to_decimal(url):
     input: string
     return: list of floats [lat, lon]"""
 
-    if type(url) != str and type(url) != unicode:
+    if type(url) != str:
         raise TypeError("Wrong input type: {}".format(type(url)))
     if url[:31] == "https://www.geocaching.com/map/":  # geocaching.com/map
         indices = [index for index, char in enumerate(url) if char == "&"]

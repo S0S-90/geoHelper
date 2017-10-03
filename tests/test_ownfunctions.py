@@ -6,9 +6,9 @@
 import unittest
 import datetime
 import sys
-# noinspection PyCompatibility
-from StringIO import StringIO  # module not existent in python 3
+from io import StringIO
 import xml.etree.ElementTree as ElementTree
+
 import test_frame
 import ownfunctions
 
@@ -137,6 +137,7 @@ class TestReplaceSigns(unittest.TestCase):
 class TestShowXML(unittest.TestCase):
 
     def test(self):
+        self.maxDiff = None
         tree = ElementTree.parse(r"..\tests\examples\xml_test.gpx")
         out = StringIO()
         sys.stdout = out
