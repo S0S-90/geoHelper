@@ -558,20 +558,17 @@ class GPSContent(object):
                     color = "blue"
                 else:  # cache of unknown type
                     color = "pink"
-                name = g.name.encode(user_io.CODING)
+                name = g.name
                 if g.waypoints and show_waypoints:  # if waypoints: add gccode to name
                     name = "{} ({})".format(name, g.gccode)
-                mapinfo.write("{},{} {{{}}} <{}>\n".
-                              format(g.coordinates[0], g.coordinates[1], name, color))
+                mapinfo.write("{},{} {{{}}} <{}>\n".format(g.coordinates[0], g.coordinates[1], name, color))
                 if show_waypoints:  # waypoints belonging to cache
                     for w in g.waypoints:
-                        mapinfo.write("{},{} {{{}}} <{}>\n".
-                                      format(w.coordinates[0], w.coordinates[1], w.name.encode(user_io.CODING), color))
+                        mapinfo.write("{},{} {{{}}} <{}>\n".format(w.coordinates[0], w.coordinates[1], w.name, color))
 
             if free_waypoints:  # free waypoints
                 for w in self.waypoints:
-                    mapinfo.write("{},{} {{{}}} <{}>\n".
-                                  format(w.coordinates[0], w.coordinates[1], w.name.encode(user_io.CODING), "yellow"))
+                    mapinfo.write("{},{} {{{}}} <{}>\n".format(w.coordinates[0], w.coordinates[1], w.name, "yellow"))
 
     @staticmethod
     def _create_mapinfo_one(cache):
@@ -594,16 +591,14 @@ class GPSContent(object):
             else:  # cache of unknown type
                 color = "pink"
 
-            mapinfo.write("{},{} {{{}}} <{}>\n".
-                          format(cache.coordinates[0], cache.coordinates[1], cache.name.encode(user_io.CODING), color))
+            mapinfo.write("{},{} {{{}}} <{}>\n".format(cache.coordinates[0], cache.coordinates[1], cache.name, color))
 
             for w in cache.waypoints:  # waypoints
                 if color == "yellow":
                     color_w = "grey"
                 else:
                     color_w = "yellow"
-                mapinfo.write("{},{} {{{}}} <{}>\n".
-                              format(w.coordinates[0], w.coordinates[1], w.shown_name.encode(user_io.CODING), color_w))
+                mapinfo.write("{},{} {{{}}} <{}>\n".format(w.coordinates[0], w.coordinates[1], w.shown_name, color_w))
 
     def show_on_map(self, cachelist, all_caches=False):
         """shows all caches in cachelist on a map (uses webservice 'www.mapcustomizer.com')"""
@@ -681,19 +676,19 @@ class GPSContent(object):
         if os.path.isfile(wptfile_path):   # file Waypoints_XX-XX-XX.gpx exists
             wptstring = u'<wpt lat="{}" lon="{}"><time>{}</time><name>{}</name><sym>Flag, Blue</sym></wpt>'.format(
                 waypoint.coordinates[0], waypoint.coordinates[1], timestring, waypoint.name)
-            with open(wptfile_path) as wptfile:
+            with open(wptfile_path, encoding="utf-8") as wptfile:
                 content = wptfile.read()
             newstring = content[:-6] + wptstring + "</gpx>"
-            with open(wptfile_path, "w") as wptfile_new:
-                wptfile_new.write(newstring.encode())
+            with open(wptfile_path, "w", encoding="utf-8") as wptfile_new:
+                wptfile_new.write(newstring)
         elif os.path.isfile(wptfile_path_ger):   # file Wegpunkte_XX-XX-XX.gpx exists
             wptstring = u'<wpt lat="{}" lon="{}"><time>{}</time><name>{}</name><sym>Flag, Blue</sym></wpt>'.format(
                 waypoint.coordinates[0], waypoint.coordinates[1], timestring, waypoint.name)
             with open(wptfile_path_ger) as wptfile:
                 content = wptfile.read()
             newstring = content[:-6] + wptstring + "</gpx>"
-            with open(wptfile_path_ger, "w") as wptfile_new:
-                wptfile_new.write(newstring.encode())
+            with open(wptfile_path_ger, "w", encoding="utf-8") as wptfile_new:
+                wptfile_new.write(newstring)
 
         else:   # if no waypointfile from today exists -> create the file
             string = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com/GPX'
@@ -709,8 +704,8 @@ class GPSContent(object):
                 .format(timestring)
             string += u'</metadata><wpt lat="{}" lon="{}"><time>{}</time><name>{}</name><sym>Flag, Blue</sym></wpt></gpx>'\
                 .format(waypoint.coordinates[0], waypoint.coordinates[1], timestring, waypoint.name)
-            with open(wptfile_path, "w") as wptfile:
-                wptfile.write(string.encode())
+            with open(wptfile_path, "w", encoding="utf-8") as wptfile:
+                wptfile.write(string)
 
     def add_waypoints(self):
         """adds waypoints"""
@@ -778,9 +773,9 @@ class GPSContent(object):
 
         wptfiles_new = []
         for cont in waypointfiles:
-            old = u"<name>{}</name>".format(waypoint.shown_name)
-            new = u"<name>{}</name>".format(waypoint.name)
-            new_cont = cont.replace(old.encode(), new.encode())
+            old = "<name>{}</name>".format(waypoint.shown_name)
+            new = "<name>{}</name>".format(waypoint.name)
+            new_cont = cont.replace(old, new)
             wptfiles_new.append(new_cont)
         return wptfiles_new
 

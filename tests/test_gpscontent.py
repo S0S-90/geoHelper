@@ -1661,7 +1661,7 @@ class TestAssignWaypoints(unittest.TestCase):
                    '912979</ele><time>2017-01-14T19:02:03Z</time><name>DO NOTHING</name><sym>Flag, Blue</sym></wpt>' \
                    '<wpt lat="49.790983" lon="9.932300"><ele>231.912979</ele><time>2017-01-14T19:02:03Z</time><name>' \
                    'BULLSHIT</name><sym>Flag, Blue</sym></wpt></gpx>'
-        with open(r"..\tests\examples\no_logfile_waypoints2\GPX\Wegpunkte_05-SEP-17.gpx") as wptfile:
+        with open(r"..\tests\examples\no_logfile_waypoints2\GPX\Wegpunkte_05-SEP-17.gpx", encoding="utf-8") as wptfile:
             output = wptfile.read()
         self.assertEqual(output, expected)
 
@@ -1717,7 +1717,7 @@ class TestAssignWaypoints(unittest.TestCase):
                    ' International</text></link><time>2017-03-11T13:42:47Z</time></metadata><wpt lat="49.760150" ' \
                    'lon="9.990900"><ele>216.568268</ele><time>2017-03-11T13:44:53Z</time><name>BLICK ZUM RANDERSACKERER' \
                    ' KÄPPE (GC6K86W)</name><sym>Flag, Blue</sym></wpt></gpx>'
-        with open(r"..\tests\examples\no_logfile_waypoints2\GPX\Waypoints_11-MAR-17.gpx") as wptfile:
+        with open(r"..\tests\examples\no_logfile_waypoints2\GPX\Waypoints_11-MAR-17.gpx", encoding="utf-8") as wptfile:
             output = wptfile.read()
         self.assertEqual(output, expected)
 
@@ -1735,7 +1735,7 @@ class TestAssignWaypoints(unittest.TestCase):
                    'lon="9.932233"><time>2017-01-14T13:43:14Z</time><name>MÄRCHENSTUHL 2 (GC1XRPM)</name><sym>Flag, ' \
                    'Blue</sym></wpt><wpt lat="49.790983" lon="9.932300"><ele>231.912979</ele><time>2017-01-14T19:02:03Z' \
                    '</time><name>DOM FINAL</name><sym>Flag, Blue</sym></wpt></gpx>'
-        with open(r"..\tests\examples\no_logfile_waypoints2\GPX\Wegpunkte_14-JAN-17.gpx") as wptfile:
+        with open(r"..\tests\examples\no_logfile_waypoints2\GPX\Wegpunkte_14-JAN-17.gpx", encoding="utf-8") as wptfile:
             output = wptfile.read()
         self.assertEqual(output, expected)
 
@@ -1800,7 +1800,7 @@ class TestCreateMapinfoSeveral(unittest.TestCase):
             output = mapinfo.read().decode("cp1252")
         os.remove("mapinfo.txt")
         expected = u"49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
-        expected += u"49.8076166667,9.91211666667 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+        expected += u"49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
         self.assertEqual(output, expected)
 
     def test_with_waypoints(self):
@@ -1810,7 +1810,7 @@ class TestCreateMapinfoSeveral(unittest.TestCase):
         os.remove("mapinfo.txt")
         expected = u"49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl (GC1XRPM)} <default>\r\n"
         expected += u"49.792433,9.932233 {MÄRCHENSTUHL 2 (GC1XRPM)} <default>\r\n"
-        expected += u"49.8076166667,9.91211666667 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+        expected += u"49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
         self.assertEqual(output, expected)
 
     def test_with_all_waypoints(self):
@@ -1820,7 +1820,7 @@ class TestCreateMapinfoSeveral(unittest.TestCase):
         os.remove("mapinfo.txt")
         expected = u"49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl (GC1XRPM)} <default>\r\n"
         expected += u"49.792433,9.932233 {MÄRCHENSTUHL 2 (GC1XRPM)} <default>\r\n"
-        expected += u"49.8076166667,9.91211666667 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+        expected += u"49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
         expected += u"49.790983,9.9323 {DOM FINAL (GC1QNWT)} <yellow>\r\n"
         expected += u"49.76015,9.9909 {BLICK ZUM RANDERSACKERER KÄPPE} <yellow>\r\n"
         self.assertEqual(output, expected)
@@ -1832,7 +1832,7 @@ class TestCreateMapinfoSeveral(unittest.TestCase):
             output = mapinfo.read().decode("cp1252")
         os.remove("mapinfo.txt")
         expected = u"49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
-        expected += u"49.8076166667,9.91211666667 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+        expected += u"49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
         expected += u"49.790983,9.9323 {DOM FINAL (GC1QNWT)} <yellow>\r\n"
         expected += u"49.76015,9.9909 {BLICK ZUM RANDERSACKERER KÄPPE} <yellow>\r\n"
         self.assertEqual(output, expected)
@@ -1924,7 +1924,7 @@ class TestShowOnMap(unittest.TestCase):
                         with mock.patch("os.remove"):
                             self.x.show_on_map(self.cachelist)
         expected = u"49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
-        expected += u"49.8076166667,9.91211666667 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+        expected += u"49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
         with open("mapinfo.txt", "rb") as mapinfo:
             result = mapinfo.read().decode("cp1252")
         self.assertEqual(expected, result)
@@ -1942,7 +1942,7 @@ class TestShowOnMap(unittest.TestCase):
                             self.x.show_on_map(self.cachelist)
         expected = u"49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl (GC1XRPM)} <default>\r\n"
         expected += u"49.792433,9.932233 {MÄRCHENSTUHL 2 (GC1XRPM)} <default>\r\n"
-        expected += u"49.8076166667,9.91211666667 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+        expected += u"49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
         with open("mapinfo.txt", "rb") as mapinfo:
             result = mapinfo.read().decode("cp1252")
         self.assertEqual(expected, result)
@@ -1956,7 +1956,7 @@ class TestShowOnMap(unittest.TestCase):
                             self.x.show_on_map(self.x.geocaches, True)
         expected = u"49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
         expected += u"-43.695433,-66.4515 {Tesoro Ameghino} <green>\r\n"
-        expected += u"49.8076166667,9.91211666667 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+        expected += u"49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
         expected += u"50.318883,10.1936 {Saaletalblick} <green>\r\n"
         expected += u"49.794497,9.94094 {Hochschule für Musik 1} <blue>\r\n"
         expected += u"49.7948,9.930267 {Wuerzburger webcam} <pink>\r\n"
@@ -1974,7 +1974,7 @@ class TestShowOnMap(unittest.TestCase):
         expected = u"49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl (GC1XRPM)} <default>\r\n"
         expected += u"49.792433,9.932233 {MÄRCHENSTUHL 2 (GC1XRPM)} <default>\r\n"
         expected += u"-43.695433,-66.4515 {Tesoro Ameghino} <green>\r\n"
-        expected += u"49.8076166667,9.91211666667 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+        expected += u"49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
         expected += u"50.318883,10.1936 {Saaletalblick} <green>\r\n"
         expected += u"49.794497,9.94094 {Hochschule für Musik 1} <blue>\r\n"
         expected += u"49.7948,9.930267 {Wuerzburger webcam} <pink>\r\n"
@@ -2193,25 +2193,25 @@ class TestAddWaypoints(unittest.TestCase):
 def create_testsuite():
     """creates a testsuite with out of all tests in this file"""
     suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestInitNoLogfile))
-    suite.addTest(unittest.makeSuite(TestInitWaypoints))
-    suite.addTest(unittest.makeSuite(TestInitOnlyFound))
-    suite.addTest(unittest.makeSuite(TestInitOnlyNotFound))
-    suite.addTest(unittest.makeSuite(TestInitNotOnlyFound))
-    suite.addTest(unittest.makeSuite(TestInitFoundNotOnGPS))
-    suite.addTest(unittest.makeSuite(TestInitNotFoundNotOnGPS))
-    suite.addTest(unittest.makeSuite(TestInitErrorInGPX))
-    suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesOnlyFound))
-    suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesNotOnlyFound))
-    suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesOnlyNotFound))
-    suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesFoundNotOnGPS))
-    suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesNotFoundNotOnGPS))
-    suite.addTest(unittest.makeSuite(TestReadWaypoints))
-    suite.addTest(unittest.makeSuite(TestSortAndShowCaches))
-    suite.addTest(unittest.makeSuite(TestShowAll))
-    suite.addTest(unittest.makeSuite(TestShowAllDist))
-    suite.addTest(unittest.makeSuite(TestReadCache))
-    suite.addTest(unittest.makeSuite(TestShowOne))
+    # suite.addTest(unittest.makeSuite(TestInitNoLogfile))
+    # suite.addTest(unittest.makeSuite(TestInitWaypoints))
+    # suite.addTest(unittest.makeSuite(TestInitOnlyFound))
+    # suite.addTest(unittest.makeSuite(TestInitOnlyNotFound))
+    # suite.addTest(unittest.makeSuite(TestInitNotOnlyFound))
+    # suite.addTest(unittest.makeSuite(TestInitFoundNotOnGPS))
+    # suite.addTest(unittest.makeSuite(TestInitNotFoundNotOnGPS))
+    # suite.addTest(unittest.makeSuite(TestInitErrorInGPX))
+    # suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesOnlyFound))
+    # suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesNotOnlyFound))
+    # suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesOnlyNotFound))
+    # suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesFoundNotOnGPS))
+    # suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesNotFoundNotOnGPS))
+    # suite.addTest(unittest.makeSuite(TestReadWaypoints))
+    # suite.addTest(unittest.makeSuite(TestSortAndShowCaches))
+    # suite.addTest(unittest.makeSuite(TestShowAll))
+    # suite.addTest(unittest.makeSuite(TestShowAllDist))
+    # suite.addTest(unittest.makeSuite(TestReadCache))
+    # suite.addTest(unittest.makeSuite(TestShowOne))
     # suite.addTest(unittest.makeSuite(TestShowGCSelection))
     # suite.addTest(unittest.makeSuite(TestShowGCSelectionDist))
     # suite.addTest(unittest.makeSuite(TestSearch))
@@ -2228,11 +2228,11 @@ def create_testsuite():
     # suite.addTest(unittest.makeSuite(TestRewriteWaypointfiles))
     # suite.addTest(unittest.makeSuite(TestFindSuggestions))
     # suite.addTest(unittest.makeSuite(TestAssignWaypoints))
-    # suite.addTest(unittest.makeSuite(TestCreateMapinfoOne))
-    # suite.addTest(unittest.makeSuite(TestCreateMapinfoSeveral))
+    suite.addTest(unittest.makeSuite(TestCreateMapinfoOne))
+    suite.addTest(unittest.makeSuite(TestCreateMapinfoSeveral))
     suite.addTest(unittest.makeSuite(TestCreateWaypointfilestrings))
-    # suite.addTest(unittest.makeSuite(TestShowOnMap))
-    # suite.addTest(unittest.makeSuite(TestAddWaypointToFiles))
+    suite.addTest(unittest.makeSuite(TestShowOnMap))
+    suite.addTest(unittest.makeSuite(TestAddWaypointToFiles))
     # suite.addTest(unittest.makeSuite(TestAddWaypoints))
     return suite
 
