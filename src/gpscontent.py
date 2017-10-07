@@ -799,13 +799,13 @@ class GPSContent(object):
             cont_list = cont.split("</wpt><wpt ")  # split in single waypoints
             for i, wpt_cont in enumerate(cont_list):
                 if len(cont_list) == 1:  # only one waypoint in file
-                    x = wpt_cont.find(u"<name>{}</name>".format(waypoint.name))
+                    x = wpt_cont.find("<name>{}</name>".format(waypoint.name))
                     if x != -1:  # waypoint present in current string
                         new_cont = ""  # delete everything
                     else:  # waypoint not present in current string
                         new_cont += wpt_cont
                 elif i == 0:  # first waypoint in file
-                    x = wpt_cont.find(u"<name>{}</name>".format(waypoint.name))
+                    x = wpt_cont.find("<name>{}</name>".format(waypoint.name))
                     if x != -1:  # waypoint present in current string
                         new_cont += wpt_cont[:948]
                     else:  # waypoint not present in current string
@@ -817,7 +817,7 @@ class GPSContent(object):
                     else:  # waypoint not present in current string
                         new_cont += "<wpt " + wpt_cont
                 else:  # neither first nor last cache in file with 3 or more caches
-                    x = wpt_cont.find(u"<name>{}</name>".format(waypoint.name))
+                    x = wpt_cont.find("<name>{}</name>".format(waypoint.name))
                     if x != -1:  # waypoint present in current string
                         new_cont += ""
                     else:  # waypoint not present in current string
@@ -835,7 +835,7 @@ class GPSContent(object):
         wptfile_names = glob.glob(os.path.join(gpx_path, "Wegpunkte_*.gpx"))
         wptfile_names += glob.glob(os.path.join(gpx_path, "Waypoints_*.gpx"))
         for wptfile_name in wptfile_names:
-            with open(wptfile_name) as wptfile:
+            with open(wptfile_name, encoding="utf-8") as wptfile:
                 wpt_files.append(wptfile.read())
         return [wptfile_names, wpt_files]
 
@@ -858,7 +858,7 @@ class GPSContent(object):
             if wptfile_cont == "":  # if filestring is empty: delete file
                 os.remove(wptfile_names[i])
             else:  # else write new content
-                with open(wptfile_names[i], "w") as wpt_file:
+                with open(wptfile_names[i], "w", encoding="utf-8") as wpt_file:
                     wpt_file.write(wptfile_cont)
 
     def assign_waypoints(self):

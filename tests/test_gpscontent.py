@@ -669,11 +669,11 @@ class TestShowOne(unittest.TestCase):
             self.assertEqual(len(self.x.geocaches), 6)
 
     def test_delete_with_wpt(self):
-        self.maxDiff = None
         shutil.copy2(r"..\tests\examples\no_logfile_waypoints\GPX\GC1XRPM.gpx",
                      r"..\tests\examples\temp\GC1XRPM.gpx")  # copy file that is to be removed
         shutil.copy2(r"..\tests\examples\no_logfile_waypoints\GPX\Wegpunkte_14-JAN-17.gpx",
                      r"..\tests\examples\temp\Wegpunkte_14-JAN-17.gpx")  # copy waypointfile that is to be changed
+
         with mock.patch('builtins.input', side_effect=["GC1XRPM", "1", "y"]):
             with mock.patch("webbrowser.open_new_tab"):
                 self.x.show_one()
@@ -694,6 +694,7 @@ class TestShowOne(unittest.TestCase):
                 expected += u'lat="49.790983" lon="9.932300"><ele>231.912979</ele><time>2017-01-14T19:02:03Z</time>'
                 expected += u'<name>DOM FINAL (GC1QNWT)</name><sym>Flag, Blue</sym></wpt></gpx>'
             self.assertEqual(wptfile_cont, expected)
+
         shutil.move(r"..\tests\examples\temp\GC1XRPM.gpx",
                     r"..\tests\examples\no_logfile_waypoints\GPX\GC1XRPM.gpx")  # move deleted / modified files
         shutil.move(r"..\tests\examples\temp\Wegpunkte_14-JAN-17.gpx",  # back to GPX folder
@@ -1885,7 +1886,7 @@ class TestCreateWaypointfilestrings(unittest.TestCase):
         cont3 += u'268</ele><time>2017-03-11T13:44:53Z</time><name>BLICK ZUM RANDERSACKERER KÄPPE</name><sym>Flag, '
         cont3 += u'Blue</sym></wpt></gpx>'
 
-        contlist = [str(cont1.encode()), str(cont2.encode()), str(cont3.encode())]
+        contlist = [str(cont1), str(cont2), str(cont3)]
 
         self.assertEqual(y, [namelist, contlist])
 
@@ -2229,7 +2230,7 @@ def create_testsuite():
     # suite.addTest(unittest.makeSuite(TestAssignWaypoints))
     # suite.addTest(unittest.makeSuite(TestCreateMapinfoOne))
     # suite.addTest(unittest.makeSuite(TestCreateMapinfoSeveral))
-    # suite.addTest(unittest.makeSuite(TestCreateWaypointfilestrings))
+    suite.addTest(unittest.makeSuite(TestCreateWaypointfilestrings))
     # suite.addTest(unittest.makeSuite(TestShowOnMap))
     # suite.addTest(unittest.makeSuite(TestAddWaypointToFiles))
     # suite.addTest(unittest.makeSuite(TestAddWaypoints))
