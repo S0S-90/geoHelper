@@ -684,7 +684,7 @@ class GPSContent(object):
         elif os.path.isfile(wptfile_path_ger):   # file Wegpunkte_XX-XX-XX.gpx exists
             wptstring = u'<wpt lat="{}" lon="{}"><time>{}</time><name>{}</name><sym>Flag, Blue</sym></wpt>'.format(
                 waypoint.coordinates[0], waypoint.coordinates[1], timestring, waypoint.name)
-            with open(wptfile_path_ger) as wptfile:
+            with open(wptfile_path_ger, encoding="utf-8") as wptfile:
                 content = wptfile.read()
             newstring = content[:-6] + wptstring + "</gpx>"
             with open(wptfile_path_ger, "w", encoding="utf-8") as wptfile_new:

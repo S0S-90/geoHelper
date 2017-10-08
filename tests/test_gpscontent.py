@@ -2043,7 +2043,7 @@ class TestAddWaypointToFiles(unittest.TestCase):
                    u'</time><name>DOM FINAL (GC1QNWT)</name><sym>Flag, Blue</sym></wpt><wpt lat="49.792433" ' \
                    u'lon="9.932233"><time>2017-01-14T13:07:25Z</time><name>NEW</name><sym>Flag, Blue</sym></wpt></gpx>'
 
-        with open(r"..\tests\examples\no_logfile_waypoints\GPX\Wegpunkte_14-JAN-17.gpx") as wptfile:
+        with open(r"..\tests\examples\no_logfile_waypoints\GPX\Wegpunkte_14-JAN-17.gpx", encoding="utf-8") as wptfile:
             content = wptfile.read()
 
         self.assertEqual(content, expected)
@@ -2075,7 +2075,7 @@ class TestAddWaypointToFiles(unittest.TestCase):
                    u' KÄPPE</name><sym>Flag, Blue</sym></wpt><wpt lat="49.792433" ' \
                    u'lon="9.932233"><time>2017-03-11T13:07:25Z</time><name>NEW</name><sym>Flag, Blue</sym></wpt></gpx>'
 
-        with open(r"..\tests\examples\no_logfile_waypoints\GPX\Waypoints_11-MAR-17.gpx") as wptfile:
+        with open(r"..\tests\examples\no_logfile_waypoints\GPX\Waypoints_11-MAR-17.gpx", encoding="utf-8") as wptfile:
             content = wptfile.read()
 
         self.assertEqual(content, expected)
@@ -2120,10 +2120,11 @@ class TestAddWaypoints(unittest.TestCase):
                    u'.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://www8.garmin.com/xmlschemas/' \
                    u'WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.' \
                    u'com/xmlschemas/TrackPointExtensionv1.xsd"><metadata><link href="http://www.garmin.com"><text>Garmin' \
-                   u' International</text></link><time>2017-10-02T20:17:05Z</time></metadata><wpt lat="49.9556666667" ' \
-                   u'lon="9.57036666667"><time>2017-10-02T20:17:05Z</time><name>NEW</name><sym>Flag, Blue</sym></wpt>' \
-                   u'<wpt lat="39.9556666667" lon="10.5703666667"><time>2017-10-02T20:17:05Z</time><name>TWO</name>' \
-                   u'<sym>Flag, Blue</sym></wpt></gpx>'
+                   u' International</text></link><time>2017-10-02T20:17:05Z</time></metadata>' \
+                   u'<wpt lat="49.955666666666666" lon="9.570366666666667">' \
+                   u'<time>2017-10-02T20:17:05Z</time><name>NEW</name><sym>Flag, Blue</sym>' \
+                   u'</wpt><wpt lat="39.955666666666666" lon="10.570366666666667"' \
+                   u'><time>2017-10-02T20:17:05Z</time><name>TWO</name><sym>Flag, Blue</sym></wpt></gpx>'
         with open(r"..\tests\examples\no_logfile_waypoints\GPX\Waypoints_02-OCT-17.gpx") as wptfile:
             content = wptfile.read()
         self.assertEqual(content, expected)
@@ -2193,47 +2194,47 @@ class TestAddWaypoints(unittest.TestCase):
 def create_testsuite():
     """creates a testsuite with out of all tests in this file"""
     suite = unittest.TestSuite()
-    # suite.addTest(unittest.makeSuite(TestInitNoLogfile))
-    # suite.addTest(unittest.makeSuite(TestInitWaypoints))
-    # suite.addTest(unittest.makeSuite(TestInitOnlyFound))
-    # suite.addTest(unittest.makeSuite(TestInitOnlyNotFound))
-    # suite.addTest(unittest.makeSuite(TestInitNotOnlyFound))
-    # suite.addTest(unittest.makeSuite(TestInitFoundNotOnGPS))
-    # suite.addTest(unittest.makeSuite(TestInitNotFoundNotOnGPS))
-    # suite.addTest(unittest.makeSuite(TestInitErrorInGPX))
-    # suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesOnlyFound))
-    # suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesNotOnlyFound))
-    # suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesOnlyNotFound))
-    # suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesFoundNotOnGPS))
-    # suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesNotFoundNotOnGPS))
-    # suite.addTest(unittest.makeSuite(TestReadWaypoints))
-    # suite.addTest(unittest.makeSuite(TestSortAndShowCaches))
-    # suite.addTest(unittest.makeSuite(TestShowAll))
-    # suite.addTest(unittest.makeSuite(TestShowAllDist))
-    # suite.addTest(unittest.makeSuite(TestReadCache))
-    # suite.addTest(unittest.makeSuite(TestShowOne))
-    # suite.addTest(unittest.makeSuite(TestShowGCSelection))
-    # suite.addTest(unittest.makeSuite(TestShowGCSelectionDist))
-    # suite.addTest(unittest.makeSuite(TestSearch))
-    # suite.addTest(unittest.makeSuite(TestShowFoundsNoFoundCaches))
-    # suite.addTest(unittest.makeSuite(TestShowFoundsOnlyFound))
-    # suite.addTest(unittest.makeSuite(TestShowFoundsOnlyNotFound))
-    # suite.addTest(unittest.makeSuite(TestShowFoundsNotOnlyFound))
-    # suite.addTest(unittest.makeSuite(TestShowFoundsFoundNotOnGPS))
-    # suite.addTest(unittest.makeSuite(TestDelete))
-    # suite.addTest(unittest.makeSuite(TestShowWaypoints))
-    # suite.addTest(unittest.makeSuite(TestReplaceWaypointName))
-    # suite.addTest(unittest.makeSuite(TestTryCreatingWaypoints))
-    # suite.addTest(unittest.makeSuite(TestDeleteWaypointFromFiles))
-    # suite.addTest(unittest.makeSuite(TestRewriteWaypointfiles))
-    # suite.addTest(unittest.makeSuite(TestFindSuggestions))
-    # suite.addTest(unittest.makeSuite(TestAssignWaypoints))
+    suite.addTest(unittest.makeSuite(TestInitNoLogfile))
+    suite.addTest(unittest.makeSuite(TestInitWaypoints))
+    suite.addTest(unittest.makeSuite(TestInitOnlyFound))
+    suite.addTest(unittest.makeSuite(TestInitOnlyNotFound))
+    suite.addTest(unittest.makeSuite(TestInitNotOnlyFound))
+    suite.addTest(unittest.makeSuite(TestInitFoundNotOnGPS))
+    suite.addTest(unittest.makeSuite(TestInitNotFoundNotOnGPS))
+    suite.addTest(unittest.makeSuite(TestInitErrorInGPX))
+    suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesOnlyFound))
+    suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesNotOnlyFound))
+    suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesOnlyNotFound))
+    suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesFoundNotOnGPS))
+    suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesNotFoundNotOnGPS))
+    suite.addTest(unittest.makeSuite(TestReadWaypoints))
+    suite.addTest(unittest.makeSuite(TestSortAndShowCaches))
+    suite.addTest(unittest.makeSuite(TestShowAll))
+    suite.addTest(unittest.makeSuite(TestShowAllDist))
+    suite.addTest(unittest.makeSuite(TestReadCache))
+    suite.addTest(unittest.makeSuite(TestShowOne))
+    suite.addTest(unittest.makeSuite(TestShowGCSelection))
+    suite.addTest(unittest.makeSuite(TestShowGCSelectionDist))
+    suite.addTest(unittest.makeSuite(TestSearch))
+    suite.addTest(unittest.makeSuite(TestShowFoundsNoFoundCaches))
+    suite.addTest(unittest.makeSuite(TestShowFoundsOnlyFound))
+    suite.addTest(unittest.makeSuite(TestShowFoundsOnlyNotFound))
+    suite.addTest(unittest.makeSuite(TestShowFoundsNotOnlyFound))
+    suite.addTest(unittest.makeSuite(TestShowFoundsFoundNotOnGPS))
+    suite.addTest(unittest.makeSuite(TestDelete))
+    suite.addTest(unittest.makeSuite(TestShowWaypoints))
+    suite.addTest(unittest.makeSuite(TestReplaceWaypointName))
+    suite.addTest(unittest.makeSuite(TestTryCreatingWaypoints))
+    suite.addTest(unittest.makeSuite(TestDeleteWaypointFromFiles))
+    suite.addTest(unittest.makeSuite(TestRewriteWaypointfiles))
+    suite.addTest(unittest.makeSuite(TestFindSuggestions))
+    suite.addTest(unittest.makeSuite(TestAssignWaypoints))
     suite.addTest(unittest.makeSuite(TestCreateMapinfoOne))
     suite.addTest(unittest.makeSuite(TestCreateMapinfoSeveral))
     suite.addTest(unittest.makeSuite(TestCreateWaypointfilestrings))
     suite.addTest(unittest.makeSuite(TestShowOnMap))
     suite.addTest(unittest.makeSuite(TestAddWaypointToFiles))
-    # suite.addTest(unittest.makeSuite(TestAddWaypoints))
+    suite.addTest(unittest.makeSuite(TestAddWaypoints))
     return suite
 
 
