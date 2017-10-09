@@ -7,6 +7,7 @@ import unittest
 from io import StringIO
 import os
 import sys
+
 sys.path.append('../src')  # for importing modules
 os.chdir('../src')  # switching path for using modules
 
