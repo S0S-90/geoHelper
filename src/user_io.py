@@ -3,7 +3,6 @@
 
 """This file contains the user interface."""
 
-from __future__ import print_function
 import ownfunctions
 import geocache
 
@@ -18,17 +17,9 @@ def general_output(string):
     print(string)
 
 
-# noinspection PyCompatibility
 def general_input(string):
     """asks for user input (by the use of string) and returns it (as string)"""
-    return raw_input(string)  # in python 3 input is raw_input by standard
-
-
-# noinspection PyCompatibility
-def input_decode(string):
-    """asks for user input (by the help of string), decodes it and returns it as string
-    string must not contain characters that are not included in CODING"""
-    return raw_input(string).decode(CODING)  # in python 3 input is raw_input by standard
+    return input(string)
 
 
 def map_menu():
@@ -39,8 +30,7 @@ def map_menu():
     print("2: https://www.geocaching.com/map aufrufen (INTERNET!!!)")
     print("3: https://www.google.de/maps aufrufen (INTERNET!!!)")
 
-    # noinspection PyCompatibility
-    inp = raw_input(">> ")  # in python3 only raw_input
+    inp = input(">> ")
     if inp == "1":
         return "show_on_map"
     elif inp == "2":
@@ -52,18 +42,18 @@ def map_menu():
 def show_main_menu(found_exists):
     """prints main menu"""
 
-    print ("\nWas moechtest du als naechstes tun?")
-    print ("1: Geocaches aktualisieren")
-    print ("2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen")
-    print ("3: Wegpunkt-Menue")
-    print ("4: Karten-Menue")
-    print ("5: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)")
-    print ("6: Geocaches durchsuchen")
+    print("\nWas moechtest du als naechstes tun?")
+    print("1: Geocaches aktualisieren")
+    print("2: Alle auf dem Geraet gespeicherten Geocaches sortieren und anzeigen")
+    print("3: Wegpunkt-Menue")
+    print("4: Karten-Menue")
+    print("5: Beschreibung fuer einen bestimmten Cache anzeigen (GC-Code erforderlich)")
+    print("6: Geocaches durchsuchen")
     if found_exists:
-        print ("7: Alle gefundenen Caches anzeigen")
-        print ("8: Programm verlassen")
+        print("7: Alle gefundenen Caches anzeigen")
+        print("8: Programm verlassen")
     else:
-        print ("7: Programm verlassen")
+        print("7: Programm verlassen")
 
 
 def main_menu(found_exists):
@@ -71,8 +61,7 @@ def main_menu(found_exists):
     returns task that is chosen by user input"""
     
     show_main_menu(found_exists)
-    # noinspection PyCompatibility
-    inp = raw_input(">> ")  # in python 3 input is raw_input by standard
+    inp = input(">> ")
     
     if inp == "1":
         return "update"
@@ -93,7 +82,7 @@ def main_menu(found_exists):
     elif inp == "7" and not found_exists:
         return "exit"
     else:
-        print ("Ungueltige Eingabe!")
+        print("Ungueltige Eingabe!")
 
 
 def sort_caches():
@@ -104,36 +93,36 @@ def sort_caches():
     second element: True (sorting backwards) or False (sorting forwards)"""
     
     criterions = ["gccode", "name", "type", "difficulty", "terrain", "size", "downloaddate", "available", "distance"]
-    print ("\nWonach sollen die Geocaches sortiert werden?")
-    print ("1: GC-Code")
-    print ("2: Name")
-    print ("3: Cache-Typ")
-    print ("4: D-Wertung")
-    print ("5: T-Wertung")
-    print ("6: Groesse")
-    print ("7: Download-Datum")
-    print ("8: Verfuegbarkeit")
-    print ("9: Abstand von einer bestimmten Position (Koordinaten erforderlich)")
-    # noinspection PyCompatibility
-    input_criterion = raw_input(">> ")  # in python 3 input is raw_input by standard
+    print("\nWonach sollen die Geocaches sortiert werden?")
+    print("1: GC-Code")
+    print("2: Name")
+    print("3: Cache-Typ")
+    print("4: D-Wertung")
+    print("5: T-Wertung")
+    print("6: Groesse")
+    print("7: Download-Datum")
+    print("8: Verfuegbarkeit")
+    print("9: Abstand von einer bestimmten Position (Koordinaten erforderlich)")
+
+    input_criterion = input(">> ")
     if input_criterion == "0":
-        print ("Ungueltige Eingabe: Sortierung erfolgt nach GC-Code")
+        print("Ungueltige Eingabe: Sortierung erfolgt nach GC-Code")
         criterion = "gccode"
     else:
         try:
             criterion = criterions[int(input_criterion)-1]
         except IndexError:
-            print ("Ungueltige Eingabe: Sortierung erfolgt nach GC-Code")
+            print("Ungueltige Eingabe: Sortierung erfolgt nach GC-Code")
             criterion = "gccode"
         except ValueError:
-            print ("Ungueltige Eingabe: Sortierung erfolgt nach GC-Code")
+            print("Ungueltige Eingabe: Sortierung erfolgt nach GC-Code")
             criterion = "gccode"
         
-    print ("In welche Richtung sollen die Caches sortiert werden?")
-    print ("1: aufsteigend")
-    print ("2: absteigend")
-    # noinspection PyCompatibility
-    input_direction = raw_input(">> ")  # in python 3 input is raw_input by standard
+    print("In welche Richtung sollen die Caches sortiert werden?")
+    print("1: aufsteigend")
+    print("2: absteigend")
+
+    input_direction = input(">> ")
     if input_direction == "2":
         backward = True
     else:
@@ -147,65 +136,62 @@ def search():
     
     criterions = ["name", "description", "type", "difficulty", "terrain",
                   "size", "downloaddate", "available", "attribute", "distance"]
-    print ("\nWonach willst du suchen?")
-    print ("1: Name")
-    print ("2: Beschreibung")
-    print ("3: Cache-Typ")
-    print ("4: D-Wertung")
-    print ("5: T-Wertung")
-    print ("6: Groesse")
-    print ("7: Download-Datum")
-    print ("8: Verfuegbarkeit")
-    print ("9: Attribut")
-    print ("10: Abstand von einer bestimmten Position (Koordinaten erforderlich)")
-    # noinspection PyCompatibility
-    inp = raw_input(">> ")  # in python 3 input is raw_input by standard
+    print("\nWonach willst du suchen?")
+    print("1: Name")
+    print("2: Beschreibung")
+    print("3: Cache-Typ")
+    print("4: D-Wertung")
+    print("5: T-Wertung")
+    print("6: Groesse")
+    print("7: Download-Datum")
+    print("8: Verfuegbarkeit")
+    print("9: Attribut")
+    print("10: Abstand von einer bestimmten Position (Koordinaten erforderlich)")
+
+    inp = input(">> ")
     if inp == "0":
-        print ("Ungueltige Eingabe")
+        print("Ungueltige Eingabe")
     else:
         try:
             return criterions[int(inp)-1]
         except IndexError:
-            print ("Ungueltige Eingabe")
+            print("Ungueltige Eingabe")
         except ValueError:
-            print ("Ungueltige Eingabe")
+            print("Ungueltige Eingabe")
 
 
 def search_type():
     """asks for cachetype which should be searched and returns it (as string)"""
     
-    print ("Gib den Cachetyp ein, nach dem du suchen willst.")
-    print ("Moegliche Typen: Traditional Cache, Multi-cache, Mystery Cache, EarthCache, Letterbox Hybrid, Event Cache, "
-           "Wherigo Cache, Geocaching HQ, Unknown Type")
-    print ("Achtung! Gross- und Kleinschreibung beachten!")
-    # noinspection PyCompatibility
-    inp = raw_input(">> ")  # in python 3 input is raw_input by standard
+    print("Gib den Cachetyp ein, nach dem du suchen willst.")
+    print("Moegliche Typen: Traditional Cache, Multi-cache, Mystery Cache, EarthCache, Letterbox Hybrid, Event Cache, "
+          "Wherigo Cache, Geocaching HQ, Unknown Type")
+    print("Achtung! Gross- und Kleinschreibung beachten!")
+    inp = input(">> ")
     return inp
 
 
 def search_attribute(existing_attributes):
     """asks for attribute which should be searched and returns it (as string)"""
 
-    print ("Gib das Attribut ein, nach dem du suchen willst.")
+    print("Gib das Attribut ein, nach dem du suchen willst.")
     attr_string = ", ".join(existing_attributes)
-    print ("Moegliche Attribute: {}".format(attr_string))
-    # noinspection PyCompatibility
-    inp = raw_input(">> ")  # in python 3 input is raw_input by standard
+    print("Moegliche Attribute: {}".format(attr_string))
+    inp = input(">> ")
     return inp
 
 
 def actions_after_search():
     """asks for next action after a search, returns this action as a string"""
     
-    print ("\nWas moechtest du als naechstes tun?")
-    print ("1: Alle Suchergebnisse erneut anzeigen (bei evtl. Loeschen nicht aktualisiert)")
-    print ("2: Alle Suchergebnisse loeschen")
-    print ("3: Alle Suchergebnisse auf Karte zeigen (INTERNET!!!)")
-    print ("4: Beschreibung fuer eines der Suchergebnisse anzeigen")
-    print ("5: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)")
-    print ("6: zurueck")
-    # noinspection PyCompatibility
-    inp = raw_input(">> ")  # in python 3 input is raw_input by standard
+    print("\nWas moechtest du als naechstes tun?")
+    print("1: Alle Suchergebnisse erneut anzeigen (bei evtl. Loeschen nicht aktualisiert)")
+    print("2: Alle Suchergebnisse loeschen")
+    print("3: Alle Suchergebnisse auf Karte zeigen (INTERNET!!!)")
+    print("4: Beschreibung fuer eines der Suchergebnisse anzeigen")
+    print("5: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)")
+    print("6: zurueck")
+    inp = input(">> ")
     
     if inp == "1":
         return "show_again"
@@ -220,19 +206,19 @@ def actions_after_search():
     elif inp == "6":
         return "back"
     else:
-        print ("Ungueltige Eingabe")
+        print("Ungueltige Eingabe")
 
 
 def actions_with_founds():
     """asks after showing the found caches what to do next
     returns the next action as a string"""
     
-    print ("\nWas moechtest du als naechstes tun?")
-    print ("1: Gefundene Caches auf geocaching.com loggen (ueber den Upload von drafts / fieldnotes, INTERNET!!!)")
-    print ("2: Alle gefundenen Caches loeschen")
-    print ("3: zurueck")
-    # noinspection PyCompatibility
-    inp = raw_input(">> ")  # in python 3 input is raw_input by standard
+    print("\nWas moechtest du als naechstes tun?")
+    print("1: Gefundene Caches auf geocaching.com loggen (ueber den Upload von drafts / fieldnotes, INTERNET!!!)")
+    print("2: Alle gefundenen Caches loeschen")
+    print("3: zurueck")
+
+    inp = input(">> ")
     if inp == "1":
         return "log"
     elif inp == "2":
@@ -245,8 +231,7 @@ def confirm_deletion():
     """asks before deleting caches if they should really be deleted
     returns True for yes and False for no"""
 
-    # noinspection PyCompatibility
-    inp = raw_input("\nWillst du den / die ausgewaehlten Cache(s) wirklich loeschen? (y/n) ")  # in python 3 only raw_input
+    inp = input("\nWillst du den / die ausgewaehlten Cache(s) wirklich loeschen? (y/n) ")
     if inp == "y":
         return True
     else:
@@ -257,8 +242,7 @@ def confirm_deletion_wpt():
     """asks before deleting waypoints if they should really be deleted
     returns True for yes and False for no"""
 
-    # noinspection PyCompatibility
-    inp = raw_input("\nWillst du den ausgewaehlten Wegpunkt wirklich loeschen? (y/n) ")  # in python 3 only raw_input
+    inp = input("\nWillst du den ausgewaehlten Wegpunkt wirklich loeschen? (y/n) ")
     if inp == "y":
         return True
     else:
@@ -268,15 +252,15 @@ def confirm_deletion_wpt():
 def waypoint_menu(waypoints_exist):
     """asks what to do with waypoints"""
 
-    print ("\nWas moechtest du als naechstes tun?")
-    print ("1: Wegpunkte hinzufuegen")
+    print("\nWas moechtest du als naechstes tun?")
+    print("1: Wegpunkte hinzufuegen")
     if waypoints_exist:
-        print ("2: Wegpunkte zu Geocaches zuordnen oder loeschen")
-        print ("3: nichts")
+        print("2: Wegpunkte zu Geocaches zuordnen oder loeschen")
+        print("3: nichts")
     else:
-        print ("2: nichts")
-    # noinspection PyCompatibility
-    inp = raw_input(">> ")  # in python 3 only raw_input
+        print("2: nichts")
+
+    inp = input(">> ")
     if inp == "1":
         return "add"
     elif inp == "2" and waypoints_exist:
@@ -292,21 +276,21 @@ def choose_cache(suggestions, more_options):
     if type(suggestions) != list:
         raise TypeError
     if len(suggestions) > 0:
-        print ("Zu welchem der folgenden Caches moechtest du den Wegpunkt zuordnen?")
+        print("Zu welchem der folgenden Caches moechtest du den Wegpunkt zuordnen?")
     else:
-        print ("Keine Vorschlaege vorhanden. Was nun?")
+        print("Keine Vorschlaege vorhanden. Was nun?")
     for i, s in enumerate(suggestions):
         if type(s) != geocache.Geocache:
             raise TypeError
-        print (u"{}: {} ({})".format(i+1, s.name, s.gccode))
-    print ("{}: zu anderem Geocache zuordnen (GC-Code erforderlich)".format(len(suggestions)+1))
+        print("{}: {} ({})".format(i+1, s.name, s.gccode))
+    print("{}: zu anderem Geocache zuordnen (GC-Code erforderlich)".format(len(suggestions)+1))
     if more_options:
-        print ("{}: Wegpunkt loeschen".format(len(suggestions)+2))
-        print ("{}: nichts tun".format(len(suggestions)+3))
+        print("{}: Wegpunkt loeschen".format(len(suggestions)+2))
+        print("{}: nichts tun".format(len(suggestions)+3))
     else:
-        print ("{}: Wegpunkt doch nicht zuordnen".format(len(suggestions)+2))
-    # noinspection PyCompatibility
-    inp = raw_input(">> ")  # in python 3 only raw_input
+        print("{}: Wegpunkt doch nicht zuordnen".format(len(suggestions)+2))
+
+    inp = input(">> ")
     try:
         sug = suggestions[int(inp)-1]
     except IndexError:
@@ -327,19 +311,19 @@ def show_one(waypoints):
 
     returns the next action as a string"""
     
-    print ("\nWas moechtest du als naechstes tun?")
-    print ("1: diesen Cache loeschen")
-    print ("2: diesen Cache auf geocaching.com oeffnen (INTERNET!!!)")
-    print ("3: Abstand dieses Caches zu einer bestimmten Position berechnen")
-    print ("4: Position des Caches auf der Karte https://www.geocaching.com/map anzeigen (INTERNET!!!)")
-    print ("5: Position des Caches auf der Karte https://www.google.de/maps anzeigen (INTERNET!!!)")
+    print("\nWas moechtest du als naechstes tun?")
+    print("1: diesen Cache loeschen")
+    print("2: diesen Cache auf geocaching.com oeffnen (INTERNET!!!)")
+    print("3: Abstand dieses Caches zu einer bestimmten Position berechnen")
+    print("4: Position des Caches auf der Karte https://www.geocaching.com/map anzeigen (INTERNET!!!)")
+    print("5: Position des Caches auf der Karte https://www.google.de/maps anzeigen (INTERNET!!!)")
     if waypoints:
-        print ("6: diesen Cache mit allen Wegpunkten auf Karte zeigen (INTERNET!!!)")
-        print ("7: zurueck")
+        print("6: diesen Cache mit allen Wegpunkten auf Karte zeigen (INTERNET!!!)")
+        print("7: zurueck")
     else:
-        print ("6: zurueck")
-    # noinspection PyCompatibility
-    inp = raw_input(">> ")  # in python 3 input is raw_input by standard
+        print("6: zurueck")
+
+    inp = input(">> ")
     if inp == "1":
         return "delete"
     elif inp == "2":
@@ -357,20 +341,17 @@ def show_one(waypoints):
 def coordinates_input():
     """asks for coordinates, returns input as a string"""
     
-    print (u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX oder URL (google maps oder geocaching.com/map))")
-    # noinspection PyCompatibility
-    coords = raw_input(">> ").decode(CODING)  # in python 3 input is raw_input by standard
+    print("Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX oder URL (google maps oder geocaching.com/map))")
+    coords = input(">> ")
     return coords
 
 
 def wpt_ask_for_name_and_coords():
     """asks for name and coordinates of waypoint that should be created"""
 
-    # noinspection PyCompatibility
-    name = raw_input("Gib den Namen des Wegpunkts ein: ").decode(CODING)  # in python 3 input is raw_input by standard
-    print (u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX)")
-    # noinspection PyCompatibility
-    coordstr = raw_input(">> ").decode(CODING)   # in python 3 input is raw_input by standard
+    name = input("Gib den Namen des Wegpunkts ein: ")
+    print("Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX)")
+    coordstr = input(">> ")
     return name, coordstr
 
 
@@ -378,10 +359,9 @@ def ask_for_path():
     """asks for the path to the GPS-device and returns it
     if no path is specified: returns the standard PATH"""
 
-    print ("\nGib den Pfad zum GPS-Geraet ein (NICHT zum Unterordner 'GPX').")
-    print ("Falls Standardpfad uebernommen werden soll: keine Eingabe")
-    # noinspection PyCompatibility
-    inp = raw_input(">> ")  # in python 3 input is raw_input by standard
+    print("\nGib den Pfad zum GPS-Geraet ein (NICHT zum Unterordner 'GPX').")
+    print("Falls Standardpfad uebernommen werden soll: keine Eingabe")
+    inp = input(">> ")
     if inp == "":
         return "default"
     else:
@@ -391,8 +371,7 @@ def ask_for_path():
 def ask_for_waypoints():
     """asks if waypoints should be shown on map"""
 
-    # noinspection PyCompatibility
-    inp = raw_input("\nSollen auch Wegpunkte auf der Karte angezeigt werden? (y/n) ")  # in python 3 only raw_input
+    inp = input("\nSollen auch Wegpunkte auf der Karte angezeigt werden? (y/n) ")
     if inp == "y":
         return True
     else:
@@ -408,25 +387,25 @@ def show_on_map_start(one, free_waypoints):
                      only if all caches are shown and waypoints should be shown
     """
 
-    print ("\nNach dem Klicken werden sich mehrere Fenster oeffnen. "
-           "Eines davon ist der Editor, das andere die Seite mapcustomizer.com in deinem Browser.")
-    print ("Um den Cache / die Caches auf der Karte anzuzeigen, kopiere den vollstaendigen Inhalt der Textdatei "
-           "aus deinem Editor in das Feld 'Bulk Entry' im Browser.")
+    print("\nNach dem Klicken werden sich mehrere Fenster oeffnen. "
+          "Eines davon ist der Editor, das andere die Seite mapcustomizer.com in deinem Browser.")
+    print("Um den Cache / die Caches auf der Karte anzuzeigen, kopiere den vollstaendigen Inhalt der Textdatei "
+          "aus deinem Editor in das Feld 'Bulk Entry' im Browser.")
     if not one:        # if more than one geocache
-        print ("Die Caches werden in folgenden Farben angezeigt:")
-        print ("Gruen: Traditional Cache")
-        print ("Rot: Multi-cache")
-        print ("Blau: Mystery Cache")
-        print ("Braun: EarthCache")
-        print ("Grau: Letterbox, Geocaching HQ")
+        print("Die Caches werden in folgenden Farben angezeigt:")
+        print("Gruen: Traditional Cache")
+        print("Rot: Multi-cache")
+        print("Blau: Mystery Cache")
+        print("Braun: EarthCache")
+        print("Grau: Letterbox, Geocaching HQ")
         z = "Gelb: Event Cache, Wherigo Cache"
         if free_waypoints:
             z += ", Wegpunkte"
-        print (z)
-        print ("Pink: unbekannter Typ")
-    print ("Gib nun den Pfad zu deinem Editor an: (bei Benutzung von Windows sollte das unnoetig sein)")
-    # noinspection PyCompatibility
-    inp = raw_input(">> ")  # in python 3 input is raw_input by standard
+        print(z)
+        print("Pink: unbekannter Typ")
+    print("Gib nun den Pfad zu deinem Editor an: (bei Benutzung von Windows sollte das unnoetig sein)")
+
+    inp = input(">> ")
     if inp == "":
         return EDITORNAME
     else:
@@ -436,9 +415,8 @@ def show_on_map_start(one, free_waypoints):
 def show_on_map_end():
     """asks for another input before leaving task 'show_on_map'"""
     
-    print ("Schliesse den Editor und druecke Enter.")
-    # noinspection PyCompatibility
-    raw_input(">> ")  # in python 3 input is raw_input by standard
+    print("Schliesse den Editor und druecke Enter.")
+    input(">> ")
 
  
 # string for main.py

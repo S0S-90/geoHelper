@@ -3,11 +3,10 @@
 
 """tests for geocache.py"""
 
-from __future__ import print_function
-
 import unittest
 import datetime
 import sys
+import xml.etree.ElementTree as ElementTree
 import test_frame
 import geocache
 
@@ -43,8 +42,8 @@ class TestSaaletalblick(unittest.TestCase):
         self.assertEqual(self.gc.longtype, "Traditional Cache")
 
     def test_description(self):
-        expected = u"\n\nNach einem kleinen Spaziergang und dem Finden des Döschens werdet ihr mit einem tollen Blick "
-        expected += u"ins Saaletal und auf die Saalewiesen belohnt! FTF: Jobi Voma STF: JoLoClMa TTF: Mone216\n\n\t\t\t"
+        expected = "\n\nNach einem kleinen Spaziergang und dem Finden des Döschens werdet ihr mit einem tollen Blick "
+        expected += "ins Saaletal und auf die Saalewiesen belohnt! FTF: Jobi Voma STF: JoLoClMa TTF: Mone216\n\n\t\t\t"
         self.assertEqual(self.gc.description, expected)
 
     def test_hint(self):
@@ -60,7 +59,7 @@ class TestSaaletalblick(unittest.TestCase):
         self.assertEqual(self.gc.coordinates, [50.318883, 10.1936])
 
     def test_coordinates_string(self):
-        self.assertEqual(self.gc.coordinates_string, u"N 50°19.133, E 010°11.616")
+        self.assertEqual(self.gc.coordinates_string, "N 50°19.133, E 010°11.616")
 
     def test_attributes(self):
         self.assertEqual(self.gc.attributes, ["no camping", "no parking available", "not wheelchair accessible",
@@ -86,35 +85,35 @@ class TestSaaletalblick(unittest.TestCase):
 
     def test_shortinfo(self):
         x = self.gc.shortinfo()
-        expected = u"GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | True  "
-        expected += u"| 04 Aug 2016 | Saaletalblick"
+        expected = "GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | True  "
+        expected += "| 04 Aug 2016 | Saaletalblick"
         self.assertEqual(x, expected)
 
     def test_longinfo(self):
         x = self.gc.longinfo()
-        z1 = u"\nGC6K86W : Saaletalblick"
+        z1 = "\nGC6K86W : Saaletalblick"
         z2 = "\n------------------------"
-        z3 = u"\nSchwierigkeit: 2.0, Gelaende: 2.0, Groesse: micro, Typ: Traditional Cache"
-        z4 = u"\nKoordinaten: N 50°19.133, E 010°11.616"
-        z5 = u"\nOwner: bigkruemel"
-        z6 = u"\nAttribute: no camping, no parking available, not wheelchair accessible, kid friendly, "
-        z6 += u"hike shorter than 1km, stroller accessible"
-        z7 = u"\nCache ist aktiv: True, Stand: 04 Aug 2016"
-        z8 = u"\nLink: https://www.geocaching.com/geocache/GC6K86W_saaletalblick"
-        z9 = u"\n\n\n\nNach einem kleinen Spaziergang und dem Finden des Döschens werdet ihr mit einem tollen Blick ins "
-        z9 += u"Saaletal und auf die Saalewiesen belohnt! FTF: Jobi Voma STF: JoLoClMa TTF: Mone216\n\n\t\t\t"
-        z10 = u"\nHinweis: Und ab durch die Hecke!"
-        z11 = u"\n\n"
-        z12 = u"2016-07-16: Found it by Ziaepf\n"
-        z13 = u"2016-07-10: Didn't find it by NES-GN 310362\n"
-        z14 = u"2016-06-20: Found it by HerbieWo\n"
-        z15 = u"2016-06-15: Found it by Fantastic'4\n"
-        z16 = u"2016-06-11: Found it by vicmouse\n"
-        z17 = u"2016-06-11: Found it by melimouse\n"
-        z18 = u"2016-06-10: Found it by Mone216\n"
-        z19 = u"2016-06-08: Found it by JoLoClMa\n"
-        z20 = u"2016-06-08: Found it by Jobi Voma\n"
-        z21 = u"2016-06-07: Publish Listing by Sabbelwasser\n"
+        z3 = "\nSchwierigkeit: 2.0, Gelaende: 2.0, Groesse: micro, Typ: Traditional Cache"
+        z4 = "\nKoordinaten: N 50°19.133, E 010°11.616"
+        z5 = "\nOwner: bigkruemel"
+        z6 = "\nAttribute: no camping, no parking available, not wheelchair accessible, kid friendly, "
+        z6 += "hike shorter than 1km, stroller accessible"
+        z7 = "\nCache ist aktiv: True, Stand: 04 Aug 2016"
+        z8 = "\nLink: https://www.geocaching.com/geocache/GC6K86W_saaletalblick"
+        z9 = "\n\n\n\nNach einem kleinen Spaziergang und dem Finden des Döschens werdet ihr mit einem tollen Blick ins "
+        z9 += "Saaletal und auf die Saalewiesen belohnt! FTF: Jobi Voma STF: JoLoClMa TTF: Mone216\n\n\t\t\t"
+        z10 = "\nHinweis: Und ab durch die Hecke!"
+        z11 = "\n\n"
+        z12 = "2016-07-16: Found it by Ziaepf\n"
+        z13 = "2016-07-10: Didn't find it by NES-GN 310362\n"
+        z14 = "2016-06-20: Found it by HerbieWo\n"
+        z15 = "2016-06-15: Found it by Fantastic'4\n"
+        z16 = "2016-06-11: Found it by vicmouse\n"
+        z17 = "2016-06-11: Found it by melimouse\n"
+        z18 = "2016-06-10: Found it by Mone216\n"
+        z19 = "2016-06-08: Found it by JoLoClMa\n"
+        z20 = "2016-06-08: Found it by Jobi Voma\n"
+        z21 = "2016-06-07: Publish Listing by Sabbelwasser\n"
         expected = z1 + z2 + z3 + z4 + z5 + z6 + z7 + z8 + z9 + z10
         expected += z11 + z12 + z13 + z14 + z15 + z16 + z17 + z18 + z19 + z20 + z21
         self.assertEqual(x, expected)
@@ -157,8 +156,8 @@ class TestGeocacheWaypoints(unittest.TestCase):
         self.assertEqual(self.gc.longtype, "Traditional Cache")
 
     def test_description(self):
-        expected = u"\n\nNach einem kleinen Spaziergang und dem Finden des Döschens werdet ihr mit einem tollen Blick "
-        expected += u"ins Saaletal und auf die Saalewiesen belohnt! FTF: Jobi Voma STF: JoLoClMa TTF: Mone216\n\n\t\t\t"
+        expected = "\n\nNach einem kleinen Spaziergang und dem Finden des Döschens werdet ihr mit einem tollen Blick "
+        expected += "ins Saaletal und auf die Saalewiesen belohnt! FTF: Jobi Voma STF: JoLoClMa TTF: Mone216\n\n\t\t\t"
         self.assertEqual(self.gc.description, expected)
 
     def test_hint(self):
@@ -174,7 +173,7 @@ class TestGeocacheWaypoints(unittest.TestCase):
         self.assertEqual(self.gc.coordinates, [50.318883, 10.1936])
 
     def test_coordinates_string(self):
-        self.assertEqual(self.gc.coordinates_string, u"N 50°19.133, E 010°11.616")
+        self.assertEqual(self.gc.coordinates_string, "N 50°19.133, E 010°11.616")
 
     def test_attributes(self):
         self.assertEqual(self.gc.attributes, ["no camping", "no parking available", "not wheelchair accessible",
@@ -212,46 +211,46 @@ class TestGeocacheWaypoints(unittest.TestCase):
 
     def test_shortinfo(self):
         x = self.gc.shortinfo()
-        expected = u"GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | True  "
-        expected += u"| 04 Aug 2016 | Saaletalblick"
-        expected += u"\n        | N 50°19.733, E 010°09.216 | NAME (3.0km)"
-        expected += u"\n        | N 50°19.553, E 010°09.276 | WAYPOINT2 (2.9km)"
+        expected = "GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | True  "
+        expected += "| 04 Aug 2016 | Saaletalblick"
+        expected += "\n        | N 50°19.733, E 010°09.216 | NAME (3.0km)"
+        expected += "\n        | N 50°19.553, E 010°09.276 | WAYPOINT2 (2.9km)"
         self.assertEqual(x, expected)
 
     def test_shortinfo_spaces(self):
         x = self.gc.shortinfo(5)
-        expected = u"GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | True  "
-        expected += u"| 04 Aug 2016 | Saaletalblick"
-        expected += u"\n             | N 50°19.733, E 010°09.216 | NAME (3.0km)"
-        expected += u"\n             | N 50°19.553, E 010°09.276 | WAYPOINT2 (2.9km)"
+        expected = "GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | True  "
+        expected += "| 04 Aug 2016 | Saaletalblick"
+        expected += "\n             | N 50°19.733, E 010°09.216 | NAME (3.0km)"
+        expected += "\n             | N 50°19.553, E 010°09.276 | WAYPOINT2 (2.9km)"
         self.assertEqual(x, expected)
 
     def test_longinfo(self):
         x = self.gc.longinfo()
-        z1 = u"\nGC6K86W : Saaletalblick"
+        z1 = "\nGC6K86W : Saaletalblick"
         z2 = "\n------------------------"
-        z3 = u"\nSchwierigkeit: 2.0, Gelaende: 2.0, Groesse: micro, Typ: Traditional Cache"
-        z4 = u"\nKoordinaten: N 50°19.133, E 010°11.616, "
-        z4 += u"Wegpunkte: NAME (N 50°19.733, E 010°09.216), WAYPOINT2 (N 50°19.553, E 010°09.276)"
-        z5 = u"\nOwner: bigkruemel"
-        z6 = u"\nAttribute: no camping, no parking available, not wheelchair accessible, kid friendly, "
-        z6 += u"hike shorter than 1km, stroller accessible"
-        z7 = u"\nCache ist aktiv: True, Stand: 04 Aug 2016"
-        z8 = u"\nLink: https://www.geocaching.com/geocache/GC6K86W_saaletalblick"
-        z9 = u"\n\n\n\nNach einem kleinen Spaziergang und dem Finden des Döschens werdet ihr mit einem tollen Blick ins "
-        z9 += u"Saaletal und auf die Saalewiesen belohnt! FTF: Jobi Voma STF: JoLoClMa TTF: Mone216\n\n\t\t\t"
-        z10 = u"\nHinweis: Und ab durch die Hecke!"
-        z11 = u"\n\n"
-        z12 = u"2016-07-16: Found it by Ziaepf\n"
-        z13 = u"2016-07-10: Didn't find it by NES-GN 310362\n"
-        z14 = u"2016-06-20: Found it by HerbieWo\n"
-        z15 = u"2016-06-15: Found it by Fantastic'4\n"
-        z16 = u"2016-06-11: Found it by vicmouse\n"
-        z17 = u"2016-06-11: Found it by melimouse\n"
-        z18 = u"2016-06-10: Found it by Mone216\n"
-        z19 = u"2016-06-08: Found it by JoLoClMa\n"
-        z20 = u"2016-06-08: Found it by Jobi Voma\n"
-        z21 = u"2016-06-07: Publish Listing by Sabbelwasser\n"
+        z3 = "\nSchwierigkeit: 2.0, Gelaende: 2.0, Groesse: micro, Typ: Traditional Cache"
+        z4 = "\nKoordinaten: N 50°19.133, E 010°11.616, "
+        z4 += "Wegpunkte: NAME (N 50°19.733, E 010°09.216), WAYPOINT2 (N 50°19.553, E 010°09.276)"
+        z5 = "\nOwner: bigkruemel"
+        z6 = "\nAttribute: no camping, no parking available, not wheelchair accessible, kid friendly, "
+        z6 += "hike shorter than 1km, stroller accessible"
+        z7 = "\nCache ist aktiv: True, Stand: 04 Aug 2016"
+        z8 = "\nLink: https://www.geocaching.com/geocache/GC6K86W_saaletalblick"
+        z9 = "\n\n\n\nNach einem kleinen Spaziergang und dem Finden des Döschens werdet ihr mit einem tollen Blick ins "
+        z9 += "Saaletal und auf die Saalewiesen belohnt! FTF: Jobi Voma STF: JoLoClMa TTF: Mone216\n\n\t\t\t"
+        z10 = "\nHinweis: Und ab durch die Hecke!"
+        z11 = "\n\n"
+        z12 = "2016-07-16: Found it by Ziaepf\n"
+        z13 = "2016-07-10: Didn't find it by NES-GN 310362\n"
+        z14 = "2016-06-20: Found it by HerbieWo\n"
+        z15 = "2016-06-15: Found it by Fantastic'4\n"
+        z16 = "2016-06-11: Found it by vicmouse\n"
+        z17 = "2016-06-11: Found it by melimouse\n"
+        z18 = "2016-06-10: Found it by Mone216\n"
+        z19 = "2016-06-08: Found it by JoLoClMa\n"
+        z20 = "2016-06-08: Found it by Jobi Voma\n"
+        z21 = "2016-06-07: Publish Listing by Sabbelwasser\n"
         expected = z1 + z2 + z3 + z4 + z5 + z6 + z7 + z8 + z9 + z10
         expected += z11 + z12 + z13 + z14 + z15 + z16 + z17 + z18 + z19 + z20 + z21
         self.assertEqual(x, expected)
@@ -267,7 +266,7 @@ class TestMaerchenstuhl(unittest.TestCase):
         self.assertEqual(self.gc.gccode, "GC1XRPM")
 
     def test_name(self):
-        self.assertEqual(self.gc.name, u"Im Auftrag ihrer Majestät – Der Märchenstuhl")
+        self.assertEqual(self.gc.name, "Im Auftrag ihrer Majestät – Der Märchenstuhl")
 
     def test_difficulty(self):
         self.assertEqual(self.gc.difficulty, 2.5)
@@ -312,8 +311,8 @@ class TestMaerchenstuhl(unittest.TestCase):
 
     def test_shortinfo(self):
         x = self.gc.shortinfo()
-        expected = u"GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  "
-        expected += u"| 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl"
+        expected = "GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  "
+        expected += "| 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl"
         self.assertEqual(x, expected)
 
 
@@ -327,7 +326,7 @@ class TestTesoroAmeghino(unittest.TestCase):
         self.assertEqual(self.gc.gccode, "GC33QGC")
 
     def test_name(self):
-        self.assertEqual(self.gc.name, u"Tesoro Ameghino")
+        self.assertEqual(self.gc.name, "Tesoro Ameghino")
 
     def test_difficulty(self):
         self.assertEqual(self.gc.difficulty, 2)
@@ -352,7 +351,7 @@ class TestTesoroAmeghino(unittest.TestCase):
         self.assertEqual(self.gc.hint, hint)
 
     def test_owner(self):
-        self.assertEqual(self.gc.owner, u"kariher y familia")
+        self.assertEqual(self.gc.owner, "kariher y familia")
 
     def test_url(self):
         self.assertEqual(self.gc.url, "https://www.geocaching.com/geocache/GC33QGC_tesoro-ameghino")
@@ -361,7 +360,7 @@ class TestTesoroAmeghino(unittest.TestCase):
         self.assertEqual(self.gc.coordinates, [-43.695433, -66.4515])
 
     def test_coordinates_string(self):
-        self.assertEqual(self.gc.coordinates_string, u"S 43°41.726, W 066°27.090")
+        self.assertEqual(self.gc.coordinates_string, "S 43°41.726, W 066°27.090")
 
     def test_available(self):
         self.assertEqual(self.gc.available, True)
@@ -375,8 +374,8 @@ class TestTesoroAmeghino(unittest.TestCase):
 
     def test_shortinfo(self):
         x = self.gc.shortinfo()
-        expected = u"GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | True  "
-        expected += u"| 11 Sep 2016 | Tesoro Ameghino"
+        expected = "GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | True  "
+        expected += "| 11 Sep 2016 | Tesoro Ameghino"
         self.assertEqual(x, expected)
 
 
@@ -389,7 +388,7 @@ class TestMusikhochschule(unittest.TestCase):
         self.assertEqual(self.gc.gccode, "GC6RNTX")
 
     def test_name(self):
-        self.assertEqual(self.gc.name, u"Hochschule für Musik 1")
+        self.assertEqual(self.gc.name, "Hochschule für Musik 1")
 
     def test_difficulty(self):
         self.assertEqual(self.gc.difficulty, 2)
@@ -413,7 +412,7 @@ class TestMusikhochschule(unittest.TestCase):
         self.assertEqual(self.gc.hint, "Licht!")
 
     def test_owner(self):
-        self.assertEqual(self.gc.owner, u"Müllipützchen")
+        self.assertEqual(self.gc.owner, "Müllipützchen")
 
     def test_url(self):
         self.assertEqual(self.gc.url, "https://www.geocaching.com/geocache/GC6RNTX_hochschule-fur-musik-1")
@@ -485,26 +484,26 @@ class TestWuerzburgerWebcam(unittest.TestCase):
 
     def test_shortinfo(self):
         x = self.gc.shortinfo()
-        expected = u"GCJJ20  | N 49°47.688, E 009°55.816 | Unknown Type      | D 1.0 | T 1.0 | other   | True  "
-        expected += u"| 29 Oct 2016 | Wuerzburger webcam"
+        expected = "GCJJ20  | N 49°47.688, E 009°55.816 | Unknown Type      | D 1.0 | T 1.0 | other   | True  "
+        expected += "| 29 Oct 2016 | Wuerzburger webcam"
         self.assertEqual(x, expected)
 
     def test_longinfo(self):
         x = self.gc.longinfo()
-        z1 = u"\nGCJJ20 : Wuerzburger webcam"
+        z1 = "\nGCJJ20 : Wuerzburger webcam"
         z2 = "\n----------------------------"
-        z3 = u"\nSchwierigkeit: 1.0, Gelaende: 1.0, Groesse: other, Typ: Webcam Cache"
-        z4 = u"\nKoordinaten: N 49°47.688, E 009°55.816"
-        z5 = u"\nOwner: Kea (Buddl&Joddl)"
-        z6 = u"\nAttribute: wheelchair accessible, available in winter, available 24-7, public transit available, "
-        z6 += u"parking available, takes less than 1 hour, kid friendly, stroller accessible, dogs allowed"
-        z7 = u"\nCache ist aktiv: True, Stand: 29 Oct 2016"
-        z8 = u"\nLink: https://www.geocaching.com/geocache/GCJJ20_wuerzburger-webcam"
-        z9 = u"\n\n{}".format(self.gc.description)
-        z10 = u"\nHinweis: No hints available."
-        z11 = u"\n\n"
+        z3 = "\nSchwierigkeit: 1.0, Gelaende: 1.0, Groesse: other, Typ: Webcam Cache"
+        z4 = "\nKoordinaten: N 49°47.688, E 009°55.816"
+        z5 = "\nOwner: Kea (Buddl&Joddl)"
+        z6 = "\nAttribute: wheelchair accessible, available in winter, available 24-7, public transit available, "
+        z6 += "parking available, takes less than 1 hour, kid friendly, stroller accessible, dogs allowed"
+        z7 = "\nCache ist aktiv: True, Stand: 29 Oct 2016"
+        z8 = "\nLink: https://www.geocaching.com/geocache/GCJJ20_wuerzburger-webcam"
+        z9 = "\n\n{}".format(self.gc.description)
+        z10 = "\nHinweis: No hints available."
+        z11 = "\n\n"
         for l in self.gc.logs:
-            z11 += u"{}: {} by {}\n".format(l[0], l[1], l[2])
+            z11 += "{}: {} by {}\n".format(l[0], l[1], l[2])
         expected = z1 + z2 + z3 + z4 + z5 + z6 + z7 + z8 + z9 + z10 + z11
         self.assertEqual(x, expected)
 
@@ -518,7 +517,7 @@ class TestMedrixErnos(unittest.TestCase):
         self.assertEqual(self.gc.gccode, "GC5N23T")
 
     def test_name(self):
-        self.assertEqual(self.gc.name, u"67 - MedTrix - \u001a\u001a\u001a\u001a\u001a")
+        self.assertEqual(self.gc.name, "67 - MedTrix - \u001a\u001a\u001a\u001a\u001a")
 
     def test_difficulty(self):
         self.assertEqual(self.gc.difficulty, 3)
@@ -539,38 +538,38 @@ class TestMedrixErnos(unittest.TestCase):
         self.assertEqual(self.gc.longtype, "Mystery Cache")
 
     def test_description(self):
-        description = u'\n\n<h2 style="font-style:italic;">... unerwartet....plötzlich.... mit einem Hammerschlag.... '
-        description += u'JETZT ist sie da: ....<span style="color:#FF0000;">MedTrix</span><span class="marker">, '
-        description += u'die erste Würzburger Mystery-Matrix.... 81 Caches, 81 Mysteries, 81 mal ultimativer '
-        description += u'Cachingspaß...... Alle D und T Kategorien..... alle Kombinationen..... und alles Rätsel aus '
-        description += u'der Kombination von Medizin und Kryptographie... unserem gemeinsamen Spezialgebiet.... '
-        description += u'dem Gebiet der 4Ma-Trickser.....</span></h2>\n<h2 style="font-style:italic;">'
-        description += u'<span class="marker">und nun viel Spaß</span>!!!</h2>\n<h2 style="font-style:italic;">&nbsp;'
-        description += u'</h2>\n<h2 style="font-style:italic;text-align:center;"><strong><u>Hier das Rätsel:</u>'
-        description += u'</strong></h2>\n<p>&nbsp;</p>\n<span><br>\n<br>\n<font face="ARIAL" size="3">'
-        description += u'Die Hernien sind angeborene oder erworbene Lücken in den tragenden Bauchwandschichten. '
-        description += u'Im deutschen bezeichnet man diese als Bruch. Um diese operativ zu versorgen, gibt es mehrere '
-        description += u'Möglichkeiten: Eine der ersten war die OP nach ___A___(7). Dabei werden Bauchmuskeln, '
-        description += u'Leistenband und Schambeinperiost vernäht. Die Weiterentwicklung davon ist die OP nach '
-        description += u'___B___(9), wo über der Bruchlücke eine Fasziendopplung durchgeführt wird. Die OP nach '
-        description += u'___C___(12) ist eine weitere Art der Hernienversorgung, in der ein Kunststoffnetz eingesetzt '
-        description += u'wird und mit der Muskulatur vernäht, um die Bruchwand hinter dem Leistenkanal zu verstärken. '
-        description += u'Zu den neueren Arten der Hernienversorgung zählen die ___D___ (16). Hier unterscheidet man '
-        description += u'drei Methoden: Bei der __E__ (4) wird ein Pneumoperitoneum angelegt, wo ein Netz innenseitig '
-        description += u'zwischen Bruchpforte und Bauchwand fixiert wird. Im Gegensatz dazu wird bei der ___F___ (3) '
-        description += u'außerhalb des Bauchraumes operiert und ein Netz zwischen Muskulatur und Bauchwand eingelegt, '
-        description += u'um die Bruchpforte zu verschließen. Die ___G___ (4)-Methode beschreibt eine Hernienversorgung '
-        description += u'mittels Netzeinlage direkt an das Bauchfell. Dafür gibt es spezielle Netze, die auf der '
-        description += u'viszeralen Seite besonders beschichtet sind. Das Ziel der operativen Versorgung ist die '
-        description += u'Behebung der Hernie und die Vermeidung von Rezidiven. &nbsp;</font></span>\n<p><span><span>'
-        description += u'<span><br>\n<br>\n<font face="ARIAL" size="3">Findet die Wörter aus dem Lückentext und bildet '
-        description += u'dann die Buchstabenwortwerte! Setzt sie dann in unten stehende Formel ein!</font></span><br>\n'
-        description += u'<br></span></span></p>\n<p><span><span><br>\n<br>\n<font face="Tahoma" size="3">Formel zur '
-        description += u'Berechnung des Finals:<br>\n<br>\n<b>N 49°(AxB/146). sum(A, B, D, E, G) // '
-        description += u'E 009°(sqrt(E*G+C-31). E*G-E*F + D/2</b></font></span><br>\n<br></span></p>\n<br>\n<br>\n'
-        description += u'<a href="http://geocheck.org/geo_inputchkcoord.php?gid=620474120c36e28-b765-4ff6-a6e4-'
-        description += u'b2f00c504981"><img src="http://geocheck.org/geocheck_large.php?gid=620474120c36e28-b765-'
-        description += u'4ff6-a6e4-b2f00c504981" title="Prüfe Deine Lösung" border="0"></a>\n\n\t\t\t'
+        description = '\n\n<h2 style="font-style:italic;">... unerwartet....plötzlich.... mit einem Hammerschlag.... '
+        description += 'JETZT ist sie da: ....<span style="color:#FF0000;">MedTrix</span><span class="marker">, '
+        description += 'die erste Würzburger Mystery-Matrix.... 81 Caches, 81 Mysteries, 81 mal ultimativer '
+        description += 'Cachingspaß...... Alle D und T Kategorien..... alle Kombinationen..... und alles Rätsel aus '
+        description += 'der Kombination von Medizin und Kryptographie... unserem gemeinsamen Spezialgebiet.... '
+        description += 'dem Gebiet der 4Ma-Trickser.....</span></h2>\n<h2 style="font-style:italic;">'
+        description += '<span class="marker">und nun viel Spaß</span>!!!</h2>\n<h2 style="font-style:italic;">&nbsp;'
+        description += '</h2>\n<h2 style="font-style:italic;text-align:center;"><strong><u>Hier das Rätsel:</u>'
+        description += '</strong></h2>\n<p>&nbsp;</p>\n<span><br>\n<br>\n<font face="ARIAL" size="3">'
+        description += 'Die Hernien sind angeborene oder erworbene Lücken in den tragenden Bauchwandschichten. '
+        description += 'Im deutschen bezeichnet man diese als Bruch. Um diese operativ zu versorgen, gibt es mehrere '
+        description += 'Möglichkeiten: Eine der ersten war die OP nach ___A___(7). Dabei werden Bauchmuskeln, '
+        description += 'Leistenband und Schambeinperiost vernäht. Die Weiterentwicklung davon ist die OP nach '
+        description += '___B___(9), wo über der Bruchlücke eine Fasziendopplung durchgeführt wird. Die OP nach '
+        description += '___C___(12) ist eine weitere Art der Hernienversorgung, in der ein Kunststoffnetz eingesetzt '
+        description += 'wird und mit der Muskulatur vernäht, um die Bruchwand hinter dem Leistenkanal zu verstärken. '
+        description += 'Zu den neueren Arten der Hernienversorgung zählen die ___D___ (16). Hier unterscheidet man '
+        description += 'drei Methoden: Bei der __E__ (4) wird ein Pneumoperitoneum angelegt, wo ein Netz innenseitig '
+        description += 'zwischen Bruchpforte und Bauchwand fixiert wird. Im Gegensatz dazu wird bei der ___F___ (3) '
+        description += 'außerhalb des Bauchraumes operiert und ein Netz zwischen Muskulatur und Bauchwand eingelegt, '
+        description += 'um die Bruchpforte zu verschließen. Die ___G___ (4)-Methode beschreibt eine Hernienversorgung '
+        description += 'mittels Netzeinlage direkt an das Bauchfell. Dafür gibt es spezielle Netze, die auf der '
+        description += 'viszeralen Seite besonders beschichtet sind. Das Ziel der operativen Versorgung ist die '
+        description += 'Behebung der Hernie und die Vermeidung von Rezidiven. &nbsp;</font></span>\n<p><span><span>'
+        description += '<span><br>\n<br>\n<font face="ARIAL" size="3">Findet die Wörter aus dem Lückentext und bildet '
+        description += 'dann die Buchstabenwortwerte! Setzt sie dann in unten stehende Formel ein!</font></span><br>\n'
+        description += '<br></span></span></p>\n<p><span><span><br>\n<br>\n<font face="Tahoma" size="3">Formel zur '
+        description += 'Berechnung des Finals:<br>\n<br>\n<b>N 49°(AxB/146). sum(A, B, D, E, G) // '
+        description += 'E 009°(sqrt(E*G+C-31). E*G-E*F + D/2</b></font></span><br>\n<br></span></p>\n<br>\n<br>\n'
+        description += '<a href="http://geocheck.org/geo_inputchkcoord.php?gid=620474120c36e28-b765-4ff6-a6e4-'
+        description += 'b2f00c504981"><img src="http://geocheck.org/geocheck_large.php?gid=620474120c36e28-b765-'
+        description += '4ff6-a6e4-b2f00c504981" title="Prüfe Deine Lösung" border="0"></a>\n\n\t\t\t'
         self.assertEqual(self.gc.description, description)
 
     def test_hint(self):
@@ -610,10 +609,9 @@ class TestInvalidInput(unittest.TestCase):
 
     def test_broken_file(self):
         exception = False  # has to be that complicated because ParseError unknown
-        # noinspection PyBroadException
         try:
             geocache.Geocache("../tests/examples/GC6V4PN.gpx")
-        except:  # broad exception because ParseError unknown
+        except ElementTree.ParseError:
             exception = True
         self.assertTrue(exception)
 
@@ -628,7 +626,7 @@ class TestWaypointInit(unittest.TestCase):
         self.assertEqual(w.name, "NAME")
         self.assertEqual(w.shown_name, "NAME")
         self.assertEqual(w.coordinates, [49.80761666666667, 9.912116666666666])
-        self.assertEqual(w.coordinates_string, u"N 49°48.457, E 009°54.727")
+        self.assertEqual(w.coordinates_string, "N 49°48.457, E 009°54.727")
         self.assertIsNone(w.distance)
 
     def test_lowercase_letters_in_name(self):
@@ -637,7 +635,7 @@ class TestWaypointInit(unittest.TestCase):
         self.assertEqual(w.shown_name, "NAME")
 
     def test_strange_signs_in_name(self):
-        self.assertRaises(ValueError, geocache.Waypoint, "abc§def", [49.80761666666667, 9.912116666666666])
+        self.assertRaises(TypeError, geocache.Waypoint, "abc§def", [49.80761666666667, 9.912116666666666])
 
     def test_name_is_not_a_string(self):
         self.assertRaises(TypeError, geocache.Waypoint, 42, [49.80761666666667, 9.912116666666666])
@@ -645,17 +643,17 @@ class TestWaypointInit(unittest.TestCase):
     def test_coordinates_south_west(self):
         w = geocache.Waypoint("NAME", [-52.520817, -13.40945])
         self.assertEqual(w.coordinates, [-52.520817, -13.40945])
-        self.assertEqual(w.coordinates_string, u"S 52°31.249, W 013°24.567")
+        self.assertEqual(w.coordinates_string, "S 52°31.249, W 013°24.567")
 
     def test_coordinates_equator(self):
         w = geocache.Waypoint("NAME", [0, 13.40945])
         self.assertEqual(w.coordinates, [0, 13.40945])
-        self.assertEqual(w.coordinates_string, u"N 00°00.000, E 013°24.567")
+        self.assertEqual(w.coordinates_string, "N 00°00.000, E 013°24.567")
 
     def test_coordinates_zero_meridian(self):
         w = geocache.Waypoint("NAME", [52.520817, 0])
         self.assertEqual(w.coordinates, [52.520817, 0])
-        self.assertEqual(w.coordinates_string, u"N 52°31.249, E 000°00.000")
+        self.assertEqual(w.coordinates_string, "N 52°31.249, E 000°00.000")
 
     def test_coordinates_north_bigger_than_90(self):
         self.assertRaises(ValueError, geocache.Waypoint, "NAME", [92.520817, 13.40945])
@@ -721,13 +719,13 @@ class TestWaypointInfo(unittest.TestCase):
 
     def test_without_geocache(self):
         w = geocache.Waypoint("name (GC6K86W)", [49.80761666666667, 9.912116666666666])
-        self.assertEqual(w.info(), u"        | N 49°48.457, E 009°54.727 | NAME (GC6K86W)")
+        self.assertEqual(w.info(), "        | N 49°48.457, E 009°54.727 | NAME (GC6K86W)")
 
     def test_with_geocache(self):
         w = geocache.Waypoint("name (GC6K86W)", [49.80761666666667, 9.912116666666666])
         g = geocache.Geocache("../tests/examples/GC6K86W.gpx")
         w.find_shown_name_and_distance(g)
-        self.assertEqual(w.info(), u"        | N 49°48.457, E 009°54.727 | NAME (60.3km)")
+        self.assertEqual(w.info(), "        | N 49°48.457, E 009°54.727 | NAME (60.3km)")
 
 
 def create_testsuite():

@@ -4,10 +4,10 @@
 """provide general features for running tests, e.g. change the path to the sources folder"""
 
 import unittest
-# noinspection PyCompatibility
-from StringIO import StringIO  # module not existent in python 3
+from io import StringIO
 import os
 import sys
+
 sys.path.append('../src')  # for importing modules
 os.chdir('../src')  # switching path for using modules
 

@@ -5,10 +5,9 @@
 
 import math
 import datetime
-# noinspection PyCompatibility
-from HTMLParser import HTMLParser  # not existent in python 3
+from html.parser import HTMLParser
 import unicodedata
-import urllib
+import urllib.request
 
 import user_io
 
@@ -16,14 +15,13 @@ import user_io
 def connected(website):
     """prueft, ob Internetverbindung vorhanden"""
     try:
-        urllib.urlopen(website)
+        urllib.request.urlopen(website)
     except IOError:
         return False
     else:
         return True
 
 
-# noinspection PyClassicStyleClass
 class MyHTMLParser(HTMLParser):
     """parser to read all data that is in a table (tags <td> / </td)
     
@@ -38,8 +36,12 @@ class MyHTMLParser(HTMLParser):
     
     Methods:
     ---------
-    return data(): return list data 
+    return_data(): return list data
     """
+
+    def error(self, message):
+        """automatically added function by PyCharm"""
+        pass
 
     def __init__(self):
         HTMLParser.__init__(self)
@@ -78,7 +80,7 @@ def find_cp1252():
 
     cp1252 = []  # find unicode-descriptions in cpdata and save them in cp1252
     for i, d in enumerate(cpdata):
-        if i % 3 == 1 and i > 6:
+        if i % 4 == 3 and i > 6:
             cp1252.append(d)
     return cp1252
 
@@ -86,8 +88,6 @@ def find_cp1252():
 ALLOWED_SIGNS = find_cp1252()  # define allowed signs (codepage 1252) once 
 
 
-# noinspection PyCompatibility
-# not compatible with python 3 because of function unicode()
 def replace_signs(string):
     """replaces signs in inputstring that cannot represented correctly on screen (not in ALLOWED_SIGNS)
     returns the new string without the 'forbidden' signs"""
@@ -98,17 +98,17 @@ def replace_signs(string):
             newstring += c
         else:
             try:
-                unic = unicodedata.name(unicode(c))
+                unic = unicodedata.name(c)
             except ValueError:  # if sign not in unicode
-                newstring += u"\u001a"
+                newstring += "\u001a"
             else:
                 if unic in ALLOWED_SIGNS:  # allowed signs
                     newstring += c
-                elif unicode(c) == u"\u263a":  # smiley
+                elif c == "\u263a":  # smiley
                     newstring += ":-)"
-                elif unicode(c) == u"\u2211":  # sign for sum
+                elif c == "\u2211":  # sign for sum
                     newstring += "sum"
-                elif unicode(c) == u"\u221a":  # sign for square root
+                elif c == "\u221a":  # sign for square root
                     newstring += "sqrt"
                 else:  # unknown sign
                     newstring += u"\u001a"
@@ -120,7 +120,7 @@ def show_xml(xml_tree):
     for x in xml_tree.iter():
         t = ""
         if x.text:
-            t = x.text.encode("utf-8")
+            t = x.text
         user_io.general_output("{} {} {}".format(x.tag, str(x.attrib), t))
 
 
@@ -165,8 +165,8 @@ def coords_decimal_to_minutes(coordlist):
         east_sign = "W"
         east_degree = -east_degree
         east_minutes = -east_minutes
-    return u"{} {:02}°{:06.3f}, {} {:03}°{:06.3f}".format(north_sign, north_degree, north_minutes, east_sign, east_degree,
-                                                          east_minutes)
+    return "{} {:02}°{:06.3f}, {} {:03}°{:06.3f}".format(north_sign, north_degree, north_minutes, east_sign, east_degree,
+                                                         east_minutes)
 
 
 def coords_minutes_to_decimal(coordstring):
@@ -178,11 +178,11 @@ def coords_minutes_to_decimal(coordstring):
     return: list of floats [lat, lon]
     """
 
-    if type(coordstring) != unicode and type(coordstring) != str:
+    if type(coordstring) != str:
         raise TypeError("Wrong input type: {}".format(type(coordstring)))
     if len(coordstring) != 25:
         raise ValueError("Bad Input.")
-    if coordstring[4] != u"°" or coordstring[18] != u"°" or coordstring[7] != u"." or coordstring[21] != u".":
+    if coordstring[4] != "°" or coordstring[18] != "°" or coordstring[7] != "." or coordstring[21] != ".":
         raise ValueError("Bad Input.")
     north_degree = int(coordstring[2:4])
     east_degree = int(coordstring[15:18])
@@ -211,11 +211,11 @@ def coords_minutes_to_seconds(coordstring):
     to degrees, minutes and seconds (e.g. for google maps input)
     input and return value is a string"""
 
-    if type(coordstring) != unicode and type(coordstring) != str:
+    if type(coordstring) != str:
         raise TypeError("Wrong input type: {}".format(type(coordstring)))
     if len(coordstring) != 25:
         return None
-    if coordstring[4] != u"°" or coordstring[18] != u"°" or coordstring[7] != u"." or coordstring[21] != u".":
+    if coordstring[4] != "°" or coordstring[18] != "°" or coordstring[7] != "." or coordstring[21] != ".":
         return None
     north_sign = coordstring[0]
     east_sign = coordstring[13]
@@ -236,8 +236,8 @@ def coords_minutes_to_seconds(coordstring):
     east_minutes_rounded = int(east_minutes_exact)
     north_seconds = round((north_minutes_exact - north_minutes_rounded) * 60, 1)
     east_seconds = round((east_minutes_exact - east_minutes_rounded) * 60, 1)
-    return u"{}°{}'{}\"{}+{}°{}'{}\"{}".format(north_degree, north_minutes_rounded, north_seconds, north_sign, east_degree,
-                                               east_minutes_rounded, east_seconds, east_sign)
+    return "{}°{}'{}\"{}+{}°{}'{}\"{}".format(north_degree, north_minutes_rounded, north_seconds, north_sign, east_degree,
+                                              east_minutes_rounded, east_seconds, east_sign)
 
 
 def coords_url_to_decimal(url):
@@ -245,7 +245,7 @@ def coords_url_to_decimal(url):
     input: string
     return: list of floats [lat, lon]"""
 
-    if type(url) != str and type(url) != unicode:
+    if type(url) != str:
         raise TypeError("Wrong input type: {}".format(type(url)))
     if url[:31] == "https://www.geocaching.com/map/":  # geocaching.com/map
         indices = [index for index, char in enumerate(url) if char == "&"]

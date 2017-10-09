@@ -6,9 +6,9 @@
 import unittest
 import datetime
 import sys
-# noinspection PyCompatibility
-from StringIO import StringIO  # module not existent in python 3
+from io import StringIO
 import xml.etree.ElementTree as ElementTree
+
 import test_frame
 import ownfunctions
 
@@ -106,58 +106,64 @@ class TestReplaceSigns(unittest.TestCase):
         self.assertEqual(x, "hello")
 
     def test_maerchen(self):
-        x = ownfunctions.replace_signs(u"m{}rchen".format(u"\u00E4"))
-        self.assertEqual(x, u"m{}rchen".format(u"\u00E4"))
+        x = ownfunctions.replace_signs("m{}rchen".format("\u00E4"))
+        self.assertEqual(x, "m{}rchen".format("\u00E4"))
 
     def test_smiley_u263a(self):
-        x = ownfunctions.replace_signs(u"hallo {}".format(u"\u263a"))
-        self.assertEqual(x, u"hallo :-)")
+        x = ownfunctions.replace_signs("hallo {}".format("\u263a"))
+        self.assertEqual(x, "hallo :-)")
 
     def test_sum_u2211(self):
-        x = ownfunctions.replace_signs(u"{}(1,2,3,4)".format(u"\u2211"))
-        self.assertEqual(x, u"sum(1,2,3,4)")
+        x = ownfunctions.replace_signs("{}(1,2,3,4)".format("\u2211"))
+        self.assertEqual(x, "sum(1,2,3,4)")
 
     def test_squareroot_u221a(self):
-        x = ownfunctions.replace_signs(u"{}(4) = 2".format(u"\u221a"))
-        self.assertEqual(x, u"sqrt(4) = 2")
+        x = ownfunctions.replace_signs("{}(4) = 2".format("\u221a"))
+        self.assertEqual(x, "sqrt(4) = 2")
 
     def test_newline(self):
-        x = ownfunctions.replace_signs(u"hello\nWorld")
-        self.assertEqual(x, u"hello\nWorld")
+        x = ownfunctions.replace_signs("hello\nWorld")
+        self.assertEqual(x, "hello\nWorld")
 
     def test_tab(self):
-        x = ownfunctions.replace_signs(u"hello\tWorld\v")
-        self.assertEqual(x, u"hello\tWorld\v")
+        x = ownfunctions.replace_signs("hello\tWorld\v")
+        self.assertEqual(x, "hello\tWorld\v")
 
     def test_unknown_sign(self):
-        x = ownfunctions.replace_signs(u"Flag Turkey: {}".format(u"\u262a"))
-        self.assertEqual(x, u"Flag Turkey: {}".format(u"\u001a"))
+        x = ownfunctions.replace_signs("Flag Turkey: {}".format("\u262a"))
+        self.assertEqual(x, "Flag Turkey: {}".format("\u001a"))
 
 
 class TestShowXML(unittest.TestCase):
 
     def test(self):
+        self.maxDiff = None
         tree = ElementTree.parse(r"..\tests\examples\xml_test.gpx")
         out = StringIO()
         sys.stdout = out
         ownfunctions.show_xml(tree)
         output = out.getvalue()
-        expected_output = "{http://www.topografix.com/GPX/1/1}gpx {'{http://www.w3.org/2001/XMLSchema-instance}" \
-                          "schemaLocation': 'http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" \
-                          " http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.garmin.com/xmlschemas/Gpx" \
-                          "Extensionsv3.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 http://www8.garmin.com" \
-                          "/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1" \
-                          " http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd', 'version': '1.1', 'creator':" \
-                          " 'eTrex 10'} \n{http://www.topografix.com/GPX/1/1}metadata {} \n{http://www.topografix.com/" \
-                          "GPX/1/1}link {'href': 'http://www.garmin.com'} \n{http://www.topografix.com/GPX/1/1}text {} " \
-                          "Garmin International\n{http://www.topografix.com/GPX/1/1}time {} 2016-09-10T13:36:17Z\n{http:" \
-                          "//www.topografix.com/GPX/1/1}wpt {'lat': '49.794845', 'lon': '9.944192'} \n{http://www." \
-                          "topografix.com/GPX/1/1}ele {} 187.175018\n{http://www.topografix.com/GPX/1/1}time {} " \
-                          "2016-09-10T13:36:17Z\n{http://www.topografix.com/GPX/1/1}name {} ELEFANT\n{http://www." \
-                          "topografix.com/GPX/1/1}sym {} Flag, Blue\n{http://www.topografix.com/GPX/1/1}wpt {'lat': " \
-                          "'49.793617', 'lon': '9.943833'} \n{http://www.topografix.com/GPX/1/1}ele {} 187.503296\n" \
-                          "{http://www.topografix.com/GPX/1/1}time {} 2016-09-10T14:24:16Z\n{http://www.topografix.com" \
-                          "/GPX/1/1}name {} ELEFANT FINAL\n{http://www.topografix.com/GPX/1/1}sym {} Flag, Blue\n"
+        expected_output = "{http://www.topografix.com/GPX/1/1}gpx {'creator': 'eTrex 10', 'version': '1.1', '{http://www" \
+                          ".w3.org/2001/XMLSchema-instance}schemaLocation': 'http://www.topografix.com/GPX/1/1 " \
+                          "http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3" \
+                          " http://www8.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/Way" \
+                          "pointExtension/v1 http://www8.garmin.com/xmlschemas/WaypointExtensionv1.xsd http://www.garmin" \
+                          ".com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1" \
+                          ".xsd'} \n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}metadata {} \n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}link {'href': 'http://www.garmin.com'} \n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}text {} Garmin International\n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}time {} 2016-09-10T13:36:17Z\n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}wpt {'lat': '49.794845', 'lon': '9.944192'} \n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}ele {} 187.175018\n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}time {} 2016-09-10T13:36:17Z\n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}name {} ELEFANT\n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}sym {} Flag, Blue\n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}wpt {'lat': '49.793617', 'lon': '9.943833'} \n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}ele {} 187.503296\n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}time {} 2016-09-10T14:24:16Z\n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}name {} ELEFANT FINAL\n"
+        expected_output += "{http://www.topografix.com/GPX/1/1}sym {} Flag, Blue\n"
         self.assertEqual(output, expected_output)
 
 
@@ -203,19 +209,19 @@ class TestValidateCoordinates(unittest.TestCase):
 class TestCoordsDecimalToMinutes(unittest.TestCase):
     def test_north_east(self):
         x = ownfunctions.coords_decimal_to_minutes([52.520817, 13.40945])
-        self.assertEqual(x, u"N 52°31.249, E 013°24.567")
+        self.assertEqual(x, "N 52°31.249, E 013°24.567")
 
     def test_south_west(self):
         x = ownfunctions.coords_decimal_to_minutes([-52.520817, -13.40945])
-        self.assertEqual(x, u"S 52°31.249, W 013°24.567")
+        self.assertEqual(x, "S 52°31.249, W 013°24.567")
 
     def test_equator(self):
         x = ownfunctions.coords_decimal_to_minutes([0, 13.40945])
-        self.assertEqual(x, u"N 00°00.000, E 013°24.567")
+        self.assertEqual(x, "N 00°00.000, E 013°24.567")
 
     def test_zero_meridian(self):
         x = ownfunctions.coords_decimal_to_minutes([52.520817, 0])
-        self.assertEqual(x, u"N 52°31.249, E 000°00.000")
+        self.assertEqual(x, "N 52°31.249, E 000°00.000")
 
     def test_north_bigger_than_90(self):
         self.assertRaises(ValueError, ownfunctions.coords_decimal_to_minutes, [92.520817, 13.40945])
@@ -241,82 +247,82 @@ class TestCoordsDecimalToMinutes(unittest.TestCase):
 
 class TestCoordsMinutesToDecimal(unittest.TestCase):
     def test_north_east(self):
-        x = ownfunctions.coords_minutes_to_decimal(u"N 52°31.249, E 013°24.567")
+        x = ownfunctions.coords_minutes_to_decimal("N 52°31.249, E 013°24.567")
         n = round(x[0], 6)
         e = round(x[1], 5)
         self.assertEqual([n, e], [52.520817, 13.40945])
 
     def test_south_west(self):
-        x = ownfunctions.coords_minutes_to_decimal(u"S 52°31.249, W 013°24.567")
+        x = ownfunctions.coords_minutes_to_decimal("S 52°31.249, W 013°24.567")
         n = round(x[0], 6)
         e = round(x[1], 5)
         self.assertEqual([n, e], [-52.520817, -13.40945])
 
     def test_equator(self):
-        x = ownfunctions.coords_minutes_to_decimal(u"N 00°00.000, E 013°24.567")
+        x = ownfunctions.coords_minutes_to_decimal("N 00°00.000, E 013°24.567")
         n = round(x[0], 6)
         e = round(x[1], 5)
         self.assertEqual([n, e], [0, 13.40945])
 
     def test_zero_meridian(self):
-        x = ownfunctions.coords_minutes_to_decimal(u"N 52°31.249, E 000°00.000")
+        x = ownfunctions.coords_minutes_to_decimal("N 52°31.249, E 000°00.000")
         n = round(x[0], 6)
         e = round(x[1], 5)
         self.assertEqual([n, e], [52.520817, 0])
 
     def test_north_bigger_than_90(self):
-        self.assertEqual(ownfunctions.coords_minutes_to_decimal(u"N 90°31.249, E 013°24.567"), None)
+        self.assertEqual(ownfunctions.coords_minutes_to_decimal("N 90°31.249, E 013°24.567"), None)
 
     def test_east_bigger_than_180(self):
-        self.assertEqual(ownfunctions.coords_minutes_to_decimal(u"N 52°31.249, E 213°24.567"), None)
+        self.assertEqual(ownfunctions.coords_minutes_to_decimal("N 52°31.249, E 213°24.567"), None)
 
     def test_north_bigger_than_90_south(self):
-        self.assertEqual(ownfunctions.coords_minutes_to_decimal(u"S 92°31.249, E 013°24.567"), None)
+        self.assertEqual(ownfunctions.coords_minutes_to_decimal("S 92°31.249, E 013°24.567"), None)
 
     def test_east_bigger_than_180_west(self):
-        self.assertEqual(ownfunctions.coords_minutes_to_decimal(u"N 52°31.249, W 213°24.567"), None)
+        self.assertEqual(ownfunctions.coords_minutes_to_decimal("N 52°31.249, W 213°24.567"), None)
 
     def test_small_mistake_in_unicode(self):
-        self.assertRaises(ValueError, ownfunctions.coords_minutes_to_decimal, u"N 92°310249, E 013°24.567")
+        self.assertRaises(ValueError, ownfunctions.coords_minutes_to_decimal, "N 92°310249, E 013°24.567")
 
     def test_list_instead_of_unicode(self):
-        self.assertRaises(TypeError, ownfunctions.coords_minutes_to_decimal, [u"N 52°31.249, E 013°24.567"])
+        self.assertRaises(TypeError, ownfunctions.coords_minutes_to_decimal, ["N 52°31.249, E 013°24.567"])
 
 
 class TestCoordsMinutesToSeconds(unittest.TestCase):
     def test_north_east(self):
-        x = ownfunctions.coords_minutes_to_seconds(u"N 52°31.249, E 013°24.567")
-        self.assertEqual(x, u"52°31'14.9\"N+13°24'34.0\"E")
+        x = ownfunctions.coords_minutes_to_seconds("N 52°31.249, E 013°24.567")
+        self.assertEqual(x, "52°31'14.9\"N+13°24'34.0\"E")
 
     def test_south_west(self):
-        x = ownfunctions.coords_minutes_to_seconds(u"S 52°31.249, W 013°24.567")
-        self.assertEqual(x, u"52°31'14.9\"S+13°24'34.0\"W")
+        x = ownfunctions.coords_minutes_to_seconds("S 52°31.249, W 013°24.567")
+        self.assertEqual(x, "52°31'14.9\"S+13°24'34.0\"W")
 
     def test_equator(self):
-        x = ownfunctions.coords_minutes_to_seconds(u"N 00°00.000, E 013°24.567")
-        self.assertEqual(x, u"0°0'0.0\"N+13°24'34.0\"E")
+        x = ownfunctions.coords_minutes_to_seconds("N 00°00.000, E 013°24.567")
+        self.assertEqual(x, "0°0'0.0\"N+13°24'34.0\"E")
 
     def test_zero_meridian(self):
-        x = ownfunctions.coords_minutes_to_seconds(u"N 52°31.249, E 000°00.000")
-        self.assertEqual(x, u"52°31'14.9\"N+0°0'0.0\"E")
+        x = ownfunctions.coords_minutes_to_seconds("N 52°31.249, E 000°00.000")
+        self.assertEqual(x, "52°31'14.9\"N+0°0'0.0\"E")
 
     def test_north_bigger_than_90(self):
-        self.assertEqual(ownfunctions.coords_minutes_to_seconds(u"N 90°31.249, E 013°24.567"), None)
+        self.assertEqual(ownfunctions.coords_minutes_to_seconds("N 90°31.249, E 013°24.567"), None)
 
     def test_east_bigger_than_180(self):
-        self.assertEqual(ownfunctions.coords_minutes_to_seconds(u"N 52°31.249, E 213°24.567"), None)
+        self.assertEqual(ownfunctions.coords_minutes_to_seconds("N 52°31.249, E 213°24.567"), None)
 
     def test_north_bigger_than_90_south(self):
-        self.assertEqual(ownfunctions.coords_minutes_to_seconds(u"S 92°31.249, E 013°24.567"), None)
+        self.assertEqual(ownfunctions.coords_minutes_to_seconds("S 92°31.249, E 013°24.567"), None)
 
     def test_east_bigger_than_180_west(self):
-        self.assertEqual(ownfunctions.coords_minutes_to_seconds(u"N 52°31.249, W 213°24.567"), None)
+        self.assertEqual(ownfunctions.coords_minutes_to_seconds("N 52°31.249, W 213°24.567"), None)
 
     def test_small_mistake_in_unicode(self):
-        self.assertEqual(ownfunctions.coords_minutes_to_seconds(u"N 92°310249, E 013°24.567"), None)
+        self.assertEqual(ownfunctions.coords_minutes_to_seconds("N 92°310249, E 013°24.567"), None)
 
     def test_list_instead_of_unicode(self):
-        self.assertRaises(TypeError, ownfunctions.coords_minutes_to_seconds, [u"N 52°31.249, E 013°24.567"])
+        self.assertRaises(TypeError, ownfunctions.coords_minutes_to_seconds, ["N 52°31.249, E 013°24.567"])
 
 
 class TestCoordsUrlToDecimal(unittest.TestCase):
@@ -361,7 +367,7 @@ class TestCoordsUrlToDecimal(unittest.TestCase):
 
 class TestCoordsStringToDecimal(unittest.TestCase):
     def test_manual_coords(self):
-        x = ownfunctions.coords_string_to_decimal(u"N 52°31.249, E 013°24.567")
+        x = ownfunctions.coords_string_to_decimal("N 52°31.249, E 013°24.567")
         n = round(x[0], 6)
         e = round(x[1], 5)
         self.assertEqual([n, e], [52.520817, 13.40945])
