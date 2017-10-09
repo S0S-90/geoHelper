@@ -19,7 +19,7 @@ def general_output(string):
 
 def general_input(string):
     """asks for user input (by the use of string) and returns it (as string)"""
-    return input(string)  # in python 3 input is input by standard
+    return input(string)
 
 
 def map_menu():
@@ -30,8 +30,7 @@ def map_menu():
     print("2: https://www.geocaching.com/map aufrufen (INTERNET!!!)")
     print("3: https://www.google.de/maps aufrufen (INTERNET!!!)")
 
-    # noinspection PyCompatibility
-    inp = input(">> ")  # in python3 only input
+    inp = input(">> ")
     if inp == "1":
         return "show_on_map"
     elif inp == "2":
@@ -62,8 +61,7 @@ def main_menu(found_exists):
     returns task that is chosen by user input"""
     
     show_main_menu(found_exists)
-    # noinspection PyCompatibility
-    inp = input(">> ")  # in python 3 input is input by standard
+    inp = input(">> ")
     
     if inp == "1":
         return "update"
@@ -105,8 +103,8 @@ def sort_caches():
     print("7: Download-Datum")
     print("8: Verfuegbarkeit")
     print("9: Abstand von einer bestimmten Position (Koordinaten erforderlich)")
-    # noinspection PyCompatibility
-    input_criterion = input(">> ")  # in python 3 input is input by standard
+
+    input_criterion = input(">> ")
     if input_criterion == "0":
         print("Ungueltige Eingabe: Sortierung erfolgt nach GC-Code")
         criterion = "gccode"
@@ -123,8 +121,8 @@ def sort_caches():
     print("In welche Richtung sollen die Caches sortiert werden?")
     print("1: aufsteigend")
     print("2: absteigend")
-    # noinspection PyCompatibility
-    input_direction = input(">> ")  # in python 3 input is input by standard
+
+    input_direction = input(">> ")
     if input_direction == "2":
         backward = True
     else:
@@ -149,8 +147,8 @@ def search():
     print("8: Verfuegbarkeit")
     print("9: Attribut")
     print("10: Abstand von einer bestimmten Position (Koordinaten erforderlich)")
-    # noinspection PyCompatibility
-    inp = input(">> ")  # in python 3 input is input by standard
+
+    inp = input(">> ")
     if inp == "0":
         print("Ungueltige Eingabe")
     else:
@@ -169,8 +167,7 @@ def search_type():
     print("Moegliche Typen: Traditional Cache, Multi-cache, Mystery Cache, EarthCache, Letterbox Hybrid, Event Cache, "
           "Wherigo Cache, Geocaching HQ, Unknown Type")
     print("Achtung! Gross- und Kleinschreibung beachten!")
-    # noinspection PyCompatibility
-    inp = input(">> ")  # in python 3 input is input by standard
+    inp = input(">> ")
     return inp
 
 
@@ -180,8 +177,7 @@ def search_attribute(existing_attributes):
     print("Gib das Attribut ein, nach dem du suchen willst.")
     attr_string = ", ".join(existing_attributes)
     print("Moegliche Attribute: {}".format(attr_string))
-    # noinspection PyCompatibility
-    inp = input(">> ")  # in python 3 input is input by standard
+    inp = input(">> ")
     return inp
 
 
@@ -195,8 +191,7 @@ def actions_after_search():
     print("4: Beschreibung fuer eines der Suchergebnisse anzeigen")
     print("5: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)")
     print("6: zurueck")
-    # noinspection PyCompatibility
-    inp = input(">> ")  # in python 3 input is input by standard
+    inp = input(">> ")
     
     if inp == "1":
         return "show_again"
@@ -222,8 +217,8 @@ def actions_with_founds():
     print("1: Gefundene Caches auf geocaching.com loggen (ueber den Upload von drafts / fieldnotes, INTERNET!!!)")
     print("2: Alle gefundenen Caches loeschen")
     print("3: zurueck")
-    # noinspection PyCompatibility
-    inp = input(">> ")  # in python 3 input is input by standard
+
+    inp = input(">> ")
     if inp == "1":
         return "log"
     elif inp == "2":
@@ -236,8 +231,7 @@ def confirm_deletion():
     """asks before deleting caches if they should really be deleted
     returns True for yes and False for no"""
 
-    # noinspection PyCompatibility
-    inp = input("\nWillst du den / die ausgewaehlten Cache(s) wirklich loeschen? (y/n) ")  # in python 3 only input
+    inp = input("\nWillst du den / die ausgewaehlten Cache(s) wirklich loeschen? (y/n) ")
     if inp == "y":
         return True
     else:
@@ -248,8 +242,7 @@ def confirm_deletion_wpt():
     """asks before deleting waypoints if they should really be deleted
     returns True for yes and False for no"""
 
-    # noinspection PyCompatibility
-    inp = input("\nWillst du den ausgewaehlten Wegpunkt wirklich loeschen? (y/n) ")  # in python 3 only input
+    inp = input("\nWillst du den ausgewaehlten Wegpunkt wirklich loeschen? (y/n) ")
     if inp == "y":
         return True
     else:
@@ -266,8 +259,8 @@ def waypoint_menu(waypoints_exist):
         print("3: nichts")
     else:
         print("2: nichts")
-    # noinspection PyCompatibility
-    inp = input(">> ")  # in python 3 only input
+
+    inp = input(">> ")
     if inp == "1":
         return "add"
     elif inp == "2" and waypoints_exist:
@@ -289,15 +282,15 @@ def choose_cache(suggestions, more_options):
     for i, s in enumerate(suggestions):
         if type(s) != geocache.Geocache:
             raise TypeError
-        print(u"{}: {} ({})".format(i+1, s.name, s.gccode))
+        print("{}: {} ({})".format(i+1, s.name, s.gccode))
     print("{}: zu anderem Geocache zuordnen (GC-Code erforderlich)".format(len(suggestions)+1))
     if more_options:
         print("{}: Wegpunkt loeschen".format(len(suggestions)+2))
         print("{}: nichts tun".format(len(suggestions)+3))
     else:
         print("{}: Wegpunkt doch nicht zuordnen".format(len(suggestions)+2))
-    # noinspection PyCompatibility
-    inp = input(">> ")  # in python 3 only input
+
+    inp = input(">> ")
     try:
         sug = suggestions[int(inp)-1]
     except IndexError:
@@ -329,8 +322,8 @@ def show_one(waypoints):
         print("7: zurueck")
     else:
         print("6: zurueck")
-    # noinspection PyCompatibility
-    inp = input(">> ")  # in python 3 input is input by standard
+
+    inp = input(">> ")
     if inp == "1":
         return "delete"
     elif inp == "2":
@@ -348,7 +341,7 @@ def show_one(waypoints):
 def coordinates_input():
     """asks for coordinates, returns input as a string"""
     
-    print(u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX oder URL (google maps oder geocaching.com/map))")
+    print("Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX oder URL (google maps oder geocaching.com/map))")
     coords = input(">> ")
     return coords
 
@@ -357,7 +350,7 @@ def wpt_ask_for_name_and_coords():
     """asks for name and coordinates of waypoint that should be created"""
 
     name = input("Gib den Namen des Wegpunkts ein: ")
-    print(u"Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX)")
+    print("Gib die Koordinaten ein (Format: X XX°XX.XXX, X XXX°XX.XXX)")
     coordstr = input(">> ")
     return name, coordstr
 
@@ -378,7 +371,7 @@ def ask_for_path():
 def ask_for_waypoints():
     """asks if waypoints should be shown on map"""
 
-    inp = input("\nSollen auch Wegpunkte auf der Karte angezeigt werden? (y/n) ")  # in python 3 only input
+    inp = input("\nSollen auch Wegpunkte auf der Karte angezeigt werden? (y/n) ")
     if inp == "y":
         return True
     else:
@@ -411,8 +404,8 @@ def show_on_map_start(one, free_waypoints):
         print(z)
         print("Pink: unbekannter Typ")
     print("Gib nun den Pfad zu deinem Editor an: (bei Benutzung von Windows sollte das unnoetig sein)")
-    # noinspection PyCompatibility
-    inp = input(">> ")  # in python 3 input is input by standard
+
+    inp = input(">> ")
     if inp == "":
         return EDITORNAME
     else:
@@ -423,8 +416,7 @@ def show_on_map_end():
     """asks for another input before leaving task 'show_on_map'"""
     
     print("Schliesse den Editor und druecke Enter.")
-    # noinspection PyCompatibility
-    input(">> ")  # in python 3 input is input by standard
+    input(">> ")
 
  
 # string for main.py
