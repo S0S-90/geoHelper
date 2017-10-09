@@ -4,8 +4,6 @@
 """This file contains the classes Geocache (for a single geocache) and
 Waypoint (for a waypoint, consisting only of name and coordinates."""
 
-from __future__ import print_function
-
 import os
 import time
 import datetime
@@ -123,6 +121,7 @@ class Geocache(object):
     """
     
     def __init__(self, filename_path):
+        """constructor: reads all attributes from gpx-file that has to be given by 'filename_path'"""
     
         if type(filename_path) != str:
             raise TypeError("Bad input.")
@@ -282,15 +281,15 @@ class Geocache(object):
         g = str(self.available).ljust(5)
         h = self.downloaddate_string
         i = self.name
-        result = u"{} | {} | {} | D {} | T {} | {} | {} | {} | {}".format(a, b, c, d, e, f, g, h, i)
+        result = "{} | {} | {} | D {} | T {} | {} | {} | {} | {}".format(a, b, c, d, e, f, g, h, i)
         for w in self.waypoints:
-            result += u"\n" + space*" " + w.info()
+            result += "\n" + space*" " + w.info()
         return result
 
     def longinfo(self): 
         """returns detailed information about the cache""" 
         
-        z1 = u"\n{} : {}".format(self.gccode, self.name)
+        z1 = "\n{} : {}".format(self.gccode, self.name)
         z2 = "\n"
         for i in range(len(z1)):
             z2 += "-"
@@ -298,25 +297,25 @@ class Geocache(object):
         t = self.terrain
         sizestr = self.size_string
         lt = self.longtype
-        z3 = u"\n{}: {}, {}: {}, {}: {}, {}: {}".format(STR_D, d, STR_T, t, STR_SIZE, sizestr, STR_TYPE, lt)
-        z4 = u"\n{}: {}".format(STR_COORDS, self.coordinates_string)
+        z3 = "\n{}: {}, {}: {}, {}: {}, {}: {}".format(STR_D, d, STR_T, t, STR_SIZE, sizestr, STR_TYPE, lt)
+        z4 = "\n{}: {}".format(STR_COORDS, self.coordinates_string)
         if self.waypoints:
-            z4 += u", {}: ".format(STR_WAYPOINTS)
+            z4 += ", {}: ".format(STR_WAYPOINTS)
             for w in self.waypoints:
-                z4 += u"{} ({}), ".format(w.shown_name, w.coordinates_string)
+                z4 += "{} ({}), ".format(w.shown_name, w.coordinates_string)
             z4 = z4[:-2]
-        z5 = u"\n{}: {}".format(STR_OWNER, self.owner)
-        z6 = u"\n{}: ".format(STR_ATTR)
+        z5 = "\n{}: {}".format(STR_OWNER, self.owner)
+        z6 = "\n{}: ".format(STR_ATTR)
         for a in self.attributes:
             z6 = z6 + str(a) + ", "
         z6 = z6[:-2]
-        z7 = u"\n{}: {}, {}: {}".format(STR_ACT, self.available, STR_DATE, self.downloaddate_string)
-        z8 = u"\n{}: {}".format(STR_LINK, self.url)
-        z9 = u"\n\n{}".format(self.description)
-        z10 = u"\n{}: {}".format(STR_HINT, self.hint)
-        z11 = u"\n\n"
+        z7 = "\n{}: {}, {}: {}".format(STR_ACT, self.available, STR_DATE, self.downloaddate_string)
+        z8 = "\n{}: {}".format(STR_LINK, self.url)
+        z9 = "\n\n{}".format(self.description)
+        z10 = "\n{}: {}".format(STR_HINT, self.hint)
+        z11 = "\n\n"
         for l in self.logs:
-            z11 += u"{}: {} by {}\n".format(l[0], l[1], l[2])
+            z11 += "{}: {} by {}\n".format(l[0], l[1], l[2])
         return z1 + z2 + z3 + z4 + z5 + z6 + z7 + z8 + z9 + z10 + z11
 
 
@@ -368,7 +367,7 @@ class Waypoint(object):
         self.name = name.upper()
         for c in self.name:
             if c not in self.ALLOWED_SIGNS:
-                raise TypeError(u"GARMIN does not allow '{}' in a waypoint name.".format(c))
+                raise TypeError("GARMIN does not allow '{}' in a waypoint name.".format(c))
         self.shown_name = self.name  # for waypoints not belonging to a geocache
 
         ownfunctions.validate_coordinates(coordinates)  # throws an error if coordinates not valid
@@ -389,7 +388,7 @@ class Waypoint(object):
 
     def info(self):
         """returns information about the waypoint"""
-        result = u"        | {} | {}".format(self.coordinates_string, self.shown_name)
+        result = "        | {} | {}".format(self.coordinates_string, self.shown_name)
         if self.distance:
-            result += u" ({}km)".format(round(self.distance, 1))
+            result += " ({}km)".format(round(self.distance, 1))
         return result
