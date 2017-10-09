@@ -112,7 +112,7 @@ class Geocache(object):
 
     add_waypoint(self, waypoint): adds a waypoint to the cache
     
-    shortinfo(space=0): unicode
+    shortinfo(space=0): string
         one-line information about the cache and the waypoints
         set space to 12 if cache is shown with distance
         
