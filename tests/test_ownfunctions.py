@@ -106,32 +106,32 @@ class TestReplaceSigns(unittest.TestCase):
         self.assertEqual(x, "hello")
 
     def test_maerchen(self):
-        x = ownfunctions.replace_signs(u"m{}rchen".format(u"\u00E4"))
-        self.assertEqual(x, u"m{}rchen".format(u"\u00E4"))
+        x = ownfunctions.replace_signs("m{}rchen".format("\u00E4"))
+        self.assertEqual(x, "m{}rchen".format("\u00E4"))
 
     def test_smiley_u263a(self):
-        x = ownfunctions.replace_signs(u"hallo {}".format(u"\u263a"))
-        self.assertEqual(x, u"hallo :-)")
+        x = ownfunctions.replace_signs("hallo {}".format("\u263a"))
+        self.assertEqual(x, "hallo :-)")
 
     def test_sum_u2211(self):
-        x = ownfunctions.replace_signs(u"{}(1,2,3,4)".format(u"\u2211"))
-        self.assertEqual(x, u"sum(1,2,3,4)")
+        x = ownfunctions.replace_signs("{}(1,2,3,4)".format("\u2211"))
+        self.assertEqual(x, "sum(1,2,3,4)")
 
     def test_squareroot_u221a(self):
-        x = ownfunctions.replace_signs(u"{}(4) = 2".format(u"\u221a"))
-        self.assertEqual(x, u"sqrt(4) = 2")
+        x = ownfunctions.replace_signs("{}(4) = 2".format("\u221a"))
+        self.assertEqual(x, "sqrt(4) = 2")
 
     def test_newline(self):
-        x = ownfunctions.replace_signs(u"hello\nWorld")
-        self.assertEqual(x, u"hello\nWorld")
+        x = ownfunctions.replace_signs("hello\nWorld")
+        self.assertEqual(x, "hello\nWorld")
 
     def test_tab(self):
-        x = ownfunctions.replace_signs(u"hello\tWorld\v")
-        self.assertEqual(x, u"hello\tWorld\v")
+        x = ownfunctions.replace_signs("hello\tWorld\v")
+        self.assertEqual(x, "hello\tWorld\v")
 
     def test_unknown_sign(self):
-        x = ownfunctions.replace_signs(u"Flag Turkey: {}".format(u"\u262a"))
-        self.assertEqual(x, u"Flag Turkey: {}".format(u"\u001a"))
+        x = ownfunctions.replace_signs("Flag Turkey: {}".format("\u262a"))
+        self.assertEqual(x, "Flag Turkey: {}".format("\u001a"))
 
 
 class TestShowXML(unittest.TestCase):
@@ -209,19 +209,19 @@ class TestValidateCoordinates(unittest.TestCase):
 class TestCoordsDecimalToMinutes(unittest.TestCase):
     def test_north_east(self):
         x = ownfunctions.coords_decimal_to_minutes([52.520817, 13.40945])
-        self.assertEqual(x, u"N 52°31.249, E 013°24.567")
+        self.assertEqual(x, "N 52°31.249, E 013°24.567")
 
     def test_south_west(self):
         x = ownfunctions.coords_decimal_to_minutes([-52.520817, -13.40945])
-        self.assertEqual(x, u"S 52°31.249, W 013°24.567")
+        self.assertEqual(x, "S 52°31.249, W 013°24.567")
 
     def test_equator(self):
         x = ownfunctions.coords_decimal_to_minutes([0, 13.40945])
-        self.assertEqual(x, u"N 00°00.000, E 013°24.567")
+        self.assertEqual(x, "N 00°00.000, E 013°24.567")
 
     def test_zero_meridian(self):
         x = ownfunctions.coords_decimal_to_minutes([52.520817, 0])
-        self.assertEqual(x, u"N 52°31.249, E 000°00.000")
+        self.assertEqual(x, "N 52°31.249, E 000°00.000")
 
     def test_north_bigger_than_90(self):
         self.assertRaises(ValueError, ownfunctions.coords_decimal_to_minutes, [92.520817, 13.40945])
@@ -247,82 +247,82 @@ class TestCoordsDecimalToMinutes(unittest.TestCase):
 
 class TestCoordsMinutesToDecimal(unittest.TestCase):
     def test_north_east(self):
-        x = ownfunctions.coords_minutes_to_decimal(u"N 52°31.249, E 013°24.567")
+        x = ownfunctions.coords_minutes_to_decimal("N 52°31.249, E 013°24.567")
         n = round(x[0], 6)
         e = round(x[1], 5)
         self.assertEqual([n, e], [52.520817, 13.40945])
 
     def test_south_west(self):
-        x = ownfunctions.coords_minutes_to_decimal(u"S 52°31.249, W 013°24.567")
+        x = ownfunctions.coords_minutes_to_decimal("S 52°31.249, W 013°24.567")
         n = round(x[0], 6)
         e = round(x[1], 5)
         self.assertEqual([n, e], [-52.520817, -13.40945])
 
     def test_equator(self):
-        x = ownfunctions.coords_minutes_to_decimal(u"N 00°00.000, E 013°24.567")
+        x = ownfunctions.coords_minutes_to_decimal("N 00°00.000, E 013°24.567")
         n = round(x[0], 6)
         e = round(x[1], 5)
         self.assertEqual([n, e], [0, 13.40945])
 
     def test_zero_meridian(self):
-        x = ownfunctions.coords_minutes_to_decimal(u"N 52°31.249, E 000°00.000")
+        x = ownfunctions.coords_minutes_to_decimal("N 52°31.249, E 000°00.000")
         n = round(x[0], 6)
         e = round(x[1], 5)
         self.assertEqual([n, e], [52.520817, 0])
 
     def test_north_bigger_than_90(self):
-        self.assertEqual(ownfunctions.coords_minutes_to_decimal(u"N 90°31.249, E 013°24.567"), None)
+        self.assertEqual(ownfunctions.coords_minutes_to_decimal("N 90°31.249, E 013°24.567"), None)
 
     def test_east_bigger_than_180(self):
-        self.assertEqual(ownfunctions.coords_minutes_to_decimal(u"N 52°31.249, E 213°24.567"), None)
+        self.assertEqual(ownfunctions.coords_minutes_to_decimal("N 52°31.249, E 213°24.567"), None)
 
     def test_north_bigger_than_90_south(self):
-        self.assertEqual(ownfunctions.coords_minutes_to_decimal(u"S 92°31.249, E 013°24.567"), None)
+        self.assertEqual(ownfunctions.coords_minutes_to_decimal("S 92°31.249, E 013°24.567"), None)
 
     def test_east_bigger_than_180_west(self):
-        self.assertEqual(ownfunctions.coords_minutes_to_decimal(u"N 52°31.249, W 213°24.567"), None)
+        self.assertEqual(ownfunctions.coords_minutes_to_decimal("N 52°31.249, W 213°24.567"), None)
 
     def test_small_mistake_in_unicode(self):
-        self.assertRaises(ValueError, ownfunctions.coords_minutes_to_decimal, u"N 92°310249, E 013°24.567")
+        self.assertRaises(ValueError, ownfunctions.coords_minutes_to_decimal, "N 92°310249, E 013°24.567")
 
     def test_list_instead_of_unicode(self):
-        self.assertRaises(TypeError, ownfunctions.coords_minutes_to_decimal, [u"N 52°31.249, E 013°24.567"])
+        self.assertRaises(TypeError, ownfunctions.coords_minutes_to_decimal, ["N 52°31.249, E 013°24.567"])
 
 
 class TestCoordsMinutesToSeconds(unittest.TestCase):
     def test_north_east(self):
-        x = ownfunctions.coords_minutes_to_seconds(u"N 52°31.249, E 013°24.567")
-        self.assertEqual(x, u"52°31'14.9\"N+13°24'34.0\"E")
+        x = ownfunctions.coords_minutes_to_seconds("N 52°31.249, E 013°24.567")
+        self.assertEqual(x, "52°31'14.9\"N+13°24'34.0\"E")
 
     def test_south_west(self):
-        x = ownfunctions.coords_minutes_to_seconds(u"S 52°31.249, W 013°24.567")
-        self.assertEqual(x, u"52°31'14.9\"S+13°24'34.0\"W")
+        x = ownfunctions.coords_minutes_to_seconds("S 52°31.249, W 013°24.567")
+        self.assertEqual(x, "52°31'14.9\"S+13°24'34.0\"W")
 
     def test_equator(self):
-        x = ownfunctions.coords_minutes_to_seconds(u"N 00°00.000, E 013°24.567")
-        self.assertEqual(x, u"0°0'0.0\"N+13°24'34.0\"E")
+        x = ownfunctions.coords_minutes_to_seconds("N 00°00.000, E 013°24.567")
+        self.assertEqual(x, "0°0'0.0\"N+13°24'34.0\"E")
 
     def test_zero_meridian(self):
-        x = ownfunctions.coords_minutes_to_seconds(u"N 52°31.249, E 000°00.000")
-        self.assertEqual(x, u"52°31'14.9\"N+0°0'0.0\"E")
+        x = ownfunctions.coords_minutes_to_seconds("N 52°31.249, E 000°00.000")
+        self.assertEqual(x, "52°31'14.9\"N+0°0'0.0\"E")
 
     def test_north_bigger_than_90(self):
-        self.assertEqual(ownfunctions.coords_minutes_to_seconds(u"N 90°31.249, E 013°24.567"), None)
+        self.assertEqual(ownfunctions.coords_minutes_to_seconds("N 90°31.249, E 013°24.567"), None)
 
     def test_east_bigger_than_180(self):
-        self.assertEqual(ownfunctions.coords_minutes_to_seconds(u"N 52°31.249, E 213°24.567"), None)
+        self.assertEqual(ownfunctions.coords_minutes_to_seconds("N 52°31.249, E 213°24.567"), None)
 
     def test_north_bigger_than_90_south(self):
-        self.assertEqual(ownfunctions.coords_minutes_to_seconds(u"S 92°31.249, E 013°24.567"), None)
+        self.assertEqual(ownfunctions.coords_minutes_to_seconds("S 92°31.249, E 013°24.567"), None)
 
     def test_east_bigger_than_180_west(self):
-        self.assertEqual(ownfunctions.coords_minutes_to_seconds(u"N 52°31.249, W 213°24.567"), None)
+        self.assertEqual(ownfunctions.coords_minutes_to_seconds("N 52°31.249, W 213°24.567"), None)
 
     def test_small_mistake_in_unicode(self):
-        self.assertEqual(ownfunctions.coords_minutes_to_seconds(u"N 92°310249, E 013°24.567"), None)
+        self.assertEqual(ownfunctions.coords_minutes_to_seconds("N 92°310249, E 013°24.567"), None)
 
     def test_list_instead_of_unicode(self):
-        self.assertRaises(TypeError, ownfunctions.coords_minutes_to_seconds, [u"N 52°31.249, E 013°24.567"])
+        self.assertRaises(TypeError, ownfunctions.coords_minutes_to_seconds, ["N 52°31.249, E 013°24.567"])
 
 
 class TestCoordsUrlToDecimal(unittest.TestCase):
@@ -367,7 +367,7 @@ class TestCoordsUrlToDecimal(unittest.TestCase):
 
 class TestCoordsStringToDecimal(unittest.TestCase):
     def test_manual_coords(self):
-        x = ownfunctions.coords_string_to_decimal(u"N 52°31.249, E 013°24.567")
+        x = ownfunctions.coords_string_to_decimal("N 52°31.249, E 013°24.567")
         n = round(x[0], 6)
         e = round(x[1], 5)
         self.assertEqual([n, e], [52.520817, 13.40945])
