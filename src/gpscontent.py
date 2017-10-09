@@ -251,7 +251,7 @@ class GPSContent(object):
         """returns a string with most important infos (+ distances) for each cache, each cache in one line"""
         text = ""
         for c in self.geocaches:
-            newline = u"{:7}km | {}\n".format(round(c.distance, 1), c.shortinfo(12))
+            newline = "{:7}km | {}\n".format(round(c.distance, 1), c.shortinfo(12))
             text += newline
         if len(self.geocaches) == 0:
             return user_io.NO_CACHES_ON_DEVICE
@@ -275,12 +275,13 @@ class GPSContent(object):
         """shows detailed information about one cache and performs another actions with it if desired"""
 
         cache = self.read_cache()
-        if cache:
-            user_io.general_output(cache.longinfo())
-            if ownfunctions.connected(cache.url):
-                webbrowser.open_new_tab(cache.url)
+        if cache:    # if reading successful
+            user_io.general_output(cache.longinfo())  # show information
 
-            while True:
+            if ownfunctions.connected(cache.url):   # if internetconnection
+                webbrowser.open_new_tab(cache.url)  # open description of cache on geocaching.com
+
+            while True:                             # further actions
                 wpt = False  # no waypoints exist
                 if cache.waypoints:
                     wpt = True  # waypoints exist
@@ -303,7 +304,7 @@ class GPSContent(object):
                     webbrowser.open_new_tab(url)
                 elif task == "googlemaps":
                     coords_sec = ownfunctions.coords_minutes_to_seconds(cache.coordinates_string)
-                    url = u"https://www.google.de/maps/place/{}".format(coords_sec)
+                    url = "https://www.google.de/maps/place/{}".format(coords_sec)
                     webbrowser.open_new_tab(url)
                 elif task == "mapcustomizer":
                     self.show_on_map(cache)
@@ -336,7 +337,7 @@ class GPSContent(object):
         for c in cachelist:
             if type(c) != Geocache:
                 raise TypeError("An Element of the selection is not a Geocache!")
-            newline = u"{:7}km | {}\n".format(round(c.distance, 1), c.shortinfo(12))
+            newline = "{:7}km | {}\n".format(round(c.distance, 1), c.shortinfo(12))
             text += newline
         return text
 
@@ -542,6 +543,7 @@ class GPSContent(object):
         show_waypoints: determines if waypoints are shown on map, too
         free_waypoints: show also waypoints that don't belong to a cache (normally set to true if cachelist contains all
         caches on gpx-device and waypoints should be shown)"""
+
         with open("mapinfo.txt", "w") as mapinfo:
             for i, g in enumerate(cachelist):
                 if g.type == "Traditional Cache":
@@ -674,7 +676,7 @@ class GPSContent(object):
         timestring = "{}-{:02}-{:02}T{:02}:{:02}:{:02}Z".format(now.tm_year, now.tm_mon, now.tm_mday,
                                                                 now.tm_hour, now.tm_min, now.tm_sec)
         if os.path.isfile(wptfile_path):   # file Waypoints_XX-XX-XX.gpx exists
-            wptstring = u'<wpt lat="{}" lon="{}"><time>{}</time><name>{}</name><sym>Flag, Blue</sym></wpt>'.format(
+            wptstring = '<wpt lat="{}" lon="{}"><time>{}</time><name>{}</name><sym>Flag, Blue</sym></wpt>'.format(
                 waypoint.coordinates[0], waypoint.coordinates[1], timestring, waypoint.name)
             with open(wptfile_path, encoding="utf-8") as wptfile:
                 content = wptfile.read()
@@ -682,7 +684,7 @@ class GPSContent(object):
             with open(wptfile_path, "w", encoding="utf-8") as wptfile_new:
                 wptfile_new.write(newstring)
         elif os.path.isfile(wptfile_path_ger):   # file Wegpunkte_XX-XX-XX.gpx exists
-            wptstring = u'<wpt lat="{}" lon="{}"><time>{}</time><name>{}</name><sym>Flag, Blue</sym></wpt>'.format(
+            wptstring = '<wpt lat="{}" lon="{}"><time>{}</time><name>{}</name><sym>Flag, Blue</sym></wpt>'.format(
                 waypoint.coordinates[0], waypoint.coordinates[1], timestring, waypoint.name)
             with open(wptfile_path_ger, encoding="utf-8") as wptfile:
                 content = wptfile.read()
@@ -691,18 +693,18 @@ class GPSContent(object):
                 wptfile_new.write(newstring)
 
         else:   # if no waypointfile from today exists -> create the file
-            string = u'<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com/GPX'
-            string += u'/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://www.'
-            string += u'garmin.com/xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/'
-            string += u'TrackPointExtension/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/'
-            string += u'XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.'
-            string += u'topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.'
-            string += u'garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 '
-            string += u'http://www8.garmin.com/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/'
-            string += u'TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd"><metadata>'
-            string += u'<link href="http://www.garmin.com"><text>Garmin International</text></link><time>{}</time>'\
+            string = '<?xml version="1.0" encoding="UTF-8" standalone="no" ?><gpx xmlns="http://www.topografix.com/GPX'
+            string += '/1/1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:wptx1="http://www.'
+            string += 'garmin.com/xmlschemas/WaypointExtension/v1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/'
+            string += 'TrackPointExtension/v1" creator="eTrex 10" version="1.1" xmlns:xsi="http://www.w3.org/2001/'
+            string += 'XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.'
+            string += 'topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www8.'
+            string += 'garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/WaypointExtension/v1 '
+            string += 'http://www8.garmin.com/xmlschemas/WaypointExtensionv1.xsd http://www.garmin.com/xmlschemas/'
+            string += 'TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd"><metadata>'
+            string += '<link href="http://www.garmin.com"><text>Garmin International</text></link><time>{}</time>'\
                 .format(timestring)
-            string += u'</metadata><wpt lat="{}" lon="{}"><time>{}</time><name>{}</name><sym>Flag, Blue</sym></wpt></gpx>'\
+            string += '</metadata><wpt lat="{}" lon="{}"><time>{}</time><name>{}</name><sym>Flag, Blue</sym></wpt></gpx>'\
                 .format(waypoint.coordinates[0], waypoint.coordinates[1], timestring, waypoint.name)
             with open(wptfile_path, "w", encoding="utf-8") as wptfile:
                 wptfile.write(string)
@@ -864,11 +866,11 @@ class GPSContent(object):
 
         waypoints_new = []
         for w in self.waypoints:
-            user_io.general_output(u"\n{}: {}".format(user_io.CURRENT_WAYPOINT, w.name))
+            user_io.general_output("\n{}: {}".format(user_io.CURRENT_WAYPOINT, w.name))
             suggestions = self.find_suggestions(w)
             inp = user_io.choose_cache(suggestions, True)
             if type(inp) == Geocache:  # assign waypoint accordning to suggestion
-                w.name = u"{} ({})".format(w.name, inp.gccode)
+                w.name = "{} ({})".format(w.name, inp.gccode)
                 inp.add_waypoint(w)
                 wpt_files = self._replace_waypoint_name(wpt_files, w)
             elif inp == "other":  # assign waypoint to other geocache
@@ -876,7 +878,7 @@ class GPSContent(object):
                 adding = False
                 for g in self.geocaches:
                     if g.gccode == inp:  # successfull assigning waypoint to cache
-                        w.name = u"{} ({})".format(w.name, inp)
+                        w.name = "{} ({})".format(w.name, inp)
                         g.add_waypoint(w)
                         adding = True
                         wpt_files = self._replace_waypoint_name(wpt_files, w)
