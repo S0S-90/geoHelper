@@ -186,7 +186,11 @@ class GPSContent(object):
 
         logged_caches_raw = []
         with open(os.path.join(self.path, "geocache_visits.txt"), encoding="utf-16") as visits:
-            visits = visits.read()
+            try:
+                visits = visits.read()  # file has BOM
+            except UnicodeError:
+                with open(os.path.join(self.path, "geocache_visits.txt"), encoding="utf-16-le") as visits2:
+                    visits = visits2.read()   # file has no BOM
             visits_lines = visits.split("\n")
             for line in visits_lines:
                 logged_caches_raw.append(line)
