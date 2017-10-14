@@ -17,7 +17,7 @@ def show_main_menu(gps):
     while True:                                        
         task = user_io.main_menu(gps.found_exists)
         if task == "update":
-            new_content = GPSContent(PATH)
+            new_content = GPSContent(path)
             show_main_menu(new_content)
         elif task == "show_all":
             gps.sort_and_show_caches()
@@ -49,7 +49,8 @@ if __name__ == "__main__":
                     break
         else:
             if os.path.exists(PATH):
-                new = GPSContent(PATH)
+                path = PATH
+                new = GPSContent(path)
                 show_main_menu(new)
                 gpx_found = True
                 break
