@@ -41,13 +41,13 @@ if __name__ == "__main__":
         PATH = user_io.ask_for_path()   # path to gps-device
         gpx_found = False
         if PATH == "default":
-            for path in user_io.PATH:
+            for path in user_io.PATH:   # try different default paths
                 if os.path.exists(path):
                     new = GPSContent(path)
                     show_main_menu(new)
                     gpx_found = True
                     break
-        else:
+        else:                          # user-given non-default path
             if os.path.exists(PATH):
                 path = PATH
                 new = GPSContent(path)

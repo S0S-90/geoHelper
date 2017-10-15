@@ -204,10 +204,15 @@ class GPSContent(object):
         logged_caches_new = []
         for lc in logged_caches:
             if lc[-1] == "Found it":
-                try:
-                    found_caches.append(Geocache(os.path.join(self.path, "GPX", lc[0] + ".gpx")))
+                on_gpx = False
+                for gc in self.geocaches:
+                    if gc.gccode == lc[0]:
+                        found_caches.append(gc)
+                        on_gpx = True
+                        break
+                if on_gpx:
                     logged_caches_new.append(lc)
-                except IOError:
+                else:
                     user_io.general_output("\nWARNUNG! Der Geocache {} befindet sich nicht auf dem Geraet. \
                     Er wird daher im Folgenden nicht mehr beruecksichtigt.".format(lc[0]))
             else:
