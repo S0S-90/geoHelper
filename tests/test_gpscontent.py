@@ -175,6 +175,35 @@ class TestInitNotOnlyFound(unittest.TestCase):
         self.assertEqual(self.x.waypoints, [])
 
 
+class TestInitNotOnlyFoundNoBOM(unittest.TestCase):
+    def setUp(self):
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\not_only_found_no_BOM")
+
+    def test_geocaches(self):
+        number_of_geocaches = len(self.x.geocaches)
+        self.assertEqual(number_of_geocaches, 7)
+
+    def test_attributes(self):
+        expected_output = ['available 24-7', 'available in winter', 'bikes allowed', 'dangerous area',
+                           'difficult climbing', 'dogs allowed', 'flashlight required', 'hike shorter than 1km',
+                           'kid friendly', 'needs maintenance', 'no camping', 'no kids', 'no parking available',
+                           'not stroller accessible', 'not wheelchair accessible', 'parking available',
+                           'picnic tables available', 'public transit available', 'restrooms available',
+                           'special tool required', 'stealth required', 'stroller accessible', 'takes less than 1 hour',
+                           'teamwork required', 'thorns!', 'ticks!', 'tree climbing required', 'wheelchair accessible']
+        self.assertEqual(self.x.existing_attributes, expected_output)
+
+    def test_found_exists(self):
+        self.assertEqual(self.x.found_exists, True)
+
+    def test_warning(self):
+        self.assertEqual(self.x.warning, True)
+
+    def test_waypoints(self):
+        self.assertEqual(self.x.waypoints, [])
+
+
 class TestInitFoundNotOnGPS(unittest.TestCase):
     def setUp(self):
         """creates a gpscontent object for the tests"""
@@ -281,6 +310,24 @@ class TestGetLoggedAndFoundCachesNotOnlyFound(unittest.TestCase):
     def setUp(self):
         """creates a gpscontent object for the tests"""
         self.x = gpscontent.GPSContent(r"..\tests\examples\not_only_found")
+
+    def test_logged_caches(self):
+        logged_caches = self.x._get_logged_and_found_caches()[0]
+        expected = [["GC1XRPM", "2016-09-03T09:40Z", "Found it"], ["GC5G5F5", "2016-09-03T09:40Z", "unattempted"],
+                    ["GC5N23T", "2017-02-12T09:40Z", "Found it"]]
+        self.assertEqual(logged_caches, expected)
+
+    def test_found_caches(self):
+        found_caches = self.x._get_logged_and_found_caches()[1]
+        self.assertEqual(len(found_caches), 2)
+        self.assertEqual(found_caches[0].gccode, "GC1XRPM")
+        self.assertEqual(found_caches[1].gccode, "GC5N23T")
+
+
+class TestGetLoggedAndFoundCachesNotOnlyFoundNoBOM(unittest.TestCase):
+    def setUp(self):
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\not_only_found_no_BOM")
 
     def test_logged_caches(self):
         logged_caches = self.x._get_logged_and_found_caches()[0]
@@ -547,7 +594,7 @@ class TestShowAll(unittest.TestCase):
         expected += "True  | 11 Sep 2016 | Tesoro Ameghino\n"
         expected += "GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | "
         expected += "False | 05 Mar 2017 | 67 - MedTrix - {}\n".format("\u001a" + "\u001a" + "\u001a" +
-                                                                        "\u001a" + "\u001a")
+                                                                       "\u001a" + "\u001a")
         expected += "GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | "
         expected += "True  | 04 Aug 2016 | Saaletalblick\n"
         expected += "GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   | "
@@ -565,7 +612,7 @@ class TestShowAll(unittest.TestCase):
         expected += "True  | 11 Sep 2016 | Tesoro Ameghino\n"
         expected += "GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | "
         expected += "False | 05 Mar 2017 | 67 - MedTrix - {}\n".format("\u001a" + "\u001a" + "\u001a" +
-                                                                        "\u001a" + "\u001a")
+                                                                       "\u001a" + "\u001a")
         expected += "GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | "
         expected += "True  | 04 Aug 2016 | Saaletalblick\n"
         expected += "GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   | "
@@ -590,7 +637,7 @@ class TestShowAllDist(unittest.TestCase):
         expected += "True  | 11 Sep 2016 | Tesoro Ameghino\n"
         expected += "    5.4km | GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | "
         expected += "False | 05 Mar 2017 | 67 - MedTrix - {}\n".format("\u001a" + "\u001a" + "\u001a" +
-                                                                        "\u001a" + "\u001a")
+                                                                       "\u001a" + "\u001a")
         expected += "   58.2km | GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   "
         expected += "| True  | 04 Aug 2016 | Saaletalblick\n"
         expected += "    7.9km | GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   "
@@ -610,7 +657,7 @@ class TestShowAllDist(unittest.TestCase):
         expected += "True  | 11 Sep 2016 | Tesoro Ameghino\n"
         expected += "    5.4km | GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | "
         expected += "False | 05 Mar 2017 | 67 - MedTrix - {}\n".format("\u001a" + "\u001a" + "\u001a" +
-                                                                        "\u001a" + "\u001a")
+                                                                       "\u001a" + "\u001a")
         expected += "   58.2km | GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   "
         expected += "| True  | 04 Aug 2016 | Saaletalblick\n"
         expected += "    7.9km | GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   "
@@ -1010,6 +1057,58 @@ class TestShowFoundsNotOnlyFound(unittest.TestCase):
         shutil.move(r"..\tests\examples\temp\GC5N23T.gpx", r"..\tests\examples\not_only_found\GPX\GC5N23T.gpx")
         shutil.move(r"..\tests\examples\temp\geocache_visits.txt", r"..\tests\examples\not_only_found\geocache_visits.txt")
         shutil.move(r"..\tests\examples\temp\geocache_logs.xml", r"..\tests\examples\not_only_found\geocache_logs.xml")
+
+
+class TestShowFoundsOnlyFoundWaypoints(unittest.TestCase):
+    def setUp(self):
+        """creates a gpscontent object for the tests"""
+        self.x = gpscontent.GPSContent(r"..\tests\examples\only_found_waypoints")
+
+    def test_show_caches(self):
+        with mock.patch('builtins.input', return_value="3"):
+            out = StringIO()
+            sys.stdout = out
+            self.x.show_founds()
+            output = out.getvalue()
+            expected = "GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  "
+            expected += "| 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
+            expected += "        | N 49°47.546, E 009°55.934 | MÄRCHENSTUHL 2 (1.9km)\n"
+            expected += "GC5G5F5 | N 49°47.955, E 009°58.566 | Traditional Cache | D 1.5 | T 4.0 | small   | True  "
+            expected += "| 08 Oct 2016 | Urban Buildering\n\n"
+            expected += "\nWas moechtest du als naechstes tun?\n"
+            expected += "1: Gefundene Caches auf geocaching.com loggen "
+            expected += "(ueber den Upload von drafts / fieldnotes, INTERNET!!!)\n"
+            expected += "2: Alle gefundenen Caches loeschen\n"
+            expected += "3: zurueck\n"
+            self.assertEqual(output, expected)
+
+    def test_delete(self):
+        shutil.copy2(r"..\tests\examples\only_found_waypoints\GPX\GC1XRPM.gpx",
+                     r"..\tests\examples\temp\GC1XRPM.gpx")  # copy files that are to be removed
+        shutil.copy2(r"..\tests\examples\only_found_waypoints\GPX\GC5G5F5.gpx", r"..\tests\examples\temp\GC5G5F5.gpx")
+        shutil.copy2(r"..\tests\examples\only_found_waypoints\GPX\Wegpunkte_14-JAN-17.gpx",
+                     r"..\tests\examples\temp\Wegpunkte_14-JAN-17.gpx")
+        shutil.copy2(r"..\tests\examples\only_found_waypoints\geocache_visits.txt",
+                     r"..\tests\examples\temp\geocache_visits.txt")
+        shutil.copy2(r"..\tests\examples\only_found_waypoints\geocache_logs.xml",
+                     r"..\tests\examples\temp\geocache_logs.xml")
+
+        with mock.patch('builtins.input', side_effect=["2", "y"]):
+            self.x.show_founds()
+            self.assertEqual(len(self.x.geocaches), 5)  # less geocaches, logfiles and waypointfile are deleted
+            self.assertFalse(os.path.isfile(r"..\tests\examples\only_found_waypoints\geocache_visits.txt"))
+            self.assertFalse(os.path.isfile(r"..\tests\examples\only_found_waypoints\geocache_logs.xml"))
+            self.assertFalse(os.path.isfile(r"..\tests\examples\only_found_waypoints\GPX\Wegpunkte_14-JAN-17.gpx"))
+
+        # move deleted files back
+        shutil.move(r"..\tests\examples\temp\GC1XRPM.gpx", r"..\tests\examples\only_found_waypoints\GPX\GC1XRPM.gpx")
+        shutil.move(r"..\tests\examples\temp\GC5G5F5.gpx", r"..\tests\examples\only_found_waypoints\GPX\GC5G5F5.gpx")
+        shutil.move(r"..\tests\examples\temp\Wegpunkte_14-JAN-17.gpx",
+                    r"..\tests\examples\only_found_waypoints\GPX\Wegpunkte_14-JAN-17.gpx")
+        shutil.move(r"..\tests\examples\temp\geocache_visits.txt",
+                    r"..\tests\examples\only_found_waypoints\geocache_visits.txt")
+        shutil.move(r"..\tests\examples\temp\geocache_logs.xml",
+                    r"..\tests\examples\only_found_waypoints\geocache_logs.xml")
 
 
 class TestShowFoundsFoundNotOnGPS(unittest.TestCase):
@@ -2200,11 +2299,13 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestInitOnlyFound))
     suite.addTest(unittest.makeSuite(TestInitOnlyNotFound))
     suite.addTest(unittest.makeSuite(TestInitNotOnlyFound))
+    suite.addTest(unittest.makeSuite(TestInitNotOnlyFoundNoBOM))
     suite.addTest(unittest.makeSuite(TestInitFoundNotOnGPS))
     suite.addTest(unittest.makeSuite(TestInitNotFoundNotOnGPS))
     suite.addTest(unittest.makeSuite(TestInitErrorInGPX))
     suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesOnlyFound))
     suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesNotOnlyFound))
+    suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesNotOnlyFoundNoBOM))
     suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesOnlyNotFound))
     suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesFoundNotOnGPS))
     suite.addTest(unittest.makeSuite(TestGetLoggedAndFoundCachesNotFoundNotOnGPS))
@@ -2220,6 +2321,7 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestShowFoundsNoFoundCaches))
     suite.addTest(unittest.makeSuite(TestShowFoundsOnlyFound))
     suite.addTest(unittest.makeSuite(TestShowFoundsOnlyNotFound))
+    suite.addTest(unittest.makeSuite(TestShowFoundsOnlyFoundWaypoints))
     suite.addTest(unittest.makeSuite(TestShowFoundsNotOnlyFound))
     suite.addTest(unittest.makeSuite(TestShowFoundsFoundNotOnGPS))
     suite.addTest(unittest.makeSuite(TestDelete))
