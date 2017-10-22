@@ -189,8 +189,7 @@ def actions_after_search():
     print("2: Alle Suchergebnisse loeschen")
     print("3: Alle Suchergebnisse auf Karte zeigen (INTERNET!!!)")
     print("4: Beschreibung fuer eines der Suchergebnisse anzeigen")
-    print("5: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)")
-    print("6: zurueck")
+    print("5: zurueck")
     inp = input(">> ")
     
     if inp == "1":
@@ -202,8 +201,6 @@ def actions_after_search():
     elif inp == "4":
         return "show_one"
     elif inp == "5":
-        return "show_one_gc.com"
-    elif inp == "6":
         return "back"
     else:
         print("Ungueltige Eingabe")

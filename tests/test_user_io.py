@@ -486,10 +486,6 @@ class TestActionsAfterSearch(unittest.TestCase):
 
     def test_5(self):
         with mock.patch('builtins.input', return_value="5"):
-            self.assertEqual(user_io.actions_after_search(), "show_one_gc.com")
-
-    def test_6(self):
-        with mock.patch('builtins.input', return_value="6"):
             self.assertEqual(user_io.actions_after_search(), "back")
 
     def test_other(self):
@@ -507,8 +503,7 @@ class TestActionsAfterSearch(unittest.TestCase):
             expected += "2: Alle Suchergebnisse loeschen\n"
             expected += "3: Alle Suchergebnisse auf Karte zeigen (INTERNET!!!)\n"
             expected += "4: Beschreibung fuer eines der Suchergebnisse anzeigen\n"
-            expected += "5: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
-            expected += "6: zurueck\n"
+            expected += "5: zurueck\n"
             self.assertEqual(output, expected)
 
     def test_output_invalid_input(self):
@@ -522,8 +517,7 @@ class TestActionsAfterSearch(unittest.TestCase):
             expected += "2: Alle Suchergebnisse loeschen\n"
             expected += "3: Alle Suchergebnisse auf Karte zeigen (INTERNET!!!)\n"
             expected += "4: Beschreibung fuer eines der Suchergebnisse anzeigen\n"
-            expected += "5: Einen bestimmten Cache auf geocaching.com oeffnen (INTERNET!!!)\n"
-            expected += "6: zurueck\n"
+            expected += "5: zurueck\n"
             expected += "Ungueltige Eingabe\n"
             self.assertEqual(output, expected)
 
