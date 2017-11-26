@@ -41,6 +41,10 @@ class Geocache(object):
     -----------
     filename_path: string
         filename (including path)
+
+    source: string
+        'downloader' if gpx-file is created by geocaching.com gpx-downloader
+        'geocaching.com' if gpx-file is created by geocaching.com itself
         
     gccode: string
         gc-code - used for overloaded operators == and != and is printed by "print"
@@ -91,7 +95,8 @@ class Geocache(object):
         
     logs: list
         last logs before download
-        every element of list: list [date, logtype, name of logger]
+        every element of list: list [date, logtype, name of logger (, logtext)]
+                               last element only if gpx-file is created directly from geocaching.com
         
     available: bool 
         availability at the time of download 
@@ -125,117 +130,234 @@ class Geocache(object):
     
         if type(filename_path) != str:
             raise TypeError("Bad input.")
-        
+
         self.filename_path = filename_path
-        self.gccode = os.path.splitext(os.path.basename(filename_path))[0]  # gc-code
+        self.gccode = os.path.splitext(os.path.basename(self.filename_path))[0]  # gc-code
+
+        downloaddate = time.ctime(os.path.getmtime(self.filename_path))  # read downloaddate (= change of gpx-file)
+        downloaddate = ownfunctions.remove_spaces(downloaddate).split(" ")
+        self.downloaddate_string = "{:02} {} {}".format(int(downloaddate[2]), downloaddate[1], downloaddate[-1])
+        month = ownfunctions.get_month_number(downloaddate[1])
+        self.downloaddate = datetime.date(int(downloaddate[-1]), month, int(downloaddate[2]))
+
+        self.name = ""       # initialize attributes for geocache
+        self.difficulty = 0
+        self.terrain = 0
+        self.size_string = ""
+        self.size = ""
+        self.longtype = ""
+        self.type = ""
+        self.description = ""
+        self.hint = ""
+        self.owner = ""
+        self.url = ""
+        self.coordinates = []
+        self.coordinates_string = ""
+        self.attributes = []
+        self.logs = []
+        self.available = False
+
+        geocache_tree = ElementTree.parse(self.filename_path)  # read .gpx-Datei and find source
+        source = geocache_tree.find(".//{http://www.topografix.com/GPX/1/0}name").text
+
+        if source == "Cache Listing Generated from Geocaching.com":  # get attributes from gpx-file
+            self.source = "geocaching.com"
+            self._read_from_geocachingcom_gpxfile(geocache_tree)
+        else:
+            self.source = "downloader"
+            self._read_from_gpx_downloader(geocache_tree)
         
-        geocache_tree = ElementTree.parse(filename_path)    # read .gpx-Datei
-        
+        self.distance = 0     # initialize attributes for waypoints
+        self.waypoints = []
+
+    def _read_from_gpx_downloader(self, geocache_tree):
+        """reads attributes from a gpx-file that is created by the firefox plugin 'Geocaching.com GPX Downloader'
+        (part of __init__)"""
+
         name = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}name").text  # read name
-        self.name = ownfunctions.replace_signs(name) 
-        
+        self.name = ownfunctions.replace_signs(name)
+
         difficulty = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}difficulty").text  # read difficulty
         self.difficulty = float(difficulty)
-        
+
         terrain = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}terrain").text  # read terrain
         self.terrain = float(terrain)
-        
+
         self.size_string = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}container").text  # read size
         if self.size_string not in SIZE_LIST:
             self.size_string = "other"
         self.size = SIZE_LIST.index(self.size_string)
-        
-        self.longtype = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}type").text      # read type
+
+        self.longtype = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}type").text  # read type
         if self.longtype == "Unknown Cache":
             self.longtype = "Mystery Cache"
         self.type = self._read_type(self.longtype)
-            
-        self.description = self._read_description(geocache_tree)                               # read description
+
+        self.description = self._read_description(geocache_tree)  # read description
 
         hint = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}encoded_hints").text  # read hint
         self.hint = ownfunctions.replace_signs(hint)
-        
-        owner = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}placed_by").text    # read owner
+
+        owner = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}placed_by").text  # read owner
         self.owner = ownfunctions.replace_signs(owner)
-        
-        self.url = geocache_tree.find(".//{http://www.topografix.com/GPX/1/0}url").text         # read url
-        
-        wpt = geocache_tree.find(".//{http://www.topografix.com/GPX/1/0}wpt")                       # read coordinates
-        self.coordinates = [float(wpt.get("lat")), float(wpt.get("lon"))]                    # list of floats [lat, lon]
+
+        self.url = geocache_tree.find(".//{http://www.topografix.com/GPX/1/0}url").text  # read url
+
+        wpt = geocache_tree.find(".//{http://www.topografix.com/GPX/1/0}wpt")  # read coordinates
+        self.coordinates = [float(wpt.get("lat")), float(wpt.get("lon"))]  # list of floats [lat, lon]
         coord_str = ownfunctions.coords_decimal_to_minutes(self.coordinates)
         self.coordinates_string = coord_str  # string 'X XX°XX.XXX, X XXX°XX.XXX'
-        
-        attributes = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}text").text     # read attributes
+
+        attributes = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}text").text  # read attributes
         attributes = attributes.split(",")
-        self.attributes = []
         for a in attributes:
             self.attributes.append(ownfunctions.remove_spaces(a))
-        
-        self.logs = self._read_logs(geocache_tree)                                           # read logs
-           
-        cache = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}cache")         # read if available or not
+
+        self.logs = self._read_logs(geocache_tree)  # read logs
+
+        cache = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}cache")  # read if available or not
         available = cache.get("available")
         if available == "True":
             self.available = True
         elif available == "False":
             self.available = False
-        
-        downloaddate = time.ctime(os.path.getmtime(filename_path))       # read downloaddate (= change of gpx-file)
-        downloaddate = ownfunctions.remove_spaces(downloaddate).split(" ")
-        self.downloaddate_string = "{:02} {} {}".format(int(downloaddate[2]), downloaddate[1], downloaddate[-1])
-        month = ownfunctions.get_month_number(downloaddate[1])
-        self.downloaddate = datetime.date(int(downloaddate[-1]), month, int(downloaddate[2]))
-        
-        self.distance = 0     # initialise for later use
-        self.waypoints = []
 
-    @staticmethod
-    def _read_logs(geocache_tree):
+    def _read_from_geocachingcom_gpxfile(self, geocache_tree):
+        """reads attributes from a gpx-file that is created by geocaching.com (part of __init__)"""
+
+        name = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0/1}name").text  # read name
+        self.name = ownfunctions.replace_signs(name)
+
+        difficulty = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0/1}difficulty").text  # read difficulty
+        self.difficulty = float(difficulty)
+
+        terrain = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0/1}terrain").text  # read terrain
+        self.terrain = float(terrain)
+
+        self.size_string = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0/1}container").text.lower()  # size
+        if self.size_string not in SIZE_LIST:
+            self.size_string = "other"
+        self.size = SIZE_LIST.index(self.size_string)
+
+        self.longtype = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0/1}type").text  # read type
+        if self.longtype == "Unknown Cache":
+            self.longtype = "Mystery Cache"
+        self.type = self._read_type(self.longtype)
+
+        self.description = self._read_description(geocache_tree)  # read description
+
+        hint = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0/1}encoded_hints").text  # read hint
+        self.hint = ownfunctions.replace_signs(hint)
+
+        owner = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0/1}placed_by").text  # read owner
+        self.owner = ownfunctions.replace_signs(owner)
+
+        url_raw = geocache_tree.findall(".//{http://www.topografix.com/GPX/1/0}url")  # read url
+        self.url = url_raw[1].text  # because index 0 is only http://www.geocaching.com
+
+        wpt = geocache_tree.find(".//{http://www.topografix.com/GPX/1/0}wpt")  # read coordinates
+        self.coordinates = [float(wpt.get("lat")), float(wpt.get("lon"))]  # list of floats [lat, lon]
+        coord_str = ownfunctions.coords_decimal_to_minutes(self.coordinates)
+        self.coordinates_string = coord_str  # string 'X XX°XX.XXX, X XXX°XX.XXX'
+
+        attributes = geocache_tree.findall(".//{http://www.groundspeak.com/cache/1/0/1}attribute")  # read attributes
+        for a in attributes:
+            self.attributes.append(ownfunctions.remove_spaces(a.text))
+
+        self.logs = self._read_logs(geocache_tree)  # read logs
+
+        cache = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0/1}cache")  # read if available or not
+        available = cache.get("available")
+        if available == "True":
+            self.available = True
+        elif available == "False":
+            self.available = False
+
+    def _read_logs(self, geocache_tree):
         """reads logs from xml-file, part of __init__"""
 
-        log_dates_raw = geocache_tree.findall(".//{http://www.groundspeak.com/cache/1/0}date")
+        log_dates_raw = []
+        if self.source == "downloader":
+            log_dates_raw = geocache_tree.findall(".//{http://www.groundspeak.com/cache/1/0}date")
+        elif self.source == "geocaching.com":
+            log_dates_raw = geocache_tree.findall(".//{http://www.groundspeak.com/cache/1/0/1}date")
         log_dates = []
         for i, ld in enumerate(log_dates_raw):
-            if i > 0:  # attributes are also saved as logs but not taken into account here
+            if i == 0 and self.source == "geocaching.com":
                 log_dates.append(ld.text[:10])
+            elif i > 0:  # in gpx-file from the gpx-downloader the attributes are also saved as logs
+                log_dates.append(ld.text[:10])                     # but not taken into account here
 
-        log_types_raw = geocache_tree.findall(".//{http://www.groundspeak.com/cache/1/0}type")
+        log_types_raw = []
+        if self.source == "downloader":
+            log_types_raw = geocache_tree.findall(".//{http://www.groundspeak.com/cache/1/0}type")
+        elif self.source == "geocaching.com":
+            log_types_raw = geocache_tree.findall(".//{http://www.groundspeak.com/cache/1/0/1}type")
         log_types = []
         for i, lt in enumerate(log_types_raw):
-            if i > 1:  # index 0 corresponds to cachetyp (Tradi, Multi,...), index 1 to the attributes
+            if i == 0 and self.source == "geocaching.com":
                 log_types.append(lt.text)
+            elif i > 1:  # in gpx-file from the gpx-downloader index 0 corresponds to cachetyp (Tradi, Multi,...),
+                log_types.append(lt.text)                                           # index 1 to the attributes...
 
-        finder_raw = geocache_tree.findall(".//{http://www.groundspeak.com/cache/1/0}finder")
+        finder_raw = []
+        if self.source == "downloader":
+            finder_raw = geocache_tree.findall(".//{http://www.groundspeak.com/cache/1/0}finder")
+        elif self.source == "geocaching.com":
+            finder_raw = geocache_tree.findall(".//{http://www.groundspeak.com/cache/1/0/1}finder")
         finder = []
         for i, fd in enumerate(finder_raw):
-            if i > 0:  # index 0 corresponding to attributes
+            if i == 0 and self.source == "geocaching.com":
                 next_fd = ownfunctions.replace_signs(fd.text)
                 finder.append(next_fd)
+            if i > 0:  # in gpx-file from the gpx-downloader index 0 corresponding to attributes
+                next_fd = ownfunctions.replace_signs(fd.text)
+                finder.append(next_fd)
+
+        log_texts = []
+        if self.source == "geocaching.com":  # logtext is only saved in gpx-files from geocaching.com
+            text_raw = geocache_tree.findall(".//{http://www.groundspeak.com/cache/1/0/1}text")
+            for i, tx in enumerate(text_raw):
+                next_tx = ownfunctions.replace_signs(tx.text)
+                log_texts.append(next_tx)
 
         logs = []
         log_number = len(log_dates)
         if len(log_dates) == len(log_types) == len(finder):
             for i in range(log_number):
-                logs.append([log_dates[i], log_types[i], finder[i]])
+                new_log = [log_dates[i], log_types[i], finder[i]]
+                if self.source == "geocaching.com":
+                    new_log.append(log_texts[i])
+                logs.append(new_log)
         else:
             print("\nWARNING! Error in gpx-file. Reading logs correctly not possible.")
 
         return logs
 
-    @staticmethod
-    def _read_description(geocache_tree):
-        """reads description from xml-file, part of __init__"""
-        
-        description_short = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}short_description").text 
+    def _read_description(self, geocache_tree):
+        """reads description from xml-file, part of __init__
+        source: is the xml-file created by geocaching.com gpx-downloader or by geocaching.com itself?"""
+
+        description_short = ""
+        if self.source == "downloader":
+            description_short = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}short_description").text
+        elif self.source == "geocaching.com":
+            description_short = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0/1}short_description").text
         if description_short:
             description_short = ownfunctions.replace_signs(description_short)
         else:
             description_short = ""
-        description_long = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}long_description").text
+
+        description_long = ""
+        if self.source == "downloader":
+            description_long = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0}long_description").text
+        elif self.source == "geocaching.com":
+            description_long = geocache_tree.find(".//{http://www.groundspeak.com/cache/1/0/1}long_description").text
         if description_long:
             description_long = ownfunctions.replace_signs(description_long)
         else:
             description_long = ""
+
         return description_short + "\n\n" + description_long
 
     @staticmethod
