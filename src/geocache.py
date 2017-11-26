@@ -1,7 +1,7 @@
 ﻿#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-"""This file contains the classes Geocache (for a single geocache) and k
+"""This file contains the classes Geocache (for a single geocache) and
 Waypoint (for a waypoint, consisting only of name and coordinates."""
 
 import os
