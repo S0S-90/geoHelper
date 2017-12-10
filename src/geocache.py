@@ -438,6 +438,8 @@ class Geocache(object):
         z11 = "\n\n"
         for l in self.logs:
             z11 += "{}: {} by {}\n".format(l[0], l[1], l[2])
+            if len(l) > 3:
+                z11 += "{}\n\n".format(l[3])
         return z1 + z2 + z3 + z4 + z5 + z6 + z7 + z8 + z9 + z10 + z11
 
 
