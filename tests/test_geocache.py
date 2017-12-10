@@ -600,6 +600,166 @@ class TestMedrixErnos(unittest.TestCase):
         self.assertEqual(self.gc.downloaddate_string, "09 Jan 2017")
 
 
+class TestEntenteichGPXFromGeocachingCom(unittest.TestCase):
+
+    def setUp(self):
+        """creates a geocache object for the tests"""
+        self.gc = geocache.Geocache("../tests/examples/GC7FB56.gpx")
+
+    def test_gccode(self):
+        self.assertEqual(self.gc.gccode, "GC7FB56")
+
+    def test_name(self):
+        self.assertEqual(self.gc.name, "Ententeich")
+
+    def test_difficulty(self):
+        self.assertEqual(self.gc.difficulty, 1)
+
+    def test_terrain(self):
+        self.assertEqual(self.gc.terrain, 1.5)
+
+    def test_size(self):
+        self.assertEqual(self.gc.size, 1)
+
+    def test_size_string(self):
+        self.assertEqual(self.gc.size_string, "micro")
+
+    def test_type(self):
+        self.assertEqual(self.gc.type, "Traditional Cache")
+
+    def test_longtype(self):
+        self.assertEqual(self.gc.longtype, "Traditional Cache")
+
+    def test_description(self):
+        expected = "Mein erster versteckter Cache.\n\n\nDer Ententeich ist ein künstlich entstandenes Gewässer im " \
+                   "Stadtbezirk Lindleinsmühle. Namensgeber sind die dort ansässigen Enten. Der Teich hat eine " \
+                   "Grundfläche von rund 150 auf 40 Meter und wird durch die vorbeifließende Pleichach gespeist. " \
+                   "Quelle: WürzburgWiki Dies ist mein erster versteckter Cache. Ich habe diesen Ort ausgesucht, " \
+                   "weil wir hier oft mit unserem kleinen Sohn vorbeikommen. Er liebt die Enten:). Ein schöner Ort zum" \
+                   " Spazierengehen, Spielen (Spielplatz) oder Ausruhen (Bänke) Das Versteck befindet sich in " \
+                   "unmittelbarer Nähe einer Schule. Auf Muggels achten! Das Logbuch bitte erst in den Deckel stecken" \
+                   " und dann erst zumachen. Viel Spaß beim Suchen\n"
+        self.assertEqual(self.gc.description, expected)
+
+    def test_hint(self):
+        self.assertEqual(self.gc.hint, "magnetisch")
+
+    def test_owner(self):
+        self.assertEqual(self.gc.owner, "HunterSmurf")
+
+    def test_url(self):
+        self.assertEqual(self.gc.url,
+                         "https://www.geocaching.com/seek/cache_details.aspx?guid=50e69a74-3a85-46b7-a99b-f8c43efc3a61")
+
+    def test_coordinates(self):
+        self.assertEqual(self.gc.coordinates, [49.80985, 9.9648])
+
+    def test_coordinates_string(self):
+        self.assertEqual(self.gc.coordinates_string, "N 49°48.591, E 009°57.888")
+
+    def test_attributes(self):
+        self.assertEqual(self.gc.attributes, ["Dogs", "Available at all times", "Bicycles", "Parking available",
+                                              "Stroller accessible", "Stealth required", "Short hike (less than 1km)"])
+
+    def test_logs(self):
+        log1 = ['2017-12-06', 'Found it', 'Monti76', "Schneller Fund! Danke für's Legen und Pflegen des Caches. Tftc #921"]
+        text2 = 'Da wir auf anderer Mission ganz in der Nähe waren, haben wir noch einen kurzen Abstecher zum ' \
+                'Ententeich gemacht.\n\nDie GZ war schnell ausgemacht und nach ein wenig Fummeln an den üblichen ' \
+                'Stellen zeigte sich die kleine Dose auch sofort.\n\nTFTC!'
+        log2 = ['2017-12-03', 'Found it', 'famerlor_dragon', text2]
+        text3 = 'Nach kurzer Suche hielt famerlor_dragon die Dose in den Händen und wir konnten bei schönstem ' \
+                'Winterwetter unsere Stempel im Logbuch verewigen. \n\nTFTC geovi'
+        log3 = ['2017-12-04', 'Found it', 'geovi', text3]
+        log4 = ['2017-12-03', 'Found it', 'mawil66', 'Schnell gefunden. Diesen Ort kannten wir noch nicht']
+        log5 = ['2017-11-27', 'Found it', 'mapaluco',
+                'Bekannte location, habs halt ums verrecken nicht aufs Treppchen geschafft!']
+        text6 = 'Auf dem Heimweg ging es noch zu diesem Ententeich.\nDas Döschen war, trotz genauer Koordinaten gar ' \
+                'nicht so leicht zu entdecken.\nVielen Dank fürs Verstecken.'
+        log6 = ['2017-11-27', 'Found it', 'funnymax', text6]
+        text7 = 'Auf dem Weg zum Baumarkt haben wir einen kleinen Abstecher hierher gemacht.\nUnser Hobby hat uns schon' \
+                ' mehrmals zu diesem Teich geführt und so sind wir auch heute gerne wieder hierher gekommen.\nHoffen wir' \
+                ' mal, dass diese Dose etwas länger überlebt als ihre Vorgänger!\n\nVielen Dank fürs erneute Herlocken,' \
+                ' den TTF und die Dose vor Ort!'
+        log7 = ['2017-11-27', 'Found it', 'NobSim', text7]
+        text8 = '[:D][:D][:D] [FTF] [:D][:D][:D]\nAls ich gerade auf der Geocachingkarte herumstöberte, entdeckte ich ' \
+                'diesen neuen Tradi. E-Mails gecheckt… Hääää, keine Benachrichtigung?! Haegaer angefragt, ob er was ' \
+                'bekommen hat – auch nicht! So ging es zur bekannten Örtlichkeit, wo das Döschen nach kurzer Suche ' \
+                'gefunden und ein jungfräuliches Logbuch signiert werden konnte. Danke für’s Herführen & TFTC'
+        log8 = ['2017-11-27', 'Found it', 'Alokasie', text8]
+        log9 = ['2017-11-27', 'Publish Listing', 'tabula.rasa', 'Published']
+        expected_logs = [log1, log2, log3, log4, log5, log6, log7, log8, log9]
+        self.assertEqual(self.gc.logs, expected_logs)
+
+    def test_available(self):
+        self.assertEqual(self.gc.available, True)
+
+    def test_downloaddate(self):
+        expected_date = datetime.date(2017, 12, 10)
+        self.assertEqual(self.gc.downloaddate, expected_date)
+
+    def test_downloaddate_string(self):
+        self.assertEqual(self.gc.downloaddate_string, "10 Dec 2017")
+
+    def test_shortinfo(self):
+        x = self.gc.shortinfo()
+        expected = "GC7FB56 | N 49°48.591, E 009°57.888 | Traditional Cache | D 1.0 | T 1.5 | micro   | True  "
+        expected += "| 10 Dec 2017 | Ententeich"
+        self.assertEqual(x, expected)
+
+    def test_longinfo(self):
+        x = self.gc.longinfo()
+        z1 = "\nGC7FB56 : Ententeich"
+        z2 = "\n---------------------"
+        z3 = "\nSchwierigkeit: 1.0, Gelaende: 1.5, Groesse: micro, Typ: Traditional Cache"
+        z4 = "\nKoordinaten: N 49°48.591, E 009°57.888"
+        z5 = "\nOwner: HunterSmurf"
+        z6 = "\nAttribute: Dogs, Available at all times, Bicycles, Parking available, Stroller accessible, Stealth " \
+             "required, Short hike (less than 1km)"
+        z7 = "\nCache ist aktiv: True, Stand: 10 Dec 2017"
+        z8 = "\nLink: https://www.geocaching.com/seek/cache_details.aspx?guid=50e69a74-3a85-46b7-a99b-f8c43efc3a61"
+        z9 = "\n\nMein erster versteckter Cache.\n\n\nDer Ententeich ist ein künstlich entstandenes Gewässer im " \
+             "Stadtbezirk Lindleinsmühle. Namensgeber sind die dort ansässigen Enten. Der Teich hat eine " \
+             "Grundfläche von rund 150 auf 40 Meter und wird durch die vorbeifließende Pleichach gespeist. " \
+             "Quelle: WürzburgWiki Dies ist mein erster versteckter Cache. Ich habe diesen Ort ausgesucht, " \
+             "weil wir hier oft mit unserem kleinen Sohn vorbeikommen. Er liebt die Enten:). Ein schöner Ort zum" \
+             " Spazierengehen, Spielen (Spielplatz) oder Ausruhen (Bänke) Das Versteck befindet sich in " \
+             "unmittelbarer Nähe einer Schule. Auf Muggels achten! Das Logbuch bitte erst in den Deckel stecken" \
+             " und dann erst zumachen. Viel Spaß beim Suchen\n"
+        z10 = "\nHinweis: magnetisch"
+        z11 = "\n\n"
+        z12 = "2017-12-06: Found it by Monti76\n"
+        z12 += "Schneller Fund! Danke für's Legen und Pflegen des Caches. Tftc #921\n\n"
+        z13 = "2017-12-03: Found it by famerlor_dragon\n"
+        z13 += 'Da wir auf anderer Mission ganz in der Nähe waren, haben wir noch einen kurzen Abstecher zum ' \
+               'Ententeich gemacht.\n\nDie GZ war schnell ausgemacht und nach ein wenig Fummeln an den üblichen ' \
+               'Stellen zeigte sich die kleine Dose auch sofort.\n\nTFTC!\n\n'
+        z14 = "2017-12-04: Found it by geovi\n"
+        z14 += 'Nach kurzer Suche hielt famerlor_dragon die Dose in den Händen und wir konnten bei schönstem ' \
+               'Winterwetter unsere Stempel im Logbuch verewigen. \n\nTFTC geovi\n\n'
+        z15 = "2017-12-03: Found it by mawil66\n"
+        z15 += 'Schnell gefunden. Diesen Ort kannten wir noch nicht\n\n'
+        z16 = "2017-11-27: Found it by mapaluco\n"
+        z16 += 'Bekannte location, habs halt ums verrecken nicht aufs Treppchen geschafft!\n\n'
+        z17 = "2017-11-27: Found it by funnymax\n"
+        z17 += 'Auf dem Heimweg ging es noch zu diesem Ententeich.\nDas Döschen war, trotz genauer Koordinaten gar ' \
+               'nicht so leicht zu entdecken.\nVielen Dank fürs Verstecken.\n\n'
+        z18 = "2017-11-27: Found it by NobSim\n"
+        z18 += 'Auf dem Weg zum Baumarkt haben wir einen kleinen Abstecher hierher gemacht.\nUnser Hobby hat uns schon' \
+               ' mehrmals zu diesem Teich geführt und so sind wir auch heute gerne wieder hierher gekommen.\nHoffen wir' \
+               ' mal, dass diese Dose etwas länger überlebt als ihre Vorgänger!\n\nVielen Dank fürs erneute Herlocken,' \
+               ' den TTF und die Dose vor Ort!\n\n'
+        z19 = "2017-11-27: Found it by Alokasie\n"
+        z19 += '[:D][:D][:D] [FTF] [:D][:D][:D]\nAls ich gerade auf der Geocachingkarte herumstöberte, entdeckte ich ' \
+               'diesen neuen Tradi. E-Mails gecheckt… Hääää, keine Benachrichtigung?! Haegaer angefragt, ob er was ' \
+               'bekommen hat – auch nicht! So ging es zur bekannten Örtlichkeit, wo das Döschen nach kurzer Suche ' \
+               'gefunden und ein jungfräuliches Logbuch signiert werden konnte. Danke für’s Herführen & TFTC\n\n'
+        z20 = "2017-11-27: Publish Listing by tabula.rasa\n"
+        z20 += 'Published\n\n'
+        expected = z1 + z2 + z3 + z4 + z5 + z6 + z7 + z8 + z9 + z10
+        expected += z11 + z12 + z13 + z14 + z15 + z16 + z17 + z18 + z19 + z20
+        self.assertEqual(x, expected)
+
+
 class TestInvalidInput(unittest.TestCase):
     def test_wrong_type(self):
         self.assertRaises(TypeError, geocache.Geocache, [4, 2])
@@ -738,6 +898,7 @@ def create_testsuite():
     suite.addTest(unittest.makeSuite(TestMusikhochschule))
     suite.addTest(unittest.makeSuite(TestWuerzburgerWebcam))
     suite.addTest(unittest.makeSuite(TestMedrixErnos))
+    suite.addTest(unittest.makeSuite(TestEntenteichGPXFromGeocachingCom))
     suite.addTest(unittest.makeSuite(TestInvalidInput))
     suite.addTest(unittest.makeSuite(TestWaypointInit))
     suite.addTest(unittest.makeSuite(TestWaypointFindShownNameAndDistance))

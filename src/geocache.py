@@ -295,10 +295,10 @@ class Geocache(object):
             log_types_raw = geocache_tree.findall(".//{http://www.groundspeak.com/cache/1/0/1}type")
         log_types = []
         for i, lt in enumerate(log_types_raw):
-            if i == 0 and self.source == "geocaching.com":
+            if i == 1 and self.source == "geocaching.com":  # index 0 corresponds to cachetyp (Tradi, Multi,...),
+                log_types.append(lt.text)                   # # index 1 to the attributes if gpx from gpx-downloader
+            elif i > 1:
                 log_types.append(lt.text)
-            elif i > 1:  # in gpx-file from the gpx-downloader index 0 corresponds to cachetyp (Tradi, Multi,...),
-                log_types.append(lt.text)                                           # index 1 to the attributes...
 
         finder_raw = []
         if self.source == "downloader":
