@@ -3,9 +3,7 @@
 
 # Voraussetzungen
 * Python 3 mit Modulen: sys, glob, webbrowser, os, time, math, datetime, urllib.request, html.parser, unicodedata, xml.etree.ElementTree, subprocess (alle in Standardbibliothek vorhanden)
-
-* Die gpx-Dateien sollten in dem Format vorliegen, das vom Firefox-Addon "Geocaching.com GPX Downloader" (https://addons.mozilla.org/de/firefox/addon/geocachingcom-gpx-downloader/) 
-verwendet wird.
+* Die gpx-Dateien können entweder über geocaching.com selbst heruntergeladen werden oder über das Firefox Addon "Geocaching.com GPX Downloader" erzeugt werden.
 * Die Fieldnotes-Datei "geocache_visits.txt" sowie die Logdatei "geocache_logs.xml" müssen direkt im angegebenen Ordner für das GPS-Gerät liegen, 
 die gpx-Dateien in einem Unterordner mit Namen "GPX". (Dies sollte bei Garmin-Geräten automatisch der Fall sein.)
 
