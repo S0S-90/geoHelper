@@ -31,6 +31,9 @@ GPX-Datei heruntergeladen, kann diese mittels "Geocaches aktualisieren" in das P
 * Loggen der gefundenen Caches auf der Fieldnotes-/Draftsseite von geocaching.com
 * Wegpunkte erstellen, zu Caches zuordnen und löschen
 
+**Achtung!** Falls Wegpunkte, die bereits durch das Herunterladen zum Cache gehören (z.B. Parkplatz-Koordinaten), vom GPS-Gerät aus gelöscht werden, kann geocachingTooly das gpx-File 
+möglicherweise nicht mehr lesen, da das GPS-Gerät den Dateinamen verändert.
+
 
 # Testen des Programms (nur für Entwickler)
 * Die Beispieldateien aus "examples.rar" in einen Ordner "tests\examples" entpacken. (Sie werden für die Tests der Klassen benötigt.)
