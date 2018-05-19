@@ -132,7 +132,7 @@ class Geocache(object):
             raise TypeError("Bad input.")
 
         self.filename_path = filename_path
-        self.gccode = os.path.splitext(os.path.basename(self.filename_path))[0]  # gc-code
+        self.gccode = os.path.splitext(os.path.basename(self.filename_path))[0].upper()  # gc-code
 
         downloaddate = time.ctime(os.path.getmtime(self.filename_path))  # read downloaddate (= change of gpx-file)
         downloaddate = ownfunctions.remove_spaces(downloaddate).split(" ")

@@ -110,7 +110,7 @@ class GPSContent(object):
             except AttributeError:
                 user_io.general_output("{}: {}".format(user_io.WARNING_BROKEN_FILE, os.path.basename(gpxfile)))
 
-        self.waypoints = []  # read all caches from GC*.gpx-files in path\GPX and save in list 'waypoints'
+        self.waypoints = []  # read all caches from Waypoints*.gpx-files in path\GPX and save in list 'waypoints'
         for wptfile in (glob.glob(os.path.join(gpx_path, "Wegpunkte_*.gpx")) +
                         glob.glob(os.path.join(gpx_path, "Waypoints_*.gpx"))):
             try:
