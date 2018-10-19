@@ -8,5 +8,5 @@ script:
   - ls -lh
   - cd examples
   - ls -lh
-  - cd..
+  - cd ..
   - python3 test.py
