@@ -1761,7 +1761,7 @@ class TestAssignWaypoints(unittest.TestCase):
                    '912979</ele><time>2017-01-14T19:02:03Z</time><name>DO NOTHING</name><sym>Flag, Blue</sym></wpt>' \
                    '<wpt lat="49.790983" lon="9.932300"><ele>231.912979</ele><time>2017-01-14T19:02:03Z</time><name>' \
                    'BULLSHIT</name><sym>Flag, Blue</sym></wpt></gpx>'
-        with open(r"..\tests\examples\no_logfile_waypoints2\GPX\Wegpunkte_05-SEP-17.gpx", encoding="utf-8") as wptfile:
+        with open(r"../tests/examples/no_logfile_waypoints2/GPX/Wegpunkte_05-SEP-17.gpx", encoding="utf-8") as wptfile:
             output = wptfile.read()
         self.assertEqual(output, expected)
 
@@ -1817,7 +1817,7 @@ class TestAssignWaypoints(unittest.TestCase):
                    ' International</text></link><time>2017-03-11T13:42:47Z</time></metadata><wpt lat="49.760150" ' \
                    'lon="9.990900"><ele>216.568268</ele><time>2017-03-11T13:44:53Z</time><name>BLICK ZUM RANDERSACKERER' \
                    ' KÄPPE (GC6K86W)</name><sym>Flag, Blue</sym></wpt></gpx>'
-        with open(r"..\tests\examples\no_logfile_waypoints2\GPX\Waypoints_11-MAR-17.gpx", encoding="utf-8") as wptfile:
+        with open(r"../tests/examples/no_logfile_waypoints2/GPX/Waypoints_11-MAR-17.gpx", encoding="utf-8") as wptfile:
             output = wptfile.read()
         self.assertEqual(output, expected)
 
@@ -1835,7 +1835,7 @@ class TestAssignWaypoints(unittest.TestCase):
                    'lon="9.932233"><time>2017-01-14T13:43:14Z</time><name>MÄRCHENSTUHL 2 (GC1XRPM)</name><sym>Flag, ' \
                    'Blue</sym></wpt><wpt lat="49.790983" lon="9.932300"><ele>231.912979</ele><time>2017-01-14T19:02:03Z' \
                    '</time><name>DOM FINAL</name><sym>Flag, Blue</sym></wpt></gpx>'
-        with open(r"..\tests\examples\no_logfile_waypoints2\GPX\Wegpunkte_14-JAN-17.gpx", encoding="utf-8") as wptfile:
+        with open(r"../tests/examples/no_logfile_waypoints2/GPX/Wegpunkte_14-JAN-17.gpx", encoding="utf-8") as wptfile:
             output = wptfile.read()
         self.assertEqual(output, expected)
 
@@ -2113,7 +2113,7 @@ class TestAddWaypointToFiles(unittest.TestCase):
         string += '<link href="http://www.garmin.com"><text>Garmin International</text></link>'
         string += '<time>2000-11-30T20:17:05Z</time></metadata><wpt lat="49.792433" '
         string += 'lon="9.932233"><time>2000-11-30T20:17:05Z</time><name>NEW</name><sym>Flag, Blue</sym></wpt></gpx>'
-        with open(r"..\tests\examples\no_logfile_waypoints\GPX\Waypoints_30-NOV-00.gpx") as wptfile:
+        with open(r"../tests/examples/no_logfile_waypoints/GPX/Waypoints_30-NOV-00.gpx") as wptfile:
             content = wptfile.read()
 
         self.assertEqual(string, content)
@@ -2225,7 +2225,7 @@ class TestAddWaypoints(unittest.TestCase):
                    '<time>2017-10-02T20:17:05Z</time><name>NEW</name><sym>Flag, Blue</sym>' \
                    '</wpt><wpt lat="39.955666666666666" lon="10.570366666666667"' \
                    '><time>2017-10-02T20:17:05Z</time><name>TWO</name><sym>Flag, Blue</sym></wpt></gpx>'
-        with open(r"..\tests\examples\no_logfile_waypoints\GPX\Waypoints_02-OCT-17.gpx") as wptfile:
+        with open(r"../tests/examples/no_logfile_waypoints/GPX/Waypoints_02-OCT-17.gpx") as wptfile:
             content = wptfile.read()
         self.assertEqual(content, expected)
 
