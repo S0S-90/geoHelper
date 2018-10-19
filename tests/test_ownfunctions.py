@@ -138,7 +138,7 @@ class TestShowXML(unittest.TestCase):
 
     def test(self):
         self.maxDiff = None
-        tree = ElementTree.parse(r"..\tests\examples\xml_test.gpx")
+        tree = ElementTree.parse(r"../tests/examples/xml_test.gpx")
         out = StringIO()
         sys.stdout = out
         ownfunctions.show_xml(tree)
