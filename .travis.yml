@@ -3,5 +3,9 @@ python:
   - "3.6"
 script:
   - cd tests
+  - ls -lh 
   - tar -xzf "examples.tar"
+  - ls -lh
+  - cd examples
+  - ls -lh
   - python3 test.py
