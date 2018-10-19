@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/S0S-90/geocachingTooly.svg?branch=master)](https://travis-ci.com/S0S-90/geocachingTooly)
+[![Build Status](https://travis-ci.com/S0S-90/geocachingTooly.svg?branch=master)](https://travis-ci.com/S0S-90/geocachingTooly) (only failing on Linux, on Windows everything is fine)
 
 This is a program that helps you organize your geocaches on your GPS device. Currently it's only available in a German language version.
 
@@ -38,11 +38,25 @@ möglicherweise nicht mehr lesen, da das GPS-Gerät den Dateinamen verändert.
 
 
 # Testen des Programms (nur für Entwickler)
-* Die Beispieldateien aus "examples.tar" in einen Ordner "tests\examples" entpacken. (Sie werden für die Tests der Klassen benötigt.)
-* In Konsole "py -3 test.py" (im Ordner tests) ausführen. Als Argument kann die Verbosity eingegeben werden, d.h. wie viele Informationen während der Testdurchläufe ausgegeben werden.
-  Die Standardeinstellung ist 1 (niedrigste Verbosity).
-* Anstatt mittels "test.py" alle Tests gleichzeitig auszuführen, kann auch nur eine einzelne Quelldatei getestet werden, indem die entsprechende "test_*.py"-Datei ausgeführt wird.
-  Auch hier kann die Verbosity durch Eingabe eines Arguments bestimmt werden.
+in Konsole (im Ordner "geocachingTooly"):
+
+````bash
+# Vorbereitung
+cd tests                 # in Ordner gehen
+tar -xzf "examples.tar"  # Beispieldateien entpacken
+
+# alle Tests laufen lassen
+py -3 test.py       # on Windows
+python3 test.py     # on Linux
+
+# oder (für mehr Informationen während Tests -> Angabe einer zusätzlichen Verbosity)
+py -3 test.py 2      # on Windows
+python3 test.py 2    # on Linux
+
+# nur eine bestimmte Quelldatei testen (auch Verbosity als Argument möglich)
+py -3 test_*.py       # on Windows
+python3 test_*.py     # on Linux
+````
 
 
 
