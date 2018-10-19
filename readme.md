@@ -38,11 +38,11 @@ möglicherweise nicht mehr lesen, da das GPS-Gerät den Dateinamen verändert.
 
 
 # Testen des Programms (nur für Entwickler)
-* Die Beispieldateien aus "examples.rar" in einen Ordner "tests\examples" entpacken. (Sie werden für die Tests der Klassen benötigt.)
+* Die Beispieldateien aus "examples.tar" in einen Ordner "tests\examples" entpacken. (Sie werden für die Tests der Klassen benötigt.)
 * In Konsole "py -3 test.py" (im Ordner tests) ausführen. Als Argument kann die Verbosity eingegeben werden, d.h. wie viele Informationen während der Testdurchläufe ausgegeben werden.
-Die Standardeinstellung ist 1 (niedrigste Verbosity).
+  Die Standardeinstellung ist 1 (niedrigste Verbosity).
 * Anstatt mittels "test.py" alle Tests gleichzeitig auszuführen, kann auch nur eine einzelne Quelldatei getestet werden, indem die entsprechende "test_*.py"-Datei ausgeführt wird.
-Auch hier kann die Verbosity durch Eingabe eines Arguments bestimmt werden.
+  Auch hier kann die Verbosity durch Eingabe eines Arguments bestimmt werden.
 
 
 
