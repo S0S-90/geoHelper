@@ -48,3 +48,8 @@ print("---------------------------------------------------------------")
 print("Total: {} tests, {} OK, {} failed and {} errors".format(a[0]+b[0]+c[0]+d[0], passed(a)+passed(b)+passed(c)
                                                                + passed(d), a[1]+b[1]+c[1]+d[1], a[2]+b[2]+c[2]+d[2]))
 print("Time needed: {:0.2f} seconds".format(time_needed))
+
+if passed(a) == a[0] and passed(b) == b[0] and passed(c) == c[0] and passed(d) == d[0]:
+    sys.exit(0)
+else:
+    sys.exit(-1)
