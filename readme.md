@@ -1,4 +1,6 @@
-﻿This is a program that helps you organize your geocaches on your GPS device. Currently it's only available in a German language version.
+[![Build Status](https://travis-ci.com/S0S-90/geocachingTooly.svg?branch=master)](https://travis-ci.com/S0S-90/geocachingTooly)
+
+This is a program that helps you organize your geocaches on your GPS device. Currently it's only available in a German language version.
 
 
 # Voraussetzungen
