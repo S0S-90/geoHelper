@@ -8,6 +8,7 @@ from unittest import mock
 import sys
 import shutil
 import os
+import platform
 import time
 from io import StringIO
 import xml.etree.ElementTree as ElementTree
@@ -450,38 +451,54 @@ class TestSortAndShowCaches(unittest.TestCase):
 
     def test_type_up(self):
         with mock.patch('builtins.input', side_effect=['3', '1']):
-            expected = ["GC1XRPM", "GC5N23T", "GC6RNTX", "GC33QGC", "GC6K86W", "GCJJ20"]
+            expected = None
             self.x.sort_and_show_caches()
             sorted_caches = []
             for g in self.x.geocaches:
                 sorted_caches.append(g.gccode)
+            if platform.system() == "Windows":
+                expected = ["GC1XRPM", "GC5N23T", "GC6RNTX", "GC33QGC", "GC6K86W", "GCJJ20"]
+            elif platform.system() == "Linux":
+                expected = ['GC1XRPM', 'GC5N23T', 'GC6RNTX', 'GC6K86W', 'GC33QGC', 'GCJJ20']
             self.assertEqual(sorted_caches, expected)
 
     def test_type_down(self):
         with mock.patch('builtins.input', side_effect=['3', '2']):
-            expected = ["GCJJ20", "GC33QGC", "GC6K86W", "GC5N23T", "GC6RNTX", "GC1XRPM"]
+            expected = None
             self.x.sort_and_show_caches()
             sorted_caches = []
             for g in self.x.geocaches:
                 sorted_caches.append(g.gccode)
+            if platform.system() == "Windows":
+                expected = ["GCJJ20", "GC33QGC", "GC6K86W", "GC5N23T", "GC6RNTX", "GC1XRPM"]
+            elif platform.system() == "Linux":
+                expected = ['GCJJ20', 'GC6K86W', 'GC33QGC', 'GC5N23T', 'GC6RNTX', 'GC1XRPM']
             self.assertEqual(sorted_caches, expected)
 
     def test_difficulty_up(self):
         with mock.patch('builtins.input', side_effect=['4', '1']):
-            expected = ["GCJJ20", "GC33QGC", "GC6K86W", "GC6RNTX", "GC1XRPM", "GC5N23T"]
+            expected = None
             self.x.sort_and_show_caches()
             sorted_caches = []
             for g in self.x.geocaches:
                 sorted_caches.append(g.gccode)
+            if platform.system() == "Windows":
+                expected = ["GCJJ20", "GC33QGC", "GC6K86W", "GC6RNTX", "GC1XRPM", "GC5N23T"]
+            elif platform.system() == "Linux":
+                expected = ['GCJJ20', 'GC6K86W', 'GC6RNTX', 'GC33QGC', 'GC1XRPM', 'GC5N23T']
             self.assertEqual(sorted_caches, expected)
 
     def test_difficulty_down(self):
         with mock.patch('builtins.input', side_effect=['4', '2']):
-            expected = ["GC5N23T", "GC1XRPM", "GC33QGC", "GC6K86W", "GC6RNTX", "GCJJ20"]
+            expected = None
             self.x.sort_and_show_caches()
             sorted_caches = []
             for g in self.x.geocaches:
                 sorted_caches.append(g.gccode)
+            if platform.system() == "Windows":
+                expected = ["GC5N23T", "GC1XRPM", "GC33QGC", "GC6K86W", "GC6RNTX", "GCJJ20"]
+            elif platform.system() == "Linux":
+                expected = ['GC5N23T', 'GC1XRPM', 'GC6K86W', 'GC6RNTX', 'GC33QGC', 'GCJJ20']
             self.assertEqual(sorted_caches, expected)
 
     def test_terrain_up(self):
@@ -504,20 +521,28 @@ class TestSortAndShowCaches(unittest.TestCase):
 
     def test_size_up(self):
         with mock.patch('builtins.input', side_effect=['6', '1']):
-            expected = ["GCJJ20", "GC1XRPM", "GC5N23T", "GC6K86W", "GC6RNTX", "GC33QGC"]
+            expected = None
             self.x.sort_and_show_caches()
             sorted_caches = []
             for g in self.x.geocaches:
                 sorted_caches.append(g.gccode)
+            if platform.system() == "Windows":
+                expected = ["GCJJ20", "GC1XRPM", "GC5N23T", "GC6K86W", "GC6RNTX", "GC33QGC"]
+            elif platform.system() == "Linux":
+                expected = ['GCJJ20', 'GC1XRPM', 'GC6K86W', 'GC5N23T', 'GC6RNTX', 'GC33QGC']
             self.assertEqual(sorted_caches, expected)
 
     def test_size_down(self):
         with mock.patch('builtins.input', side_effect=['6', '2']):
-            expected = ["GC33QGC", "GC1XRPM", "GC5N23T", "GC6K86W", "GC6RNTX", "GCJJ20"]
+            expected = None
             self.x.sort_and_show_caches()
             sorted_caches = []
             for g in self.x.geocaches:
                 sorted_caches.append(g.gccode)
+            if platform.system() == "Windows":
+                expected = ["GC33QGC", "GC1XRPM", "GC5N23T", "GC6K86W", "GC6RNTX", "GCJJ20"]
+            elif platform.system() == "Linux":
+                expected = ['GC33QGC', 'GC1XRPM', 'GC6K86W', 'GC5N23T', 'GC6RNTX', 'GCJJ20']
             self.assertEqual(sorted_caches, expected)
 
     def test_downloaddate_up(self):
@@ -540,20 +565,28 @@ class TestSortAndShowCaches(unittest.TestCase):
 
     def test_available_up(self):
         with mock.patch('builtins.input', side_effect=['8', '1']):
-            expected = ["GC5N23T", "GC1XRPM", "GC33QGC", "GC6K86W", "GC6RNTX", "GCJJ20"]
+            expected = None
             self.x.sort_and_show_caches()
             sorted_caches = []
             for g in self.x.geocaches:
                 sorted_caches.append(g.gccode)
+            if platform.system() == "Windows":
+                expected = ["GC5N23T", "GC1XRPM", "GC33QGC", "GC6K86W", "GC6RNTX", "GCJJ20"]
+            elif platform.system() == "Linux":
+                expected = ['GC5N23T', 'GC1XRPM', 'GC6K86W', 'GC6RNTX', 'GC33QGC', 'GCJJ20']
             self.assertEqual(sorted_caches, expected)
 
     def test_available_down(self):
         with mock.patch('builtins.input', side_effect=['8', '2']):
-            expected = ["GC1XRPM", "GC33QGC", "GC6K86W", "GC6RNTX", "GCJJ20", "GC5N23T"]
+            expected = None
             self.x.sort_and_show_caches()
             sorted_caches = []
             for g in self.x.geocaches:
                 sorted_caches.append(g.gccode)
+            if platform.system() == "Windows":
+                expected = ["GC1XRPM", "GC33QGC", "GC6K86W", "GC6RNTX", "GCJJ20", "GC5N23T"]
+            elif platform.system() == "Linux":
+                expected = ['GC1XRPM', 'GC6K86W', 'GC6RNTX', 'GC33QGC', 'GCJJ20', 'GC5N23T']
             self.assertEqual(sorted_caches, expected)
 
     def test_distance_up(self):
