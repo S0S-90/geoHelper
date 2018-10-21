@@ -627,11 +627,15 @@ class TestShowAll(unittest.TestCase):
         if platform.system() == "Windows":
             expected += "GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
             expected += "True  | 11 Sep 2016 | Tesoro Ameghino\n"
-        expected += "GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | "
-        expected += "False | 05 Mar 2017 | 67 - MedTrix - {}\n".format("\u001a" + "\u001a" + "\u001a" +
-                                                                       "\u001a" + "\u001a")
+            expected += "GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | "
+            expected += "False | 05 Mar 2017 | 67 - MedTrix - {}\n".format("\u001a" + "\u001a" + "\u001a" +
+                                                                           "\u001a" + "\u001a")
         expected += "GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | "
         expected += "True  | 04 Aug 2016 | Saaletalblick\n"
+        if platform.system() == "Linux":
+            expected += "GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | "
+            expected += "False | 05 Mar 2017 | 67 - MedTrix - {}\n".format("\u001a" + "\u001a" + "\u001a" +
+                                                                           "\u001a" + "\u001a")
         expected += "GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   | "
         expected += "True  | 08 Oct 2016 | Hochschule für Musik 1\n"
         if platform.system() == "Linux":
