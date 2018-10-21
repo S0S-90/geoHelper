@@ -623,8 +623,9 @@ class TestShowAll(unittest.TestCase):
         x = gpscontent.GPSContent(r"../tests/examples/no_logfile")
         expected = "GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  | "
         expected += "06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
-        expected += "GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
-        expected += "True  | 11 Sep 2016 | Tesoro Ameghino\n"
+        if platform.system() == "Windows":
+            expected += "GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
+            expected += "True  | 11 Sep 2016 | Tesoro Ameghino\n"
         expected += "GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | "
         expected += "False | 05 Mar 2017 | 67 - MedTrix - {}\n".format("\u001a" + "\u001a" + "\u001a" +
                                                                        "\u001a" + "\u001a")
@@ -632,6 +633,9 @@ class TestShowAll(unittest.TestCase):
         expected += "True  | 04 Aug 2016 | Saaletalblick\n"
         expected += "GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   | "
         expected += "True  | 08 Oct 2016 | Hochschule für Musik 1\n"
+        if platform.system() == "Linux":
+            expected += "GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
+            expected += "True  | 11 Sep 2016 | Tesoro Ameghino\n"
         expected += "GCJJ20  | N 49°47.688, E 009°55.816 | Unknown Type      | D 1.0 | T 1.0 | other   | "
         expected += "True  | 29 Oct 2016 | Wuerzburger webcam\n"
         self.assertEqual(x.show_all(), expected)
