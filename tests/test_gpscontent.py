@@ -914,7 +914,7 @@ class TestSearch(unittest.TestCase):
             if platform.system() == "Windows":
                 expected = [self.x.geocaches[0], self.x.geocaches[1], self.x.geocaches[2], self.x.geocaches[5]]
             elif platform.system() == "Linux":
-                expected = [self.x.geocaches[0], self.x.geocaches[3], self.x.geocaches[2], self.x.geocaches[5]]
+                expected = [self.x.geocaches[0], self.x.geocaches[4], self.x.geocaches[2], self.x.geocaches[5]]
             self.assertEqual(self.x.search(), expected)
 
     def test_cachetype(self):
