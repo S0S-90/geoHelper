@@ -620,7 +620,6 @@ class TestShowAll(unittest.TestCase):
         self.assertEqual(x.show_all(), "Keine Caches auf dem Geraet.")
 
     def test_show_caches(self):
-        self.maxDiff = None
         x = gpscontent.GPSContent(r"../tests/examples/no_logfile")
         expected = "GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  | "
         expected += "06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
@@ -650,15 +649,23 @@ class TestShowAll(unittest.TestCase):
         expected = "GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  | "
         expected += "06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
         expected += "        | N 49°47.546, E 009°55.934 | MÄRCHENSTUHL 2 (1.9km)\n"
-        expected += "GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
-        expected += "True  | 11 Sep 2016 | Tesoro Ameghino\n"
-        expected += "GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | "
-        expected += "False | 05 Mar 2017 | 67 - MedTrix - {}\n".format("\u001a" + "\u001a" + "\u001a" +
-                                                                       "\u001a" + "\u001a")
+        if platform.system() == "Windows":
+            expected += "GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
+            expected += "True  | 11 Sep 2016 | Tesoro Ameghino\n"
+            expected += "GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | "
+            expected += "False | 05 Mar 2017 | 67 - MedTrix - {}\n".format("\u001a" + "\u001a" + "\u001a" +
+                                                                           "\u001a" + "\u001a")
         expected += "GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | "
         expected += "True  | 04 Aug 2016 | Saaletalblick\n"
+        if platform.system() == "Linux":
+            expected += "GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | "
+            expected += "False | 05 Mar 2017 | 67 - MedTrix - {}\n".format("\u001a" + "\u001a" + "\u001a" +
+                                                                           "\u001a" + "\u001a")
         expected += "GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   | "
         expected += "True  | 08 Oct 2016 | Hochschule für Musik 1\n"
+        if platform.system() == "Linux":
+            expected += "GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
+            expected += "True  | 11 Sep 2016 | Tesoro Ameghino\n"
         expected += "GCJJ20  | N 49°47.688, E 009°55.816 | Unknown Type      | D 1.0 | T 1.0 | other   | "
         expected += "True  | 29 Oct 2016 | Wuerzburger webcam\n"
         self.assertEqual(x.show_all(), expected)
@@ -675,15 +682,23 @@ class TestShowAllDist(unittest.TestCase):
             gc.distance = ownfunctions.calculate_distance(gc.coordinates, [49.8414697, 9.8579699])
         expected = "    6.5km | GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | "
         expected += "True  | 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
-        expected += "12746.3km | GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
-        expected += "True  | 11 Sep 2016 | Tesoro Ameghino\n"
-        expected += "    5.4km | GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | "
-        expected += "False | 05 Mar 2017 | 67 - MedTrix - {}\n".format("\u001a" + "\u001a" + "\u001a" +
-                                                                       "\u001a" + "\u001a")
+        if platform.system() == "Windows":
+            expected += "12746.3km | GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
+            expected += "True  | 11 Sep 2016 | Tesoro Ameghino\n"
+            expected += "    5.4km | GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | "
+            expected += "False | 05 Mar 2017 | 67 - MedTrix - {}\n".format("\u001a" + "\u001a" + "\u001a" +
+                                                                           "\u001a" + "\u001a")
         expected += "   58.2km | GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   "
         expected += "| True  | 04 Aug 2016 | Saaletalblick\n"
+        if platform.system() == "Linux":
+            expected += "    5.4km | GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | "
+            expected += "False | 05 Mar 2017 | 67 - MedTrix - {}\n".format("\u001a" + "\u001a" + "\u001a" +
+                                                                           "\u001a" + "\u001a")
         expected += "    7.9km | GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   "
         expected += "| True  | 08 Oct 2016 | Hochschule für Musik 1\n"
+        if platform.system() == "Linux":
+            expected += "12746.3km | GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
+            expected += "True  | 11 Sep 2016 | Tesoro Ameghino\n"
         expected += "    7.3km | GCJJ20  | N 49°47.688, E 009°55.816 | Unknown Type      | D 1.0 | T 1.0 | other   "
         expected += "| True  | 29 Oct 2016 | Wuerzburger webcam\n"
         self.assertEqual(x.show_all_dist(), expected)
@@ -695,15 +710,23 @@ class TestShowAllDist(unittest.TestCase):
         expected = "    6.5km | GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | "
         expected += "True  | 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
         expected += "                    | N 49°47.546, E 009°55.934 | MÄRCHENSTUHL 2 (1.9km)\n"
-        expected += "12746.3km | GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
-        expected += "True  | 11 Sep 2016 | Tesoro Ameghino\n"
-        expected += "    5.4km | GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | "
-        expected += "False | 05 Mar 2017 | 67 - MedTrix - {}\n".format("\u001a" + "\u001a" + "\u001a" +
-                                                                       "\u001a" + "\u001a")
+        if platform.system() == "Windows":
+            expected += "12746.3km | GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
+            expected += "True  | 11 Sep 2016 | Tesoro Ameghino\n"
+            expected += "    5.4km | GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | "
+            expected += "False | 05 Mar 2017 | 67 - MedTrix - {}\n".format("\u001a" + "\u001a" + "\u001a" +
+                                                                           "\u001a" + "\u001a")
         expected += "   58.2km | GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   "
         expected += "| True  | 04 Aug 2016 | Saaletalblick\n"
+        if platform.system() == "Linux":
+            expected += "    5.4km | GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | "
+            expected += "False | 05 Mar 2017 | 67 - MedTrix - {}\n".format("\u001a" + "\u001a" + "\u001a" +
+                                                                           "\u001a" + "\u001a")
         expected += "    7.9km | GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   "
         expected += "| True  | 08 Oct 2016 | Hochschule für Musik 1\n"
+        if platform.system() == "Linux":
+            expected += "12746.3km | GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
+            expected += "True  | 11 Sep 2016 | Tesoro Ameghino\n"
         expected += "    7.3km | GCJJ20  | N 49°47.688, E 009°55.816 | Unknown Type      | D 1.0 | T 1.0 | other   "
         expected += "| True  | 29 Oct 2016 | Wuerzburger webcam\n"
         self.assertEqual(x.show_all_dist(), expected)
@@ -801,10 +824,15 @@ class TestShowGCSelection(unittest.TestCase):
 
     def test_show_selection(self):
         selection = self.x.geocaches[3:5]
-        expected = "GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | True  | "
-        expected += "04 Aug 2016 | Saaletalblick\n"
+        expected = None
+        if platform.system() == "Windows":
+            expected = "GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | True  | "
+            expected += "04 Aug 2016 | Saaletalblick\n"
         expected += "GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   | True  | "
         expected += "08 Oct 2016 | Hochschule für Musik 1\n"
+        if platform.system() == "Linux":
+            expected += "GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
+            expected += "True  | 11 Sep 2016 | Tesoro Ameghino\n"
         self.assertEqual(self.x.show_gc_selection(selection), expected)
 
     def test_show_selection_waypoint(self):
@@ -812,8 +840,12 @@ class TestShowGCSelection(unittest.TestCase):
         expected = "GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | "
         expected += "True  | 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
         expected += "        | N 49°47.546, E 009°55.934 | MÄRCHENSTUHL 2 (1.9km)\n"
-        expected += "GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
-        expected += "True  | 11 Sep 2016 | Tesoro Ameghino\n"
+        if platform.system() == "Windows":
+            expected += "GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
+            expected += "True  | 11 Sep 2016 | Tesoro Ameghino\n"
+        elif platform.system() == "Linux":
+            expected += "   58.2km | GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   "
+            expected += "| True  | 04 Aug 2016 | Saaletalblick\n"
         self.assertEqual(self.x.show_gc_selection(selection), expected)
 
     def test_bullshitlist(self):
@@ -833,10 +865,15 @@ class TestShowGCSelectionDist(unittest.TestCase):
 
     def test_show_selection(self):
         selection = self.x.geocaches[3:5]
-        expected = "   58.2km | GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | "
-        expected += "True  | 04 Aug 2016 | Saaletalblick\n"
+        expected = None
+        if platform.system() == "Windows":
+            expected = "   58.2km | GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | "
+            expected += "True  | 04 Aug 2016 | Saaletalblick\n"
         expected += "    7.9km | GC6RNTX | N 49°47.670, E 009°56.456 | Mystery Cache     | D 2.0 | T 1.5 | micro   "
         expected += "| True  | 08 Oct 2016 | Hochschule für Musik 1\n"
+        if platform.system() == "Linux":
+            expected += "12746.3km | GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
+            expected += "True  | 11 Sep 2016 | Tesoro Ameghino\n"
         self.assertEqual(self.x.show_gc_selection_dist(selection), expected)
 
     def test_show_selection_waypoints(self):
@@ -844,8 +881,12 @@ class TestShowGCSelectionDist(unittest.TestCase):
         expected = "    6.5km | GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | "
         expected += "True  | 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
         expected += "                    | N 49°47.546, E 009°55.934 | MÄRCHENSTUHL 2 (1.9km)\n"
-        expected += "12746.3km | GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
-        expected += "True  | 11 Sep 2016 | Tesoro Ameghino\n"
+        if platform.system() == "Windows":
+            expected += "12746.3km | GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
+            expected += "True  | 11 Sep 2016 | Tesoro Ameghino\n"
+        elif platform.system == "Linux":
+            expected += "   58.2km | GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   "
+            expected += "| True  | 04 Aug 2016 | Saaletalblick\n"
         self.assertEqual(self.x.show_gc_selection_dist(selection), expected)
 
     def test_bullshitlist(self):
@@ -860,17 +901,29 @@ class TestSearch(unittest.TestCase):
 
     def test_name(self):
         with mock.patch('builtins.input', side_effect=["1", "A"]):
-            expected = [self.x.geocaches[0], self.x.geocaches[1]]
+            expected = None
+            if platform.system() == "Windows":
+                expected = [self.x.geocaches[0], self.x.geocaches[1]]
+            elif platform.system() == "Linux":
+                expected = [self.x.geocaches[0], self.x.geocaches[4]]
             self.assertEqual(self.x.search(), expected)
 
     def test_description(self):
         with mock.patch('builtins.input', side_effect=["2", "ist"]):
-            expected = [self.x.geocaches[0], self.x.geocaches[1], self.x.geocaches[2], self.x.geocaches[5]]
+            expected = None
+            if platform.system() == "Windows":
+                expected = [self.x.geocaches[0], self.x.geocaches[1], self.x.geocaches[2], self.x.geocaches[5]]
+            elif platform.system() == "Linux":
+                expected = [self.x.geocaches[0], self.x.geocaches[4], self.x.geocaches[2], self.x.geocaches[5]]
             self.assertEqual(self.x.search(), expected)
 
     def test_cachetype(self):
         with mock.patch('builtins.input', side_effect=["3", "Mystery Cache"]):
-            expected = [self.x.geocaches[2], self.x.geocaches[4]]
+            expected = None
+            if platform.system() == "Windows":
+                expected = [self.x.geocaches[2], self.x.geocaches[4]]
+            elif platform.system == "Linux":
+                expected = [self.x.geocaches[2], self.x.geocaches[3]]
             self.assertEqual(self.x.search(), expected)
 
     def test_cachetype_invalid(self):
@@ -897,7 +950,11 @@ class TestSearch(unittest.TestCase):
 
     def test_terrain(self):
         with mock.patch('builtins.input', side_effect=["5", "1.5, 2"]):
-            expected = [self.x.geocaches[3], self.x.geocaches[4]]
+            expected = None
+            if platform.system() == "Windows":
+                expected = [self.x.geocaches[3], self.x.geocaches[4]]
+            elif platform.system() == "Linux":
+                expected = [self.x.geocaches[1], self.x.geocaches[3]]
             self.assertEqual(self.x.search(), expected)
 
     def test_size(self):
@@ -918,12 +975,20 @@ class TestSearch(unittest.TestCase):
 
     def test_downloaddate(self):
         with mock.patch('builtins.input', side_effect=["7", "01.10.2016, 31.10.2016"]):
-            expected = [self.x.geocaches[4], self.x.geocaches[5]]
+            expected = None
+            if platform.system() == "Windows":
+                expected = [self.x.geocaches[4], self.x.geocaches[5]]
+            elif platform.system() == "Linux":
+                expected = [self.x.geocaches[3], self.x.geocaches[5]]
             self.assertEqual(self.x.search(), expected)
 
     def test_downloaddate_without_space(self):
         with mock.patch('builtins.input', side_effect=["7", "01.10.2016,31.10.2016"]):
-            expected = [self.x.geocaches[4], self.x.geocaches[5]]
+            expected = None
+            if platform.system() == "Windows":
+                expected = [self.x.geocaches[4], self.x.geocaches[5]]
+            elif platform.system() == "Linux":
+                expected = [self.x.geocaches[3], self.x.geocaches[5]]
             self.assertEqual(self.x.search(), expected)
 
     def test_downloaddate_error(self):
@@ -953,7 +1018,11 @@ class TestSearch(unittest.TestCase):
 
     def test_attributes(self):
         with mock.patch('builtins.input', side_effect=["9", "available 24-7"]):
-            expected = [self.x.geocaches[2], self.x.geocaches[4], self.x.geocaches[5]]
+            expected = None
+            if platform.system() == "Windows":
+                expected = [self.x.geocaches[2], self.x.geocaches[4], self.x.geocaches[5]]
+            elif platform.system() == "Linux":
+                expected = [self.x.geocaches[2], self.x.geocaches[3], self.x.geocaches[5]]
             self.assertEqual(self.x.search(), expected)
 
     def test_attributes_that_doesnt_exist(self):
