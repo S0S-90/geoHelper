@@ -620,6 +620,7 @@ class TestShowAll(unittest.TestCase):
         self.assertEqual(x.show_all(), "Keine Caches auf dem Geraet.")
 
     def test_show_caches(self):
+        self.maxDiff = None
         x = gpscontent.GPSContent(r"../tests/examples/no_logfile")
         expected = "GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  | "
         expected += "06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
