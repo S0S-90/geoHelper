@@ -824,7 +824,7 @@ class TestShowGCSelection(unittest.TestCase):
 
     def test_show_selection(self):
         selection = self.x.geocaches[3:5]
-        expected = None
+        expected = ""
         if platform.system() == "Windows":
             expected = "GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | True  | "
             expected += "04 Aug 2016 | Saaletalblick\n"
@@ -844,7 +844,7 @@ class TestShowGCSelection(unittest.TestCase):
             expected += "GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
             expected += "True  | 11 Sep 2016 | Tesoro Ameghino\n"
         elif platform.system() == "Linux":
-            expected += "   58.2km | GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   "
+            expected += "GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   "
             expected += "| True  | 04 Aug 2016 | Saaletalblick\n"
         self.assertEqual(self.x.show_gc_selection(selection), expected)
 
@@ -865,7 +865,7 @@ class TestShowGCSelectionDist(unittest.TestCase):
 
     def test_show_selection(self):
         selection = self.x.geocaches[3:5]
-        expected = None
+        expected = ""
         if platform.system() == "Windows":
             expected = "   58.2km | GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   | "
             expected += "True  | 04 Aug 2016 | Saaletalblick\n"
@@ -884,7 +884,7 @@ class TestShowGCSelectionDist(unittest.TestCase):
         if platform.system() == "Windows":
             expected += "12746.3km | GC33QGC | S 43°41.726, W 066°27.090 | Traditional Cache | D 2.0 | T 3.0 | small   | "
             expected += "True  | 11 Sep 2016 | Tesoro Ameghino\n"
-        elif platform.system == "Linux":
+        elif platform.system() == "Linux":
             expected += "   58.2km | GC6K86W | N 50°19.133, E 010°11.616 | Traditional Cache | D 2.0 | T 2.0 | micro   "
             expected += "| True  | 04 Aug 2016 | Saaletalblick\n"
         self.assertEqual(self.x.show_gc_selection_dist(selection), expected)
@@ -914,7 +914,7 @@ class TestSearch(unittest.TestCase):
             if platform.system() == "Windows":
                 expected = [self.x.geocaches[0], self.x.geocaches[1], self.x.geocaches[2], self.x.geocaches[5]]
             elif platform.system() == "Linux":
-                expected = [self.x.geocaches[0], self.x.geocaches[4], self.x.geocaches[2], self.x.geocaches[5]]
+                expected = [self.x.geocaches[0], self.x.geocaches[3], self.x.geocaches[2], self.x.geocaches[5]]
             self.assertEqual(self.x.search(), expected)
 
     def test_cachetype(self):
@@ -922,7 +922,7 @@ class TestSearch(unittest.TestCase):
             expected = None
             if platform.system() == "Windows":
                 expected = [self.x.geocaches[2], self.x.geocaches[4]]
-            elif platform.system == "Linux":
+            elif platform.system() == "Linux":
                 expected = [self.x.geocaches[2], self.x.geocaches[3]]
             self.assertEqual(self.x.search(), expected)
 
