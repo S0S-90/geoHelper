@@ -1,9 +1,15 @@
 language: python
 python:
   - "3.6"
+install:
+  - pip install pytest
+  - pip install pytest-cov
+  - pip install coveralls
 script:
   - cd tests
   - tar -xzf "examples.tar"
-  - python3 test.py
+  - pytest --cov=../src/
+after_success:
+  - coveralls
 notifications:
   email: false
