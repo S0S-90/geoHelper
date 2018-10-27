@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/S0S-90/geocachingTooly.svg?branch=master)](https://travis-ci.com/S0S-90/geocachingTooly) [![Coverage Status](https://coveralls.io/repos/github/S0S-90/geocachingTooly/badge.svg?branch=master)](https://coveralls.io/github/S0S-90/geocachingTooly?branch=master)
+[![Build Status](https://travis-ci.com/S0S-90/geocachingTooly.svg?branch=master)](https://travis-ci.com/S0S-90/geocachingTooly) [![Coverage Status](https://coveralls.io/repos/github/S0S-90/geocachingTooly/badge.svg?branch=master&service=github)](https://coveralls.io/github/S0S-90/geocachingTooly?branch=master&service=gihub)
 
 This is a program that helps you organize your geocaches on your GPS device. Currently it's only available in a German language version.
 
