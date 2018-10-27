@@ -2231,7 +2231,7 @@ class TestShowOnMap(unittest.TestCase):
                     with mock.patch("user_io.show_on_map_end"):
                         with mock.patch("os.remove"):
                             self.x.show_on_map(self.x.geocaches, True)
-        self.maxDiff = None
+
         expected = ""
         if platform.system() == "Windows":
             expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
@@ -2242,10 +2242,10 @@ class TestShowOnMap(unittest.TestCase):
             expected += "49.7948,9.930267 {Wuerzburger webcam} <pink>\r\n"
         elif platform.system() == "Linux":
             expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\n"
-            expected += "-43.695433,-66.4515 {Tesoro Ameghino} <green>\n"
-            expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\n"
             expected += "50.318883,10.1936 {Saaletalblick} <green>\n"
+            expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\n"
             expected += "49.794497,9.94094 {Hochschule für Musik 1} <blue>\n"
+            expected += "-43.695433,-66.4515 {Tesoro Ameghino} <green>\n"
             expected += "49.7948,9.930267 {Wuerzburger webcam} <pink>\n"
         with open("mapinfo.txt", "rb") as mapinfo:
             result = mapinfo.read().decode(user_io.CODING)
@@ -2258,7 +2258,7 @@ class TestShowOnMap(unittest.TestCase):
                     with mock.patch("user_io.show_on_map_end"):
                         with mock.patch("os.remove"):
                             self.x.show_on_map(self.x.geocaches, True)
-        self.maxDiff = None
+
         expected = ""
         if platform.system() == "Windows":
             expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl (GC1XRPM)} <default>\r\n"
@@ -2273,10 +2273,10 @@ class TestShowOnMap(unittest.TestCase):
         elif platform.system() == "Linux":
             expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl (GC1XRPM)} <default>\n"
             expected += "49.792433,9.932233 {MÄRCHENSTUHL 2 (GC1XRPM)} <default>\n"
-            expected += "-43.695433,-66.4515 {Tesoro Ameghino} <green>\n"
-            expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\n"
             expected += "50.318883,10.1936 {Saaletalblick} <green>\n"
+            expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\n"
             expected += "49.794497,9.94094 {Hochschule für Musik 1} <blue>\n"
+            expected += "-43.695433,-66.4515 {Tesoro Ameghino} <green>\n"
             expected += "49.7948,9.930267 {Wuerzburger webcam} <pink>\n"
             expected += "49.790983,9.9323 {DOM FINAL (GC1QNWT)} <yellow>\n"            # free waypoints
             expected += "49.76015,9.9909 {BLICK ZUM RANDERSACKERER K\xc4PPE} <yellow>\n"
