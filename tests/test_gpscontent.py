@@ -1971,8 +1971,14 @@ class TestCreateMapinfoOne(unittest.TestCase):
         with open("mapinfo.txt", "rb") as mapinfo:
             output = mapinfo.read().decode(user_io.CODING)
         os.remove("mapinfo.txt")
-        expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
-        expected += "49.792433,9.932233 {MÄRCHENSTUHL 2} <yellow>\r\n"
+
+        expected = ""
+        if platform.system() == "Windows":
+            expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
+            expected += "49.792433,9.932233 {MÄRCHENSTUHL 2} <yellow>\r\n"
+        elif platform.system() == "Linux":
+            expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\n"
+            expected += "49.792433,9.932233 {MÄRCHENSTUHL 2} <yellow>\n"
         self.assertEqual(output, expected)
 
     def test_yellowcache_with_waypoints(self):
