@@ -2231,7 +2231,7 @@ class TestShowOnMap(unittest.TestCase):
                     with mock.patch("user_io.show_on_map_end"):
                         with mock.patch("os.remove"):
                             self.x.show_on_map(self.x.geocaches, True)
-
+        self.maxDiff = None
         expected = ""
         if platform.system() == "Windows":
             expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
@@ -2258,7 +2258,7 @@ class TestShowOnMap(unittest.TestCase):
                     with mock.patch("user_io.show_on_map_end"):
                         with mock.patch("os.remove"):
                             self.x.show_on_map(self.x.geocaches, True)
-
+        self.maxDiff = None
         expected = ""
         if platform.system() == "Windows":
             expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl (GC1XRPM)} <default>\r\n"
