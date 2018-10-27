@@ -553,7 +553,7 @@ class GPSContent(object):
         free_waypoints: show also waypoints that don't belong to a cache (normally set to true if cachelist contains all
         caches on gpx-device and waypoints should be shown)"""
 
-        with open("mapinfo.txt", "w") as mapinfo:
+        with open("mapinfo.txt", "w", encoding=user_io.CODING) as mapinfo:
             for i, g in enumerate(cachelist):
                 if g.type == "Traditional Cache":
                     color = "green"
