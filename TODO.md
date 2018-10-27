@@ -2,7 +2,7 @@
 
 ### Bugfixes
 
-* Tests dazu bringen, dass sie auch auf Linux (v. a. für TravisCI) laufen
+momentan keine Bug bekannt :-)
 
 ### Neue Features
 
