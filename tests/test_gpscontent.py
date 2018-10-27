@@ -1989,8 +1989,14 @@ class TestCreateMapinfoOne(unittest.TestCase):
         with open("mapinfo.txt", "rb") as mapinfo:
             output = mapinfo.read().decode(user_io.CODING)
         os.remove("mapinfo.txt")
-        expected = "49.795567,9.905717 {Cachertreffen Würzburg, die 54ste} <yellow>\r\n"
-        expected += "49.792433,9.932233 {WPT} <grey>\r\n"
+
+        expected = ""
+        if platform.system() == "Windows":
+            expected = "49.795567,9.905717 {Cachertreffen Würzburg, die 54ste} <yellow>\r\n"
+            expected += "49.792433,9.932233 {WPT} <grey>\r\n"
+        elif platform.system() == "Linux":
+            expected = "49.795567,9.905717 {Cachertreffen Würzburg, die 54ste} <yellow>\n"
+            expected += "49.792433,9.932233 {WPT} <grey>\n"
         self.assertEqual(output, expected)
 
     def test_without_waypoints(self):
@@ -1999,7 +2005,12 @@ class TestCreateMapinfoOne(unittest.TestCase):
         with open("mapinfo.txt", "rb") as mapinfo:
             output = mapinfo.read().decode(user_io.CODING)
         os.remove("mapinfo.txt")
-        expected = "49.795567,9.905717 {Cachertreffen Würzburg, die 54ste} <yellow>\r\n"
+
+        expected = ""
+        if platform.system() == "Windows":
+            expected = "49.795567,9.905717 {Cachertreffen Würzburg, die 54ste} <yellow>\r\n"
+        elif platform.system() == "Linux":
+            expected = "49.795567,9.905717 {Cachertreffen Würzburg, die 54ste} <yellow>\n"
         self.assertEqual(output, expected)
 
 
@@ -2017,8 +2028,13 @@ class TestCreateMapinfoSeveral(unittest.TestCase):
         with open("mapinfo.txt", "rb") as mapinfo:
             output = mapinfo.read().decode(user_io.CODING)
         os.remove("mapinfo.txt")
-        expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
-        expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+        expected = ""
+        if platform.system() == "Windows":
+            expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
+            expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+        elif platform.system() == "Linux":
+            expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\n"
+            expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\n"
         self.assertEqual(output, expected)
 
     def test_with_waypoints(self):
@@ -2026,9 +2042,16 @@ class TestCreateMapinfoSeveral(unittest.TestCase):
         with open("mapinfo.txt", "rb") as mapinfo:
             output = mapinfo.read().decode(user_io.CODING)
         os.remove("mapinfo.txt")
-        expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl (GC1XRPM)} <default>\r\n"
-        expected += "49.792433,9.932233 {MÄRCHENSTUHL 2 (GC1XRPM)} <default>\r\n"
-        expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+
+        expected = ""
+        if platform.system() == "Windows":
+            expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl (GC1XRPM)} <default>\r\n"
+            expected += "49.792433,9.932233 {MÄRCHENSTUHL 2 (GC1XRPM)} <default>\r\n"
+            expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+        elif platform.system() == "Linux":
+            expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl (GC1XRPM)} <default>\n"
+            expected += "49.792433,9.932233 {MÄRCHENSTUHL 2 (GC1XRPM)} <default>\n"
+            expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\n"
         self.assertEqual(output, expected)
 
     def test_with_all_waypoints(self):
@@ -2036,11 +2059,20 @@ class TestCreateMapinfoSeveral(unittest.TestCase):
         with open("mapinfo.txt", "rb") as mapinfo:
             output = mapinfo.read().decode(user_io.CODING)
         os.remove("mapinfo.txt")
-        expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl (GC1XRPM)} <default>\r\n"
-        expected += "49.792433,9.932233 {MÄRCHENSTUHL 2 (GC1XRPM)} <default>\r\n"
-        expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
-        expected += "49.790983,9.9323 {DOM FINAL (GC1QNWT)} <yellow>\r\n"
-        expected += "49.76015,9.9909 {BLICK ZUM RANDERSACKERER KÄPPE} <yellow>\r\n"
+
+        expected = ""
+        if platform.system() == "Windows":
+            expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl (GC1XRPM)} <default>\r\n"
+            expected += "49.792433,9.932233 {MÄRCHENSTUHL 2 (GC1XRPM)} <default>\r\n"
+            expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+            expected += "49.790983,9.9323 {DOM FINAL (GC1QNWT)} <yellow>\r\n"
+            expected += "49.76015,9.9909 {BLICK ZUM RANDERSACKERER KÄPPE} <yellow>\r\n"
+        elif platform.system() == "Linux":
+            expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl (GC1XRPM)} <default>\n"
+            expected += "49.792433,9.932233 {MÄRCHENSTUHL 2 (GC1XRPM)} <default>\n"
+            expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\n"
+            expected += "49.790983,9.9323 {DOM FINAL (GC1QNWT)} <yellow>\n"
+            expected += "49.76015,9.9909 {BLICK ZUM RANDERSACKERER KÄPPE} <yellow>\n"
         self.assertEqual(output, expected)
 
     def test_only_free_waypoints(self):  # normally should not happen
@@ -2049,10 +2081,18 @@ class TestCreateMapinfoSeveral(unittest.TestCase):
         with open("mapinfo.txt", "rb") as mapinfo:
             output = mapinfo.read().decode(user_io.CODING)
         os.remove("mapinfo.txt")
-        expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
-        expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
-        expected += "49.790983,9.9323 {DOM FINAL (GC1QNWT)} <yellow>\r\n"
-        expected += "49.76015,9.9909 {BLICK ZUM RANDERSACKERER KÄPPE} <yellow>\r\n"
+
+        expected = ""
+        if platform.system() == "Windows":
+            expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
+            expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+            expected += "49.790983,9.9323 {DOM FINAL (GC1QNWT)} <yellow>\r\n"
+            expected += "49.76015,9.9909 {BLICK ZUM RANDERSACKERER KÄPPE} <yellow>\r\n"
+        elif platform.system() == "Linux":
+            expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\n"
+            expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\n"
+            expected += "49.790983,9.9323 {DOM FINAL (GC1QNWT)} <yellow>\n"
+            expected += "49.76015,9.9909 {BLICK ZUM RANDERSACKERER KÄPPE} <yellow>\n"
         self.assertEqual(output, expected)
 
 
@@ -2124,8 +2164,14 @@ class TestShowOnMap(unittest.TestCase):
                             for g in self.x.geocaches:
                                 if g.gccode == "GC1XRPM":
                                     self.x.show_on_map(g)
-        expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
-        expected += "49.792433,9.932233 {MÄRCHENSTUHL 2} <yellow>\r\n"
+
+        expected = ""
+        if platform.system() == "Windows":
+            expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
+            expected += "49.792433,9.932233 {MÄRCHENSTUHL 2} <yellow>\r\n"
+        elif platform.system() == "Linux":
+            expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\n"
+            expected += "49.792433,9.932233 {MÄRCHENSTUHL 2} <yellow>\n"
         with open("mapinfo.txt", "rb") as mapinfo:
             result = mapinfo.read().decode(user_io.CODING)
         self.assertEqual(expected, result)
@@ -2141,8 +2187,14 @@ class TestShowOnMap(unittest.TestCase):
                     with mock.patch("user_io.show_on_map_end"):
                         with mock.patch("os.remove"):
                             self.x.show_on_map(self.cachelist)
-        expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
-        expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+
+        expected = ""
+        if platform.system() == "Windows":
+            expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
+            expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+        elif platform.system() == "Linux":
+            expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\n"
+            expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\n"
         with open("mapinfo.txt", "rb") as mapinfo:
             result = mapinfo.read().decode(user_io.CODING)
         self.assertEqual(expected, result)
@@ -2158,9 +2210,16 @@ class TestShowOnMap(unittest.TestCase):
                     with mock.patch("user_io.show_on_map_end"):
                         with mock.patch("os.remove"):
                             self.x.show_on_map(self.cachelist)
-        expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl (GC1XRPM)} <default>\r\n"
-        expected += "49.792433,9.932233 {MÄRCHENSTUHL 2 (GC1XRPM)} <default>\r\n"
-        expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+
+        expected = ""
+        if platform.system() == "Windows":
+            expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl (GC1XRPM)} <default>\r\n"
+            expected += "49.792433,9.932233 {MÄRCHENSTUHL 2 (GC1XRPM)} <default>\r\n"
+            expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+        elif platform.system() == "Linux":
+            expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl (GC1XRPM)} <default>\n"
+            expected += "49.792433,9.932233 {MÄRCHENSTUHL 2 (GC1XRPM)} <default>\n"
+            expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\n"
         with open("mapinfo.txt", "rb") as mapinfo:
             result = mapinfo.read().decode(user_io.CODING)
         self.assertEqual(expected, result)
@@ -2172,12 +2231,22 @@ class TestShowOnMap(unittest.TestCase):
                     with mock.patch("user_io.show_on_map_end"):
                         with mock.patch("os.remove"):
                             self.x.show_on_map(self.x.geocaches, True)
-        expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
-        expected += "-43.695433,-66.4515 {Tesoro Ameghino} <green>\r\n"
-        expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
-        expected += "50.318883,10.1936 {Saaletalblick} <green>\r\n"
-        expected += "49.794497,9.94094 {Hochschule für Musik 1} <blue>\r\n"
-        expected += "49.7948,9.930267 {Wuerzburger webcam} <pink>\r\n"
+
+        expected = ""
+        if platform.system() == "Windows":
+            expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
+            expected += "-43.695433,-66.4515 {Tesoro Ameghino} <green>\r\n"
+            expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+            expected += "50.318883,10.1936 {Saaletalblick} <green>\r\n"
+            expected += "49.794497,9.94094 {Hochschule für Musik 1} <blue>\r\n"
+            expected += "49.7948,9.930267 {Wuerzburger webcam} <pink>\r\n"
+        elif platform.system() == "Linux":
+            expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\n"
+            expected += "-43.695433,-66.4515 {Tesoro Ameghino} <green>\n"
+            expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\n"
+            expected += "50.318883,10.1936 {Saaletalblick} <green>\n"
+            expected += "49.794497,9.94094 {Hochschule für Musik 1} <blue>\n"
+            expected += "49.7948,9.930267 {Wuerzburger webcam} <pink>\n"
         with open("mapinfo.txt", "rb") as mapinfo:
             result = mapinfo.read().decode(user_io.CODING)
         self.assertEqual(expected, result)
@@ -2189,15 +2258,28 @@ class TestShowOnMap(unittest.TestCase):
                     with mock.patch("user_io.show_on_map_end"):
                         with mock.patch("os.remove"):
                             self.x.show_on_map(self.x.geocaches, True)
-        expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl (GC1XRPM)} <default>\r\n"
-        expected += "49.792433,9.932233 {MÄRCHENSTUHL 2 (GC1XRPM)} <default>\r\n"
-        expected += "-43.695433,-66.4515 {Tesoro Ameghino} <green>\r\n"
-        expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
-        expected += "50.318883,10.1936 {Saaletalblick} <green>\r\n"
-        expected += "49.794497,9.94094 {Hochschule für Musik 1} <blue>\r\n"
-        expected += "49.7948,9.930267 {Wuerzburger webcam} <pink>\r\n"
-        expected += "49.790983,9.9323 {DOM FINAL (GC1QNWT)} <yellow>\r\n"            # free waypoints
-        expected += "49.76015,9.9909 {BLICK ZUM RANDERSACKERER K\xc4PPE} <yellow>\r\n"
+
+        expected = ""
+        if platform.system() == "Windows":
+            expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl (GC1XRPM)} <default>\r\n"
+            expected += "49.792433,9.932233 {MÄRCHENSTUHL 2 (GC1XRPM)} <default>\r\n"
+            expected += "-43.695433,-66.4515 {Tesoro Ameghino} <green>\r\n"
+            expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
+            expected += "50.318883,10.1936 {Saaletalblick} <green>\r\n"
+            expected += "49.794497,9.94094 {Hochschule für Musik 1} <blue>\r\n"
+            expected += "49.7948,9.930267 {Wuerzburger webcam} <pink>\r\n"
+            expected += "49.790983,9.9323 {DOM FINAL (GC1QNWT)} <yellow>\r\n"            # free waypoints
+            expected += "49.76015,9.9909 {BLICK ZUM RANDERSACKERER K\xc4PPE} <yellow>\r\n"
+        elif platform.system() == "Linux":
+            expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl (GC1XRPM)} <default>\n"
+            expected += "49.792433,9.932233 {MÄRCHENSTUHL 2 (GC1XRPM)} <default>\n"
+            expected += "-43.695433,-66.4515 {Tesoro Ameghino} <green>\n"
+            expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\n"
+            expected += "50.318883,10.1936 {Saaletalblick} <green>\n"
+            expected += "49.794497,9.94094 {Hochschule für Musik 1} <blue>\n"
+            expected += "49.7948,9.930267 {Wuerzburger webcam} <pink>\n"
+            expected += "49.790983,9.9323 {DOM FINAL (GC1QNWT)} <yellow>\n"            # free waypoints
+            expected += "49.76015,9.9909 {BLICK ZUM RANDERSACKERER K\xc4PPE} <yellow>\n"
         with open("mapinfo.txt", "rb") as mapinfo:
             result = mapinfo.read().decode(user_io.CODING)
         self.assertEqual(expected, result)
