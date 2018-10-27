@@ -586,7 +586,7 @@ class GPSContent(object):
         """creates a textfile from a cache with waypoints that is used to configure the map on 'www.mapcustomizer.com'
         part of show_on_map"""
 
-        with open("mapinfo.txt", "w") as mapinfo:
+        with open("mapinfo.txt", "w", encoding=user_io.CODING) as mapinfo:
             if cache.type == "Traditional Cache":  # cache itself
                 color = "green"
             elif cache.type == "Multi-cache":

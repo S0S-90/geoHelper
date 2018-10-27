@@ -15,6 +15,7 @@ import xml.etree.ElementTree as ElementTree
 
 import test_frame
 import ownfunctions
+import user_io
 import geocache
 import gpscontent
 
@@ -1968,7 +1969,7 @@ class TestCreateMapinfoOne(unittest.TestCase):
             if g.gccode == "GC1XRPM":
                 self.x._create_mapinfo_one(g)
         with open("mapinfo.txt", "rb") as mapinfo:
-            output = mapinfo.read().decode("cp1252")
+            output = mapinfo.read().decode(user_io.CODING)
         os.remove("mapinfo.txt")
         expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
         expected += "49.792433,9.932233 {MÄRCHENSTUHL 2} <yellow>\r\n"
@@ -1980,7 +1981,7 @@ class TestCreateMapinfoOne(unittest.TestCase):
         gc.add_waypoint(w)
         self.x._create_mapinfo_one(gc)
         with open("mapinfo.txt", "rb") as mapinfo:
-            output = mapinfo.read().decode("cp1252")
+            output = mapinfo.read().decode(user_io.CODING)
         os.remove("mapinfo.txt")
         expected = "49.795567,9.905717 {Cachertreffen Würzburg, die 54ste} <yellow>\r\n"
         expected += "49.792433,9.932233 {WPT} <grey>\r\n"
@@ -1990,7 +1991,7 @@ class TestCreateMapinfoOne(unittest.TestCase):
         gc = geocache.Geocache(r"../tests/examples/GC78K5W.gpx")
         self.x._create_mapinfo_one(gc)
         with open("mapinfo.txt", "rb") as mapinfo:
-            output = mapinfo.read().decode("cp1252")
+            output = mapinfo.read().decode(user_io.CODING)
         os.remove("mapinfo.txt")
         expected = "49.795567,9.905717 {Cachertreffen Würzburg, die 54ste} <yellow>\r\n"
         self.assertEqual(output, expected)
@@ -2008,7 +2009,7 @@ class TestCreateMapinfoSeveral(unittest.TestCase):
     def test_without_waypoints(self):
         self.x._create_mapinfo_several(self.cachelist, False, False)
         with open("mapinfo.txt", "rb") as mapinfo:
-            output = mapinfo.read().decode("cp1252")
+            output = mapinfo.read().decode(user_io.CODING)
         os.remove("mapinfo.txt")
         expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
         expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
@@ -2017,7 +2018,7 @@ class TestCreateMapinfoSeveral(unittest.TestCase):
     def test_with_waypoints(self):
         self.x._create_mapinfo_several(self.cachelist, True, False)
         with open("mapinfo.txt", "rb") as mapinfo:
-            output = mapinfo.read().decode("cp1252")
+            output = mapinfo.read().decode(user_io.CODING)
         os.remove("mapinfo.txt")
         expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl (GC1XRPM)} <default>\r\n"
         expected += "49.792433,9.932233 {MÄRCHENSTUHL 2 (GC1XRPM)} <default>\r\n"
@@ -2027,7 +2028,7 @@ class TestCreateMapinfoSeveral(unittest.TestCase):
     def test_with_all_waypoints(self):
         self.x._create_mapinfo_several(self.cachelist, True, True)
         with open("mapinfo.txt", "rb") as mapinfo:
-            output = mapinfo.read().decode("cp1252")
+            output = mapinfo.read().decode(user_io.CODING)
         os.remove("mapinfo.txt")
         expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl (GC1XRPM)} <default>\r\n"
         expected += "49.792433,9.932233 {MÄRCHENSTUHL 2 (GC1XRPM)} <default>\r\n"
@@ -2040,7 +2041,7 @@ class TestCreateMapinfoSeveral(unittest.TestCase):
         self.maxDiff = None
         self.x._create_mapinfo_several(self.cachelist, False, True)
         with open("mapinfo.txt", "rb") as mapinfo:
-            output = mapinfo.read().decode("cp1252")
+            output = mapinfo.read().decode(user_io.CODING)
         os.remove("mapinfo.txt")
         expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
         expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
@@ -2120,7 +2121,7 @@ class TestShowOnMap(unittest.TestCase):
         expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
         expected += "49.792433,9.932233 {MÄRCHENSTUHL 2} <yellow>\r\n"
         with open("mapinfo.txt", "rb") as mapinfo:
-            result = mapinfo.read().decode("cp1252")
+            result = mapinfo.read().decode(user_io.CODING)
         self.assertEqual(expected, result)
 
     def test_several_without_waypoints(self):
@@ -2137,7 +2138,7 @@ class TestShowOnMap(unittest.TestCase):
         expected = "49.809317,9.93365 {Im Auftrag ihrer Majestät – Der Märchenstuhl} <default>\r\n"
         expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
         with open("mapinfo.txt", "rb") as mapinfo:
-            result = mapinfo.read().decode("cp1252")
+            result = mapinfo.read().decode(user_io.CODING)
         self.assertEqual(expected, result)
 
     def test_several_with_waypoints(self):
@@ -2155,7 +2156,7 @@ class TestShowOnMap(unittest.TestCase):
         expected += "49.792433,9.932233 {MÄRCHENSTUHL 2 (GC1XRPM)} <default>\r\n"
         expected += "49.80761666666667,9.912116666666666 {67 - MedTrix - \u001a\u001a\u001a\u001a\u001a} <blue>\r\n"
         with open("mapinfo.txt", "rb") as mapinfo:
-            result = mapinfo.read().decode("cp1252")
+            result = mapinfo.read().decode(user_io.CODING)
         self.assertEqual(expected, result)
 
     def test_all_without_waypoints(self):
@@ -2172,7 +2173,7 @@ class TestShowOnMap(unittest.TestCase):
         expected += "49.794497,9.94094 {Hochschule für Musik 1} <blue>\r\n"
         expected += "49.7948,9.930267 {Wuerzburger webcam} <pink>\r\n"
         with open("mapinfo.txt", "rb") as mapinfo:
-            result = mapinfo.read().decode("cp1252")
+            result = mapinfo.read().decode(user_io.CODING)
         self.assertEqual(expected, result)
 
     def test_all_with_waypoints(self):
@@ -2192,7 +2193,7 @@ class TestShowOnMap(unittest.TestCase):
         expected += "49.790983,9.9323 {DOM FINAL (GC1QNWT)} <yellow>\r\n"            # free waypoints
         expected += "49.76015,9.9909 {BLICK ZUM RANDERSACKERER K\xc4PPE} <yellow>\r\n"
         with open("mapinfo.txt", "rb") as mapinfo:
-            result = mapinfo.read().decode("cp1252")
+            result = mapinfo.read().decode(user_io.CODING)
         self.assertEqual(expected, result)
 
     def tearDown(self):
