@@ -3,3 +3,6 @@
 .idea/*
 *.pyc
 tests/examples/*
+
+src/.gc_credentials
+src/found_caches.csv
