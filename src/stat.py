@@ -46,17 +46,29 @@ def write_finds_into_csv():
         exit()
         
     found_caches = geocaching.my_finds()
+
     with open("found_caches.csv", "w") as foundfile:
         foundfile.write("GC-Code,Name,Location,Difficulty,Terrain,Size,Type,Availibility\n")
 
     with open("found_caches.csv", "a") as foundfile:
-        for i, f in enumerate(found_caches):
-            print("Writing cache", i+1)
-            c = geocaching.get_cache(f.wp)  # it's necessary to read the cache again in order to get correct state
-            foundfile.write("{},{},{},{},{},{},{},{}\n".format(c.wp, c.name.replace(",", ""),
-                            ownfunctions.coords_decimal_to_minutes([c.location.latitude, c.location.longitude]).
-                                                               replace(",", ""),
-                            c.difficulty, c.terrain, c.size, c.type, c.state))
+        counter = 0
+        while True:
+            counter += 1
+            try:
+                c = next(found_caches)
+            except pycaching.errors.PMOnlyException:    # premium member cache
+                print("Trying to write cache", counter, ".Can't get information about premium member cache.")
+                pass
+            except StopIteration:                       # generator finished
+                break
+            else:                                       # everything okay
+                print("Writing cache", counter, ":", c.name)
+                c.load_quick()             # necessary to get state
+                foundfile.write("{},{},{},{},{},{},{},{}\n".format(c.wp, c.name.replace(",", ""),
+                                                                   ownfunctions.coords_decimal_to_minutes(
+                                                                       [c.location.latitude, c.location.longitude]).
+                                                                   replace(",", ""),
+                                                                   c.difficulty, c.terrain, c.size, c.type, c.state))
 
 
 if __name__ == "__main__":
