@@ -54,13 +54,9 @@ def write_finds_into_csv():
         counter = 0
         while True:
             counter += 1
-            try:
-                c = next(found_caches)
-            except pycaching.errors.PMOnlyException:    # premium member cache
+            c = next(found_caches)
+            if type(c) == str:    # premium member cache (yields ""PMOnlyException", should be changed in pycaching)
                 print("Trying to write cache", counter, ".Can't get information about premium member cache.")
-                pass
-            except StopIteration:                       # generator finished
-                break
             else:                                       # everything okay
                 print("Writing cache", counter, ":", c.name)
                 c.load_quick()             # necessary to get state
@@ -76,4 +72,10 @@ if __name__ == "__main__":
     if ans == "y":
         write_finds_into_csv()
     else:
-        print("At the moment this program can do nothing else.")
+        #print("At the moment this program can do nothing else.")
+        gc = login()
+        c = gc.get_cache(guid="68b14dcb-95e0-450b-8e5d-29d3e1aa3525")
+        c.load_quick()
+        print(c.name)
+        with open("test.txt","w") as testfile:
+            testfile.write(c.name)
