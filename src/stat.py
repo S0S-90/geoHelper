@@ -16,7 +16,7 @@ import ownfunctions
 def login():
     """function that performs login on geocaching.com
 
-    if file .gc_credentiols exists it uses the data from there,
+    if file .gc_credentials exists it uses the data from there,
     otherwise it asks for username and password"""
     geocaching = None
     if os.path.isfile(".gc_credentials"):
@@ -52,15 +52,19 @@ def write_finds_into_csv():
 
     with open("found_caches.csv", "a") as foundfile:
         counter = 0
-        while True:
+        for c in found_caches:
             counter += 1
-            c = next(found_caches)
-            if type(c) == str:    # premium member cache (yields ""PMOnlyException", should be changed in pycaching)
-                print("Trying to write cache", counter, ".Can't get information about premium member cache.")
-            else:                                       # everything okay
-                print("Writing cache", counter, ":", c.name)
-                c.load_quick()             # necessary to get state
-                foundfile.write("{},{},{},{},{},{},{},{}\n".format(c.wp, c.name.replace(",", ""),
+
+            c.load_quick()  # necessary to get state and to get information of PMonly caches
+            print("Writing cache", counter, ":", c.name)
+            try:
+                c.location  # if this fails it's a PMonly cache
+            except pycaching.errors.LoadError:
+                foundfile.write("{},{},{},{},{},{},{},{}\n".format(c.wp, ownfunctions.replace_signs(c.name.replace(",", "")),
+                                                                   "not available", c.difficulty, c.terrain, c.size, c.type,
+                                                                   c.state))
+            else:
+                foundfile.write("{},{},{},{},{},{},{},{}\n".format(c.wp, ownfunctions.replace_signs(c.name.replace(",", "")),
                                                                    ownfunctions.coords_decimal_to_minutes(
                                                                        [c.location.latitude, c.location.longitude]).
                                                                    replace(",", ""),
@@ -72,10 +76,5 @@ if __name__ == "__main__":
     if ans == "y":
         write_finds_into_csv()
     else:
-        #print("At the moment this program can do nothing else.")
-        gc = login()
-        c = gc.get_cache(guid="68b14dcb-95e0-450b-8e5d-29d3e1aa3525")
-        c.load_quick()
-        print(c.name)
-        with open("test.txt","w") as testfile:
-            testfile.write(c.name)
+        print("At the moment this program can do nothing else.")
+

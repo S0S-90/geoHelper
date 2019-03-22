@@ -8,3 +8,4 @@ src/.gc_credentials
 src/found_caches.csv
 
 src/pycaching/*
+!src/pycaching/geocaching.py
