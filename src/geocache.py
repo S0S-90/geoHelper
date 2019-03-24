@@ -124,12 +124,13 @@ class Geocache(object):
     longinfo(): 
         detailed information about the cache
     """
-    
-    def __init__(self, filename_path):
+
+    def __init__(self, filename_path=None):
         """constructor: reads all attributes from gpx-file that has to be given by 'filename_path'"""
-    
-        if type(filename_path) != str:
-            raise TypeError("Bad input.")
+
+        self._set_default_attributes()    # set default attributes that are needed for shortinfo()
+        if type(filename_path) != str:    # no filepath given -> leave constructor
+            return
 
         self.filename_path = filename_path
         self.gccode = os.path.splitext(os.path.basename(self.filename_path))[0].upper()  # gc-code
@@ -140,7 +141,26 @@ class Geocache(object):
         month = ownfunctions.get_month_number(downloaddate[1])
         self.downloaddate = datetime.date(int(downloaddate[-1]), month, int(downloaddate[2]))
 
-        self.name = ""       # initialize attributes for geocache
+        geocache_tree = ElementTree.parse(self.filename_path)  # read .gpx-Datei and find source
+        source = geocache_tree.find(".//{http://www.topografix.com/GPX/1/0}name").text
+
+        if source == "Cache Listing Generated from Geocaching.com":  # get attributes from gpx-file
+            self.source = "geocaching.com"
+            self._read_from_geocachingcom_gpxfile(geocache_tree)
+        else:
+            self.source = "downloader"
+            self._read_from_gpx_downloader(geocache_tree)
+        
+        self.distance = 0     # initialize attributes for waypoints
+        self.waypoints = []
+
+    def _set_default_attributes(self):
+        """set default attributes that are necessary to print a shortinfo()"""
+
+        self.downloaddate_string = "unknown"
+        self.downloaddate = None
+
+        self.name = ""  # initialize attributes for geocache
         self.difficulty = 0
         self.terrain = 0
         self.size_string = ""
@@ -156,18 +176,6 @@ class Geocache(object):
         self.attributes = []
         self.logs = []
         self.available = False
-
-        geocache_tree = ElementTree.parse(self.filename_path)  # read .gpx-Datei and find source
-        source = geocache_tree.find(".//{http://www.topografix.com/GPX/1/0}name").text
-
-        if source == "Cache Listing Generated from Geocaching.com":  # get attributes from gpx-file
-            self.source = "geocaching.com"
-            self._read_from_geocachingcom_gpxfile(geocache_tree)
-        else:
-            self.source = "downloader"
-            self._read_from_gpx_downloader(geocache_tree)
-        
-        self.distance = 0     # initialize attributes for waypoints
         self.waypoints = []
 
     def _read_from_gpx_downloader(self, geocache_tree):

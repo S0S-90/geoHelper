@@ -11,6 +11,16 @@ import getpass
 
 import pycaching
 import ownfunctions
+from geocache import Geocache, SIZE_LIST
+
+# dictionary to map geocache types from pycaching to those of TYPE_LIST in geocache.py
+TYPE_DICT = {"traditional": "Traditional Cache",
+             "multicache": "Multi-cache",
+             "earthcache": "EarthCache",
+             "letterbox": "Letterbox Hybrid",
+             "event": "Event Cache",
+             "wherigo": "Wherigo Cache",
+             "mystery": "Mystery Cache"}
 
 
 def login():
@@ -71,10 +81,66 @@ def write_finds_into_csv():
                                                                    c.difficulty, c.terrain, c.size, c.type, c.state))
 
 
+def read_cache_from_line(line):
+    """get information about a geocache from one line of the file 'found_caches.csv'
+    returns Geocache"""
+
+    linelist = line.split(',')
+    gc = Geocache()
+    gc.gccode = linelist[0]
+    gc.name = linelist[1]
+
+    gc.coordinates_string = linelist[2]
+    if gc.coordinates_string != "not available":
+        coords_as_list = list(gc.coordinates_string)
+        coords_as_list.insert(11, ',')
+        gc.coordinates_string = "".join(coords_as_list)
+        # print(gc.coordinates_string)
+        gc.coordinates = ownfunctions.coords_minutes_to_decimal(gc.coordinates_string)
+
+    gc.difficulty = float(linelist[3])
+    gc.terrain = float(linelist[4])
+
+    gc.size_string = linelist[5][5:]  # remove "Size."
+    if gc.size_string not in SIZE_LIST:
+        gc.size_string = "other"
+    gc.size = SIZE_LIST.index(gc.size_string)
+
+    gc.longtype = linelist[6][5:]    # remove "Type"
+    try:
+        gc.type = TYPE_DICT[gc.longtype]
+    except KeyError:
+        gc.type = "Unknown Type"
+
+    avail_string = linelist[7][:-1]  # cut '\n'
+    gc.available = None
+    if avail_string == "True":
+        gc.available = True
+    elif avail_string == "False":
+        gc.available = False
+
+    return gc
+
+
+def read_in_founds_from_file():
+    """function that reads in all caches from file 'found_caches.csv'
+    returns list of geocaches"""
+
+    with open("found_caches.csv") as infile:
+        lines = infile.readlines()
+
+    founds = []
+    for i, line in enumerate(lines):
+        if i > 0:    # first line is heading
+            founds.append(read_cache_from_line(line))
+    return founds
+
+
 if __name__ == "__main__":
     ans = input("Do you want to read all your found caches again? <y/n> ")
     if ans == "y":
         write_finds_into_csv()
-    else:
-        print("At the moment this program can do nothing else.")
 
+    found_geocaches = read_in_founds_from_file()
+    for f in found_geocaches:
+        print(f.shortinfo())
