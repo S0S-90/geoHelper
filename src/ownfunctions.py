@@ -11,6 +11,9 @@ import urllib.request
 
 import user_io
 
+MONTHS = {"Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5, "Jun": 6,
+          "Jul": 7, "Aug": 8, "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12}
+
 
 def connected(website):
     """prueft, ob Internetverbindung vorhanden"""
@@ -338,36 +341,7 @@ def get_month_number(string):
     input: month as three letter string
     return: number of this month in the year
     """
-    if string == "Jan":
-        return 1
-    elif string == "Feb":
-        return 2
-    elif string == "Mar":
-        return 3
-    elif string == "Mrz":
-        return 3
-    elif string == "Apr":
-        return 4
-    elif string == "May":
-        return 5
-    elif string == "Jun":
-        return 6
-    elif string == "Jul":
-        return 7
-    elif string == "Aug":
-        return 8
-    elif string == "Sep":
-        return 9
-    elif string == "Oct":
-        return 10
-    elif string == "Okt":
-        return 10
-    elif string == "Nov":
-        return 11
-    elif string == "Dec":
-        return 12
-    elif string == "Dez":
-        return 12
+    return MONTHS[string]
 
 
 def get_month(number):
@@ -375,46 +349,31 @@ def get_month(number):
     input: number of this month in the year
     return: month as three letter string
     """
-    if number == 1:
-        return "Jan"
-    elif number == 2:
-        return "Feb"
-    elif number == 3:
-        return "Mar"
-    elif number == 4:
-        return "Apr"
-    elif number == 5:
-        return "May"
-    elif number == 6:
-        return "Jun"
-    elif number == 7:
-        return "Jul"
-    elif number == 8:
-        return "Aug"
-    elif number == 9:
-        return "Sep"
-    elif number == 10:
-        return "Oct"
-    elif number == 11:
-        return "Nov"
-    elif number == 12:
-        return "Dec"
+    for key, value in MONTHS.items():
+        if number == value:
+            return key
 
 
 def string_to_date(string):
-    """converts string 'DD.MM.YYYY' to datetime.date objekt
+    """converts string 'DD.MM.YYYY' or 'DD MMM YYYY' to datetime.date objekt
     
     input: date as string
     return: date as datetime.date"""
 
-    if len(string) != 10 or string[2] != "." or string[5] != ".":
-        user_io.general_output("Bad input.")
-        raise ValueError
+    if len(string) == 10:
+        if string[2] != "." or string[5] != ".":
+            user_io.general_output("Bad input.")
+            raise ValueError
+        day = int(string[0:2])
+        month = int(string[3:5])
+        year = int(string[6:10])
+        return datetime.date(year, month, day)
 
-    day = int(string[0:2])
-    month = int(string[3:5])
-    year = int(string[6:10])
-    return datetime.date(year, month, day)
+    elif len(string) == 11:
+        day = int(string[0:2])
+        month = int(get_month_number(string[3:6]))
+        year = int(string[7:11])
+        return datetime.date(year, month, day)
 
 
 def remove_spaces(string):
@@ -444,3 +403,4 @@ def string_is_int(string):
     except ValueError:
         return False
     return True
+

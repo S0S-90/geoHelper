@@ -8,6 +8,7 @@ by using the python module 'pycaching' (https://github.com/tomasbedrich/pycachin
 
 import os
 import getpass
+import itertools
 
 import pycaching
 import ownfunctions
@@ -54,31 +55,35 @@ def write_finds_into_csv():
     geocaching = login()
     if geocaching == "Error":
         exit()
-        
-    found_caches = geocaching.my_finds()
+
+    found_caches = itertools.chain(geocaching.my_logs(10), geocaching.my_finds())  # get found and attended caches
 
     with open("found_caches.csv", "w") as foundfile:
-        foundfile.write("GC-Code,Name,Location,Difficulty,Terrain,Size,Type,Availibility\n")
+        foundfile.write("GC-Code,Name,Location,Difficulty,Terrain,Size,Type,Availibility,Date\n")
 
     with open("found_caches.csv", "a") as foundfile:
         counter = 0
-        for c in found_caches:
+        for cd in found_caches:
             counter += 1
 
+            c = cd[0]  # cache
+            date_string = "{:02} {} {}".format(int(cd[1].day), ownfunctions.get_month(cd[1].month), cd[1].year)
             c.load_quick()  # necessary to get state and to get information of PMonly caches
             print("Writing cache", counter, ":", c.name)
             try:
                 c.location  # if this fails it's a PMonly cache
             except pycaching.errors.LoadError:
-                foundfile.write("{},{},{},{},{},{},{},{}\n".format(c.wp, ownfunctions.replace_signs(c.name.replace(",", "")),
-                                                                   "not available", c.difficulty, c.terrain, c.size, c.type,
-                                                                   c.state))
+                foundfile.write("{},{},{},{},{},{},{},{},{}\n".format(c.wp,
+                                                                      ownfunctions.replace_signs(c.name.replace(",", "")),
+                                                                      "not available", c.difficulty, c.terrain, c.size,
+                                                                      c.type, c.state, date_string))
             else:
-                foundfile.write("{},{},{},{},{},{},{},{}\n".format(c.wp, ownfunctions.replace_signs(c.name.replace(",", "")),
-                                                                   ownfunctions.coords_decimal_to_minutes(
-                                                                       [c.location.latitude, c.location.longitude]).
-                                                                   replace(",", ""),
-                                                                   c.difficulty, c.terrain, c.size, c.type, c.state))
+                foundfile.write("{},{},{},{},{},{},{},{},{}\n".format(c.wp,
+                                                                      ownfunctions.replace_signs(c.name.replace(",", "")),
+                                                                      ownfunctions.coords_decimal_to_minutes(
+                                                                          [c.location.latitude, c.location.longitude]).
+                                                                      replace(",", ""), c.difficulty, c.terrain, c.size,
+                                                                      c.type, c.state, date_string))
 
 
 def read_cache_from_line(line):
@@ -95,7 +100,6 @@ def read_cache_from_line(line):
         coords_as_list = list(gc.coordinates_string)
         coords_as_list.insert(11, ',')
         gc.coordinates_string = "".join(coords_as_list)
-        # print(gc.coordinates_string)
         gc.coordinates = ownfunctions.coords_minutes_to_decimal(gc.coordinates_string)
 
     gc.difficulty = float(linelist[3])
@@ -106,18 +110,21 @@ def read_cache_from_line(line):
         gc.size_string = "other"
     gc.size = SIZE_LIST.index(gc.size_string)
 
-    gc.longtype = linelist[6][5:]    # remove "Type"
+    gc.longtype = linelist[6][5:]  # remove "Type"
     try:
         gc.type = TYPE_DICT[gc.longtype]
     except KeyError:
         gc.type = "Unknown Type"
 
-    avail_string = linelist[7][:-1]  # cut '\n'
+    avail_string = linelist[7]
     gc.available = None
     if avail_string == "True":
         gc.available = True
     elif avail_string == "False":
         gc.available = False
+
+    gc.downloaddate_string = linelist[8][:-1]  # cut '\n'
+    gc.downloaddate = ownfunctions.string_to_date(gc.downloaddate_string)
 
     return gc
 
@@ -131,7 +138,7 @@ def read_in_founds_from_file():
 
     founds = []
     for i, line in enumerate(lines):
-        if i > 0:    # first line is heading
+        if i > 0:  # first line is heading
             founds.append(read_cache_from_line(line))
     return founds
 

@@ -411,7 +411,7 @@ class Geocache(object):
         g = str(self.available).ljust(5)
         h = self.downloaddate_string
         i = self.name
-        result = "{} | {} | {} | D {} | T {} | {} | {} | {} | {}".format(a, b, c, d, e, f, g, h, i)
+        result = "{} | {:25} | {} | D {} | T {} | {} | {} | {} | {}".format(a, b, c, d, e, f, g, h, i)
         for w in self.waypoints:
             result += "\n" + space*" " + w.info()
         return result
