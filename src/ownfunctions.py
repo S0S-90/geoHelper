@@ -12,7 +12,8 @@ import urllib.request
 import user_io
 
 MONTHS = {"Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5, "Jun": 6,
-          "Jul": 7, "Aug": 8, "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12}
+          "Jul": 7, "Aug": 8, "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12,
+          "Mrz": 3, "Okt": 10, "Dez": 12}
 
 
 def connected(website):
@@ -341,6 +342,8 @@ def get_month_number(string):
     input: month as three letter string
     return: number of this month in the year
     """
+    if string not in MONTHS.keys():
+        return None
     return MONTHS[string]
 
 
@@ -352,6 +355,7 @@ def get_month(number):
     for key, value in MONTHS.items():
         if number == value:
             return key
+
 
 
 def string_to_date(string):
@@ -374,6 +378,9 @@ def string_to_date(string):
         month = int(get_month_number(string[3:6]))
         year = int(string[7:11])
         return datetime.date(year, month, day)
+
+    else:
+        raise ValueError
 
 
 def remove_spaces(string):

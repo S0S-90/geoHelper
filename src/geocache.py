@@ -129,7 +129,7 @@ class Geocache(object):
         """constructor: reads all attributes from gpx-file that has to be given by 'filename_path'"""
 
         self._set_default_attributes()    # set default attributes that are needed for shortinfo()
-        if type(filename_path) != str:    # no filepath given -> leave constructor
+        if filename_path is None:    # no filepath given -> leave constructor
             return
 
         self.filename_path = filename_path
