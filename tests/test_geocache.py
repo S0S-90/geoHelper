@@ -76,12 +76,12 @@ class TestSaaletalblick(unittest.TestCase):
     def test_available(self):
         self.assertEqual(self.gc.available, True)
 
-    def test_downloaddate(self):
+    def test_date(self):
         expected_date = datetime.date(2016, 8, 4)
-        self.assertEqual(self.gc.downloaddate, expected_date)
+        self.assertEqual(self.gc.date, expected_date)
 
-    def test_downloaddate_string(self):
-        self.assertEqual(self.gc.downloaddate_string, "04 Aug 2016")
+    def test_date_string(self):
+        self.assertEqual(self.gc.date_string, "04 Aug 2016")
 
     def test_shortinfo(self):
         x = self.gc.shortinfo()
@@ -190,12 +190,12 @@ class TestGeocacheWaypoints(unittest.TestCase):
     def test_available(self):
         self.assertEqual(self.gc.available, True)
 
-    def test_downloaddate(self):
+    def test_date(self):
         expected_date = datetime.date(2016, 8, 4)
-        self.assertEqual(self.gc.downloaddate, expected_date)
+        self.assertEqual(self.gc.date, expected_date)
 
-    def test_downloaddate_string(self):
-        self.assertEqual(self.gc.downloaddate_string, "04 Aug 2016")
+    def test_date_string(self):
+        self.assertEqual(self.gc.date_string, "04 Aug 2016")
 
     def test_waypoints(self):
         self.assertEqual(self.gc.waypoints, [self.w, self.w2])
@@ -302,12 +302,12 @@ class TestMaerchenstuhl(unittest.TestCase):
     def test_available(self):
         self.assertEqual(self.gc.available, True)
 
-    def test_downloaddate(self):
+    def test_date(self):
         expected_date = datetime.date(2016, 9, 6)
-        self.assertEqual(self.gc.downloaddate, expected_date)
+        self.assertEqual(self.gc.date, expected_date)
 
-    def test_downloaddate_string(self):
-        self.assertEqual(self.gc.downloaddate_string, "06 Sep 2016")
+    def test_date_string(self):
+        self.assertEqual(self.gc.date_string, "06 Sep 2016")
 
     def test_shortinfo(self):
         x = self.gc.shortinfo()
@@ -365,12 +365,12 @@ class TestTesoroAmeghino(unittest.TestCase):
     def test_available(self):
         self.assertEqual(self.gc.available, True)
 
-    def test_downloaddate(self):
+    def test_date(self):
         expected_date = datetime.date(2016, 9, 11)
-        self.assertEqual(self.gc.downloaddate, expected_date)
+        self.assertEqual(self.gc.date, expected_date)
 
-    def test_downloaddate_string(self):
-        self.assertEqual(self.gc.downloaddate_string, "11 Sep 2016")
+    def test_date_string(self):
+        self.assertEqual(self.gc.date_string, "11 Sep 2016")
 
     def test_shortinfo(self):
         x = self.gc.shortinfo()
@@ -423,12 +423,12 @@ class TestMusikhochschule(unittest.TestCase):
     def test_available(self):
         self.assertEqual(self.gc.available, True)
 
-    def test_downloaddate(self):
+    def test_date(self):
         expected_date = datetime.date(2016, 10, 8)
-        self.assertEqual(self.gc.downloaddate, expected_date)
+        self.assertEqual(self.gc.date, expected_date)
 
-    def test_downloaddate_string(self):
-        self.assertEqual(self.gc.downloaddate_string, "08 Oct 2016")
+    def test_date_string(self):
+        self.assertEqual(self.gc.date_string, "08 Oct 2016")
 
 
 class TestWuerzburgerWebcam(unittest.TestCase):
@@ -475,12 +475,12 @@ class TestWuerzburgerWebcam(unittest.TestCase):
     def test_available(self):
         self.assertEqual(self.gc.available, True)
 
-    def test_downloaddate(self):
+    def test_date(self):
         expected_date = datetime.date(2016, 10, 29)
-        self.assertEqual(self.gc.downloaddate, expected_date)
+        self.assertEqual(self.gc.date, expected_date)
 
-    def test_downloaddate_string(self):
-        self.assertEqual(self.gc.downloaddate_string, "29 Oct 2016")
+    def test_date_string(self):
+        self.assertEqual(self.gc.date_string, "29 Oct 2016")
 
     def test_shortinfo(self):
         x = self.gc.shortinfo()
@@ -592,12 +592,12 @@ class TestMedrixErnos(unittest.TestCase):
     def test_available(self):
         self.assertEqual(self.gc.available, True)
 
-    def test_downloaddate(self):
+    def test_date(self):
         expected_date = datetime.date(2017, 1, 9)
-        self.assertEqual(self.gc.downloaddate, expected_date)
+        self.assertEqual(self.gc.date, expected_date)
 
-    def test_downloaddate_string(self):
-        self.assertEqual(self.gc.downloaddate_string, "09 Jan 2017")
+    def test_date_string(self):
+        self.assertEqual(self.gc.date_string, "09 Jan 2017")
 
 
 class TestEntenteichGPXFromGeocachingCom(unittest.TestCase):
@@ -693,12 +693,12 @@ class TestEntenteichGPXFromGeocachingCom(unittest.TestCase):
     def test_available(self):
         self.assertEqual(self.gc.available, True)
 
-    def test_downloaddate(self):
+    def test_date(self):
         expected_date = datetime.date(2017, 12, 10)
-        self.assertEqual(self.gc.downloaddate, expected_date)
+        self.assertEqual(self.gc.date, expected_date)
 
-    def test_downloaddate_string(self):
-        self.assertEqual(self.gc.downloaddate_string, "10 Dec 2017")
+    def test_date_string(self):
+        self.assertEqual(self.gc.date_string, "10 Dec 2017")
 
     def test_shortinfo(self):
         x = self.gc.shortinfo()

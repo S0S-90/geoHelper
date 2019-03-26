@@ -20,14 +20,14 @@ if len(sys.argv) > 1:      # if script is run with argument
 else:                      # if no argument -> verbosity 1
     verbosity = 1
 
-start_time = time.clock()
+start_time = time.perf_counter()
 
 a = test_ownfunctions.main(verbosity)   # perform tests
 b = test_geocache.main(verbosity)
 c = test_user_io.main(verbosity)
 d = test_gpscontent.main(verbosity)
 
-end_time = time.clock()
+end_time = time.perf_counter()
 time_needed = end_time - start_time
 
 

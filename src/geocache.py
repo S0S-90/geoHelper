@@ -101,11 +101,11 @@ class Geocache(object):
     available: bool 
         availability at the time of download 
         
-    downloaddate: datetime.date
-        date when the gpx-file was downloaded from geocaching.com
+    date: datetime.date
+        date when the gpx-file was downloaded from geocaching.com or when it was logged by user
         
-    downloaddate_string: string
-        date when the gpx-file was downloaded from geocaching.com as string
+    date_string: string
+        date when the gpx-file was downloaded from geocaching.com or when it was logged by user as string
 
     waypoints: list
         list of waypoints that belong to cache (empty if no waypoints)
@@ -135,11 +135,11 @@ class Geocache(object):
         self.filename_path = filename_path
         self.gccode = os.path.splitext(os.path.basename(self.filename_path))[0].upper()  # gc-code
 
-        downloaddate = time.ctime(os.path.getmtime(self.filename_path))  # read downloaddate (= change of gpx-file)
-        downloaddate = ownfunctions.remove_spaces(downloaddate).split(" ")
-        self.downloaddate_string = "{:02} {} {}".format(int(downloaddate[2]), downloaddate[1], downloaddate[-1])
-        month = ownfunctions.get_month_number(downloaddate[1])
-        self.downloaddate = datetime.date(int(downloaddate[-1]), month, int(downloaddate[2]))
+        date = time.ctime(os.path.getmtime(self.filename_path))  # read date (= change of gpx-file)
+        date = ownfunctions.remove_spaces(date).split(" ")
+        self.date_string = "{:02} {} {}".format(int(date[2]), date[1], date[-1])
+        month = ownfunctions.get_month_number(date[1])
+        self.date = datetime.date(int(date[-1]), month, int(date[2]))
 
         geocache_tree = ElementTree.parse(self.filename_path)  # read .gpx-Datei and find source
         source = geocache_tree.find(".//{http://www.topografix.com/GPX/1/0}name").text
@@ -157,8 +157,8 @@ class Geocache(object):
     def _set_default_attributes(self):
         """set default attributes that are necessary to print a shortinfo()"""
 
-        self.downloaddate_string = "unknown"
-        self.downloaddate = None
+        self.date_string = "unknown"
+        self.date = None
 
         self.name = ""  # initialize attributes for geocache
         self.difficulty = 0
@@ -409,7 +409,7 @@ class Geocache(object):
         e = self.terrain
         f = self.size_string.ljust(7)
         g = str(self.available).ljust(5)
-        h = self.downloaddate_string
+        h = self.date_string
         i = self.name
         result = "{} | {:25} | {} | D {} | T {} | {} | {} | {} | {}".format(a, b, c, d, e, f, g, h, i)
         for w in self.waypoints:
@@ -439,7 +439,7 @@ class Geocache(object):
         for a in self.attributes:
             z6 = z6 + str(a) + ", "
         z6 = z6[:-2]
-        z7 = "\n{}: {}, {}: {}".format(STR_ACT, self.available, STR_DATE, self.downloaddate_string)
+        z7 = "\n{}: {}, {}: {}".format(STR_ACT, self.available, STR_DATE, self.date_string)
         z8 = "\n{}: {}".format(STR_LINK, self.url)
         z9 = "\n\n{}".format(self.description)
         z10 = "\n{}: {}".format(STR_HINT, self.hint)

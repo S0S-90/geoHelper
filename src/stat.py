@@ -123,8 +123,8 @@ def read_cache_from_line(line):
     elif avail_string == "False":
         gc.available = False
 
-    gc.downloaddate_string = linelist[8][:-1]  # cut '\n'
-    gc.downloaddate = ownfunctions.string_to_date(gc.downloaddate_string)
+    gc.date_string = linelist[8][:-1]  # cut '\n'
+    gc.date = ownfunctions.string_to_date(gc.date_string)
 
     return gc
 

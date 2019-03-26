@@ -546,7 +546,7 @@ class TestSortAndShowCaches(unittest.TestCase):
                 expected = ['GC33QGC', 'GC1XRPM', 'GC6K86W', 'GC5N23T', 'GC6RNTX', 'GCJJ20']
             self.assertEqual(sorted_caches, expected)
 
-    def test_downloaddate_up(self):
+    def test_date_up(self):
         with mock.patch('builtins.input', side_effect=['7', '1']):
             expected = ["GC6K86W", "GC1XRPM", "GC33QGC", "GC6RNTX", "GCJJ20", "GC5N23T"]
             self.x.sort_and_show_caches()
@@ -555,7 +555,7 @@ class TestSortAndShowCaches(unittest.TestCase):
                 sorted_caches.append(g.gccode)
             self.assertEqual(sorted_caches, expected)
 
-    def test_downloaddate_down(self):
+    def test_date_down(self):
         with mock.patch('builtins.input', side_effect=['7', '2']):
             expected = ["GC5N23T", "GCJJ20", "GC6RNTX", "GC33QGC", "GC1XRPM", "GC6K86W"]
             self.x.sort_and_show_caches()
@@ -974,7 +974,7 @@ class TestSearch(unittest.TestCase):
         with mock.patch('builtins.input', side_effect=["6", "small, micro"]):
             self.assertEqual(self.x.search(), [])
 
-    def test_downloaddate(self):
+    def test_date(self):
         with mock.patch('builtins.input', side_effect=["7", "01.10.2016, 31.10.2016"]):
             expected = None
             if platform.system() == "Windows":
@@ -983,7 +983,7 @@ class TestSearch(unittest.TestCase):
                 expected = [self.x.geocaches[3], self.x.geocaches[5]]
             self.assertEqual(self.x.search(), expected)
 
-    def test_downloaddate_without_space(self):
+    def test_date_without_space(self):
         with mock.patch('builtins.input', side_effect=["7", "01.10.2016,31.10.2016"]):
             expected = None
             if platform.system() == "Windows":
@@ -992,11 +992,11 @@ class TestSearch(unittest.TestCase):
                 expected = [self.x.geocaches[3], self.x.geocaches[5]]
             self.assertEqual(self.x.search(), expected)
 
-    def test_downloaddate_error(self):
+    def test_date_error(self):
         with mock.patch('builtins.input', side_effect=["7", "1.10.2016, 31.10.2016"]):
             self.assertEqual(self.x.search(), [])
 
-    def test_downloaddate_error2(self):
+    def test_date_error2(self):
         with mock.patch('builtins.input', side_effect=["7", "31.10.2016, 01.10.2016"]):
             self.assertEqual(self.x.search(), [])
 

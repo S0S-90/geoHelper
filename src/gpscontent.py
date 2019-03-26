@@ -401,7 +401,7 @@ class GPSContent(object):
                         for c in self.geocaches:
                             if mini <= c.size <= maxi:
                                 search_results.append(c)
-        elif criterion == "downloaddate":  # search by downloaddate
+        elif criterion == "date":  # search by downloaddate
             input_str = user_io.general_input("{}\n>>".format(user_io.DATE_SEPERATED_BY_KOMMA))
             inp = input_str.split(",")
             if len(inp) != 2:
@@ -422,7 +422,7 @@ class GPSContent(object):
                         user_io.general_output(user_io.INVALID_INPUT)
                     else:
                         for c in self.geocaches:
-                            if first_date <= c.downloaddate <= last_date:
+                            if first_date <= c.date <= last_date:
                                 search_results.append(c)
         elif criterion == "available":  # search by availibility
             input_str = user_io.general_input(user_io.CACHES_AVAILABLE_OR_NOT)

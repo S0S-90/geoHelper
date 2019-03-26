@@ -92,7 +92,7 @@ def sort_caches():
     first element: string that corresponds to criterion
     second element: True (sorting backwards) or False (sorting forwards)"""
     
-    criterions = ["gccode", "name", "type", "difficulty", "terrain", "size", "downloaddate", "available", "distance"]
+    criterions = ["gccode", "name", "type", "difficulty", "terrain", "size", "date", "available", "distance"]
     print("\nWonach sollen die Geocaches sortiert werden?")
     print("1: GC-Code")
     print("2: Name")
@@ -135,7 +135,7 @@ def search():
     """asks for criterion by which search should be performed and returns it (as string)"""
     
     criterions = ["name", "description", "type", "difficulty", "terrain",
-                  "size", "downloaddate", "available", "attribute", "distance"]
+                  "size", "date", "available", "attribute", "distance"]
     print("\nWonach willst du suchen?")
     print("1: Name")
     print("2: Beschreibung")

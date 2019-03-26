@@ -236,9 +236,9 @@ class TestSortCaches(unittest.TestCase):
         with mock.patch('builtins.input', side_effect=['6', '1']):
             self.assertEqual(user_io.sort_caches(), ["size", False])
 
-    def test_downloaddate(self):
+    def test_date(self):
         with mock.patch('builtins.input', side_effect=['7', '1']):
-            self.assertEqual(user_io.sort_caches(), ["downloaddate", False])
+            self.assertEqual(user_io.sort_caches(), ["date", False])
 
     def test_available(self):
         with mock.patch('builtins.input', side_effect=['8', '1']):
@@ -272,9 +272,9 @@ class TestSortCaches(unittest.TestCase):
         with mock.patch('builtins.input', side_effect=['6', '2']):
             self.assertEqual(user_io.sort_caches(), ["size", True])
 
-    def test_downloaddate_backwards(self):
+    def test_date_backwards(self):
         with mock.patch('builtins.input', side_effect=['7', '2']):
-            self.assertEqual(user_io.sort_caches(), ["downloaddate", True])
+            self.assertEqual(user_io.sort_caches(), ["date", True])
 
     def test_available_backwards(self):
         with mock.patch('builtins.input', side_effect=['8', '2']):
@@ -366,9 +366,9 @@ class TestSearch(unittest.TestCase):
         with mock.patch('builtins.input', return_value="6"):
             self.assertEqual(user_io.search(), "size")
 
-    def test_downloaddate(self):
+    def test_date(self):
         with mock.patch('builtins.input', return_value="7"):
-            self.assertEqual(user_io.search(), "downloaddate")
+            self.assertEqual(user_io.search(), "date")
 
     def test_available(self):
         with mock.patch('builtins.input', return_value="8"):
