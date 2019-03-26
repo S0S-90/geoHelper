@@ -4,6 +4,11 @@
 """
 This file contains the functionality to read found caches from geocaching.com
 by using the python module 'pycaching' (https://github.com/tomasbedrich/pycaching)
+and to write them into a file 'found_caches.csv'
+
+'found_caches.csv' is also filled by marking caches as found in the 'main program' gpscontent.py.
+
+Furthermore the file 'found_caches.csv' is read in and information about the caches is shown.
 """
 
 import os
@@ -21,7 +26,8 @@ TYPE_DICT = {"traditional": "Traditional Cache",
              "letterbox": "Letterbox Hybrid",
              "event": "Event Cache",
              "wherigo": "Wherigo Cache",
-             "mystery": "Mystery Cache"}
+             "mystery": "Mystery Cache",
+             "unknown": "Unknown Type"}
 
 
 def login():
@@ -84,6 +90,18 @@ def write_finds_into_csv():
                                                                           [c.location.latitude, c.location.longitude]).
                                                                       replace(",", ""), c.difficulty, c.terrain, c.size,
                                                                       c.type, c.state, date_string))
+
+
+def add_cache_to_file(cache):
+    """add new cache to file 'found_caches.csv'"""
+    with open("found_caches.csv", "a") as foundfile:
+        foundfile.write("{},{},{},{},{},{},{},{},{}\n".format(cache.gccode,
+                                                              ownfunctions.replace_signs(cache.name.replace(",", "")),
+                                                              cache.coordinates_string.replace(",", ""),
+                                                              cache.difficulty, cache.terrain,
+                                                              "Size.{}".format(cache.size_string),
+                                                              "Type.{}".format(ownfunctions.get_key(cache.type, TYPE_DICT)),
+                                                              cache.available, cache.date_string))
 
 
 def read_cache_from_line(line):

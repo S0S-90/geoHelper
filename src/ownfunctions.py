@@ -16,6 +16,15 @@ MONTHS = {"Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5, "Jun": 6,
           "Mrz": 3, "Okt": 10, "Dez": 12}
 
 
+def get_key(value, dictionary):
+    """
+    searches a dictionary for a certain value and returns the corresponding key
+    """
+    for key, val in dictionary.items():
+        if value == val:
+            return key
+
+
 def connected(website):
     """prueft, ob Internetverbindung vorhanden"""
     try:
@@ -352,10 +361,7 @@ def get_month(number):
     input: number of this month in the year
     return: month as three letter string
     """
-    for key, value in MONTHS.items():
-        if number == value:
-            return key
-
+    get_key(number, MONTHS)
 
 
 def string_to_date(string):
@@ -377,6 +383,22 @@ def string_to_date(string):
         day = int(string[0:2])
         month = int(get_month_number(string[3:6]))
         year = int(string[7:11])
+        return datetime.date(year, month, day)
+
+    else:
+        raise ValueError
+
+
+def reverse_string_to_date(string):
+    """converts string 'YYYY-MM-DD' to datetime.date objekt
+
+    input: date as string
+    return: date as datetime.date"""
+
+    if len(string) == 10:
+        year = int(string[0:4])
+        month = int(string[5:7])
+        day = int(string[8:10])
         return datetime.date(year, month, day)
 
     else:

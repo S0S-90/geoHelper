@@ -14,6 +14,7 @@ from geocache import TYPE_LIST, SIZE_LIST
 from geocache import Geocache, Waypoint
 import user_io
 import ownfunctions
+import founds
 
 
 class GPSContent(object):
@@ -208,6 +209,7 @@ class GPSContent(object):
                 for gc in self.geocaches:
                     if gc.gccode == lc[0]:
                         found_caches.append(gc)
+                        gc.update_date(lc[1][:10])   # update downloaddate to logdate
                         on_gpx = True
                         break
                 if on_gpx:
@@ -508,6 +510,8 @@ class GPSContent(object):
         while True:
             task = user_io.actions_with_founds()
             if task == "log":
+                for fc in self.found_caches:
+                    founds.add_cache_to_file(fc)
                 webbrowser.open_new_tab("https://www.geocaching.com/my/uploadfieldnotes.aspx")
             elif task == "delete":
                 if self.warning:

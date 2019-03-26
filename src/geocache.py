@@ -368,6 +368,14 @@ class Geocache(object):
 
         return description_short + "\n\n" + description_long
 
+    def update_date(self, datestring):
+        """sets the date of the cache to the given date
+        date has to be given as string 'YYYY-MM-DD' """
+
+        self.date = ownfunctions.reverse_string_to_date(datestring)
+        self.date_string = "{:02} {} {}".format(int(self.date[1].day), ownfunctions.get_month(self.date[1].month),
+                                                self.date.year)
+
     @staticmethod
     def _read_type(lt):
         """converts cachetypes from xml-file to those from TYPE_LIST, part of __init__"""
