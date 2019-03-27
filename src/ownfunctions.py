@@ -23,6 +23,7 @@ def get_key(value, dictionary):
     for key, val in dictionary.items():
         if value == val:
             return key
+    raise ValueError("Error! Value", value, "not in", MONTHS)
 
 
 def connected(website):
@@ -361,7 +362,7 @@ def get_month(number):
     input: number of this month in the year
     return: month as three letter string
     """
-    get_key(number, MONTHS)
+    return get_key(number, MONTHS)
 
 
 def string_to_date(string):

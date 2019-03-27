@@ -73,7 +73,7 @@ def write_finds_into_csv():
             counter += 1
 
             c = cd[0]  # cache
-            date_string = "{:02} {} {}".format(int(cd[1].day), ownfunctions.get_month(cd[1].month), cd[1].year)
+            date_string = "{:02} {} {}".format(int(cd[1].day), ownfunctions.get_month(int(cd[1].month)), cd[1].year)
             c.load_quick()  # necessary to get state and to get information of PMonly caches
             print("Writing cache", counter, ":", c.name)
             try:
