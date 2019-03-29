@@ -27,11 +27,11 @@ Testen
   * string_to_date ergänzen
   * reverse_string_to_date
   * get_key
-* geocache.py -> noch gar nicht ausprobiert
-  * update_date
-* gpscontent.py -> noch gar nicht ausprobiert
-  * _get_logged_and_found_caches ändert Datum von gefundenen Caches
-  * show_founds schreibt Caches in found_caches.csv, wenn sie auf geocaching.com geloggt wurden
+* geocache.py 
+  * update_date -> scheint zu funktionieren 
+* gpscontent.py -> scheint alles zu gehen
+  * _get_logged_and_found_caches ändert Datum von gefundenen Caches 
+  * show_founds schreibt Caches in found_caches.csv, wenn sie auf geocaching.com geloggt wurden (<mark>Was passiert, wenn Datei noch nicht vorhanden? Programm von anderem Ordner aus aufgerufen?</mark>)
 
 Was dann noch fehlt:
  - Zugriff auf die Optionen für gefundene Caches aus Hauptprogramm
