@@ -94,6 +94,9 @@ def write_finds_into_csv():
 
 def add_cache_to_file(cache):
     """add new cache to file 'found_caches.csv'"""
+    if not os.path.isfile("found_caches.csv"):
+        with open("found_caches.csv", "w") as foundfile:
+            foundfile.write("GC-Code,Name,Location,Difficulty,Terrain,Size,Type,Availibility,Date\n")
     with open("found_caches.csv", "a") as foundfile:
         foundfile.write("{},{},{},{},{},{},{},{},{}\n".format(cache.gccode,
                                                               ownfunctions.replace_signs(cache.name.replace(",", "")),

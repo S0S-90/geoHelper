@@ -587,16 +587,13 @@ class TestGetMonth(unittest.TestCase):
         self.assertEqual(x, "Dec")
 
     def test_other_int_givesNone(self):
-        x = ownfunctions.get_month(13)
-        self.assertEqual(x, None)
+        self.assertRaises(KeyError, ownfunctions.get_month, 13)
 
     def test_float_givesNone(self):
-        x = ownfunctions.get_month(42.3)
-        self.assertEqual(x, None)
+        self.assertRaises(KeyError, ownfunctions.get_month, 42.3)
 
     def test_other_type_givesNone(self):
-        x = ownfunctions.get_month("bla")
-        self.assertEqual(x, None)
+        self.assertRaises(KeyError, ownfunctions.get_month, "bla")
 
 
 class TestStringToDate(unittest.TestCase):

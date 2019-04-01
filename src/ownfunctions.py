@@ -23,7 +23,7 @@ def get_key(value, dictionary):
     for key, val in dictionary.items():
         if value == val:
             return key
-    raise ValueError("Error! Value", value, "not in", MONTHS)
+    raise KeyError("Error! Value", value, "not in", MONTHS)
 
 
 def connected(website):
@@ -372,18 +372,21 @@ def string_to_date(string):
     return: date as datetime.date"""
 
     if len(string) == 10:
-        if string[2] != "." or string[5] != ".":
-            user_io.general_output("Bad input.")
-            raise ValueError
-        day = int(string[0:2])
-        month = int(string[3:5])
-        year = int(string[6:10])
+        try:
+            day = int(string[0:2])
+            month = int(string[3:5])
+            year = int(string[6:10])
+        except ValueError:
+            raise ValueError("String for Date not correctly formated: {}".format(string))
         return datetime.date(year, month, day)
 
     elif len(string) == 11:
-        day = int(string[0:2])
-        month = int(get_month_number(string[3:6]))
-        year = int(string[7:11])
+        try:
+            day = int(string[0:2])
+            month = int(get_month_number(string[3:6]))
+            year = int(string[7:11])
+        except ValueError:
+            raise ValueError("String for Date not correctly formated: {}".format(string))
         return datetime.date(year, month, day)
 
     else:
@@ -433,4 +436,3 @@ def string_is_int(string):
     except ValueError:
         return False
     return True
-
