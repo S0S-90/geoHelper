@@ -9,13 +9,19 @@ This is a program that helps you organize your geocaches on your GPS device. Cur
 * Die Fieldnotes-Datei "geocache_visits.txt" sowie die Logdatei "geocache_logs.xml" müssen direkt im angegebenen Ordner für das GPS-Gerät liegen, 
 die gpx-Dateien in einem Unterordner mit Namen "GPX". (Dies sollte bei Garmin-Geräten automatisch der Fall sein.)
 
-
 # Download und Start des Programms
+
+## Windows
+
 * Falls Python(3) nicht bereits auf dem System vorhanden: Download von Python 3, z.B. [hier](https://www.python.org/downloads/)
 * Download und Entpacken des Archivs "geoHelper_vX.X.zip" auf [Release Page](https://github.com/S0S-90/geocachingTooly/releases) 
 * Doppelklick auf "winstarter.bat"
-* [Alternativ kann das Programm "main.py" auch direkt (aus der Konsole) geöffnet werden. Dazu muss jedoch vorher die Codierung der Konsole auf Codepage 1252 eingestellt werden.
-So sollte das Programm auch auf Nicht-Windows-Rechnern laufen, was allerdings nicht getestet wurde.]
+
+## Linux 
+
+* Herunterladen des Github-Repositories:  `git clone https://github.com/S0S-90/geocachingTooly.git`
+* In Ordner gehen: `cd geocachingTooly/src`
+* Programm starten: `python3 main.py`
 
 
 # Funktionen

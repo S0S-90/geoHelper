@@ -5,8 +5,9 @@
 
 import ownfunctions
 import geocache
+import os
 
-PATH = [r"E:/Garmin", r"F:/Garmin", r"G:/Garmin", r"H:/Garmin"]  # path to GPS-device (standard)
+PATH = [r"E:/Garmin", r"F:/Garmin", r"G:/Garmin", r"H:/Garmin", r"/media/{}/GARMIN/garmin/".format(os.environ["USER"])]
 CODING = "cp1252"   # coding of cmd (cp1252 recommended)
 EDITORNAME = "notepad.exe"  # name (+ path) of standard text editor
 

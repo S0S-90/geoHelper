@@ -2,9 +2,7 @@
 
 ### Bugfixes
 
-* auf Linux werden Geocaches, deren Dateinamen klein geschrieben sind, nicht angezeigt
-
-* Linux-Pfad hinzufügen: /media/$USER/GARMIN/garmin/
+* keine Bugs bekannt :-D
 
 ### Neue Features
 
