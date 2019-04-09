@@ -103,7 +103,7 @@ class GPSContent(object):
 
         self.geocaches = []  # read all caches from GC*.gpx-files in path\GPX and save in list 'geocaches'
         gpx_path = os.path.join(self.path, "GPX")
-        for gpxfile in glob.glob(os.path.join(gpx_path, "GC*.gpx")):
+        for gpxfile in glob.glob(os.path.join(gpx_path, "GC*.gpx")) + glob.glob(os.path.join(gpx_path, "gc*.gpx")):
             try:
                 self.geocaches.append(Geocache(gpxfile))
             except ElementTree.ParseError:
