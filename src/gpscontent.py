@@ -8,13 +8,18 @@ import glob
 import webbrowser
 import subprocess
 import time
+import importlib.util
 import xml.etree.ElementTree as ElementTree
 
 from geocache import TYPE_LIST, SIZE_LIST
 from geocache import Geocache, Waypoint
 import user_io
 import ownfunctions
-import founds
+
+if importlib.util.find_spec("pycaching") is not None:
+    user_io.USE_PYCACHING = False
+if user_io.USE_PYCACHING:
+    import founds
 
 
 class GPSContent(object):
@@ -510,8 +515,9 @@ class GPSContent(object):
         while True:
             task = user_io.actions_with_founds()
             if task == "log":
-                for fc in self.found_caches:
-                    founds.add_cache_to_file(fc)
+                if user_io.USE_PYCACHING:
+                    for fc in self.found_caches:
+                        founds.add_cache_to_file(fc)
                 webbrowser.open_new_tab("https://www.geocaching.com/my/uploadfieldnotes.aspx")
             elif task == "delete":
                 if self.warning:

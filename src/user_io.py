@@ -13,6 +13,7 @@ else:
     PATH = [r"E:/Garmin", r"F:/Garmin", r"G:/Garmin", r"H:/Garmin"]
 CODING = "cp1252"   # coding of cmd (cp1252 recommended)
 EDITORNAME = "notepad.exe"  # name (+ path) of standard text editor
+USE_PYCACHING = True        # will module pycaching be used? (automatically switched off if it is not installed)
 
 
 def general_output(string):
