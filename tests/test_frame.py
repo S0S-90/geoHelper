@@ -18,7 +18,8 @@ def run(v, testsuite_creating_function, filename):
     """runs the testsuite that is created from testsuite_creating_function with verbosity v
     filename is the name of the file that is currently tested
 
-    return: list [number of testruns, number of failed tests, number of errors in tests"""
+    return: list [number of testruns, number of failed tests, number of errors in tests]"""
+
     sys.stdout = saved_stdout  # print output to display
     print("\nTesting {}".format(filename))
     out = StringIO()

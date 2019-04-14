@@ -16,7 +16,7 @@ from geocache import Geocache, Waypoint
 import user_io
 import ownfunctions
 
-if importlib.util.find_spec("pycaching") is not None:
+if importlib.util.find_spec("pycaching") is None:
     user_io.USE_PYCACHING = False
 if user_io.USE_PYCACHING:
     import founds
