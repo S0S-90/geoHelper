@@ -1089,9 +1089,9 @@ class TestShowFoundsOnlyFound(unittest.TestCase):
             self.x.show_founds()
             output = out.getvalue()
             expected = "GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  "
-            expected += "| 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
+            expected += "| 03 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
             expected += "GC5G5F5 | N 49°47.955, E 009°58.566 | Traditional Cache | D 1.5 | T 4.0 | small   | True  "
-            expected += "| 08 Oct 2016 | Urban Buildering\n\n"
+            expected += "| 03 Sep 2016 | Urban Buildering\n\n"
             expected += "\nWas moechtest du als naechstes tun?\n"
             expected += "1: Gefundene Caches auf geocaching.com loggen "
             expected += "(ueber den Upload von drafts / fieldnotes, INTERNET!!!)\n"
@@ -1140,9 +1140,9 @@ class TestShowFoundsNotOnlyFound(unittest.TestCase):
             self.x.show_founds()
             output = out.getvalue()
             expected = "GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  "
-            expected += "| 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
+            expected += "| 03 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
             expected += "GC5N23T | N 49°48.457, E 009°54.727 | Mystery Cache     | D 3.0 | T 4.0 | micro   | True  "
-            expected += "| 09 Jan 2017 | 67 - MedTrix - \u001a\u001a\u001a\u001a\u001a\n\n"
+            expected += "| 12 Feb 2017 | 67 - MedTrix - \u001a\u001a\u001a\u001a\u001a\n\n"
             expected += "\nWas moechtest du als naechstes tun?\n"
             expected += "1: Gefundene Caches auf geocaching.com loggen "
             expected += "(ueber den Upload von drafts / fieldnotes, INTERNET!!!)\n"
@@ -1183,10 +1183,10 @@ class TestShowFoundsOnlyFoundWaypoints(unittest.TestCase):
             self.x.show_founds()
             output = out.getvalue()
             expected = "GC1XRPM | N 49°48.559, E 009°56.019 | Multi-cache       | D 2.5 | T 3.5 | micro   | True  "
-            expected += "| 06 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
+            expected += "| 03 Sep 2016 | Im Auftrag ihrer Majestät – Der Märchenstuhl\n"
             expected += "        | N 49°47.546, E 009°55.934 | MÄRCHENSTUHL 2 (1.9km)\n"
             expected += "GC5G5F5 | N 49°47.955, E 009°58.566 | Traditional Cache | D 1.5 | T 4.0 | small   | True  "
-            expected += "| 08 Oct 2016 | Urban Buildering\n\n"
+            expected += "| 03 Sep 2016 | Urban Buildering\n\n"
             expected += "\nWas moechtest du als naechstes tun?\n"
             expected += "1: Gefundene Caches auf geocaching.com loggen "
             expected += "(ueber den Upload von drafts / fieldnotes, INTERNET!!!)\n"
@@ -1235,7 +1235,7 @@ class TestShowFoundsFoundNotOnGPS(unittest.TestCase):
             self.x.show_founds()
             output = out.getvalue()
             expected = "GC5G5F5 | N 49°47.955, E 009°58.566 | Traditional Cache | D 1.5 | T 4.0 | small   | True  "
-            expected += "| 08 Oct 2016 | Urban Buildering\n\n"
+            expected += "| 03 Sep 2016 | Urban Buildering\n\n"
             expected += "\nWas moechtest du als naechstes tun?\n"
             expected += "1: Gefundene Caches auf geocaching.com loggen "
             expected += "(ueber den Upload von drafts / fieldnotes, INTERNET!!!)\n"

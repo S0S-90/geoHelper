@@ -8,6 +8,7 @@ import glob
 import webbrowser
 import subprocess
 import time
+import platform
 import importlib.util
 import xml.etree.ElementTree as ElementTree
 
@@ -108,7 +109,10 @@ class GPSContent(object):
 
         self.geocaches = []  # read all caches from GC*.gpx-files in path\GPX and save in list 'geocaches'
         gpx_path = os.path.join(self.path, "GPX")
-        for gpxfile in glob.glob(os.path.join(gpx_path, "GC*.gpx")) + glob.glob(os.path.join(gpx_path, "gc*.gpx")):
+        filelist = glob.glob(os.path.join(gpx_path, "GC*.gpx"))
+        if platform.system() == "Linux":    # windows doesn't differ between capital and small letters, linux does
+            filelist += glob.glob(os.path.join(gpx_path, "gc*.gpx"))
+        for gpxfile in filelist:
             try:
                 self.geocaches.append(Geocache(gpxfile))
             except ElementTree.ParseError:
