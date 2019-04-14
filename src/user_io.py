@@ -7,7 +7,10 @@ import ownfunctions
 import geocache
 import os
 
-PATH = [r"E:/Garmin", r"F:/Garmin", r"G:/Garmin", r"H:/Garmin", r"/media/{}/GARMIN/garmin/".format(os.environ["USER"])]
+if "USER" in os.environ:  # last path is for Linux Ubuntu
+    PATH = [r"E:/Garmin", r"F:/Garmin", r"G:/Garmin", r"H:/Garmin", r"/media/{}/GARMIN/garmin/".format(os.environ["USER"])]
+else:
+    PATH = [r"E:/Garmin", r"F:/Garmin", r"G:/Garmin", r"H:/Garmin"]
 CODING = "cp1252"   # coding of cmd (cp1252 recommended)
 EDITORNAME = "notepad.exe"  # name (+ path) of standard text editor
 
