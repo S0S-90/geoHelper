@@ -131,7 +131,7 @@ def read_cache_from_line(line):
         gc.size_string = "other"
     gc.size = SIZE_LIST.index(gc.size_string)
 
-    gc.longtype = linelist[6][5:]  # remove "Type"
+    gc.longtype = linelist[6][5:]  # remove "Type."
     try:
         gc.type = TYPE_DICT[gc.longtype]
     except KeyError:
