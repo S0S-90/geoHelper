@@ -119,6 +119,31 @@ class TestSaaletalblick(unittest.TestCase):
         self.assertEqual(x, expected)
 
 
+class TestUpdateDate(unittest.TestCase):
+
+    def setUp(self):
+        """creates a geocache object for the tests"""
+        self.gc = geocache.Geocache("../tests/examples/GC6K86W.gpx")
+
+    def test_update_date_format1(self):
+        self.gc.update_date("04.07.1990")
+        self.assertEqual(self.gc.date, datetime.date(1990, 7, 4))
+        self.assertEqual(self.gc.date_string, "04 Jul 1990")
+
+    def test_update_date_format2(self):
+        self.gc.update_date("04 Jul 1990")
+        self.assertEqual(self.gc.date, datetime.date(1990, 7, 4))
+        self.assertEqual(self.gc.date_string, "04 Jul 1990")
+
+    def test_update_date_format3(self):
+        self.gc.update_date("1990-07-04")
+        self.assertEqual(self.gc.date, datetime.date(1990, 7, 4))
+        self.assertEqual(self.gc.date_string, "04 Jul 1990")
+
+    def test_unvalid_date_gives_error(self):
+        self.assertRaises(ValueError, self.gc.update_date, "4.7.90")
+
+
 class TestGeocacheWaypoints(unittest.TestCase):
 
     def setUp(self):
@@ -892,6 +917,7 @@ def create_testsuite():
     """creates a testsuite with out of all tests in this file"""
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(TestSaaletalblick))
+    suite.addTest(unittest.makeSuite(TestUpdateDate))
     suite.addTest(unittest.makeSuite(TestGeocacheWaypoints))
     suite.addTest(unittest.makeSuite(TestMaerchenstuhl))
     suite.addTest(unittest.makeSuite(TestTesoroAmeghino))

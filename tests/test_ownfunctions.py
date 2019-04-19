@@ -13,6 +13,27 @@ import test_frame
 import ownfunctions
 
 
+class TestGetKey(unittest.TestCase):
+
+    def test_valid_value(self):
+        example_dict = {"key1": 1, "key2": 42, "key3": "stupid_text"}
+        x = ownfunctions.get_key(1, example_dict)
+        self.assertEqual(x, "key1")
+
+    def test_different_valid_value(self):
+        example_dict = {"key1": 1, "key2": 42, "key3": "stupid_text"}
+        x = ownfunctions.get_key("stupid_text", example_dict)
+        self.assertEqual(x, "key3")
+
+    def test_value_not_in_dict(self):
+        example_dict = {"key1": 1, "key2": 42, "key3": "stupid_text"}
+        self.assertRaises(KeyError, ownfunctions.get_key, 3, example_dict)
+
+    def test_empty_dict(self):
+        example_dict = {}
+        self.assertRaises(KeyError, ownfunctions.get_key, 3, example_dict)
+
+
 class TestReplaceSigns(unittest.TestCase):
 
     def test_find_cp1252(self):
@@ -528,13 +549,11 @@ class TestGetMonthNumber(unittest.TestCase):
         x = ownfunctions.get_month_number("Dez")
         self.assertEqual(x, 12)
 
-    def test_other_string_givesNone(self):
-        x = ownfunctions.get_month_number("bla")
-        self.assertEqual(x, None)
+    def test_other_string_givesError(self):
+        self.assertRaises(KeyError, ownfunctions.get_month_number, "bla")
 
-    def test_other_type_givesNone(self):
-        x = ownfunctions.get_month_number(42)
-        self.assertEqual(x, None)
+    def test_other_type_givesError(self):
+        self.assertRaises(KeyError, ownfunctions.get_month_number, 42)
 
 
 class TestGetMonth(unittest.TestCase):
@@ -602,6 +621,19 @@ class TestStringToDate(unittest.TestCase):
         expected_result = datetime.date(1990, 7, 4)
         self.assertEqual(x, expected_result)
 
+    def test_normal_date_in_other_format(self):
+        x = ownfunctions.string_to_date("04 Jul 1990")
+        expected_result = datetime.date(1990, 7, 4)
+        self.assertEqual(x, expected_result)
+
+    def test_normal_date_in_reverse_format(self):
+        x = ownfunctions.string_to_date("1990-07-04")
+        expected_result = datetime.date(1990, 7, 4)
+        self.assertEqual(x, expected_result)
+
+    def test_unvalid_month(self):
+        self.assertRaises(KeyError, ownfunctions.string_to_date, "04 Xul 1990")
+
     def test_date_has_too_less_signs(self):
         self.assertRaises(ValueError, ownfunctions.string_to_date, "4.7.1990")
 
@@ -653,6 +685,7 @@ class TestStringIsInt(unittest.TestCase):
 def create_testsuite():
     """creates a testsuite with out of all tests in this file"""
     suite = unittest.TestSuite()
+    suite.addTest(unittest.makeSuite(TestGetKey))
     suite.addTest(unittest.makeSuite(TestReplaceSigns))
     suite.addTest(unittest.makeSuite(TestShowXML))
     suite.addTest(unittest.makeSuite(TestValidateCoordinates))

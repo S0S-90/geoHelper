@@ -369,10 +369,9 @@ class Geocache(object):
         return description_short + "\n\n" + description_long
 
     def update_date(self, datestring):
-        """sets the date of the cache to the given date
-        date has to be given as string 'YYYY-MM-DD' """
+        """sets the date of the cache to the given date"""
 
-        self.date = ownfunctions.reverse_string_to_date(datestring)
+        self.date = ownfunctions.string_to_date(datestring)
         self.date_string = "{:02} {} {}".format(int(self.date.day), ownfunctions.get_month(self.date.month), self.date.year)
 
     @staticmethod

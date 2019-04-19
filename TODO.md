@@ -23,14 +23,7 @@
 Testen
 
 * founds.py komplett -> scheint aber alles zu gehen
-* ownfunctions.py -> scheint aber alles zu gehen
-  * string_to_date ergänzen
-  * reverse_string_to_date
-  * get_key
-* geocache.py 
-  * update_date -> scheint zu funktionieren 
 * gpscontent.py -> scheint alles zu gehen
-  * _get_logged_and_found_caches ändert Datum von gefundenen Caches 
   * show_founds schreibt Caches in found_caches.csv, wenn sie auf geocaching.com geloggt wurden 
 
 Was dann noch fehlt:

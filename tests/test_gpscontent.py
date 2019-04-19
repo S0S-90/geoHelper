@@ -10,6 +10,7 @@ import shutil
 import os
 import platform
 import time
+import datetime
 from io import StringIO
 import xml.etree.ElementTree as ElementTree
 
@@ -307,6 +308,15 @@ class TestGetLoggedAndFoundCachesOnlyFound(unittest.TestCase):
         self.assertEqual(found_caches[0].gccode, "GC1XRPM")
         self.assertEqual(found_caches[1].gccode, "GC5G5F5")
 
+    def test_update_date_of_founds(self):
+        for c in self.x.geocaches:
+            if c.gccode == "GC1XRPM":
+                self.assertEqual(c.date, datetime.date(2016, 9, 3))
+                self.assertEqual(c.date_string, "03 Sep 2016")
+            elif c.gccode == "GC5G5F5":
+                self.assertEqual(c.date, datetime.date(2016, 9, 3))
+                self.assertEqual(c.date_string, "03 Sep 2016")
+
 
 class TestGetLoggedAndFoundCachesNotOnlyFound(unittest.TestCase):
     def setUp(self):
@@ -325,6 +335,15 @@ class TestGetLoggedAndFoundCachesNotOnlyFound(unittest.TestCase):
         self.assertEqual(found_caches[0].gccode, "GC1XRPM")
         self.assertEqual(found_caches[1].gccode, "GC5N23T")
 
+    def test_update_date_of_founds(self):
+        for c in self.x.geocaches:
+            if c.gccode == "GC1XRPM":
+                self.assertEqual(c.date, datetime.date(2016, 9, 3))
+                self.assertEqual(c.date_string, "03 Sep 2016")
+            elif c.gccode == "GC5N23T":
+                self.assertEqual(c.date, datetime.date(2017, 2, 12))
+                self.assertEqual(c.date_string, "12 Feb 2017")
+
 
 class TestGetLoggedAndFoundCachesNotOnlyFoundNoBOM(unittest.TestCase):
     def setUp(self):
@@ -342,6 +361,15 @@ class TestGetLoggedAndFoundCachesNotOnlyFoundNoBOM(unittest.TestCase):
         self.assertEqual(len(found_caches), 2)
         self.assertEqual(found_caches[0].gccode, "GC1XRPM")
         self.assertEqual(found_caches[1].gccode, "GC5N23T")
+
+    def test_update_date_of_founds(self):
+        for c in self.x.geocaches:
+            if c.gccode == "GC1XRPM":
+                self.assertEqual(c.date, datetime.date(2016, 9, 3))
+                self.assertEqual(c.date_string, "03 Sep 2016")
+            elif c.gccode == "GC5N23T":
+                self.assertEqual(c.date, datetime.date(2017, 2, 12))
+                self.assertEqual(c.date_string, "12 Feb 2017")
 
 
 class TestGetLoggedAndFoundCachesOnlyNotFound(unittest.TestCase):
@@ -374,6 +402,12 @@ class TestGetLoggedAndFoundCachesFoundNotOnGPS(unittest.TestCase):
         self.assertEqual(len(found_caches), 1)
         self.assertEqual(found_caches[0].gccode, "GC5G5F5")
 
+    def test_update_date_of_founds(self):
+        for c in self.x.geocaches:
+            if c.gccode == "GC5G5F5":
+                self.assertEqual(c.date, datetime.date(2016, 9, 3))
+                self.assertEqual(c.date_string, "03 Sep 2016")
+
 
 class TestGetLoggedAndFoundCachesNotFoundNotOnGPS(unittest.TestCase):
     def setUp(self):
@@ -389,6 +423,12 @@ class TestGetLoggedAndFoundCachesNotFoundNotOnGPS(unittest.TestCase):
         found_caches = self.x._get_logged_and_found_caches()[1]
         self.assertEqual(len(found_caches), 1)
         self.assertEqual(found_caches[0].gccode, "GC5G5F5")
+
+    def test_update_date_of_founds(self):
+        for c in self.x.geocaches:
+            if c.gccode == "GC5G5F5":
+                self.assertEqual(c.date, datetime.date(2016, 9, 3))
+                self.assertEqual(c.date_string, "03 Sep 2016")
 
 
 class TestReadWaypoints(unittest.TestCase):

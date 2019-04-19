@@ -353,7 +353,7 @@ def get_month_number(string):
     return: number of this month in the year
     """
     if string not in MONTHS.keys():
-        return None
+        raise KeyError("Unvalid month!")
     return MONTHS[string]
 
 
@@ -366,43 +366,32 @@ def get_month(number):
 
 
 def string_to_date(string):
-    """converts string 'DD.MM.YYYY' or 'DD MMM YYYY' to datetime.date objekt
+    """converts string 'DD.MM.YYYY' or 'DD MMM YYYY' or 'YYYY-MM-DD' to datetime.date objekt
     
     input: date as string
     return: date as datetime.date"""
 
     if len(string) == 10:
         try:
-            day = int(string[0:2])
+            day = int(string[0:2])     # DD.MM.YYYY
             month = int(string[3:5])
             year = int(string[6:10])
         except ValueError:
-            raise ValueError("String for Date not correctly formated: {}".format(string))
+            try:
+                year = int(string[0:4])   # YYYY-MM-DD
+                month = int(string[5:7])
+                day = int(string[8:10])
+            except ValueError:
+                raise ValueError("String for Date not correctly formated: {}".format(string))
         return datetime.date(year, month, day)
 
     elif len(string) == 11:
         try:
-            day = int(string[0:2])
+            day = int(string[0:2])        # DD MMM YYYY
             month = int(get_month_number(string[3:6]))
             year = int(string[7:11])
         except ValueError:
             raise ValueError("String for Date not correctly formated: {}".format(string))
-        return datetime.date(year, month, day)
-
-    else:
-        raise ValueError
-
-
-def reverse_string_to_date(string):
-    """converts string 'YYYY-MM-DD' to datetime.date objekt
-
-    input: date as string
-    return: date as datetime.date"""
-
-    if len(string) == 10:
-        year = int(string[0:4])
-        month = int(string[5:7])
-        day = int(string[8:10])
         return datetime.date(year, month, day)
 
     else:
@@ -436,3 +425,7 @@ def string_is_int(string):
     except ValueError:
         return False
     return True
+
+
+if __name__ == "__main__":
+    pass  # ROOM FOR DEVELOPMENT TESTING
