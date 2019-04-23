@@ -4,21 +4,22 @@ This is a program that helps you organize your geocaches on your GPS device. Cur
 
 
 # Voraussetzungen
-* Python 3 mit Modulen: sys, glob, webbrowser, os, time, math, datetime, urllib.request, html.parser, unicodedata, xml.etree.ElementTree, subprocess (alle in Standardbibliothek vorhanden)
-* Die gpx-Dateien können entweder über geocaching.com selbst heruntergeladen werden oder über das Firefox Addon "Geocaching.com GPX Downloader" erzeugt werden.
-* Die Fieldnotes-Datei "geocache_visits.txt" sowie die Logdatei "geocache_logs.xml" müssen direkt im angegebenen Ordner für das GPS-Gerät liegen, 
-die gpx-Dateien in einem Unterordner mit Namen "GPX". (Dies sollte bei Garmin-Geräten automatisch der Fall sein.)
+* Python3 mit externem Module [pycaching](https://github.com/tomasbedrich/pycaching) (mind. Version 3.9.0)
+* Die gpx-Dateien können entweder über geocaching.com selbst heruntergeladen werden oder über das Firefox Addon "Geocaching.com GPX Downloader" (gibt es seit Firefox Quantum nicht mehr) erzeugt werden.
+* Die Fieldnotes-Datei "geocache_visits.txt" sowie die Logdatei "geocache_logs.xml" müssen direkt im angegebenen Ordner für das GPS-Gerät liegen, die gpx-Dateien in einem Unterordner mit Namen "GPX". (Dies sollte bei Garmin-Geräten automatisch der Fall sein.)
 
 # Download und Start des Programms
 
 ## Windows
 
-* Falls Python(3) nicht bereits auf dem System vorhanden: Download von Python 3, z.B. [hier](https://www.python.org/downloads/)
+* Falls Python3 nicht bereits auf dem System vorhanden: Download von Python3, z.B. [hier](https://www.python.org/downloads/)
+* Installation von pycaching mit pip. Dazu in der Eingabeaufforderung in den Ordner ``C:\Python3X\Scripts`` (X = Versionsnummer von Python) gehen und ``pip install pycaching`` eingeben.
 * Download und Entpacken des Archivs "geoHelper_vX.X.zip" auf [Release Page](https://github.com/S0S-90/geocachingTooly/releases) 
 * Doppelklick auf "winstarter.bat"
 
 ## Linux 
 
+* Installation von pycaching: ``pip3 install pycaching``
 * Herunterladen des Github-Repositories:  `git clone https://github.com/S0S-90/geocachingTooly.git`
 * In Ordner gehen: `cd geocachingTooly/src`
 * Programm starten: `python3 main.py`
@@ -30,17 +31,14 @@ die gpx-Dateien in einem Unterordner mit Namen "GPX". (Dies sollte bei Garmin-Ge
 * Berechnung der Entfernung der Caches zu einer bestimmten Position und Sortieren der Caches nach dieser Entfernung. Das Einlesen der Position erfolgt dabei entweder über 
 Eingabe der Koordinaten im auf geocaching.com üblichen Format (Grad und Minuten) oder aus einer Url (Google-Maps oder geocaching.com/map), wobei diese Internetseiten auch aus dem 
 Programm heraus geöffnet werden können.
+* Durchsuchen der Caches (Name, Beschreibung, Cachetyp, D- und T-Wertung, Größe, Download-Datum, Verfügbarkeit, Atttribute, Abstand zu einer bestimmten Position)
 * Anzeigen der vollständigen Beschreibung eines Caches sowie Möglichkeit, direkt zur aktuellen Version der Beschreibung im Browser zu wechseln - wird von dort aus eine neue Version der 
 GPX-Datei heruntergeladen, kann diese mittels "Geocaches aktualisieren" in das Program eingebunden werden, ohne es neu zu starten
-* Anzeigen der Position eines Caches auf https://www.google.de/maps oder https://www.geocaching.com/map
-* Anzeigen aller Caches und Wegpunkte oder einer Auswahl auf der Karte https://www.mapcustomizer.com
-* Durchsuchen der Caches (Name, Beschreibung, Cachetyp, D- und T-Wertung, Größe, Download-Datum, Verfügbarkeit, Atttribute, Abstand zu einer bestimmten Position)
+* Anzeigen der Position eines Caches auf https://www.google.de/maps oder https://www.geocaching.com/map oder Anzeigen aller Caches und Wegpunkte oder einer Auswahl auf der Karte https://www.mapcustomizer.com
 * Löschen eines oder mehrerer Caches, z.B. aller als gefunden markieren Caches
 * Loggen der gefundenen Caches auf der Fieldnotes-/Draftsseite von geocaching.com
 * Wegpunkte erstellen, zu Caches zuordnen und löschen
-
-**Achtung!** Falls Wegpunkte, die bereits durch das Herunterladen zum Cache gehören (z.B. Parkplatz-Koordinaten), vom GPS-Gerät aus gelöscht werden, kann geocachingTooly das gpx-File 
-möglicherweise nicht mehr lesen, da das GPS-Gerät den Dateinamen verändert.
+* Speichern aller bereits gefundener Caches in einer Tabellen-Datei ``found_caches.csv`` (Statistik damit geplant), sowie Auslesen der gefundenen Caches von der Seite geocaching.com mit Hilfe von [pycaching](https://github.com/tomasbedrich/pycaching).
 
 
 # Testen des Programms (nur für Entwickler)
