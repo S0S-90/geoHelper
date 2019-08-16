@@ -5,6 +5,8 @@ This is a program that helps you organize your geocaches on your GPS device. Cur
 
 # Voraussetzungen
 * Python3 mit externem Module [pycaching](https://github.com/tomasbedrich/pycaching) (mind. Version 3.9.0)
+* für Linux-Version: Modul [readline](https://docs.python.org/3/library/readline.html#module-readline), um Pfeiltasten für die Eingabe verwenden zu können
+    * Installation (getestet mit Ubuntu): ``sudo apt install libncurses-dev``, dann ``pip3 install readline``
 * Die gpx-Dateien können entweder über geocaching.com selbst heruntergeladen werden oder über das Firefox Addon "Geocaching.com GPX Downloader" (gibt es seit Firefox Quantum nicht mehr) erzeugt werden.
 * Die Fieldnotes-Datei "geocache_visits.txt" sowie die Logdatei "geocache_logs.xml" müssen direkt im angegebenen Ordner für das GPS-Gerät liegen, die gpx-Dateien in einem Unterordner mit Namen "GPX". (Dies sollte bei Garmin-Geräten automatisch der Fall sein.)
 

@@ -5,6 +5,9 @@
 
 import sys
 import os
+import platform
+if platform.system() == "Linux":
+    import readline
 
 from gpscontent import GPSContent
 import user_io

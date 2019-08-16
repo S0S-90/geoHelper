@@ -2,7 +2,9 @@
 
 ### Bugfixes
 
-* keine Bugs bekannt :-D
+* für mapcustomizer: bricht bei falscher Eingabe (z. B. "notepad.exe" auf Ubuntu) ab
+
+* bricht bei Löschen aller gefundenen Caches ab, falls ein Cache 2x als gefunden markiert wurde
 
 ### Neue Features
 
@@ -29,5 +31,4 @@ Testen
 Was dann noch fehlt:
  - Zugriff auf die Optionen für gefundene Caches aus Hauptprogramm
  - Gefundene Caches sortieren und anzeigen nach unterschiedlichen Kriterien
- - Readme ergänzen (**WICHTIG!** Es funktioniert nur mit meiner privaten Version von pycaching, Branch get_logdate)
 
