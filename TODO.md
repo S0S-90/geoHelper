@@ -2,8 +2,6 @@
 
 ### Bugfixes
 
-* für mapcustomizer: bricht bei falscher Eingabe (z. B. "notepad.exe" auf Ubuntu) ab
-
 * bricht bei Löschen aller gefundenen Caches ab, falls ein Cache 2x als gefunden markiert wurde
 
 ### Neue Features
