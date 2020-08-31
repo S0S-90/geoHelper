@@ -6,6 +6,7 @@
 import unittest
 from unittest import mock
 import sys
+import platform
 from io import StringIO
 
 import test_frame
@@ -961,7 +962,7 @@ class TestShowOnMapStart(unittest.TestCase):
             expected += "Grau: Letterbox, Geocaching HQ\n"
             expected += "Gelb: Event Cache, Wherigo Cache\n"
             expected += "Pink: unbekannter Typ\n"
-            expected += "Gib nun den Pfad zu deinem Editor an: (bei Benutzung von Windows sollte das unnoetig sein)\n"
+            expected += "Gib nun den Pfad zu deinem Editor an: (keine Angabe fuer Standard-Editor)\n"
             self.assertEqual(output, expected)
 
     def test_output_all_waypoints(self):
@@ -982,7 +983,7 @@ class TestShowOnMapStart(unittest.TestCase):
             expected += "Grau: Letterbox, Geocaching HQ\n"
             expected += "Gelb: Event Cache, Wherigo Cache, Wegpunkte\n"
             expected += "Pink: unbekannter Typ\n"
-            expected += "Gib nun den Pfad zu deinem Editor an: (bei Benutzung von Windows sollte das unnoetig sein)\n"
+            expected += "Gib nun den Pfad zu deinem Editor an: (keine Angabe fuer Standard-Editor)\n"
             self.assertEqual(output, expected)
 
     def test_output_one_waypoints(self):
@@ -995,7 +996,7 @@ class TestShowOnMapStart(unittest.TestCase):
             expected += "das andere die Seite mapcustomizer.com in deinem Browser.\n"
             expected += "Um den Cache / die Caches auf der Karte anzuzeigen, kopiere den vollstaendigen Inhalt "
             expected += "der Textdatei aus deinem Editor in das Feld 'Bulk Entry' im Browser.\n"
-            expected += "Gib nun den Pfad zu deinem Editor an: (bei Benutzung von Windows sollte das unnoetig sein)\n"
+            expected += "Gib nun den Pfad zu deinem Editor an: (keine Angabe fuer Standard-Editor)\n"
             self.assertEqual(output, expected)
 
     def test_output_one_no_waypoints(self):      # makes no difference because it is nonsense
@@ -1008,7 +1009,7 @@ class TestShowOnMapStart(unittest.TestCase):
             expected += "das andere die Seite mapcustomizer.com in deinem Browser.\n"
             expected += "Um den Cache / die Caches auf der Karte anzuzeigen, kopiere den vollstaendigen Inhalt "
             expected += "der Textdatei aus deinem Editor in das Feld 'Bulk Entry' im Browser.\n"
-            expected += "Gib nun den Pfad zu deinem Editor an: (bei Benutzung von Windows sollte das unnoetig sein)\n"
+            expected += "Gib nun den Pfad zu deinem Editor an: (keine Angabe fuer Standard-Editor)\n"
             self.assertEqual(output, expected)
 
     def test_return(self):
@@ -1017,8 +1018,10 @@ class TestShowOnMapStart(unittest.TestCase):
 
     def test_default_return(self):
         with mock.patch('builtins.input', return_value=""):
-            self.assertEqual(user_io.show_on_map_start(True, False), "notepad.exe")
-
+            if platform.system == "Windows":
+                self.assertEqual(user_io.show_on_map_start(True, False), "notepad.exe")
+            elif platform.system == "Linux":
+                self.assertEqual(user_io.show_on_map_start(True, False), "gedit")
 
 class TestShowOnMapEnd(unittest.TestCase):
 

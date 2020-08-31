@@ -6,13 +6,15 @@
 import ownfunctions
 import geocache
 import os
+import platform
 
 if "USER" in os.environ:  # last path is for Linux Ubuntu
-    PATH = [r"E:/Garmin", r"F:/Garmin", r"G:/Garmin", r"H:/Garmin", r"/media/{}/GARMIN/garmin/".format(os.environ["USER"])]
+    PATH = [r"E:/Garmin", r"F:/Garmin", r"G:/Garmin", r"H:/Garmin",
+            r"/media/{}/GARMIN/garmin/".format(os.environ["USER"])]
 else:
     PATH = [r"E:/Garmin", r"F:/Garmin", r"G:/Garmin", r"H:/Garmin"]
 CODING = "cp1252"   # coding of cmd (cp1252 recommended)
-EDITORNAME = "notepad.exe"  # name (+ path) of standard text editor
+EDITORNAME = ["notepad.exe", "gedit"]  # name (+ path) of standard text editor, first for windows, second for linux
 USE_PYCACHING = True        # will module pycaching be used? (automatically switched off if it is not installed)
 
 
@@ -405,11 +407,14 @@ def show_on_map_start(one, free_waypoints):
             z += ", Wegpunkte"
         print(z)
         print("Pink: unbekannter Typ")
-    print("Gib nun den Pfad zu deinem Editor an: (bei Benutzung von Windows sollte das unnoetig sein)")
+    print("Gib nun den Pfad zu deinem Editor an: (keine Angabe fuer Standard-Editor)")
 
     inp = input(">> ")
     if inp == "":
-        return EDITORNAME
+        if platform.system() == "Windows":
+            return EDITORNAME[0]
+        elif platform.system() == "Linux":
+            return EDITORNAME[1]
     else:
         return inp
 

@@ -637,14 +637,22 @@ class GPSContent(object):
         free_waypoints = False
         if show_waypoints and all_caches:  # free waypoints are shown (only for all caches, not a selection)
             free_waypoints = True
-        editor = user_io.show_on_map_start(one, free_waypoints)
-        if one:
-            self._create_mapinfo_one(cachelist)
-        else:
-            self._create_mapinfo_several(cachelist, show_waypoints, free_waypoints)
-        subprocess.Popen([editor, "mapinfo.txt"])
-        webbrowser.open_new_tab("https://www.mapcustomizer.com/#bulkEntryModal")
-        user_io.show_on_map_end()
+        success = False  # succeeded in opening texteditor?
+        while success == False:
+            editor = user_io.show_on_map_start(one, free_waypoints)
+            if one:
+                self._create_mapinfo_one(cachelist)
+            else:
+                self._create_mapinfo_several(cachelist, show_waypoints, free_waypoints)
+            try:
+                subprocess.Popen([editor, "mapinfo.txt"])
+            except FileNotFoundError:
+                user_io.general_output("ERROR: {} ist kein auf dem System vorhandener Texteditor.".format(editor))
+                user_io.general_output("Versuche es noch einmal.")
+            else:
+                webbrowser.open_new_tab("https://www.mapcustomizer.com/#bulkEntryModal")
+                user_io.show_on_map_end()
+                success = True
         os.remove("mapinfo.txt")
 
     def show_waypoints(self):
